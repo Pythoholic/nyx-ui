@@ -207,3 +207,64 @@ themeButtons.forEach((button) => {
   });
 });
 
+const navigationLinks = Array.from(
+  document.querySelectorAll<HTMLAnchorElement>(".docs-nav a[href^='#']"),
+);
+
+const navigationSections = navigationLinks.flatMap((link) => {
+  const sectionId = link.hash.slice(1);
+  const section = document.getElementById(sectionId);
+  return section ? [{ link, section }] : [];
+});
+
+function setActiveNavigation(sectionId: string): void {
+  navigationSections.forEach(({ link, section }) => {
+    if (section.id === sectionId) {
+      link.setAttribute("aria-current", "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+function updateNavigationFromScroll(): void {
+  const activationLine = window.scrollY + 160;
+  let activeSection = navigationSections[0]?.section;
+
+  navigationSections.forEach(({ section }) => {
+    if (section.offsetTop <= activationLine) activeSection = section;
+  });
+
+  if (activeSection) setActiveNavigation(activeSection.id);
+}
+
+navigationSections.forEach(({ link, section }) => {
+  link.addEventListener("click", () => setActiveNavigation(section.id));
+});
+
+let navigationFrame = 0;
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (navigationFrame) return;
+    navigationFrame = window.requestAnimationFrame(() => {
+      updateNavigationFromScroll();
+      navigationFrame = 0;
+    });
+  },
+  { passive: true },
+);
+
+window.addEventListener("hashchange", () => {
+  const sectionId = window.location.hash.slice(1);
+  if (sectionId) setActiveNavigation(sectionId);
+});
+
+const initialSectionId = window.location.hash.slice(1);
+
+if (initialSectionId && document.getElementById(initialSectionId)) {
+  setActiveNavigation(initialSectionId);
+} else {
+  updateNavigationFromScroll();
+}
