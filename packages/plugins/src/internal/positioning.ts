@@ -24,6 +24,9 @@ export function positionOverlay(
   options: NyxOverlayPositionOptions = {},
 ): () => void {
   const padding = 8;
+  let active = true;
+  overlay.removeAttribute("data-nyx-positioned");
+
   const update = async (): Promise<void> => {
     const result = await computePosition(reference, overlay, {
       middleware: [
@@ -52,11 +55,27 @@ export function positionOverlay(
       strategy: "fixed",
     });
 
+    if (!active) return;
     overlay.dataset.placement = result.placement;
     overlay.style.setProperty("--nyx-overlay-x", `${result.x}px`);
     overlay.style.setProperty("--nyx-overlay-y", `${result.y}px`);
+    overlay.setAttribute("data-nyx-positioned", "");
   };
 
-  const cleanup = autoUpdate(reference as ReferenceElement, overlay, update);
-  return cleanup;
+  const stopAutoUpdate = autoUpdate(
+    reference as ReferenceElement,
+    overlay,
+    update,
+  );
+
+  return () => {
+    active = false;
+    stopAutoUpdate();
+    overlay.removeAttribute("data-nyx-positioned");
+    overlay.style.removeProperty("--nyx-overlay-x");
+    overlay.style.removeProperty("--nyx-overlay-y");
+    overlay.style.removeProperty("--nyx-overlay-available-height");
+    overlay.style.removeProperty("--nyx-overlay-available-width");
+    overlay.style.removeProperty("--nyx-overlay-anchor-width");
+  };
 }

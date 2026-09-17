@@ -3,7 +3,7 @@ import { card, section } from "./shared.js";
 
 export const navigationSection = section(
   "navigation",
-  "08",
+  "09",
   "Navigation",
   "Navigation patterns use native links and buttons, explicit current states, predictable keyboard behavior, and responsive wrapping.",
   `<div class="docs-stack">

@@ -19,13 +19,14 @@ export const navigationGroups: NavigationGroup[] = [
     items: [
       { id: "actions", label: "Actions", index: "06" },
       { id: "forms", label: "Forms", index: "07" },
-      { id: "navigation", label: "Navigation", index: "08" },
-      { id: "overlays", label: "Overlays", index: "09" },
-      { id: "feedback", label: "Feedback", index: "10" },
-      { id: "data", label: "Data display", index: "11" },
-      { id: "charts", label: "Visualization", index: "12" },
-      { id: "media", label: "Media", index: "13" },
-      { id: "layouts", label: "Layouts", index: "14" },
+      { id: "primitives", label: "Primitives", index: "08" },
+      { id: "navigation", label: "Navigation", index: "09" },
+      { id: "overlays", label: "Overlays", index: "10" },
+      { id: "feedback", label: "Feedback", index: "11" },
+      { id: "data", label: "Data display", index: "12" },
+      { id: "charts", label: "Visualization", index: "13" },
+      { id: "media", label: "Media", index: "14" },
+      { id: "layouts", label: "Layouts", index: "15" },
     ],
   },
 ];
@@ -37,4 +38,3 @@ export function section(id: string, index: string, title: string, description: s
 export function card(title: string, body: string, badge = "Ready"): string {
   return `<article class="docs-component-card"><header class="docs-component-head"><h3>${title}</h3><span class="nyx-badge">${badge}</span></header><div class="docs-component-body">${body}</div></article>`;
 }
-

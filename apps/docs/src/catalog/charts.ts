@@ -2,7 +2,7 @@ import { card, section } from "./shared.js";
 
 export const chartsSection = section(
   "charts",
-  "12",
+  "13",
   "Data visualization",
   "Nyx owns chart color, grid, typography, tooltip, loading, empty, and accessibility contracts while rendering remains replaceable.",
   `<div class="docs-chart-grid">
@@ -13,4 +13,3 @@ export const chartsSection = section(
   </div>`,
   "chart line bar sparkline legend tooltip empty loading accessible summary table data visualization",
 );
-

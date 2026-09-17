@@ -4,7 +4,7 @@ import { card, section } from "./shared.js";
 
 export const overlaysSection = section(
   "overlays",
-  "09",
+  "10",
   "Overlays",
   "Tooltips clarify compact controls; native popovers serve lightweight menus; modal dialogs and drawers use one focus-safe controller.",
   `<div class="docs-grid">

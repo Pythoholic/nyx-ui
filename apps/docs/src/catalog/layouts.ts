@@ -3,7 +3,7 @@ import { card, section } from "./shared.js";
 
 export const layoutsSection = section(
   "layouts",
-  "14",
+  "15",
   "Application layouts",
   "The same primitives scale into shells for dashboards, authentication, settings, split workspaces, operations consoles, galleries, and onboarding.",
   `<div class="docs-stack">

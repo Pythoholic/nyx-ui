@@ -11,6 +11,20 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "static-primitives",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/static-primitives.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "toggles",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/toggles.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "dialog",
       "type": "component",
       "status": "preview",
@@ -36,7 +50,7 @@
       "type": "component-group",
       "status": "preview",
       "files": ["components/overlays.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dropdown-menu"]
     },
     {
       "name": "feedback",

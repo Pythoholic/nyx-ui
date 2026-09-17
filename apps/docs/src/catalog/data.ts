@@ -3,7 +3,7 @@ import { card, section } from "./shared.js";
 
 export const dataSection = section(
   "data",
-  "11",
+  "12",
   "Data display",
   "Operational data stays scannable through tabular numbers, strong row boundaries, explicit status, accessible tables, and expandable detail.",
   `<div class="docs-stack">

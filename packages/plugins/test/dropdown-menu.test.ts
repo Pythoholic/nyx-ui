@@ -4,6 +4,23 @@ import {
   type NyxDropdownMenu,
 } from "../src/dropdown-menu.js";
 
+const floating = vi.hoisted(() => ({
+  autoUpdate: vi.fn(),
+  cleanup: vi.fn(),
+  computePosition: vi.fn(),
+}));
+
+vi.mock("@floating-ui/dom", async () => {
+  const actual = await vi.importActual<typeof import("@floating-ui/dom")>(
+    "@floating-ui/dom",
+  );
+  return {
+    ...actual,
+    autoUpdate: floating.autoUpdate,
+    computePosition: floating.computePosition,
+  };
+});
+
 function installPopoverMethods(): void {
   Object.defineProperties(HTMLElement.prototype, {
     hidePopover: {
@@ -44,6 +61,20 @@ describe("NyxDropdownMenu", () => {
   let initialized: NyxDropdownMenu[] = [];
 
   beforeEach(() => {
+    floating.cleanup.mockReset();
+    floating.computePosition.mockReset();
+    floating.computePosition.mockResolvedValue({
+      middlewareData: {},
+      placement: "bottom-start",
+      strategy: "fixed",
+      x: 112,
+      y: 248,
+    });
+    floating.autoUpdate.mockReset();
+    floating.autoUpdate.mockImplementation((_reference, _overlay, update) => {
+      void update();
+      return floating.cleanup;
+    });
     installPopoverMethods();
     renderDropdownMenu();
   });
@@ -102,6 +133,29 @@ describe("NyxDropdownMenu", () => {
     expect(element.dataset.state).toBe("closed");
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
     expect(close).toHaveBeenCalledOnce();
+  });
+
+  it("commits computed coordinates before marking an open menu as positioned", async () => {
+    initialized = initDropdownMenus();
+    const [menu] = initialized;
+    const element = document.querySelector<HTMLElement>("#actions");
+    const trigger = document.querySelector<HTMLElement>("#trigger");
+    if (!menu || !element || !trigger) throw new Error("Menu was not initialized.");
+
+    trigger.click();
+
+    await vi.waitFor(() => {
+      expect(element.style.getPropertyValue("--nyx-overlay-x")).toBe("112px");
+      expect(element.style.getPropertyValue("--nyx-overlay-y")).toBe("248px");
+      expect(element.hasAttribute("data-nyx-positioned")).toBe(true);
+    });
+    expect(floating.autoUpdate).toHaveBeenCalled();
+
+    menu.close();
+    expect(floating.cleanup).toHaveBeenCalled();
+    expect(element.hasAttribute("data-nyx-positioned")).toBe(false);
+    expect(element.style.getPropertyValue("--nyx-overlay-x")).toBe("");
+    expect(element.style.getPropertyValue("--nyx-overlay-y")).toBe("");
   });
 
   it("wraps roving focus and skips disabled items", () => {

@@ -3,7 +3,7 @@ import { card, section } from "./shared.js";
 
 export const feedbackSection = section(
   "feedback",
-  "10",
+  "11",
   "Feedback and status",
   "Every feedback state uses text and structure in addition to color. Loading, progress, empty, error, and transient notification patterns are included.",
   `<div class="docs-grid">
