@@ -20,29 +20,21 @@ const colors = section(
 );
 
 const typeRows = [
-  ["Display XL", "--nyx-type-display-xl", "48px", "System intelligence", "800", "uppercase"],
-  ["Display", "--nyx-type-display", "36px", "Operational clarity", "800", "uppercase"],
-  ["Heading 1", "--nyx-type-heading-1", "30px", "Workspace overview", "700", "uppercase"],
-  ["Heading 2", "--nyx-type-heading-2", "24px", "Component family", "700", "uppercase"],
-  ["Heading 3", "--nyx-type-heading-3", "20px", "Component anatomy", "700", "uppercase"],
-  ["Panel title", "--nyx-type-title", "18px", "Active operations", "700", "uppercase"],
-  ["Body large", "--nyx-type-body-lg", "18px", "Readable introductory copy for important product context.", "400", "none"],
-  ["Body", "--nyx-type-body", "16px", "The default text role used for application content.", "400", "none"],
-  ["Control", "--nyx-type-control", "14px", "PRIMARY ACTION", "700", "uppercase"],
-  ["Label", "--nyx-type-label", "14px", "RELEASE NAME", "700", "uppercase"],
-  ["Metadata", "--nyx-type-meta", "12px", "UPDATED 17:42 UTC", "600", "uppercase"],
-  ["Data XL", "--nyx-type-data-xl", "32px", "$128,420", "800", "none"],
-  ["Data large", "--nyx-type-data-lg", "24px", "24,891", "800", "none"],
-  ["Data", "--nyx-type-data", "18px", "+14.82%", "700", "none"],
+  { name: "Display / 700 / 32–54 / −.015em", token: "--nyx-type-display", value: "32–54px", sample: "Admin sign in", weight: "700", transform: "uppercase", tracking: "-.015em", lineHeight: "1.04" },
+  { name: "Panel title / 600 / 15 / .12em", token: "--nyx-type-panel", value: "15px", sample: "Net gamma exposure by strike", weight: "600", transform: "uppercase", tracking: ".12em", lineHeight: "1.35" },
+  { name: "Nav / tab / 600 / 13 / .10em", token: "--nyx-type-nav", value: "13px", sample: "GEX   DEX   VEX", weight: "600", transform: "uppercase", tracking: ".10em", lineHeight: "1.4" },
+  { name: "Body / 400 / 15 / 1.7", token: "--nyx-type-body", value: "15px", sample: "Sign in to access the workspace.", weight: "400", transform: "none", tracking: "0", lineHeight: "1.7" },
+  { name: "Label / 400 / 11 / .10–.12em", token: "--nyx-type-label", value: "11px", sample: "GEX REGIME · PASSWORD · MAX PAIN", weight: "400", transform: "uppercase", tracking: ".12em", lineHeight: "1.4" },
+  { name: "Data / 600–700 / 16–30 / tabular", token: "--nyx-type-data", value: "16–30px", sample: "$711.09  +0.84%", weight: "700", transform: "none", tracking: "0", lineHeight: "1.15" },
 ];
 
 const typography = section(
   "typography",
   "03",
-  "Complete typography",
-  "Every role is named, rem-based, and fixed across breakpoints. Responsive behavior changes layout and wrapping—not the type scale.",
-  `<div class="docs-type-list">${typeRows.map(([name, token, value, sample, weight, transform]) => `<div class="docs-type-row"><span class="docs-type-name">${name}</span><span style="font-size:var(${token});font-weight:${weight};text-transform:${transform};line-height:1.25">${sample}</span><span class="docs-type-value">${value}</span></div>`).join("")}</div>
-  <div class="nyx-alert" data-tone="success" style="margin-top:var(--nyx-space-4)">${icon("check")}<div><strong class="nyx-alert-title">Typography stability contract</strong>These values remain identical at mobile, tablet, desktop, and 2560×1440. Density modes may alter spacing but never type size.</div></div>`,
+  "Nyx typography",
+  "The original Nyx contract: one family, six product roles, weights 400–700, tabular numerals, deliberate uppercase tracking, and negative tracking only for display text.",
+  `<div class="docs-type-list">${typeRows.map(({ name, token, value, sample, weight, transform, tracking, lineHeight }) => `<div class="docs-type-row"><span class="docs-type-name">${name}</span><span style="font-size:var(${token});font-weight:${weight};text-transform:${transform};letter-spacing:${tracking};line-height:${lineHeight}">${sample}</span><span class="docs-type-value">${value}</span></div>`).join("")}</div>
+  <div class="nyx-alert" data-tone="success" style="margin-top:var(--nyx-space-4)">${icon("check")}<div><strong class="nyx-alert-title">JetBrains Mono contract</strong>Weights 400, 500, 600, and 700 are loaded explicitly. Functional text stays fixed; only display and large data use bounded responsive scaling.</div></div>`,
   "typography type scale display headings body control label metadata data fixed responsive font",
 );
 

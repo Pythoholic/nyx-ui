@@ -15,7 +15,7 @@ Its architecture combines a small Tailwind CSS token package, optional framework
 The complete initial catalog is live:
 
 - Tailwind CSS 4 tokens, semantic variables, and four accent themes
-- fourteen fixed, rem-based typography roles that never shrink at breakpoints
+- the original six-role JetBrains Mono scale with bounded display/data responsiveness
 - spacing, geometry, elevation, z-index, responsive, and motion foundations
 - actions, forms, navigation, overlays, feedback, data, charts, media, and layout components
 - optional framework-agnostic Dialog, Tabs, and Toast behavior modules
