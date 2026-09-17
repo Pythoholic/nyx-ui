@@ -1,3 +1,5 @@
+import { initComboboxes } from "@nyx-ui/plugins/combobox";
+import { initCommandPalettes, type NyxCommandPalette, type NyxCommandPaletteEventDetail } from "@nyx-ui/plugins/command-palette";
 import { initContextMenus } from "@nyx-ui/plugins/context-menu";
 import { initDialogs } from "@nyx-ui/plugins/dialog";
 import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
@@ -65,20 +67,29 @@ const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
   <div class="docs-nav-group"><span class="docs-nav-label">Components</span><div class="docs-nav-categories">${componentCategories.map(categoryMarkup).join("")}</div></div>
 </nav>`;
 
+function attribute(value: string): string {
+  return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
+const searchGroupMap = new Map<string, DocPage[]>();
+pages.forEach((page) => searchGroupMap.set(page.categoryLabel, [...(searchGroupMap.get(page.categoryLabel) ?? []), page]));
+const searchGroups = Array.from(searchGroupMap);
+const searchPaletteMarkup = `<dialog aria-label="Search documentation" class="nyx-dialog nyx-command-palette docs-command-palette" data-nyx-command-palette id="docs-command-palette">
+  <div class="nyx-command-search"><label class="sr-only" for="docs-command-query">Search documentation</label>${icon("search")}<input autocomplete="off" class="nyx-input" id="docs-command-query" placeholder="Search documentation" role="combobox" type="search"/><button aria-label="Close search" class="nyx-button" data-nyx-dialog-close data-size="small" data-variant="quiet" type="button">Esc</button></div>
+  <div aria-label="Documentation pages" class="nyx-command-results nyx-scrollable-overlay" id="docs-command-results" role="listbox">${searchGroups.map(([label, group], groupIndex) => `<div aria-labelledby="docs-command-group-${groupIndex}" class="nyx-command-group" role="group"><div class="nyx-command-group-label" id="docs-command-group-${groupIndex}">${label}</div>${group.map((page, pageIndex) => `<div class="nyx-command docs-command-result" data-nyx-search-text="${attribute(`${page.title} ${page.categoryLabel} ${page.searchTerms} ${page.description}`)}" data-value="${page.path}" id="docs-command-${groupIndex}-${pageIndex}" role="option"><span>${page.title}</span><small>${page.categoryLabel}</small></div>`).join("")}</div>`).join("")}<p class="nyx-listbox-empty" data-nyx-command-palette-empty hidden>No matching documentation page.</p></div>
+</dialog>`;
+
 app.innerHTML = `<div class="docs-shell">
   <header class="docs-topbar">
     <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.1.0</span></span></a>
-    <div class="docs-search">
-      <label><span class="sr-only">Search documentation</span>${icon("search")}<input class="nyx-input" data-catalog-search type="search" placeholder="Search all documentation" autocomplete="off" aria-controls="docs-search-results" aria-expanded="false"/></label>
-      <div class="docs-search-results nyx-scrollable-overlay" id="docs-search-results" data-search-results hidden><ul></ul><p class="sr-only" aria-live="polite" data-search-status></p></div>
-    </div>
+    <button class="docs-search-trigger" data-nyx-dialog-trigger="docs-command-palette" type="button">${icon("search")}<span>Search documentation</span><span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span></button>
     <div class="docs-theme-list" aria-label="Accent theme" role="group"><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="solar" aria-pressed="true">Solar</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="signal" aria-pressed="false">Signal</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="flux" aria-pressed="false">Flux</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="plasma" aria-pressed="false">Plasma</button></div>
   </header>
   <div class="docs-layout">
     <aside class="docs-sidebar nyx-scrollable-overlay">${sidebarMarkup}</aside>
     <main class="docs-main" id="docs-main" tabindex="-1"></main>
   </div>
-</div>`;
+</div>${searchPaletteMarkup}`;
 
 function requiredElement<T extends Element>(root: ParentNode, selector: string): T {
   const element = root.querySelector<T>(selector);
@@ -88,10 +99,8 @@ function requiredElement<T extends Element>(root: ParentNode, selector: string):
 
 const main = requiredElement<HTMLElement>(app, "#docs-main");
 const sidebar = requiredElement<HTMLElement>(app, ".docs-sidebar");
-const searchInput = requiredElement<HTMLInputElement>(app, "[data-catalog-search]");
-const searchResults = requiredElement<HTMLElement>(app, "[data-search-results]");
-const searchList = requiredElement<HTMLUListElement>(searchResults, "ul");
-const searchStatus = requiredElement<HTMLElement>(searchResults, "[data-search-status]");
+const searchPaletteElement = requiredElement<HTMLDialogElement>(app, "#docs-command-palette");
+const searchPalette: NyxCommandPalette = initCommandPalettes(app)[0] ?? (() => { throw new Error("Documentation search failed to initialize."); })();
 
 let destroyCurrentPage: (() => void) | undefined;
 
@@ -138,6 +147,8 @@ function addDestroyables(target: Destroyable[], values: Destroyable[]): void {
 
 function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: Destroyable[]): NyxToast | undefined {
   switch (plugin) {
+    case "combobox": addDestroyables(destroyables, initComboboxes(root)); break;
+    case "command-palette": addDestroyables(destroyables, initCommandPalettes(root)); break;
     case "context-menu": addDestroyables(destroyables, initContextMenus(root)); break;
     case "dialog": addDestroyables(destroyables, initDialogs(root)); break;
     case "dropdown-menu": addDestroyables(destroyables, initDropdownMenus(root)); break;
@@ -221,12 +232,8 @@ function initializePage(page: DocPage): () => void {
   };
 }
 
-function overviewMarkup(): string {
-  return `<section class="docs-hero" data-docs-page="/"><div><p class="docs-kicker">// Complete system catalog</p><h1 class="docs-title" tabindex="-1">${overviewPage.title}</h1><p class="docs-intro">${overviewPage.description}</p></div>${overviewPage.body}</section>`;
-}
-
 function notFoundMarkup(): string {
-  return `<section class="docs-section"><div class="docs-section-heading"><div><span class="nyx-eyebrow">// 404</span><h1 tabindex="-1">Page not found</h1></div><p class="docs-section-copy">This documentation route does not exist.</p></div><a class="nyx-button" data-docs-link data-docs-path="/" href="${hrefFor("/")}">Return to overview</a></section>`;
+  return `<section class="docs-section"><header class="docs-page-header"><span class="nyx-eyebrow">// 404</span><h1 class="docs-title" tabindex="-1">Page not found</h1><p class="docs-intro">This documentation route does not exist.</p></header><a class="nyx-button" data-docs-link data-docs-path="/" href="${hrefFor("/")}">Return to overview</a></section>`;
 }
 
 function render(pathname = window.location.pathname): void {
@@ -234,7 +241,7 @@ function render(pathname = window.location.pathname): void {
   destroyCurrentPage = undefined;
   const page = pageByPath.get(normalizePath(pathname));
   main.innerHTML = page
-    ? `${page.path === "/" ? overviewMarkup() : renderPage(page)}<footer class="docs-footer"><span>Nyx UI · System catalog</span><span>Semantic · Accessible · Lightweight</span></footer>`
+    ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.1.0 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-stealth">Source repository</a></footer>`
     : notFoundMarkup();
   updateNavigation(page);
   document.title = page ? `${page.title} — Nyx UI` : "Page not found — Nyx UI";
@@ -243,69 +250,26 @@ function render(pathname = window.location.pathname): void {
   main.focus({ preventScroll: true });
 }
 
-function closeSearch(clear = false): void {
-  searchResults.hidden = true;
-  searchInput.setAttribute("aria-expanded", "false");
-  if (clear) searchInput.value = "";
-}
-
 function navigate(path: string, replace = false): void {
   const page = pageByPath.get(normalizePath(path));
   if (!page) return;
   const href = hrefFor(page.path);
   if (replace) history.replaceState(null, "", href);
   else history.pushState(null, "", href);
-  closeSearch(true);
+  searchPalette.close();
+  searchPalette.query = "";
   render(page.path);
 }
 
-function updateSearch(): void {
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) {
-    searchList.replaceChildren();
-    searchStatus.textContent = "";
-    closeSearch();
-    return;
-  }
-  const matches = pages.filter((page) => `${page.title} ${page.categoryLabel} ${page.searchTerms} ${page.description}`.toLowerCase().includes(query));
-  searchList.innerHTML = matches.length
-    ? matches.map((page) => `<li><a data-docs-link data-docs-path="${page.path}" href="${hrefFor(page.path)}"><span>${page.title}</span><small>${page.categoryLabel}</small></a></li>`).join("")
-    : `<li class="docs-search-empty">No matching page</li>`;
-  searchStatus.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"} found.`;
-  searchResults.hidden = false;
-  searchInput.setAttribute("aria-expanded", "true");
-}
-
-searchInput.addEventListener("input", updateSearch);
-searchInput.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    closeSearch(true);
-    return;
-  }
-  const links = Array.from(searchList.querySelectorAll<HTMLAnchorElement>("a[data-docs-link]"));
-  if (event.key === "ArrowDown" && links[0]) {
-    event.preventDefault();
-    links[0].focus();
-  } else if (event.key === "Enter" && links[0]) {
-    event.preventDefault();
-    navigate(links[0].dataset.docsPath ?? "/");
-  }
+searchPaletteElement.addEventListener("nyx:command-palette:run", (event: CustomEvent<NyxCommandPaletteEventDetail>) => {
+  const path = event.detail.value;
+  if (path) navigate(path);
 });
 
-searchResults.addEventListener("keydown", (event) => {
-  const links = Array.from(searchList.querySelectorAll<HTMLAnchorElement>("a[data-docs-link]"));
-  const index = links.indexOf(document.activeElement as HTMLAnchorElement);
-  if (event.key === "Escape") {
+window.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLocaleLowerCase() === "k") {
     event.preventDefault();
-    closeSearch(true);
-    searchInput.focus();
-  } else if (event.key === "ArrowDown" && links.length) {
-    event.preventDefault();
-    links[(index + 1) % links.length]?.focus();
-  } else if (event.key === "ArrowUp" && links.length) {
-    event.preventDefault();
-    if (index <= 0) searchInput.focus();
-    else links[index - 1]?.focus();
+    searchPalette.open(document.querySelector<HTMLElement>("[data-nyx-dialog-trigger='docs-command-palette']") ?? undefined);
   }
 });
 
@@ -319,7 +283,8 @@ app.addEventListener("click", (event) => {
 });
 
 window.addEventListener("popstate", () => {
-  closeSearch(true);
+  searchPalette.close();
+  searchPalette.query = "";
   render();
 });
 

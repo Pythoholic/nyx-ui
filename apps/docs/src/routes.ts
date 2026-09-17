@@ -22,6 +22,8 @@ export const paths = {
     forms: {
       textFields: "/components/forms/text-fields",
       selection: "/components/forms/selection-controls",
+      combobox: "/components/forms/combobox",
+      searchableSelect: "/components/forms/searchable-select",
       dateTime: "/components/forms/range-date-time",
       fileUpload: "/components/forms/file-upload",
     },
@@ -43,6 +45,7 @@ export const paths = {
       contextMenu: "/components/overlays/context-menu",
       dialog: "/components/overlays/dialog",
       drawer: "/components/overlays/drawer",
+      commandPalette: "/components/overlays/command-palette",
     },
     feedback: {
       badges: "/components/feedback/badges",

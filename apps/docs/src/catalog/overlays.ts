@@ -1,5 +1,6 @@
 import contextMenuMarkup from "../../../../registry/components/context-menu.html?raw";
 import dialogMarkup from "../../../../registry/components/dialog.html?raw";
+import commandPaletteMarkup from "../../../../registry/components/command-palette.html?raw";
 import overlaysMarkup from "../../../../registry/components/overlays.html?raw";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
@@ -53,5 +54,15 @@ export const overlayPages = [
     searchTerms: "overlay drawer sheet dialog side panel record details",
     plugins: ["dialog"],
     body: card("Drawer", `<div class="docs-row">${selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-drawer']", "#nyx-example-drawer"])}</div>`, "Registry source"),
+  }),
+  page({
+    path: paths.components.overlays.commandPalette,
+    categoryId: "overlays",
+    categoryLabel: "Overlays",
+    title: "Command Palette",
+    description: "A centred modal palette composes Dialog focus management with filterable, grouped listbox results and active-descendant navigation.",
+    searchTerms: "command palette dialog modal search grouped results keyboard shortcut",
+    plugins: ["command-palette"],
+    body: card("Command palette", `<div class="docs-row">${commandPaletteMarkup}</div>`, "Registry source"),
   }),
 ];

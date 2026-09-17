@@ -13,6 +13,14 @@
       "types": "./dist/dialog.d.ts",
       "default": "./dist/dialog.js"
     },
+    "./combobox": {
+      "types": "./dist/combobox.d.ts",
+      "default": "./dist/combobox.js"
+    },
+    "./command-palette": {
+      "types": "./dist/command-palette.d.ts",
+      "default": "./dist/command-palette.js"
+    },
     "./dropdown-menu": {
       "types": "./dist/dropdown-menu.d.ts",
       "default": "./dist/dropdown-menu.js"

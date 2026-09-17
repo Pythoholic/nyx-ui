@@ -1,0 +1,41 @@
+<button
+  class="nyx-button"
+  data-nyx-dialog-trigger="nyx-command-palette-example"
+  type="button"
+>
+  Open command palette
+  <span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span>
+</button>
+
+<dialog
+  aria-label="Command palette"
+  class="nyx-dialog nyx-command-palette"
+  data-nyx-command-palette
+  id="nyx-command-palette-example"
+>
+  <div class="nyx-command-search">
+    <label class="sr-only" for="nyx-command-query">Search commands</label>
+    <input
+      autocomplete="off"
+      class="nyx-input"
+      id="nyx-command-query"
+      placeholder="Type a command"
+      role="combobox"
+      type="search"
+    />
+    <button aria-label="Close command palette" class="nyx-button" data-nyx-dialog-close data-size="small" data-variant="quiet" type="button">Esc</button>
+  </div>
+  <div aria-label="Commands" class="nyx-command-results nyx-scrollable-overlay" id="nyx-command-results" role="listbox">
+    <div aria-labelledby="nyx-command-group-navigation" class="nyx-command-group" role="group">
+      <div class="nyx-command-group-label" id="nyx-command-group-navigation">Navigation</div>
+      <div class="nyx-command" data-value="open-overview" role="option"><span>Open overview</span><kbd class="nyx-kbd">G O</kbd></div>
+      <div class="nyx-command" data-value="open-components" role="option"><span>Browse components</span><kbd class="nyx-kbd">G C</kbd></div>
+    </div>
+    <div aria-labelledby="nyx-command-group-actions" class="nyx-command-group" role="group">
+      <div class="nyx-command-group-label" id="nyx-command-group-actions">Actions</div>
+      <div class="nyx-command" data-value="toggle-theme" role="option"><span>Cycle accent theme</span><kbd class="nyx-kbd">T</kbd></div>
+      <div aria-disabled="true" class="nyx-command" data-value="deploy" role="option"><span>Deploy preview · unavailable</span></div>
+    </div>
+    <p class="nyx-listbox-empty" data-nyx-command-palette-empty hidden>No matching command.</p>
+  </div>
+</dialog>

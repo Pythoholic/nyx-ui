@@ -1,6 +1,7 @@
 import { icon } from "../icons.js";
+import comboboxMarkup from "../../../../registry/components/combobox.html?raw";
 import { paths } from "../routes.js";
-import { card, page } from "./shared.js";
+import { card, page, selectMarkup } from "./shared.js";
 
 const description = "Native controls remain the baseline. Every label is associated, focus is visible, validation is explicit, and sizing follows the Nyx hierarchy.";
 
@@ -22,6 +23,26 @@ export const formPages = [
     description,
     searchTerms: "select checkbox radio switch number segmented choice forms",
     body: card("Selection", `<div class="docs-form-grid"><label class="nyx-field" for="region"><span class="nyx-label">Region</span><select class="nyx-select" id="region"><option>Tokyo</option><option>London</option><option>New York</option></select></label><label class="nyx-field" for="quantity"><span class="nyx-label">Quantity</span><input class="nyx-input" id="quantity" type="number" value="24" min="1"/></label><label class="nyx-choice" for="notices"><input id="notices" type="checkbox" checked/>Receive operational notices</label><fieldset class="nyx-toggle-fieldset"><legend class="nyx-label">Environment</legend><label class="nyx-choice" for="env-production"><input id="env-production" type="radio" name="env" checked/>Production</label><label class="nyx-choice" for="env-staging"><input id="env-staging" type="radio" name="env"/>Staging</label></fieldset><label class="nyx-switch" for="automatic-deployment"><input id="automatic-deployment" type="checkbox" checked/><span class="nyx-switch-track"></span><span>Automatic deployment</span></label><fieldset class="nyx-segmented-fieldset"><legend class="nyx-label">View mode</legend><div class="nyx-segmented"><input id="seg-a" name="segment" type="radio" checked/><label for="seg-a">Grid</label><input id="seg-b" name="segment" type="radio"/><label for="seg-b">List</label></div></fieldset></div>`, "Keyboard ready"),
+  }),
+  page({
+    path: paths.components.forms.combobox,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Combobox",
+    description: "An editable ARIA combobox filters listbox options, tracks an active descendant, and synchronizes selection to a form value.",
+    searchTerms: "combobox autocomplete listbox filter search option active descendant form",
+    plugins: ["combobox"],
+    body: card("Combobox", selectMarkup(comboboxMarkup, ["label[for='nyx-location-query']", "#nyx-location-combobox"]), "Registry source"),
+  }),
+  page({
+    path: paths.components.forms.searchableSelect,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Searchable Select",
+    description: "Searchable Select is a Combobox configuration for long choice sets. Prefer a native select for ordinary non-searchable choices.",
+    searchTerms: "searchable select combobox choice native select long options",
+    plugins: ["combobox"],
+    body: `<section class="docs-prose-section"><h2>Choose the smallest control</h2><p>Use a native <code>select</code> when the option set is short and does not need filtering. Use this Combobox configuration only when search materially helps people find a choice.</p></section>${card("Searchable Select", selectMarkup(comboboxMarkup, ["label[for='nyx-team-query']", "#nyx-team-select"]), "Combobox configuration")}`,
   }),
   page({
     path: paths.components.forms.dateTime,

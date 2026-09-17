@@ -8,6 +8,23 @@ export {
 } from "./dialog.js";
 
 export {
+  NyxCombobox,
+  initComboboxes,
+  type NyxComboboxCloseReason,
+  type NyxComboboxEventDetail,
+  type NyxComboboxEventMap,
+  type NyxComboboxOptions,
+} from "./combobox.js";
+
+export {
+  NyxCommandPalette,
+  initCommandPalettes,
+  type NyxCommandPaletteEventDetail,
+  type NyxCommandPaletteEventMap,
+  type NyxCommandPaletteOptions,
+} from "./command-palette.js";
+
+export {
   NyxDropdownMenu,
   getOrCreateDropdownMenu,
   initDropdownMenus,

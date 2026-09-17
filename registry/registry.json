@@ -39,6 +39,20 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "combobox",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/combobox.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
+    },
+    {
+      "name": "searchable-select",
+      "type": "component-configuration",
+      "status": "preview",
+      "files": ["components/combobox.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
+    },
+    {
       "name": "navigation",
       "type": "component-group",
       "status": "preview",
@@ -58,6 +72,13 @@
       "status": "preview",
       "files": ["components/context-menu.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/context-menu"]
+    },
+    {
+      "name": "command-palette",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/command-palette.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-palette"]
     },
     {
       "name": "menubar",

@@ -1,0 +1,54 @@
+<label class="nyx-field" for="nyx-location-query">
+  <span class="nyx-label">Deployment location</span>
+  <span class="nyx-field-hint">Type to filter available locations.</span>
+</label>
+<div class="nyx-combobox" data-nyx-combobox id="nyx-location-combobox">
+  <input
+    aria-label="Deployment location"
+    autocomplete="off"
+    class="nyx-input"
+    id="nyx-location-query"
+    placeholder="Search locations"
+    role="combobox"
+    type="text"
+  />
+  <input data-nyx-combobox-value name="location" type="hidden" />
+  <div
+    aria-label="Deployment locations"
+    class="nyx-listbox nyx-scrollable-overlay"
+    id="nyx-location-listbox"
+    popover="manual"
+    role="listbox"
+  >
+    <div class="nyx-option" data-value="ams" role="option">Amsterdam</div>
+    <div class="nyx-option" data-value="fra" role="option">Frankfurt</div>
+    <div class="nyx-option" data-value="lhr" role="option">London</div>
+    <div aria-disabled="true" class="nyx-option" data-value="nrt" role="option">Tokyo · Capacity reached</div>
+    <div class="nyx-option" data-value="iad" role="option">Washington, D.C.</div>
+    <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching location.</p>
+  </div>
+</div>
+
+<label class="nyx-field" for="nyx-team-query">
+  <span class="nyx-label">Owning team</span>
+  <span class="nyx-field-hint">Use a searchable Select for a long choice set; prefer a native select for ordinary choices.</span>
+</label>
+<div class="nyx-combobox" data-nyx-combobox data-nyx-combobox-mode="select" id="nyx-team-select">
+  <input
+    aria-label="Owning team"
+    autocomplete="off"
+    class="nyx-input"
+    id="nyx-team-query"
+    placeholder="Choose a team"
+    role="combobox"
+    type="text"
+  />
+  <input data-nyx-combobox-value name="team" type="hidden" />
+  <div aria-label="Teams" class="nyx-listbox nyx-scrollable-overlay" id="nyx-team-listbox" popover="manual" role="listbox">
+    <div class="nyx-option" data-value="atlas" role="option">Atlas</div>
+    <div class="nyx-option" data-value="helix" role="option">Helix</div>
+    <div class="nyx-option" data-value="nightwatch" role="option">Nightwatch</div>
+    <div class="nyx-option" data-value="vector" role="option">Vector</div>
+    <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching team.</p>
+  </div>
+</div>

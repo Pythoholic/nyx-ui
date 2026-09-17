@@ -1,4 +1,6 @@
 export type PluginName =
+  | "combobox"
+  | "command-palette"
   | "context-menu"
   | "dialog"
   | "dropdown-menu"
@@ -50,6 +52,83 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  combobox: {
+    className: "NyxCombobox",
+    initName: "initComboboxes",
+    selector: "[data-nyx-combobox]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-combobox", value: "presence", description: "Marks the input, form value, and listbox owner." },
+        { name: "data-nyx-combobox-value", value: "presence", description: "Marks the hidden input synchronized for form submission." },
+        { name: "data-value", value: "string", description: "Sets the submitted value for an option." },
+        { name: "data-nyx-search-text", value: "string", description: "Overrides the option text used for filtering." },
+        { name: "data-nyx-combobox-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
+        { name: "data-nyx-combobox-empty", value: "presence", description: "Marks the no-results message." },
+      ],
+      options: [{ name: "placement", value: "NyxOverlayPlacement", description: "Sets the preferred anchored popup placement." }],
+      methods: [
+        { name: "value", value: "string", description: "Gets or sets the selected form value." },
+        { name: "expanded", value: "boolean", description: "Reads whether the listbox is open." },
+        { name: "open()", value: "void", description: "Opens, filters, positions, and activates dismissal." },
+        { name: "close(reason?)", value: "void", description: "Closes with an optional reason." },
+        { name: "filter(query?)", value: "number", description: "Filters options and returns the visible count." },
+        { name: "select(option)", value: "void", description: "Selects an enabled option and synchronizes the form value." },
+        { name: "destroy()", value: "void", description: "Closes and removes positioning, dismissal, result state, and listeners." },
+      ],
+      events: [
+        { name: "nyx:combobox:before-open / before-close", value: "cancelable", description: "Fires before popup state changes; destroy closure cannot be canceled." },
+        { name: "nyx:combobox:open / close", value: "not cancelable", description: "Fires after popup and ARIA state synchronize." },
+        { name: "nyx:combobox:filter", value: "not cancelable", description: "Reports the query and visible result count." },
+        { name: "nyx:combobox:before-select", value: "cancelable", description: "Fires before committing an option." },
+        { name: "nyx:combobox:select", value: "not cancelable", description: "Fires after input, option state, and form value synchronize." },
+      ],
+      keyboard: [
+        { name: "Arrow Down / Arrow Up", description: "Opens the listbox, then moves the active descendant through enabled visible options." },
+        { name: "Home / End", description: "Moves to the first or last enabled visible option while open." },
+        { name: "Enter", description: "Selects the active option." },
+        { name: "Escape", description: "Closes without changing focus." },
+        { name: "Tab", description: "Closes and continues normal focus navigation." },
+      ],
+      accessibility: "The editable input keeps DOM focus and uses role=combobox, aria-expanded, aria-controls, and aria-activedescendant. Results use listbox and option semantics—not menu roles—and disabled options are skipped. A named hidden input carries the selected value into form submission.",
+    },
+  },
+  "command-palette": {
+    className: "NyxCommandPalette",
+    initName: "initCommandPalettes",
+    selector: "dialog[data-nyx-command-palette]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-command-palette", value: "presence", description: "Marks the native dialog composed as a command palette." },
+        { name: "data-nyx-dialog-trigger", value: "dialog id", description: "Associates an opener with the palette through Dialog." },
+        { name: "data-value", value: "string", description: "Sets the stable value emitted for a result." },
+        { name: "data-nyx-search-text", value: "string", description: "Overrides result text used for filtering." },
+        { name: "data-nyx-command-palette-empty", value: "presence", description: "Marks the no-results message." },
+      ],
+      options: [{ name: "root", value: "ParentNode", description: "Scopes discovery of Dialog triggers." }],
+      methods: [
+        { name: "value", value: "boolean", description: "Reads whether the composed Dialog is open." },
+        { name: "query", value: "string", description: "Gets or sets the filter query." },
+        { name: "open(trigger?)", value: "void", description: "Opens through Dialog with focus on the search input." },
+        { name: "close(reason?)", value: "void", description: "Closes through Dialog." },
+        { name: "filter(query?)", value: "number", description: "Filters grouped commands and returns the visible count." },
+        { name: "run(command)", value: "void", description: "Runs an enabled command result." },
+        { name: "destroy()", value: "void", description: "Destroys the result controller and composed Dialog." },
+      ],
+      events: [
+        { name: "nyx:command-palette:filter", value: "not cancelable", description: "Reports the query and visible result count." },
+        { name: "nyx:command-palette:before-run", value: "cancelable", description: "Fires before closing and committing a command." },
+        { name: "nyx:command-palette:run", value: "not cancelable", description: "Fires with the command element and stable value after close." },
+        { name: "nyx:dialog:*", value: "Dialog contract", description: "Open and close lifecycle is inherited from the composed Dialog." },
+      ],
+      keyboard: [
+        { name: "Arrow Down / Arrow Up", description: "Moves the active descendant through enabled visible results, wrapping at the ends." },
+        { name: "Home / End", description: "Moves to the first or last enabled visible result." },
+        { name: "Enter", description: "Runs the active command." },
+        { name: "Escape", description: "Dismisses through Dialog and returns focus to the opener." },
+      ],
+      accessibility: "The native modal Dialog owns focus containment, initial focus, Escape dismissal, scroll lock, and focus return. The search input uses active-descendant listbox navigation; role=group and accessible labels preserve result grouping.",
+    },
+  },
   tabs: {
     className: "NyxTabs",
     initName: "initTabs",
@@ -364,7 +443,7 @@ function componentReference(page: DocPage): string {
 
 export function renderPage(page: DocPage): string {
   const reference = page.categoryId ? componentReference(page) : "";
-  return `<section class="docs-section" data-docs-page="${page.path}"><div class="docs-section-heading"><div><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 tabindex="-1">${page.title}</h1></div><p class="docs-section-copy">${page.description}</p></div>${page.body}${reference}</section>`;
+  return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header"><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${page.body}${reference}</section>`;
 }
 
 export function card(title: string, body: string, badge = "Ready", source = body): string {
