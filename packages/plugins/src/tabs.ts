@@ -1,8 +1,30 @@
+import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+
+export interface NyxTabsEventDetail {
+  index: number;
+  previousIndex: number;
+  tab: HTMLButtonElement;
+  tabs: NyxTabs;
+}
+
+export interface NyxTabsEventMap {
+  "nyx:tabs:before-change": CustomEvent<NyxTabsEventDetail>;
+  "nyx:tabs:change": CustomEvent<NyxTabsEventDetail>;
+}
+
+declare global {
+  interface HTMLElementEventMap extends NyxTabsEventMap {}
+}
+
+const instances = new WeakMap<HTMLElement, NyxTabs>();
+const tabsSelector = "[data-nyx-tabs]";
+
 export class NyxTabs {
   readonly element: HTMLElement;
 
-  private readonly tabs: HTMLButtonElement[];
   private readonly panels: HTMLElement[];
+  private readonly tabs: HTMLButtonElement[];
+  private activeIndex = 0;
 
   constructor(element: HTMLElement) {
     this.element = element;
@@ -11,7 +33,9 @@ export class NyxTabs {
     );
     this.panels = this.tabs.flatMap((tab) => {
       const panelId = tab.getAttribute("aria-controls");
-      const panel = panelId ? document.getElementById(panelId) : null;
+      const panel = panelId
+        ? element.ownerDocument.getElementById(panelId)
+        : null;
       return panel ? [panel] : [];
     });
 
@@ -19,34 +43,56 @@ export class NyxTabs {
       throw new Error("NyxTabs requires every tab to reference one panel.");
     }
 
-    this.tabs.forEach((tab, index) => {
+    const selectedIndex = this.tabs.findIndex(
+      (tab) => tab.getAttribute("aria-selected") === "true",
+    );
+    this.activeIndex = selectedIndex >= 0 ? selectedIndex : 0;
+    this.tabs.forEach((tab) => {
       tab.addEventListener("click", this.handleClick);
       tab.addEventListener("keydown", this.handleKeydown);
-      if (tab.getAttribute("aria-selected") === "true") this.activate(index, false);
     });
+    this.syncState();
+  }
 
-    if (!this.tabs.some((tab) => tab.getAttribute("aria-selected") === "true")) {
-      this.activate(0, false);
-    }
+  get value(): number {
+    return this.activeIndex;
+  }
+
+  set value(index: number) {
+    this.activate(index, false);
   }
 
   activate(index: number, moveFocus = true): void {
-    const nextIndex = (index + this.tabs.length) % this.tabs.length;
+    const nextIndex =
+      ((index % this.tabs.length) + this.tabs.length) % this.tabs.length;
+    if (nextIndex === this.activeIndex) {
+      if (moveFocus) this.tabs[nextIndex]?.focus();
+      return;
+    }
 
-    this.tabs.forEach((tab, tabIndex) => {
-      const active = tabIndex === nextIndex;
-      tab.setAttribute("aria-selected", String(active));
-      tab.tabIndex = active ? 0 : -1;
-      this.panels[tabIndex]?.toggleAttribute("hidden", !active);
-    });
+    const tab = this.tabs[nextIndex];
+    if (!tab) return;
+    const detail: NyxTabsEventDetail = {
+      index: nextIndex,
+      previousIndex: this.activeIndex,
+      tab,
+      tabs: this,
+    };
+    if (
+      !dispatchNyxEvent(
+        this.element,
+        "nyx:tabs:before-change",
+        detail,
+        true,
+      )
+    ) {
+      return;
+    }
 
-    if (moveFocus) this.tabs[nextIndex]?.focus();
-    this.element.dispatchEvent(
-      new CustomEvent("nyx:tabs:change", {
-        bubbles: true,
-        detail: { index: nextIndex, tab: this.tabs[nextIndex] },
-      }),
-    );
+    this.activeIndex = nextIndex;
+    this.syncState();
+    if (moveFocus) tab.focus();
+    dispatchNyxEvent(this.element, "nyx:tabs:change", detail);
   }
 
   destroy(): void {
@@ -54,6 +100,7 @@ export class NyxTabs {
       tab.removeEventListener("click", this.handleClick);
       tab.removeEventListener("keydown", this.handleKeydown);
     });
+    if (instances.get(this.element) === this) instances.delete(this.element);
   }
 
   private readonly handleClick = (event: Event): void => {
@@ -62,7 +109,9 @@ export class NyxTabs {
   };
 
   private readonly handleKeydown = (event: KeyboardEvent): void => {
-    const currentIndex = this.tabs.indexOf(event.currentTarget as HTMLButtonElement);
+    const currentIndex = this.tabs.indexOf(
+      event.currentTarget as HTMLButtonElement,
+    );
     let nextIndex = currentIndex;
 
     if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex += 1;
@@ -74,19 +123,27 @@ export class NyxTabs {
     event.preventDefault();
     this.activate(nextIndex);
   };
-}
 
-const instances = new WeakMap<HTMLElement, NyxTabs>();
+  private syncState(): void {
+    this.tabs.forEach((tab, index) => {
+      const active = index === this.activeIndex;
+      tab.dataset.state = active ? "active" : "inactive";
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      this.panels[index]?.toggleAttribute("hidden", !active);
+      if (this.panels[index]) {
+        this.panels[index].dataset.state = active ? "active" : "inactive";
+      }
+    });
+  }
+}
 
 export function initTabs(root: ParentNode = document): NyxTabs[] {
-  return Array.from(root.querySelectorAll<HTMLElement>("[data-nyx-tabs]")).map(
-    (element) => {
-      const current = instances.get(element);
-      if (current) return current;
-      const instance = new NyxTabs(element);
-      instances.set(element, instance);
-      return instance;
-    },
-  );
+  return queryAllIncludingRoot<HTMLElement>(root, tabsSelector).map((element) => {
+    const current = instances.get(element);
+    if (current) return current;
+    const instance = new NyxTabs(element);
+    instances.set(element, instance);
+    return instance;
+  });
 }
-

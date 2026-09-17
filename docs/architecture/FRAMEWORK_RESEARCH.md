@@ -144,6 +144,19 @@ Every interactive plugin should provide:
 
 An optional `@nyx-ui/plugins/auto` entry point may scan `[data-nyx-*]`. It must remain opt-in.
 
+#### Interactive plugin contract
+
+The v0.2 plugin contract is:
+
+- Every module exports an explicit `NyxX` constructor and an `initXs(root: ParentNode = document)` initializer.
+- An initializer includes `root` itself when it matches the component selector, followed by matching descendants. Repeated calls return the same cached instance for each element.
+- `destroy()` removes all listeners, timers, and owned transient DOM, releases global state such as scroll locks, and removes the instance from its module's `WeakMap`. A later initializer call creates a live new instance.
+- State-owning components expose a `value` getter/setter plus explicit action methods. Collection emitters such as Toast expose their current value as a read-only collection and retain explicit `notify()` and `dismiss()` methods.
+- Events use `nyx:<component>:<action>`. A cancelable `nyx:<component>:before-<action>` event fires before a vetoable mutation; when it is not canceled, the mutation occurs and a non-cancelable `nyx:<component>:<action>` event bubbles afterward. Exported event-detail and event-map types make the events consumable without casts.
+- The DOM is the source of truth. Components update the relevant `data-state`, `aria-*`, `hidden`, and focus state before firing the after-event. Controlled consumers veto the before-event and apply later state through the public setter or action method; there is no separate controlled mode.
+
+Dialog additionally accepts `data-nyx-dialog-initial-focus` and the equivalent constructor option. It uses the first tabbable descendant when no selector is configured and the dialog itself when none exists. `data-nyx-dialog-close-on-backdrop="false"` and `data-nyx-dialog-close-on-escape="false"` disable those light-dismiss paths independently. Scroll-lock ownership is counted per document so stacked dialogs cannot unlock the page while another owned dialog remains open.
+
 #### Registry
 
 The registry is the source of installable component markup, not a compiled runtime. Each item should describe:
@@ -286,7 +299,19 @@ If this slice is clean, the same contract can expand to fields, tabs, accordion,
 - Whether a branded CLI is justified after the registry prototype.
 - The first official external icon integration.
 - Light theme support.
-- Charting and date-picker adapter choices.
-- Formal browser support matrix beyond compatibility with the chosen Tailwind CSS 4 release.
+- Charting adapter choices.
 
 These decisions do not block the vertical slice.
+
+## v0.2 decisions
+
+1. Calendar/Date Picker and Advanced Data Table ship in v0.2 with preview maturity in the registry. Other v0.2 components target stable maturity.
+2. The browser floor is the 2024 baseline. Native `<dialog>`, the Popover API, `inert`, `:has()`, and `Intl` are required; Nyx provides no polyfills or fallback branches for them.
+3. Registry HTML is the single source of component markup. The docs import those files as Vite raw strings and add only documentation chrome around them.
+4. Interactive components are uncontrolled DOM owners by default. Cancelable before-events allow consumers to veto changes, while value accessors and explicit methods provide controlled integration without a second operating mode.
+5. Menubar is for desktop application commands and uses `role="menubar"`. Navigation Menu is semantic site/product navigation built from `nav`, links, and disclosures. They are not aliases and do not share ARIA roles.
+6. Calendar supports single-date and range selection, locale and week-start through `Intl.DateTimeFormat` and `Intl.Locale`, `min`/`max`, and a disabled-date predicate. Values are calendar dates: time-of-day and time-zone conversion are out of scope.
+7. File Upload owns selection, validation, previews, queue state, and progress display. Consumers own transport through a callback or adapter; the component never calls `fetch` internally.
+8. Advanced Data Table performs client-side sorting, filtering, and pagination by default, with comparator and predicate hooks. Cancelable events provide controlled/server integration, selection persists across pages by row key, and virtualization is out of scope for v0.2.
+9. Sidebar collapses to an icon rail on desktop. On mobile it composes the existing Dialog drawer as a modal. Persistence is off by default and enabled only through an explicit attribute.
+10. OTP/PIN uses one real `input` per visible cell, always with `inputmode="numeric"` and never `type="number"`; only the first input receives `autocomplete="one-time-code"`. It supports paste across cells, Arrow and Backspace navigation, and a completion event. Component notes must also document a single input as the more robust alternative for autofill, password managers, paste, and screen readers.

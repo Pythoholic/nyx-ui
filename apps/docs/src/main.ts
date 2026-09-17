@@ -1,6 +1,6 @@
 import { initDialogs } from "@nyx-ui/plugins/dialog";
 import { initTabs } from "@nyx-ui/plugins/tabs";
-import { NyxToast } from "@nyx-ui/plugins/toast";
+import { initToasts } from "@nyx-ui/plugins/toast";
 import { catalogMarkup, navigationGroups } from "./catalog/index.js";
 import { icon } from "./icons.js";
 import "./styles.css";
@@ -35,14 +35,13 @@ app.innerHTML = `<div class="docs-shell">
       <footer class="docs-footer"><span>Nyx UI · System catalog</span><span>Semantic · Accessible · Lightweight</span></footer>
     </main>
   </div>
-  <div class="nyx-toast-region" data-toast-region></div>
+  <div class="nyx-toast-region" data-nyx-toast-region></div>
 </div>`;
 
 initDialogs();
 initTabs();
 
-const toastRegion = document.querySelector<HTMLElement>("[data-toast-region]");
-const toast = toastRegion ? new NyxToast(toastRegion) : null;
+const [toast] = initToasts();
 
 document.querySelector("[data-toast-demo]")?.addEventListener("click", () => {
   toast?.notify({ title: "Release validated", description: "All component contracts passed.", tone: "success" });
