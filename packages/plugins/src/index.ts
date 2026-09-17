@@ -8,6 +8,15 @@ export {
 } from "./dialog.js";
 
 export {
+  NyxDropdownMenu,
+  initDropdownMenus,
+  type NyxDropdownMenuCloseReason,
+  type NyxDropdownMenuEventDetail,
+  type NyxDropdownMenuEventMap,
+  type NyxDropdownMenuOptions,
+} from "./dropdown-menu.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

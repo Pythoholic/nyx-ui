@@ -8,16 +8,81 @@
   <span class="nyx-tooltip" role="tooltip">Workspace settings</span>
 </span>
 
-<button class="nyx-button" type="button" popovertarget="nyx-action-menu">
+<button
+  class="nyx-button"
+  id="nyx-action-menu-trigger"
+  type="button"
+  data-nyx-dropdown-menu-trigger="nyx-action-menu"
+>
   Open menu
   <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
     <path d="m7 10 5 5 5-5" />
   </svg>
 </button>
-<div class="nyx-popover" id="nyx-action-menu" popover>
-  <div class="nyx-menu">
-    <button class="nyx-menu-item" type="button">Duplicate <kbd>Ctrl D</kbd></button>
-    <button class="nyx-menu-item" type="button">Archive <kbd>Ctrl A</kbd></button>
-    <button class="nyx-menu-item" style="color: var(--nyx-danger)" type="button">Delete</button>
+<div
+  aria-labelledby="nyx-action-menu-trigger"
+  class="nyx-popover nyx-menu"
+  data-nyx-dropdown-menu
+  id="nyx-action-menu"
+  popover
+  role="menu"
+>
+  <button class="nyx-menu-item" role="menuitem" type="button">
+    Duplicate <kbd>Ctrl D</kbd>
+  </button>
+  <button
+    aria-checked="true"
+    class="nyx-menu-item"
+    data-nyx-dropdown-menu-close-on-select="false"
+    role="menuitemcheckbox"
+    type="button"
+  >
+    <span><span class="nyx-menu-item-indicator" aria-hidden="true">✓</span> Show details</span>
+    <kbd>Ctrl I</kbd>
+  </button>
+  <button
+    aria-disabled="true"
+    class="nyx-menu-item"
+    role="menuitem"
+    type="button"
+  >
+    Archive <kbd>Ctrl A</kbd>
+  </button>
+  <div class="nyx-menu-separator" role="separator"></div>
+  <div aria-label="Sort order" class="nyx-menu-group" role="group">
+    <span class="nyx-menu-label">Sort order</span>
+    <button aria-checked="true" class="nyx-menu-item" role="menuitemradio" type="button">
+      <span><span class="nyx-menu-item-indicator" aria-hidden="true">●</span> Newest</span>
+    </button>
+    <button aria-checked="false" class="nyx-menu-item" role="menuitemradio" type="button">
+      <span><span class="nyx-menu-item-indicator" aria-hidden="true">●</span> Oldest</span>
+    </button>
   </div>
+  <div class="nyx-menu-separator" role="separator"></div>
+  <button
+    aria-expanded="false"
+    class="nyx-menu-item"
+    data-nyx-dropdown-menu-trigger="nyx-export-menu"
+    role="menuitem"
+    type="button"
+  >
+    Export
+    <span aria-hidden="true">›</span>
+  </button>
+  <div
+    aria-label="Export format"
+    class="nyx-popover nyx-menu"
+    data-nyx-dropdown-menu
+    id="nyx-export-menu"
+    popover
+    role="menu"
+  >
+    <button class="nyx-menu-item" role="menuitem" type="button">CSV</button>
+    <button class="nyx-menu-item" role="menuitem" type="button">JSON</button>
+    <button class="nyx-menu-item" role="menuitem" type="button">PDF</button>
+  </div>
+  <div class="nyx-menu-separator" role="separator"></div>
+  <button class="nyx-menu-item" data-tone="danger" role="menuitem" type="button">
+    Delete
+  </button>
 </div>

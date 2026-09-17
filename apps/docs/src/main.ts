@@ -1,4 +1,5 @@
 import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts } from "@nyx-ui/plugins/toast";
 import { catalogMarkup, navigationGroups } from "./catalog/index.js";
@@ -39,6 +40,7 @@ app.innerHTML = `<div class="docs-shell">
 </div>`;
 
 initDialogs();
+initDropdownMenus();
 initTabs();
 
 const [toast] = initToasts();

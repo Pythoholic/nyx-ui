@@ -13,6 +13,10 @@
       "types": "./dist/dialog.d.ts",
       "default": "./dist/dialog.js"
     },
+    "./dropdown-menu": {
+      "types": "./dist/dropdown-menu.d.ts",
+      "default": "./dist/dropdown-menu.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"
@@ -32,5 +36,8 @@
     "jsdom": "30.1.0",
     "typescript": "7.0.2",
     "vitest": "5.0.1"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.8.0"
   }
 }
