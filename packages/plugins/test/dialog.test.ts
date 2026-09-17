@@ -104,4 +104,21 @@ describe("NyxDialog", () => {
     element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     expect(element.open).toBe(true);
   });
+
+  it("supports an alert-dialog composition with safe initial focus", () => {
+    document.body.innerHTML = `<button data-nyx-dialog-trigger="alert">Delete</button>
+      <dialog aria-describedby="alert-description" aria-labelledby="alert-title" data-nyx-dialog data-nyx-dialog-close-on-backdrop="false" data-nyx-dialog-close-on-escape="false" data-nyx-dialog-initial-focus="#cancel" id="alert" role="alertdialog">
+        <h2 id="alert-title">Delete?</h2><p id="alert-description">This cannot be undone.</p>
+        <button data-nyx-dialog-close id="cancel">Cancel</button><button>Delete</button>
+      </dialog>`;
+    const dialog = initDialogs()[0];
+    const element = document.querySelector<HTMLDialogElement>("#alert");
+    if (!dialog || !element) throw new Error("Alert Dialog fixture missing.");
+    dialog.open();
+    expect(element.getAttribute("role")).toBe("alertdialog");
+    expect(document.activeElement?.id).toBe("cancel");
+    element.dispatchEvent(new Event("cancel", { cancelable: true }));
+    element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(element.open).toBe(true);
+  });
 });

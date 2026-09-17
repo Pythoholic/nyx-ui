@@ -1,0 +1,25 @@
+<section
+  class="nyx-file-upload"
+  data-nyx-file-upload
+  data-nyx-file-upload-max-files="4"
+  data-nyx-file-upload-max-size="20971520"
+>
+  <label class="nyx-file" for="nyx-asset-upload">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
+      <path d="M12 16V4m-5 5 5-5 5 5M5 20h14" />
+    </svg>
+    <strong>Choose images or drop them here</strong>
+    <span class="nyx-field-hint" id="nyx-asset-upload-hint">PNG, JPG, or WEBP · 20 MB each · 4 files maximum</span>
+    <input
+      accept="image/png,image/jpeg,image/webp"
+      aria-describedby="nyx-asset-upload-hint"
+      class="sr-only"
+      id="nyx-asset-upload"
+      multiple
+      type="file"
+    />
+  </label>
+  <p class="nyx-field-error" data-nyx-file-upload-errors hidden role="alert"></p>
+  <ul class="nyx-file-queue" data-nyx-file-upload-queue aria-label="Selected files"></ul>
+  <button class="nyx-button" data-nyx-file-upload-start data-variant="primary" disabled type="button">Upload queue</button>
+</section>

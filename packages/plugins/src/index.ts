@@ -25,6 +25,37 @@ export {
 } from "./command-palette.js";
 
 export {
+  NyxInputOtp,
+  initInputOtps,
+  type NyxInputOtpChangeReason,
+  type NyxInputOtpEventDetail,
+  type NyxInputOtpEventMap,
+} from "./input-otp.js";
+
+export {
+  NyxFileUpload,
+  initFileUploads,
+  type NyxFileUploadAdapter,
+  type NyxFileUploadAdapterContext,
+  type NyxFileUploadEventDetail,
+  type NyxFileUploadEventMap,
+  type NyxFileUploadItem,
+  type NyxFileUploadOptions,
+  type NyxFileUploadState,
+} from "./file-upload.js";
+
+export {
+  NyxSidebar,
+  initSidebars,
+  type NyxSidebarEventDetail,
+  type NyxSidebarEventMap,
+  type NyxSidebarMode,
+  type NyxSidebarOptions,
+  type NyxSidebarReason,
+  type NyxSidebarState,
+} from "./sidebar.js";
+
+export {
   NyxDropdownMenu,
   getOrCreateDropdownMenu,
   initDropdownMenus,

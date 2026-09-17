@@ -1,4 +1,5 @@
 import layoutsMarkup from "../../../../registry/components/layouts.html?raw";
+import sidebarMarkup from "../../../../registry/components/sidebar.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
@@ -12,6 +13,16 @@ export const layoutPages = [
     description: "The application shell composes stable workspace navigation with an adaptable content region.",
     searchTerms: "layout application shell dashboard sidebar topbar workspace",
     body: card("Application shell", layoutsMarkup, "Registry source"),
+  }),
+  page({
+    path: paths.components.layouts.sidebar,
+    categoryId: "layouts",
+    categoryLabel: "Layouts",
+    title: "Sidebar",
+    description: "Responsive workspace navigation collapses to an accessible desktop icon rail and composes the existing Dialog drawer on mobile.",
+    searchTerms: "layout sidebar navigation icon rail collapse mobile modal drawer persistence",
+    plugins: ["sidebar"],
+    body: `<section class="docs-prose-section"><h2>Responsive and persistence contract</h2><p>A CSS media query owns the visual breakpoint, while the controller observes the same query to switch native Dialog modality and focus behavior. Persistence is opt-in through <code>data-nyx-sidebar-persist</code>. Persistent instances restore synchronously before <code>data-nyx-sidebar-ready</code> reveals the shell, preventing a flash of the wrong rail state.</p></section>${card("Sidebar", sidebarMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.layouts.authentication,

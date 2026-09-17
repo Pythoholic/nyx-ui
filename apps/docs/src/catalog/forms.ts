@@ -1,7 +1,9 @@
 import { icon } from "../icons.js";
 import comboboxMarkup from "../../../../registry/components/combobox.html?raw";
+import fileUploadMarkup from "../../../../registry/components/file-upload.html?raw";
+import inputOtpMarkup from "../../../../registry/components/input-otp.html?raw";
 import { paths } from "../routes.js";
-import { card, page, selectMarkup } from "./shared.js";
+import { card, codeBlock, page, selectMarkup } from "./shared.js";
 
 const description = "Native controls remain the baseline. Every label is associated, focus is visible, validation is explicit, and sizing follows the Nyx hierarchy.";
 
@@ -45,6 +47,16 @@ export const formPages = [
     body: `<section class="docs-prose-section"><h2>Choose the smallest control</h2><p>Use a native <code>select</code> when the option set is short and does not need filtering. Use this Combobox configuration only when search materially helps people find a choice.</p></section>${card("Searchable Select", selectMarkup(comboboxMarkup, ["label[for='nyx-team-query']", "#nyx-team-select"]), "Combobox configuration")}`,
   }),
   page({
+    path: paths.components.forms.inputOtp,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Input OTP / PIN",
+    description: "A multi-cell numeric code entry controller supports full-code paste, keyboard navigation, completion events, and one submitted form value.",
+    searchTerms: "otp pin one time code verification paste autofill numeric form",
+    plugins: ["input-otp"],
+    body: `<section class="docs-prose-section"><h2>Choose the robust default deliberately</h2><p>A single native input with <code>autocomplete="one-time-code"</code>, <code>inputmode="numeric"</code>, and an appropriate <code>maxlength</code> is generally more robust for password managers, browser autofill, and screen readers. Use this multi-cell enhancement only when the visual requirement justifies those tradeoffs. Never use <code>type="number"</code> for a code.</p></section>${card("Input OTP / PIN", inputOtpMarkup, "Registry source")}`,
+  }),
+  page({
     path: paths.components.forms.dateTime,
     categoryId: "forms",
     categoryLabel: "Forms",
@@ -58,8 +70,16 @@ export const formPages = [
     categoryId: "forms",
     categoryLabel: "Forms",
     title: "File Upload",
-    description: "A styled label keeps the native file input available to keyboards, assistive technology, and browser upload behavior.",
-    searchTerms: "file upload input drop zone multiple asset",
-    body: card("File upload", `<label class="nyx-file" for="asset-upload">${icon("upload")}<strong>Choose files or drop them here</strong><span class="nyx-field-hint">PNG, JPG, WEBP · 20 MB maximum</span><input class="sr-only" id="asset-upload" type="file" multiple/></label>`, "Drop zone"),
+    description: "A native file input gains drag-and-drop, validation, leak-free image previews, queue state, and consumer-driven upload progress.",
+    searchTerms: "file upload input drop zone multiple asset queue preview validation progress transport adapter",
+    plugins: ["file-upload"],
+    body: `<section class="docs-prose-section"><h2>Transport stays with the consumer</h2><p>Nyx owns selection, validation, previews, queue state, and progress display. Supply an adapter that performs the request and calls <code>reportProgress</code>. Use an XHR-based or streaming implementation when upload progress matters; <code>fetch</code> does not provide a universally useful upload-progress callback.</p>${codeBlock(`import { initFileUploads } from "@nyx-ui/plugins/file-upload";
+
+const [upload] = initFileUploads(root, {
+  transport: async (file, { reportProgress, signal }) => {
+    // Implement the request with your transport. Call reportProgress(0..100).
+    return uploadFileWithProgress(file, { reportProgress, signal });
+  },
+});`, "js", "Consumer transport adapter")}</section>${card("File upload", fileUploadMarkup, "Registry source")}`,
   }),
 ];

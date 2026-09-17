@@ -1,5 +1,6 @@
 import contextMenuMarkup from "../../../../registry/components/context-menu.html?raw";
 import dialogMarkup from "../../../../registry/components/dialog.html?raw";
+import alertDialogMarkup from "../../../../registry/components/alert-dialog.html?raw";
 import commandPaletteMarkup from "../../../../registry/components/command-palette.html?raw";
 import overlaysMarkup from "../../../../registry/components/overlays.html?raw";
 import { paths } from "../routes.js";
@@ -44,6 +45,16 @@ export const overlayPages = [
     searchTerms: "overlay modal dialog confirmation focus escape backdrop",
     plugins: ["dialog"],
     body: card("Dialog", `<div class="docs-row">${selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-dialog']", "#nyx-example-dialog"])}</div>`, "Registry source"),
+  }),
+  page({
+    path: paths.components.overlays.alertDialog,
+    categoryId: "overlays",
+    categoryLabel: "Overlays",
+    title: "Alert Dialog",
+    description: "A constrained Dialog composition for destructive confirmation, with alertdialog semantics and initial focus on the safe action.",
+    searchTerms: "overlay alert dialog destructive confirmation cancel safe focus escape backdrop",
+    plugins: ["dialog"],
+    body: `<section class="docs-prose-section"><h2>Composition, not another modal</h2><p>Alert Dialog uses <code>NyxDialog</code> directly. The canonical markup supplies <code>role="alertdialog"</code>, label and description relationships, safe initial focus, and dismissal opt-outs, so a separate class or package export would add no behavior.</p></section>${card("Alert dialog", alertDialogMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.drawer,

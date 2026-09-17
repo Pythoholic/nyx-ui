@@ -4,8 +4,11 @@ export type PluginName =
   | "context-menu"
   | "dialog"
   | "dropdown-menu"
+  | "file-upload"
+  | "input-otp"
   | "menubar"
   | "navigation-menu"
+  | "sidebar"
   | "tabs"
   | "toast";
 
@@ -127,6 +130,114 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Escape", description: "Dismisses through Dialog and returns focus to the opener." },
       ],
       accessibility: "The native modal Dialog owns focus containment, initial focus, Escape dismissal, scroll lock, and focus return. The search input uses active-descendant listbox navigation; role=group and accessible labels preserve result grouping.",
+    },
+  },
+  "input-otp": {
+    className: "NyxInputOtp",
+    initName: "initInputOtps",
+    selector: "[data-nyx-input-otp]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-input-otp", value: "presence", description: "Marks the controller root." },
+        { name: "data-nyx-input-otp-cell", value: "presence", description: "Marks each real text input cell in visual order." },
+        { name: "data-nyx-input-otp-value", value: "presence", description: "Marks the hidden input that carries the combined form value." },
+      ],
+      methods: [
+        { name: "value", value: "string", description: "Gets or sets the sanitized combined value." },
+        { name: "complete", value: "boolean", description: "Reports whether every cell contains one digit." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a value change and reports whether it was accepted." },
+        { name: "clear()", value: "void", description: "Clears every cell and focuses the first cell." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:input-otp:before-change", value: "cancelable", description: "Fires before an input, paste, Backspace, clear, or API change is committed." },
+        { name: "nyx:input-otp:change", value: "not cancelable", description: "Fires after cells and the hidden form value synchronize." },
+        { name: "nyx:input-otp:complete", value: "not cancelable", description: "Fires once when a new value fills every cell." },
+      ],
+      keyboard: [
+        { name: "Arrow Left / Arrow Right", description: "Moves focus between adjacent cells without changing digits." },
+        { name: "Backspace", description: "Clears the current digit, or moves backward and clears the previous digit when current is empty." },
+        { name: "Paste", description: "A full-length numeric code fills all cells from the first cell regardless of paste location; focus lands on the first empty cell or final cell." },
+      ],
+      accessibility: "Every cell is a real text input with a positional accessible name and numeric input mode. Only the first cell requests one-time-code autofill. A single hidden input submits the combined value. For the most robust password-manager, autofill, and screen-reader behavior, prefer one native input when the multi-cell visual is not required.",
+    },
+  },
+  "file-upload": {
+    className: "NyxFileUpload",
+    initName: "initFileUploads",
+    selector: "[data-nyx-file-upload]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-file-upload", value: "presence", description: "Marks the upload controller root and drop target." },
+        { name: "data-nyx-file-upload-max-files", value: "number", description: "Sets the accepted queue count; defaults to one unless the input is multiple." },
+        { name: "data-nyx-file-upload-max-size", value: "bytes", description: "Sets the maximum size of each file." },
+        { name: "data-nyx-file-upload-errors", value: "presence", description: "Marks the accessible validation-error region." },
+        { name: "data-nyx-file-upload-queue", value: "presence", description: "Marks the rendered per-file queue." },
+        { name: "data-nyx-file-upload-start", value: "presence", description: "Uploads queued items through the consumer adapter." },
+      ],
+      options: [
+        { name: "maxFiles", value: "number", description: "Overrides the queue count limit." },
+        { name: "maxSize", value: "number", description: "Overrides the per-file byte limit." },
+        { name: "transport", value: "(file, context) => Promise<unknown>", description: "Consumer-owned upload function; context supplies AbortSignal and reportProgress." },
+      ],
+      methods: [
+        { name: "value", value: "readonly NyxFileUploadItem[]", description: "Returns the queue and each item's state, progress, result, and preview URL." },
+        { name: "add(files)", value: "NyxFileUploadItem[]", description: "Validates and queues an iterable of files." },
+        { name: "remove(id)", value: "void", description: "Aborts, removes, and revokes any preview for one queue item." },
+        { name: "setTransport(adapter)", value: "void", description: "Sets or replaces the consumer-owned transport adapter." },
+        { name: "setProgress(id, progress)", value: "void", description: "Updates a queue item's displayed progress." },
+        { name: "upload(id) / uploadAll()", value: "Promise", description: "Runs the supplied adapter for one or all queued items." },
+        { name: "destroy()", value: "void", description: "Aborts work, revokes all object URLs, clears generated queue UI, and releases listeners." },
+      ],
+      events: [
+        { name: "nyx:file-upload:before-add / before-remove / before-upload", value: "cancelable", description: "Fires before queue mutations or transport start." },
+        { name: "nyx:file-upload:add / remove / upload", value: "not cancelable", description: "Fires after the corresponding queue transition." },
+        { name: "nyx:file-upload:progress", value: "not cancelable", description: "Reports adapter-driven progress after display synchronization." },
+        { name: "nyx:file-upload:complete / error", value: "not cancelable", description: "Reports transport results or validation/transport errors." },
+      ],
+      keyboard: [
+        { name: "Enter / Space", description: "Activates the native file input through its label, the upload button, or a per-file remove button." },
+        { name: "Tab", description: "Moves through the native file input and queue actions in document order." },
+      ],
+      accessibility: "The native file input remains the selection foundation. Validation is associated through aria-describedby and announced by a role=alert region. Queue progress uses named native progress elements, and every remove control names its file.",
+    },
+  },
+  sidebar: {
+    className: "NyxSidebar",
+    initName: "initSidebars",
+    selector: "[data-nyx-sidebar]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-sidebar", value: "presence", description: "Marks the responsive application-shell owner." },
+        { name: "data-nyx-sidebar-panel", value: "presence", description: "Marks the existing Dialog drawer that contains the aside and nav landmarks." },
+        { name: "data-nyx-sidebar-toggle", value: "presence", description: "Marks a desktop collapse and mobile open/close control." },
+        { name: "data-nyx-sidebar-label", value: "presence", description: "Marks text hidden visually in desktop rail mode; icon controls still require aria-label." },
+        { name: "data-nyx-sidebar-media", value: "media query", description: "Sets the responsive query; it must match the CSS breakpoint." },
+        { name: "data-nyx-sidebar-persist", value: "storage key", description: "Opts into collapsed-state persistence; absent means no storage." },
+      ],
+      options: [
+        { name: "mediaQuery", value: "string", description: "Overrides the default max-width: 48rem responsive query." },
+        { name: "storage", value: "Storage", description: "Overrides localStorage, useful for isolated hosts and tests." },
+      ],
+      methods: [
+        { name: "collapsed", value: "boolean", description: "Gets or sets desktop rail state." },
+        { name: "mode", value: "desktop | mobile", description: "Reports the media-query mode." },
+        { name: "open", value: "boolean", description: "Reports desktop presence or mobile Dialog open state." },
+        { name: "expand() / collapse()", value: "void", description: "Changes desktop rail state." },
+        { name: "toggle()", value: "void", description: "Collapses the desktop rail or opens/closes the mobile Dialog." },
+        { name: "destroy()", value: "void", description: "Destroys the composed Dialog and removes media/toggle listeners." },
+      ],
+      events: [
+        { name: "nyx:sidebar:before-change", value: "cancelable", description: "Fires before a rail or mobile Dialog state change." },
+        { name: "nyx:sidebar:change", value: "not cancelable", description: "Fires after state and ARIA synchronize." },
+        { name: "nyx:dialog:*", value: "Dialog contract", description: "Mobile modal open/close lifecycle is inherited from the composed Dialog." },
+      ],
+      keyboard: [
+        { name: "Enter / Space", description: "Activates the toggle, links, and mobile close control through native behavior." },
+        { name: "Tab / Shift+Tab", description: "Moves normally through the desktop rail; native Dialog containment applies while mobile navigation is modal." },
+        { name: "Escape", description: "Closes the mobile drawer through the composed Dialog and returns focus to the toggle." },
+      ],
+      accessibility: "The aside and nav landmarks remain in the DOM in both modes. Desktop collapse leaves a usable icon rail with explicitly named links. The toggle owns aria-controls and aria-expanded. Mobile uses native modal Dialog focus containment and document inertness.",
     },
   },
   tabs: {

@@ -1,0 +1,36 @@
+<button
+  class="nyx-button"
+  data-nyx-dialog-trigger="nyx-delete-alert"
+  data-variant="danger"
+  type="button"
+>
+  Delete environment
+</button>
+
+<dialog
+  aria-describedby="nyx-delete-alert-description"
+  aria-labelledby="nyx-delete-alert-title"
+  class="nyx-dialog"
+  data-nyx-dialog
+  data-nyx-dialog-close-on-backdrop="false"
+  data-nyx-dialog-close-on-escape="false"
+  data-nyx-dialog-initial-focus="#nyx-delete-alert-cancel"
+  id="nyx-delete-alert"
+  role="alertdialog"
+>
+  <header class="nyx-dialog-header">
+    <div>
+      <span class="nyx-eyebrow">Destructive action</span>
+      <h2 class="nyx-dialog-title" id="nyx-delete-alert-title">Delete environment?</h2>
+    </div>
+  </header>
+  <div class="nyx-dialog-body">
+    <p class="nyx-dialog-description" id="nyx-delete-alert-description">
+      This permanently removes the environment and its deployment history. This action cannot be undone.
+    </p>
+  </div>
+  <footer class="nyx-dialog-footer">
+    <button class="nyx-button" data-nyx-dialog-close id="nyx-delete-alert-cancel" type="button">Cancel</button>
+    <button class="nyx-button" data-nyx-dialog-close data-variant="danger" type="button">Delete environment</button>
+  </footer>
+</dialog>

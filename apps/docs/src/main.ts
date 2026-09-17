@@ -3,8 +3,11 @@ import { initCommandPalettes, type NyxCommandPalette, type NyxCommandPaletteEven
 import { initContextMenus } from "@nyx-ui/plugins/context-menu";
 import { initDialogs } from "@nyx-ui/plugins/dialog";
 import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
+import { initFileUploads, type NyxFileUploadAdapter } from "@nyx-ui/plugins/file-upload";
+import { initInputOtps } from "@nyx-ui/plugins/input-otp";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
+import { initSidebars } from "@nyx-ui/plugins/sidebar";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
 import {
@@ -145,6 +148,22 @@ function addDestroyables(target: Destroyable[], values: Destroyable[]): void {
   });
 }
 
+const demoUpload: NyxFileUploadAdapter = (file, { reportProgress, signal }) => new Promise((resolve, reject) => {
+  let progress = 0;
+  const timer = window.setInterval(() => {
+    progress = Math.min(100, progress + 10);
+    reportProgress(progress);
+    if (progress === 100) {
+      window.clearInterval(timer);
+      resolve({ fileName: file.name, status: "demo-complete" });
+    }
+  }, 100);
+  signal.addEventListener("abort", () => {
+    window.clearInterval(timer);
+    reject(new DOMException("Upload canceled", "AbortError"));
+  }, { once: true });
+});
+
 function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: Destroyable[]): NyxToast | undefined {
   switch (plugin) {
     case "combobox": addDestroyables(destroyables, initComboboxes(root)); break;
@@ -152,8 +171,11 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "context-menu": addDestroyables(destroyables, initContextMenus(root)); break;
     case "dialog": addDestroyables(destroyables, initDialogs(root)); break;
     case "dropdown-menu": addDestroyables(destroyables, initDropdownMenus(root)); break;
+    case "file-upload": addDestroyables(destroyables, initFileUploads(root, { transport: demoUpload })); break;
+    case "input-otp": addDestroyables(destroyables, initInputOtps(root)); break;
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
+    case "sidebar": addDestroyables(destroyables, initSidebars(root)); break;
     case "tabs": addDestroyables(destroyables, initTabs(root)); break;
     case "toast": {
       const toasts = initToasts(root);

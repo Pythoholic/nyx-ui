@@ -24,6 +24,7 @@ export const paths = {
       selection: "/components/forms/selection-controls",
       combobox: "/components/forms/combobox",
       searchableSelect: "/components/forms/searchable-select",
+      inputOtp: "/components/forms/input-otp",
       dateTime: "/components/forms/range-date-time",
       fileUpload: "/components/forms/file-upload",
     },
@@ -44,6 +45,7 @@ export const paths = {
       dropdownMenu: "/components/overlays/dropdown-menu",
       contextMenu: "/components/overlays/context-menu",
       dialog: "/components/overlays/dialog",
+      alertDialog: "/components/overlays/alert-dialog",
       drawer: "/components/overlays/drawer",
       commandPalette: "/components/overlays/command-palette",
     },
@@ -74,6 +76,7 @@ export const paths = {
     },
     layouts: {
       applicationShell: "/components/layouts/application-shell",
+      sidebar: "/components/layouts/sidebar",
       authentication: "/components/layouts/authentication",
       splitWorkspace: "/components/layouts/split-workspace",
     },

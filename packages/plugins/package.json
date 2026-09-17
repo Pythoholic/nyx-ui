@@ -21,6 +21,18 @@
       "types": "./dist/command-palette.d.ts",
       "default": "./dist/command-palette.js"
     },
+    "./input-otp": {
+      "types": "./dist/input-otp.d.ts",
+      "default": "./dist/input-otp.js"
+    },
+    "./file-upload": {
+      "types": "./dist/file-upload.d.ts",
+      "default": "./dist/file-upload.js"
+    },
+    "./sidebar": {
+      "types": "./dist/sidebar.d.ts",
+      "default": "./dist/sidebar.js"
+    },
     "./dropdown-menu": {
       "types": "./dist/dropdown-menu.d.ts",
       "default": "./dist/dropdown-menu.js"

@@ -32,6 +32,13 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
     },
     {
+      "name": "alert-dialog",
+      "type": "component-configuration",
+      "status": "preview",
+      "files": ["components/alert-dialog.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+    },
+    {
       "name": "forms",
       "type": "component-group",
       "status": "preview",
@@ -51,6 +58,20 @@
       "status": "preview",
       "files": ["components/combobox.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
+    },
+    {
+      "name": "input-otp",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/input-otp.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/input-otp"]
+    },
+    {
+      "name": "file-upload",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/file-upload.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/file-upload"]
     },
     {
       "name": "navigation",
@@ -128,6 +149,13 @@
       "status": "preview",
       "files": ["components/layouts.html"],
       "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "sidebar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/sidebar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/sidebar"]
     }
   ]
 }

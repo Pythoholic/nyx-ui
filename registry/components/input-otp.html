@@ -1,0 +1,21 @@
+<form class="nyx-panel" aria-labelledby="nyx-otp-title">
+  <div class="nyx-panel-body">
+    <fieldset
+      class="nyx-otp-fieldset"
+      data-nyx-input-otp
+    >
+      <legend class="nyx-label" id="nyx-otp-title">Verification code</legend>
+      <p class="nyx-field-hint" id="nyx-otp-hint">Enter the six-digit code.</p>
+      <div class="nyx-otp-cells" aria-describedby="nyx-otp-hint">
+        <input aria-label="Digit 1 of 6" autocomplete="one-time-code" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+        <input aria-label="Digit 2 of 6" autocomplete="off" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+        <input aria-label="Digit 3 of 6" autocomplete="off" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+        <input aria-label="Digit 4 of 6" autocomplete="off" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+        <input aria-label="Digit 5 of 6" autocomplete="off" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+        <input aria-label="Digit 6 of 6" autocomplete="off" class="nyx-input nyx-otp-cell" data-nyx-input-otp-cell inputmode="numeric" pattern="[0-9]*" type="text" />
+      </div>
+      <input data-nyx-input-otp-value name="verificationCode" type="hidden" />
+    </fieldset>
+    <button class="nyx-button" data-variant="primary" type="submit">Verify code</button>
+  </div>
+</form>
