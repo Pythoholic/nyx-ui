@@ -1,0 +1,22 @@
+{
+  "name": "nyx-ui",
+  "version": "0.1.0",
+  "description": "Installable source components for Nyx UI.",
+  "items": [
+    {
+      "name": "button",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/button.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "dialog",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/dialog.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+    }
+  ]
+}
+

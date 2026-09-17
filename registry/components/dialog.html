@@ -1,0 +1,41 @@
+<button
+  class="nyx-button"
+  data-nyx-dialog-trigger="nyx-example-dialog"
+  data-variant="primary"
+  type="button"
+>
+  Open dialog
+</button>
+
+<dialog
+  aria-describedby="nyx-example-dialog-description"
+  aria-labelledby="nyx-example-dialog-title"
+  class="nyx-dialog"
+  data-nyx-dialog
+  id="nyx-example-dialog"
+>
+  <header class="nyx-dialog-header">
+    <h2 class="nyx-dialog-title" id="nyx-example-dialog-title">Confirm action</h2>
+    <button
+      aria-label="Close dialog"
+      class="nyx-button nyx-icon-button"
+      data-nyx-dialog-close
+      data-variant="quiet"
+      type="button"
+    >
+      <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </header>
+  <div class="nyx-dialog-body">
+    <p class="nyx-dialog-description" id="nyx-example-dialog-description">
+      Review the details before continuing.
+    </p>
+  </div>
+  <footer class="nyx-dialog-footer">
+    <button class="nyx-button" data-nyx-dialog-close type="button">Cancel</button>
+    <button class="nyx-button" data-variant="primary" type="button">Confirm</button>
+  </footer>
+</dialog>
+
