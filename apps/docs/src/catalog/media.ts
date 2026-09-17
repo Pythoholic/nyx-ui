@@ -1,14 +1,7 @@
+import mediaMarkup from "../../../../registry/components/media.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
-import { card, page } from "./shared.js";
-
-const galleryCards = ["Aurora field", "Night structure", "Signal study"]
-  .map((title, index) => `<article class="nyx-panel nyx-media-card"><div class="nyx-media-preview">${icon("image")}</div><div class="nyx-media-body"><div class="docs-row" style="justify-content:space-between"><strong>${title}</strong><span class="nyx-badge">0${index + 1}</span></div><span class="nyx-field-hint">2048 × 1365 · WEBP</span><div class="docs-row"><button class="nyx-button" data-size="small">Open</button><button class="nyx-button nyx-icon-button" data-size="small" aria-label="More actions">${icon("menu")}</button></div></div></article>`)
-  .join("");
-
-const rating = [5, 4, 3, 2, 1]
-  .map((value) => `<input id="rating-${value}" name="rating" type="radio" value="${value}"${value === 4 ? " checked" : ""}/><label for="rating-${value}" aria-label="${value} stars">${icon("star")}</label>`)
-  .join("");
+import { card, page, selectMarkup } from "./shared.js";
 
 export const mediaPages = [
   page({
@@ -18,7 +11,7 @@ export const mediaPages = [
     title: "Media Gallery",
     description: "Media cards combine an accessible preview, production metadata, status, and concise actions.",
     searchTerms: "media preview gallery card image status actions library",
-    body: `<div class="docs-gallery-grid">${galleryCards}</div>`,
+    body: card("Media card", selectMarkup(mediaMarkup, [".nyx-media-card"]), "Registry source"),
   }),
   page({
     path: paths.components.media.rating,
@@ -27,7 +20,7 @@ export const mediaPages = [
     title: "Rating",
     description: "Rating uses native radio inputs and individually named choices beneath the star presentation.",
     searchTerms: "media rating stars radio score choice",
-    body: card("Rating", `<fieldset class="nyx-rating" aria-label="Rating">${rating}</fieldset>`),
+    body: card("Rating", selectMarkup(mediaMarkup, [".nyx-rating"]), "Registry source"),
   }),
   page({
     path: paths.components.media.protectedMedia,

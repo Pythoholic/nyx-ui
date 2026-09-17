@@ -5,6 +5,7 @@ import { dataPages } from "./data.js";
 import { feedbackPages } from "./feedback.js";
 import { formPages } from "./forms.js";
 import { foundationPages } from "./foundations.js";
+import { guidePages } from "./guides.js";
 import { layoutPages } from "./layouts.js";
 import { mediaPages } from "./media.js";
 import { navigationPages } from "./navigation.js";
@@ -37,9 +38,10 @@ export const componentCategories: NavigationCategory[] = [
 
 export const pages: DocPage[] = [
   overviewPage,
+  ...guidePages,
   ...foundationPages,
   ...componentCategories.flatMap((category) => category.pages),
 ];
 
-export { foundationPages };
+export { foundationPages, guidePages };
 export type { DocPage, NavigationCategory } from "./shared.js";

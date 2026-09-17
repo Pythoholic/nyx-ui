@@ -1,5 +1,13 @@
 export const paths = {
   overview: "/",
+  guides: {
+    installation: "/guides/installation",
+    behavior: "/guides/behavior",
+    theming: "/guides/theming",
+    accessibility: "/guides/accessibility",
+    registry: "/guides/registry",
+    react: "/guides/react",
+  },
   foundations: {
     color: "/foundations/color",
     typography: "/foundations/typography",

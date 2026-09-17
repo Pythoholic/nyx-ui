@@ -1,5 +1,6 @@
+import visualizationMarkup from "../../../../registry/components/visualization.html?raw";
 import { paths } from "../routes.js";
-import { card, page } from "./shared.js";
+import { card, page, selectMarkup } from "./shared.js";
 
 const description = "Nyx owns chart color, grid, typography, tooltip, loading, empty, and accessibility contracts while rendering remains replaceable.";
 
@@ -11,7 +12,7 @@ export const chartPages = [
     title: "Line Chart",
     description,
     searchTerms: "chart line area series legend requests data visualization",
-    body: card("Line chart", `<figure style="margin:0"><svg class="nyx-chart" viewBox="0 0 640 260" role="img" aria-labelledby="line-title line-desc"><title id="line-title">Request volume</title><desc id="line-desc">Request volume rose from 42 thousand to 81 thousand during the selected period.</desc><g class="nyx-chart-grid"><path d="M40 40H620M40 95H620M40 150H620M40 205H620"/></g><path class="nyx-chart-area" d="M40 190 125 155 210 170 295 110 380 125 465 72 550 88 620 44V220H40Z"/><path class="nyx-chart-series" d="M40 190 125 155 210 170 295 110 380 125 465 72 550 88 620 44"/></svg><figcaption class="nyx-chart-legend"><span class="nyx-chart-key">Requests</span><span class="nyx-chart-key" style="--series-color:var(--nyx-info)">Projected</span></figcaption></figure>`),
+    body: card("Line chart", selectMarkup(visualizationMarkup, ["figure"]), "Registry source"),
   }),
   page({
     path: paths.components.visualization.sparklines,
@@ -20,7 +21,7 @@ export const chartPages = [
     title: "Sparklines",
     description,
     searchTerms: "chart sparkline trend rising stable falling compact",
-    body: card("Sparklines", `<div class="docs-column"><svg class="nyx-chart" viewBox="0 0 200 60" role="img" aria-label="Rising sparkline"><path class="nyx-chart-series" d="M4 49 32 43 60 48 88 25 116 31 144 12 172 20 196 5"/></svg><svg class="nyx-chart" viewBox="0 0 200 60" role="img" aria-label="Stable sparkline"><path class="nyx-chart-series" style="stroke:var(--nyx-info)" d="M4 31 32 28 60 32 88 29 116 30 144 27 172 31 196 28"/></svg><svg class="nyx-chart" viewBox="0 0 200 60" role="img" aria-label="Falling sparkline"><path class="nyx-chart-series" style="stroke:var(--nyx-danger)" d="M4 8 32 14 60 12 88 27 116 25 144 39 172 36 196 52"/></svg></div>`),
+    body: card("Sparkline", selectMarkup(visualizationMarkup, ["svg[aria-label='Upward trend']"]), "Registry source"),
   }),
   page({
     path: paths.components.visualization.barChart,

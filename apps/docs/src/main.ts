@@ -8,6 +8,7 @@ import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
 import {
   componentCategories,
   foundationPages,
+  guidePages,
   overviewPage,
   pages,
   type DocPage,
@@ -58,6 +59,8 @@ function categoryMarkup(category: (typeof componentCategories)[number]): string 
 
 const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
   <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}</div></div>
+  <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.slice(0, 5).map((page) => pageLink(page)).join("")}</div></div>
+  <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.slice(5).map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Foundations</span><div class="docs-nav">${foundationPages.map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Components</span><div class="docs-nav-categories">${componentCategories.map(categoryMarkup).join("")}</div></div>
 </nav>`;
@@ -153,6 +156,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
 function initializePage(page: DocPage): () => void {
   const abortController = new AbortController();
   const destroyables: Destroyable[] = [];
+  const copyResetTimers: number[] = [];
   let toast: NyxToast | undefined;
   page.plugins?.forEach((plugin) => {
     toast = initializePlugin(plugin, main, destroyables) ?? toast;
@@ -179,8 +183,40 @@ function initializePage(page: DocPage): () => void {
     toast?.notify({ title: "Release validated", description: "All component contracts passed.", tone: "success" });
   }, { signal: abortController.signal });
 
+  main.querySelectorAll<HTMLButtonElement>("[data-copy-code]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const code = button.closest(".docs-code")?.querySelector("code")?.textContent;
+      const status = button.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
+      if (!code || !status) return;
+      try {
+        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(code);
+        else {
+          const textarea = document.createElement("textarea");
+          textarea.value = code;
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+          document.body.append(textarea);
+          textarea.select();
+          const copied = document.execCommand("copy");
+          textarea.remove();
+          if (!copied) throw new Error("Copy command was rejected.");
+        }
+        button.textContent = "Copied";
+        status.textContent = "Code copied to clipboard.";
+        copyResetTimers.push(window.setTimeout(() => {
+          button.textContent = "Copy";
+          status.textContent = "";
+        }, 2000));
+      } catch {
+        button.textContent = "Copy failed";
+        status.textContent = "Copy failed. Select the code and copy it manually.";
+      }
+    }, { signal: abortController.signal });
+  });
+
   return () => {
     abortController.abort();
+    copyResetTimers.forEach((timer) => window.clearTimeout(timer));
     [...destroyables].reverse().forEach((instance) => instance.destroy());
   };
 }

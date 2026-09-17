@@ -1,3 +1,4 @@
+import layoutsMarkup from "../../../../registry/components/layouts.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
@@ -10,7 +11,7 @@ export const layoutPages = [
     title: "Application Shell",
     description: "The application shell composes stable workspace navigation with an adaptable content region.",
     searchTerms: "layout application shell dashboard sidebar topbar workspace",
-    body: card("Application shell", `<div class="nyx-app-shell"><aside class="nyx-app-sidebar"><span class="nyx-eyebrow">Navigation</span><div class="docs-column" style="margin-top:1rem"><span class="nyx-badge">Overview</span><span style="color:var(--nyx-muted)">Workflows</span><span style="color:var(--nyx-muted)">Library</span><span style="color:var(--nyx-muted)">Settings</span></div></aside><main class="nyx-app-content"><div class="nyx-stat-grid"><article class="nyx-stat"><span class="nyx-stat-label">Active jobs</span><div class="nyx-stat-value">024</div></article><article class="nyx-stat"><span class="nyx-stat-label">Success</span><div class="nyx-stat-value">99.94%</div></article></div></main></div>`, "Dashboard"),
+    body: card("Application shell", layoutsMarkup, "Registry source"),
   }),
   page({
     path: paths.components.layouts.authentication,

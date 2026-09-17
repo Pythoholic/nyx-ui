@@ -71,10 +71,37 @@ html.nyx-scrollable-overlay::-webkit-scrollbar-thumb:hover, .docs-sidebar::-webk
   .docs-preview[data-align="stretch"] { place-items: stretch; }
   .docs-component-card { min-inline-size: 0; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); overflow: hidden; }
   .docs-component-head { display: flex; min-height: 3rem; align-items: center; justify-content: space-between; gap: var(--nyx-space-3); padding: 0.75rem 1rem; border-bottom: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
-  .docs-component-head h3 { margin: 0; color: var(--nyx-label); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-regular); letter-spacing: var(--nyx-track-label); text-transform: uppercase; }
+  .docs-component-head h2, .docs-component-head h3 { margin: 0; color: var(--nyx-label); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-regular); letter-spacing: var(--nyx-track-label); text-transform: uppercase; }
   .docs-component-body { padding: var(--nyx-space-5); }
   .docs-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-3); }
   .docs-column { display: grid; gap: var(--nyx-space-3); }
+
+  .docs-code { min-inline-size: 0; border-top: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-void); }
+  .docs-code-toolbar { display: flex; min-block-size: 2.75rem; align-items: center; justify-content: space-between; gap: var(--nyx-space-3); padding: 0.5rem 0.75rem 0.5rem 1rem; border-bottom: var(--nyx-border-hairline) solid var(--nyx-line); color: var(--nyx-label); font-size: var(--nyx-type-meta); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
+  .docs-copy-button { min-block-size: 2rem; padding: 0.25rem 0.625rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: var(--nyx-panel); color: var(--nyx-muted); font: inherit; letter-spacing: inherit; text-transform: inherit; }
+  .docs-copy-button:is(:hover, :focus-visible) { border-color: var(--nyx-accent-line); outline: 0; color: var(--nyx-accent); }
+  .docs-code pre { max-block-size: 30rem; margin: 0; padding: var(--nyx-space-4); overflow: auto; color: var(--nyx-muted); font: 400 0.8125rem/1.65 var(--font-nyx); tab-size: 2; white-space: pre; }
+  .docs-code code { font: inherit; }
+  .tok-tag, .tok-keyword { color: var(--nyx-accent); }
+  .tok-attr { color: var(--nyx-info); }
+  .tok-string { color: var(--nyx-signal); }
+  .tok-number { color: var(--nyx-warning); }
+  .tok-comment { color: var(--nyx-disabled); font-style: italic; }
+
+  .docs-reference { display: grid; gap: var(--nyx-space-8); margin-block-start: var(--nyx-space-10); padding-block-start: var(--nyx-space-8); border-top: var(--nyx-border) solid var(--nyx-line-strong); }
+  .docs-reference-section { min-inline-size: 0; }
+  .docs-reference-section > h2, .docs-prose-section > h2 { margin: 0 0 var(--nyx-space-3); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
+  .docs-reference-section > p, .docs-prose-section > p, .docs-prose-section > ol { max-inline-size: 76ch; margin: 0 0 var(--nyx-space-4); color: var(--nyx-muted); }
+  .docs-reference-section > .docs-code { border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
+  .docs-table-wrap { max-inline-size: 100%; overflow-x: auto; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); }
+  .docs-reference-table { inline-size: 100%; min-inline-size: 42rem; margin: 0; }
+  .docs-reference-table th, .docs-reference-table td { vertical-align: top; }
+  .docs-reference-table th[scope="row"] { inline-size: 30%; color: var(--nyx-ink); font-weight: var(--nyx-weight-medium); text-align: start; }
+  .docs-reference-table code, .docs-prose code { color: var(--nyx-accent); font: inherit; }
+  .docs-prose { display: grid; gap: var(--nyx-space-10); }
+  .docs-prose-section { min-inline-size: 0; }
+  .docs-prose-section > .docs-code { max-inline-size: 72rem; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
+  .docs-prose-section li + li { margin-block-start: var(--nyx-space-2); }
 
   .docs-swatch-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--nyx-space-3); }
   .docs-swatch { display: grid; min-block-size: 8rem; align-content: end; padding: var(--nyx-space-3); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--swatch); }

@@ -10,6 +10,6 @@ export const dataPages = [
     title: "Metrics, Records, and Activity",
     description: "Operational data stays scannable through tabular numbers, strong row boundaries, explicit status, accessible tables, and expandable detail.",
     searchTerms: "data stat card description list table jobs workflow timeline log code record expandable",
-    body: card("Metrics, records, and activity", `<div class="docs-stack">${dataDisplayMarkup}</div>`, "Registry source"),
+    body: card("Metrics, records, and activity", `<div class="docs-stack">${dataDisplayMarkup}</div>`, "Registry source", dataDisplayMarkup),
   }),
 ];
