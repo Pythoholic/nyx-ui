@@ -1,0 +1,38 @@
+@layer base {
+  :where(html) {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background: var(--nyx-void);
+  }
+
+  :where(*, *::before, *::after) { box-sizing: border-box; }
+
+  :where(body) {
+    margin: 0;
+    background: radial-gradient(circle at 72% 0%, var(--nyx-accent-soft), transparent 30rem), var(--nyx-void);
+    color: var(--nyx-ink);
+    font-family: var(--font-nyx);
+    font-size: var(--nyx-type-body);
+    line-height: 1.65;
+    font-synthesis: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :where(button, input, select, textarea) { font: inherit; }
+  :where(button, a, input, select, textarea, summary, [tabindex]):focus-visible { outline: var(--nyx-border) solid var(--nyx-accent); outline-offset: 0.1875rem; }
+  :where(button, summary, select, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="file"]) { cursor: pointer; }
+  :where(button:disabled, input:disabled, select:disabled, textarea:disabled) { cursor: not-allowed; }
+  :where([hidden]) { display: none !important; }
+  :where(svg) { flex: none; }
+  :where(code, pre, kbd, samp) { font-family: var(--font-nyx); }
+  :where(body[data-nyx-scroll-locked="true"]) { overflow: hidden; }
+  :where(::selection) { background: var(--nyx-accent); color: var(--nyx-accent-ink); }
+}
+
+@media (forced-colors: active) {
+  :where(button, a, input, select, textarea, summary):focus-visible { outline-color: Highlight; }
+  .nyx-button, .nyx-input, .nyx-select, .nyx-panel, .nyx-badge { forced-color-adjust: auto; }
+}
+

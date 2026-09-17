@@ -2,7 +2,7 @@
 
 Nyx is an independent, open-source Tailwind CSS UI system for modern websites, applications, dashboards, creative tools, and operational interfaces.
 
-The project is currently in its foundation phase. Its intended architecture combines a small Tailwind CSS token package, optional framework-agnostic behavior modules, and an open-code component registry.
+Its architecture combines a small Tailwind CSS token package, optional framework-agnostic behavior modules, and an open-code component registry.
 
 ## Project documents
 
@@ -10,16 +10,20 @@ The project is currently in its foundation phase. Its intended architecture comb
 - [Design-system reference](./nyx-design/index.html)
 - [Framework research and architecture direction](./docs/architecture/FRAMEWORK_RESEARCH.md)
 
-## Current status
+## Version 0.1 catalog
 
-The first working vertical slice is live:
+The complete initial catalog is live:
 
 - Tailwind CSS 4 tokens, semantic variables, and four accent themes
-- fixed, rem-based typography roles that never shrink at breakpoints
-- reusable Button, field, badge, panel, icon, code, and Dialog styles
-- an optional framework-agnostic Dialog controller
-- source-owned Button and Dialog registry entries
+- fourteen fixed, rem-based typography roles that never shrink at breakpoints
+- spacing, geometry, elevation, z-index, responsive, and motion foundations
+- actions, forms, navigation, overlays, feedback, data, charts, media, and layout components
+- optional framework-agnostic Dialog, Tabs, and Toast behavior modules
+- source-owned registry entries for every catalog family
 - an interactive documentation laboratory consuming the workspace packages
+
+The documentation catalog is the visual source of truth. Package CSS, behavior modules,
+and registry markup are kept separate so applications can take only what they need.
 
 ## Run locally
 

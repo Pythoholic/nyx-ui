@@ -12,6 +12,14 @@
     "./dialog": {
       "types": "./dist/dialog.d.ts",
       "default": "./dist/dialog.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "default": "./dist/tabs.js"
+    },
+    "./toast": {
+      "types": "./dist/toast.d.ts",
+      "default": "./dist/toast.js"
     }
   },
   "files": ["dist"],
@@ -23,4 +31,3 @@
     "typescript": "7.0.2"
   }
 }
-

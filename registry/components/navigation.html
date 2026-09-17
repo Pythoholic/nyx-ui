@@ -1,0 +1,32 @@
+<nav class="nyx-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Workspace</a></li>
+    <li><a href="/library">Library</a></li>
+    <li aria-current="page">Current record</li>
+  </ol>
+</nav>
+
+<div data-nyx-tabs>
+  <div class="nyx-tabs-list" role="tablist" aria-label="Record views">
+    <button class="nyx-tab" id="nyx-summary-tab" role="tab" aria-controls="nyx-summary-panel" aria-selected="true">Summary</button>
+    <button class="nyx-tab" id="nyx-events-tab" role="tab" aria-controls="nyx-events-panel" aria-selected="false">Events</button>
+  </div>
+  <div class="nyx-tab-panel" id="nyx-summary-panel" role="tabpanel" aria-labelledby="nyx-summary-tab">Summary content</div>
+  <div class="nyx-tab-panel" id="nyx-events-panel" role="tabpanel" aria-labelledby="nyx-events-tab" hidden>Event content</div>
+</div>
+
+<nav class="nyx-pagination" aria-label="Pagination">
+  <a class="nyx-page" href="?page=1" aria-label="Previous page">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+  </a>
+  <a class="nyx-page" href="?page=1">1</a>
+  <a class="nyx-page" href="?page=2" aria-current="page">2</a>
+  <a class="nyx-page" href="?page=3" aria-label="Next page">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+  </a>
+</nav>
+
+<details class="nyx-accordion">
+  <summary>Advanced controls</summary>
+  <div class="nyx-accordion-body">Secondary settings appear here.</div>
+</details>

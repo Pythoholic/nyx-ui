@@ -9,7 +9,6 @@
     ".": "./src/index.css",
     "./theme.css": "./src/index.css"
   },
-  "files": ["src/index.css"],
+  "files": ["src/**/*.css"],
   "sideEffects": ["**/*.css"]
 }
-

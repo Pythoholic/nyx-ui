@@ -1,0 +1,23 @@
+@keyframes nyx-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nyx-slide-up { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes nyx-scale-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes nyx-slide-out { to { opacity: 0; transform: translateX(1rem); } }
+@keyframes nyx-slide-in-right { from { opacity: 0; transform: translateX(2rem); } to { opacity: 1; transform: translateX(0); } }
+@keyframes nyx-spin { to { transform: rotate(360deg); } }
+@keyframes nyx-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+@keyframes nyx-signal { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--nyx-accent) 45%, transparent); } 70% { box-shadow: 0 0 0 0.625rem transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+@keyframes nyx-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes nyx-progress { 0% { transform: translateX(-100%); } 55% { transform: translateX(70%); } 100% { transform: translateX(210%); } }
+
+@layer utilities {
+  .nyx-motion-fade { animation: nyx-fade-in var(--nyx-duration-normal) var(--nyx-ease-enter); }
+  .nyx-motion-slide { animation: nyx-slide-up var(--nyx-duration-deliberate) var(--nyx-ease-enter); }
+  .nyx-motion-scale { animation: nyx-scale-in var(--nyx-duration-normal) var(--nyx-ease-spring); }
+  .nyx-motion-pulse { animation: nyx-pulse var(--nyx-duration-pulse) var(--nyx-ease-standard) infinite; }
+  .nyx-motion-signal { animation: nyx-signal var(--nyx-duration-signal) var(--nyx-ease-standard) infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(html) { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

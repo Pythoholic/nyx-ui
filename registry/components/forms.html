@@ -1,0 +1,28 @@
+<form class="nyx-panel" aria-labelledby="nyx-profile-title">
+  <header class="nyx-panel-header"><h2 id="nyx-profile-title">Profile settings</h2></header>
+  <div class="nyx-panel-body">
+    <label class="nyx-field" for="nyx-display-name">
+      <span class="nyx-label">Display name</span>
+      <input class="nyx-input" id="nyx-display-name" name="displayName" />
+      <span class="nyx-field-hint">Shown to workspace members.</span>
+    </label>
+    <label class="nyx-field" for="nyx-region">
+      <span class="nyx-label">Region</span>
+      <select class="nyx-select" id="nyx-region" name="region">
+        <option>Tokyo</option>
+        <option>London</option>
+        <option>New York</option>
+      </select>
+    </label>
+    <label class="nyx-choice" for="nyx-notices">
+      <input id="nyx-notices" name="notices" type="checkbox" />
+      Receive operational notices
+    </label>
+    <label class="nyx-switch" for="nyx-automatic-deployment">
+      <input id="nyx-automatic-deployment" name="automaticDeployment" type="checkbox" />
+      <span class="nyx-switch-track"></span>
+      <span>Automatic deployment</span>
+    </label>
+    <button class="nyx-button" data-variant="primary" type="submit">Save changes</button>
+  </div>
+</form>

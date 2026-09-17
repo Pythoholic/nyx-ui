@@ -16,7 +16,62 @@
       "status": "preview",
       "files": ["components/dialog.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+    },
+    {
+      "name": "forms",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/forms.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "navigation",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/navigation.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tabs"]
+    },
+    {
+      "name": "overlays",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/overlays.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "feedback",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/feedback.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/toast"]
+    },
+    {
+      "name": "data-display",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/data-display.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "visualization",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/visualization.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "media",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/media.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "layouts",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/layouts.html"],
+      "requires": ["@nyx-ui/core"]
     }
   ]
 }
-
