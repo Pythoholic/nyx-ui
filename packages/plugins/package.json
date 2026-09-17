@@ -17,6 +17,18 @@
       "types": "./dist/dropdown-menu.d.ts",
       "default": "./dist/dropdown-menu.js"
     },
+    "./context-menu": {
+      "types": "./dist/context-menu.d.ts",
+      "default": "./dist/context-menu.js"
+    },
+    "./menubar": {
+      "types": "./dist/menubar.d.ts",
+      "default": "./dist/menubar.js"
+    },
+    "./navigation-menu": {
+      "types": "./dist/navigation-menu.d.ts",
+      "default": "./dist/navigation-menu.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

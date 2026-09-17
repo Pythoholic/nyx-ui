@@ -8,6 +8,7 @@ const floating = vi.hoisted(() => ({
   autoUpdate: vi.fn(),
   cleanup: vi.fn(),
   computePosition: vi.fn(),
+  size: vi.fn(),
 }));
 
 vi.mock("@floating-ui/dom", async () => {
@@ -18,6 +19,7 @@ vi.mock("@floating-ui/dom", async () => {
     ...actual,
     autoUpdate: floating.autoUpdate,
     computePosition: floating.computePosition,
+    size: floating.size,
   };
 });
 
@@ -71,6 +73,8 @@ describe("NyxDropdownMenu", () => {
       y: 248,
     });
     floating.autoUpdate.mockReset();
+    floating.size.mockReset();
+    floating.size.mockImplementation((options) => ({ name: "size", options }));
     floating.autoUpdate.mockImplementation((_reference, _overlay, update) => {
       void update();
       return floating.cleanup;
@@ -156,6 +160,13 @@ describe("NyxDropdownMenu", () => {
     expect(element.hasAttribute("data-nyx-positioned")).toBe(false);
     expect(element.style.getPropertyValue("--nyx-overlay-x")).toBe("");
     expect(element.style.getPropertyValue("--nyx-overlay-y")).toBe("");
+  });
+
+  it("keeps viewport padding in the size middleware", () => {
+    initialized = initDropdownMenus();
+    const trigger = document.querySelector<HTMLElement>("#trigger");
+    trigger?.click();
+    expect(floating.size).toHaveBeenCalledWith(expect.objectContaining({ padding: 8 }));
   });
 
   it("wraps roving focus and skips disabled items", () => {

@@ -75,9 +75,9 @@ export class NyxDropdownMenu {
   private internalToggle = false;
   private readonly items: HTMLElement[];
   private openState: boolean;
-  private readonly placement: NyxOverlayPlacement;
+  private placement: NyxOverlayPlacement;
   private positionCleanup: (() => void) | undefined;
-  private readonly reference: NyxOverlayReference | undefined;
+  private reference: NyxOverlayReference | undefined;
   private readonly root: ParentNode;
   private parentInstance: NyxDropdownMenu | null = null;
   private readonly rovingFocus: NyxRovingFocus;
@@ -165,6 +165,15 @@ export class NyxDropdownMenu {
   set value(open: boolean) {
     if (open) this.open();
     else this.close();
+  }
+
+  setPositioning(
+    reference: NyxOverlayReference,
+    placement: NyxOverlayPlacement = this.placement,
+  ): void {
+    this.reference = reference;
+    this.placement = placement;
+    if (this.openState) this.activateOpenState();
   }
 
   open(
@@ -548,13 +557,19 @@ export class NyxDropdownMenu {
   }
 }
 
-function getOrCreateDropdownMenu(
+export function getOrCreateDropdownMenu(
   element: HTMLElement,
   root: ParentNode,
+  options: Omit<NyxDropdownMenuOptions, "root"> = {},
 ): NyxDropdownMenu {
   const current = instances.get(element);
-  if (current) return current;
-  const instance = new NyxDropdownMenu(element, { root });
+  if (current) {
+    if (options.reference) {
+      current.setPositioning(options.reference, options.placement);
+    }
+    return current;
+  }
+  const instance = new NyxDropdownMenu(element, { ...options, root });
   instances.set(element, instance);
   return instance;
 }

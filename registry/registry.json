@@ -53,6 +53,27 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dropdown-menu"]
     },
     {
+      "name": "context-menu",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/context-menu.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/context-menu"]
+    },
+    {
+      "name": "menubar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/menubar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/menubar"]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/navigation-menu.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/navigation-menu"]
+    },
+    {
       "name": "feedback",
       "type": "component-group",
       "status": "preview",

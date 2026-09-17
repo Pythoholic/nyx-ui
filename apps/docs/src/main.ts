@@ -1,5 +1,8 @@
 import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initContextMenus } from "@nyx-ui/plugins/context-menu";
 import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
+import { initMenubars } from "@nyx-ui/plugins/menubar";
+import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts } from "@nyx-ui/plugins/toast";
 import { catalogMarkup, navigationGroups } from "./catalog/index.js";
@@ -40,6 +43,9 @@ app.innerHTML = `<div class="docs-shell">
 </div>`;
 
 initDialogs();
+initContextMenus();
+initMenubars();
+initNavigationMenus();
 initDropdownMenus();
 initTabs();
 

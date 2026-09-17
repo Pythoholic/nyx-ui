@@ -9,12 +9,35 @@ export {
 
 export {
   NyxDropdownMenu,
+  getOrCreateDropdownMenu,
   initDropdownMenus,
   type NyxDropdownMenuCloseReason,
   type NyxDropdownMenuEventDetail,
   type NyxDropdownMenuEventMap,
   type NyxDropdownMenuOptions,
 } from "./dropdown-menu.js";
+
+export {
+  NyxContextMenu,
+  initContextMenus,
+  type NyxContextMenuEventDetail,
+  type NyxContextMenuEventMap,
+} from "./context-menu.js";
+
+export {
+  NyxMenubar,
+  initMenubars,
+  type NyxMenubarEventDetail,
+  type NyxMenubarEventMap,
+} from "./menubar.js";
+
+export {
+  NyxNavigationMenu,
+  initNavigationMenus,
+  type NyxNavigationMenuCloseReason,
+  type NyxNavigationMenuEventDetail,
+  type NyxNavigationMenuEventMap,
+} from "./navigation-menu.js";
 
 export {
   NyxTabs,
