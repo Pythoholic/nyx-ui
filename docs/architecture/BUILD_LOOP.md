@@ -63,10 +63,10 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Model selector (built, visually unverified)
 - [x] Parameter inspector (built, visually unverified)
 - [x] Before/after comparison (built, visually unverified)
-- [ ] Image lightbox
-- [ ] Media carousel
-- [ ] Upload dropzone with queue
-- [ ] Batch progress monitor
+- [x] Image lightbox (built, visually unverified)
+- [x] Media carousel (built, visually unverified)
+- [x] Upload dropzone with queue (built, visually unverified)
+- [x] Batch progress monitor (built, visually unverified)
 
 ## Small primitives
 

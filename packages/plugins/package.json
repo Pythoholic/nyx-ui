@@ -97,6 +97,22 @@
       "types": "./dist/carousel.d.ts",
       "default": "./dist/carousel.js"
     },
+    "./image-lightbox": {
+      "types": "./dist/image-lightbox.d.ts",
+      "default": "./dist/image-lightbox.js"
+    },
+    "./media-carousel": {
+      "types": "./dist/media-carousel.d.ts",
+      "default": "./dist/media-carousel.js"
+    },
+    "./upload-dropzone": {
+      "types": "./dist/upload-dropzone.d.ts",
+      "default": "./dist/upload-dropzone.js"
+    },
+    "./batch-progress-monitor": {
+      "types": "./dist/batch-progress-monitor.d.ts",
+      "default": "./dist/batch-progress-monitor.js"
+    },
     "./stepper": {
       "types": "./dist/stepper.d.ts",
       "default": "./dist/stepper.js"

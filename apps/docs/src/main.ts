@@ -1,5 +1,9 @@
 import { initComboboxes } from "@nyx-ui/plugins/combobox";
 import { initCarousels } from "@nyx-ui/plugins/carousel";
+import { initImageLightboxes } from "@nyx-ui/plugins/image-lightbox";
+import { initMediaCarousels } from "@nyx-ui/plugins/media-carousel";
+import { initUploadDropzones } from "@nyx-ui/plugins/upload-dropzone";
+import { initBatchProgressMonitors } from "@nyx-ui/plugins/batch-progress-monitor";
 import { initCalendars } from "@nyx-ui/plugins/calendar";
 import { initCommandPalettes, type NyxCommandPalette, type NyxCommandPaletteEventDetail } from "@nyx-ui/plugins/command-palette";
 import { initContextMenus } from "@nyx-ui/plugins/context-menu";
@@ -190,6 +194,10 @@ const demoUpload: NyxFileUploadAdapter = (file, { reportProgress, signal }) => n
 
 function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: Destroyable[]): NyxToast | undefined {
   switch (plugin) {
+    case "image-lightbox": addDestroyables(destroyables, initImageLightboxes(root)); break;
+    case "media-carousel": addDestroyables(destroyables, initMediaCarousels(root)); break;
+    case "upload-dropzone": addDestroyables(destroyables, initUploadDropzones(root, { transport: demoUpload })); break;
+    case "batch-progress-monitor": addDestroyables(destroyables, initBatchProgressMonitors(root)); break;
     case "calendar": addDestroyables(destroyables, initCalendars(root)); break;
     case "carousel": addDestroyables(destroyables, initCarousels(root)); break;
     case "combobox": addDestroyables(destroyables, initComboboxes(root)); break;

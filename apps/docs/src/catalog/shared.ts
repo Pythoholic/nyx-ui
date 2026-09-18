@@ -1,4 +1,8 @@
 export type PluginName =
+  | "image-lightbox"
+  | "media-carousel"
+  | "upload-dropzone"
+  | "batch-progress-monitor"
   | "carousel"
   | "calendar"
   | "combobox"
@@ -79,6 +83,138 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "image-lightbox": {
+    className: "NyxImageLightbox",
+    initName: "initImageLightboxes",
+    selector: "[data-nyx-image-lightbox]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-image-lightbox", value: "presence", description: "Marks the gallery and dialog ownership boundary." },
+        { name: "data-nyx-image-lightbox-loop", value: "presence", description: "Allows previous and next navigation to wrap at the collection boundaries." },
+        { name: "data-nyx-image-lightbox-trigger", value: "presence", description: "Marks a native button whose nested image and caption feed the viewer." },
+        { name: "data-nyx-image-lightbox-src / alt / caption", value: "string", description: "Optionally overrides the source, alternative text, or caption read from a trigger." },
+        { name: "data-nyx-image-lightbox-dialog / image / caption / status", value: "presence", description: "Marks the composed dialog and its synchronized content." },
+        { name: "data-state", value: "open | closed / active | inactive", description: "Reflects viewer state and the currently displayed trigger." },
+      ],
+      methods: [
+        { name: "value", value: "number", description: "Gets or requests the active zero-based image index." },
+        { name: "open(index?, trigger?) / close(reason?)", value: "boolean", description: "Requests modal visibility while retaining dialog focus and dismissal behavior." },
+        { name: "goTo(index, reason?)", value: "boolean", description: "Requests an indexed image change and reports whether it was accepted." },
+        { name: "next(reason?) / previous(reason?)", value: "boolean", description: "Requests adjacent media with optional looping." },
+        { name: "destroy()", value: "void", description: "Closes the dialog, removes listeners, releases scroll lock, and uncaches the instance." },
+      ],
+      events: [
+        { name: "nyx:image-lightbox:before-open / before-close", value: "cancelable", description: "Fires before the composed native dialog changes visibility." },
+        { name: "nyx:image-lightbox:open / close", value: "not cancelable", description: "Fires after dialog state, focus, scroll lock, and trigger ARIA synchronize." },
+        { name: "nyx:image-lightbox:before-change", value: "cancelable", description: "Fires before the displayed image index changes." },
+        { name: "nyx:image-lightbox:change", value: "not cancelable", description: "Fires after image source, alternative text, caption, controls, and status synchronize." },
+      ],
+      keyboard: [
+        { name: "Enter / Space", description: "Opens the viewer from a native gallery button or activates a focused control." },
+        { name: "Arrow Left / Arrow Right", description: "Shows the previous or next image while the dialog is open." },
+        { name: "Home / End", description: "Shows the first or last image." },
+        { name: "Escape", description: "Closes the viewer and returns focus to its opening trigger." },
+        { name: "Tab / Shift+Tab", description: "Uses the native modal dialog focus boundary." },
+      ],
+      accessibility: "The gallery uses named native buttons and real images. The viewer composes the native Dialog controller, preserves each image's alternative text, exposes a visible caption and polite position status, synchronizes aria-controls and aria-expanded, and returns focus after dismissal.",
+    },
+  },
+  "media-carousel": {
+    className: "NyxMediaCarousel",
+    initName: "initMediaCarousels",
+    selector: "[data-nyx-carousel]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-carousel", value: "presence", description: "Marks the media collection region and carousel ownership boundary." },
+        { name: "data-nyx-carousel-loop", value: "presence", description: "Wraps previous and next movement at the collection boundaries." },
+        { name: "data-nyx-carousel-slide", value: "presence", description: "Marks an ordered figure; inactive figures are hidden from every input modality." },
+        { name: "data-nyx-carousel-previous / next / go-to", value: "presence / zero-based index", description: "Marks native navigation controls." },
+        { name: "data-state", value: "active | inactive", description: "Reflects the current slide and indicator state." },
+      ],
+      methods: [
+        { name: "value", value: "number", description: "Gets or requests the active zero-based media index." },
+        { name: "slides", value: "HTMLElement[]", description: "Reads the ordered media figures owned by this collection." },
+        { name: "goTo(index, reason?)", value: "boolean", description: "Requests a slide change and reports whether it was accepted." },
+        { name: "next(reason?) / previous(reason?)", value: "boolean", description: "Requests adjacent media." },
+        { name: "destroy()", value: "void", description: "Removes delegated controls and releases the shared carousel instance." },
+      ],
+      events: [
+        { name: "nyx:carousel:before-change", value: "cancelable", description: "Fires before the shared carousel engine changes active media." },
+        { name: "nyx:carousel:change", value: "not cancelable", description: "Fires after hidden, ARIA, status, controls, and data state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through the native previous, next, and indexed controls." },
+        { name: "Enter / Space", description: "Activates the focused media navigation button." },
+      ],
+      accessibility: "The composition reuses the carousel engine: the root is a named carousel region, each figure is an ordered slide group, inactive media is hidden, and a polite text status announces position. Captions and image descriptions remain authored semantic content.",
+    },
+  },
+  "upload-dropzone": {
+    className: "NyxUploadDropzone",
+    initName: "initUploadDropzones",
+    selector: "[data-nyx-file-upload]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-file-upload", value: "presence", description: "Marks the shared file selection, drop, queue, and progress owner." },
+        { name: "data-nyx-file-upload-max-files / max-size", value: "number", description: "Sets count and per-file byte limits." },
+        { name: "data-nyx-file-upload-queue / errors / start", value: "presence", description: "Marks the generated queue, alert region, and upload action." },
+        { name: "data-state", value: "empty | ready | uploading", description: "Reflects aggregate queue state." },
+        { name: "data-dragging", value: "true", description: "Reflects a current drag target without replacing the native input." },
+      ],
+      options: [
+        { name: "maxFiles / maxSize", value: "number", description: "Overrides authored validation limits." },
+        { name: "transport", value: "NyxUploadDropzoneAdapter", description: "Supplies consumer-owned transport with progress and abort hooks." },
+      ],
+      methods: [
+        { name: "value", value: "readonly NyxUploadDropzoneItem[]", description: "Reads queued files, state, progress, previews, and results." },
+        { name: "add(files) / remove(id)", value: "items / void", description: "Requests validated queue changes." },
+        { name: "upload(id) / uploadAll()", value: "Promise", description: "Runs the configured consumer transport for queued files." },
+        { name: "setProgress(id, progress) / setTransport(adapter)", value: "void", description: "Publishes external progress or replaces transport." },
+        { name: "destroy()", value: "void", description: "Aborts work, revokes previews, clears generated rows, and uncaches the instance." },
+      ],
+      events: [
+        { name: "nyx:file-upload:before-add / before-remove / before-upload", value: "cancelable", description: "Fires before the shared upload engine mutates the queue or starts transport." },
+        { name: "nyx:file-upload:add / remove / upload", value: "not cancelable", description: "Fires after queue or transport state synchronizes." },
+        { name: "nyx:file-upload:progress / complete / error", value: "not cancelable", description: "Reports transport progress, completion, validation, or adapter failure." },
+      ],
+      keyboard: [
+        { name: "Enter / Space", description: "Opens the native file chooser from the label or activates queue controls." },
+        { name: "Tab / Shift+Tab", description: "Moves through the file input, remove actions, and start button." },
+      ],
+      accessibility: "The drop target remains a label for a native multiple file input, so drag and drop is an enhancement rather than the only acquisition path. Validation is connected through aria-describedby and aria-invalid; generated rows use named remove buttons and native progress elements. The consumer owns network transport.",
+    },
+  },
+  "batch-progress-monitor": {
+    className: "NyxBatchProgressMonitor",
+    initName: "initBatchProgressMonitors",
+    selector: "[data-nyx-generation-queue]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-generation-queue", value: "presence", description: "Marks the shared ordered-work state owner." },
+        { name: "data-nyx-generation-item / id", value: "presence / unique string", description: "Marks one batch job and its stable application identifier." },
+        { name: "data-state", value: "queued | running | complete | failed | canceled", description: "Declares and reflects each job lifecycle state." },
+        { name: "data-progress", value: "0-100", description: "Declares and reflects bounded completion progress." },
+        { name: "data-nyx-generation-action", value: "cancel | retry | remove", description: "Marks native actions whose visibility follows job state." },
+        { name: "data-nyx-generation-count / progress / status / empty", value: "presence", description: "Marks synchronized aggregate and per-job output." },
+      ],
+      methods: [
+        { name: "value", value: "NyxBatchProgressItem[]", description: "Gets state or requests updates for matching authored jobs." },
+        { name: "items", value: "HTMLElement[]", description: "Reads the currently authored job elements." },
+        { name: "setStatus(itemOrId, state, progress?, reason?)", value: "boolean", description: "Requests a lifecycle or progress transition without owning the work." },
+        { name: "remove(itemOrId, reason?)", value: "boolean", description: "Requests removal of one settled job." },
+        { name: "refresh() / destroy()", value: "void", description: "Synchronizes authored jobs, or removes listeners and releases the instance." },
+      ],
+      events: [
+        { name: "nyx:generation-queue:before-change / before-remove", value: "cancelable", description: "Fires before the shared queue engine changes or removes a job." },
+        { name: "nyx:generation-queue:change / remove", value: "not cancelable", description: "Fires after actions, progress, counts, state, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves among visible native job actions." },
+        { name: "Enter / Space", description: "Activates the focused cancel, retry, or remove action." },
+      ],
+      accessibility: "The monitor is an ordered list with native progress elements, text statuses, and named native actions. Queue and item aria-busy state reflects active work, while the polite aggregate output announces changes. Applications own every job and publish progress through the shared state method.",
+    },
+  },
   "generation-queue": {
     className: "NyxGenerationQueue",
     initName: "initGenerationQueues",

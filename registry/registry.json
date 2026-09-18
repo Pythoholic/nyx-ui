@@ -228,6 +228,34 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "image-lightbox",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/image-lightbox.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/image-lightbox"]
+    },
+    {
+      "name": "media-carousel",
+      "type": "component-configuration",
+      "status": "preview",
+      "files": ["components/media-carousel.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/media-carousel"]
+    },
+    {
+      "name": "upload-dropzone",
+      "type": "component-configuration",
+      "status": "preview",
+      "files": ["components/upload-dropzone.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/upload-dropzone"]
+    },
+    {
+      "name": "batch-progress-monitor",
+      "type": "component-configuration",
+      "status": "preview",
+      "files": ["components/batch-progress-monitor.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/batch-progress-monitor"]
+    },
+    {
       "name": "chat-thread",
       "type": "component",
       "status": "preview",

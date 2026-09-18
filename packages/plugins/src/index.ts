@@ -210,6 +210,44 @@ export {
 } from "./carousel.js";
 
 export {
+  NyxImageLightbox,
+  initImageLightboxes,
+  type NyxImageLightboxChangeReason,
+  type NyxImageLightboxEventDetail,
+  type NyxImageLightboxEventMap,
+} from "./image-lightbox.js";
+
+export {
+  NyxMediaCarousel,
+  initMediaCarousels,
+  type NyxMediaCarouselChangeReason,
+  type NyxMediaCarouselEventDetail,
+  type NyxMediaCarouselEventMap,
+} from "./media-carousel.js";
+
+export {
+  NyxUploadDropzone,
+  initUploadDropzones,
+  type NyxUploadDropzoneAdapter,
+  type NyxUploadDropzoneAdapterContext,
+  type NyxUploadDropzoneEventDetail,
+  type NyxUploadDropzoneEventMap,
+  type NyxUploadDropzoneItem,
+  type NyxUploadDropzoneOptions,
+  type NyxUploadDropzoneState,
+} from "./upload-dropzone.js";
+
+export {
+  NyxBatchProgressMonitor,
+  initBatchProgressMonitors,
+  type NyxBatchProgressItem,
+  type NyxBatchProgressMonitorEventDetail,
+  type NyxBatchProgressMonitorEventMap,
+  type NyxBatchProgressReason,
+  type NyxBatchProgressState,
+} from "./batch-progress-monitor.js";
+
+export {
   NyxStepper,
   initSteppers,
   type NyxStepperChangeReason,

@@ -84,6 +84,10 @@ export const paths = {
       accessibleSummary: "/components/visualization/accessible-summary",
     },
     media: {
+      imageLightbox: "/components/media/image-lightbox",
+      mediaCarousel: "/components/media/media-carousel",
+      uploadDropzone: "/components/media/upload-dropzone",
+      batchProgressMonitor: "/components/media/batch-progress-monitor",
       gallery: "/components/media/gallery",
       rating: "/components/media/rating",
       protectedMedia: "/components/media/protected-media",

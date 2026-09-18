@@ -1,0 +1,26 @@
+<section
+  class="nyx-file-upload nyx-upload-dropzone"
+  data-nyx-file-upload
+  data-nyx-file-upload-max-files="6"
+  data-nyx-file-upload-max-size="20971520"
+>
+  <label class="nyx-file" for="nyx-media-dropzone-input">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
+      <path d="M12 16V4m-5 5 5-5 5 5M5 20h14" />
+    </svg>
+    <strong>Drop production assets here</strong>
+    <span class="nyx-field-hint" id="nyx-media-dropzone-hint">PNG, JPG, WEBP, or MP4 / 20 MB each / 6 files maximum</span>
+    <span class="nyx-button" data-size="small" data-variant="quiet">Browse files</span>
+    <input
+      accept="image/png,image/jpeg,image/webp,video/mp4"
+      aria-describedby="nyx-media-dropzone-hint"
+      class="sr-only"
+      id="nyx-media-dropzone-input"
+      multiple
+      type="file"
+    />
+  </label>
+  <p class="nyx-field-error" data-nyx-file-upload-errors hidden role="alert"></p>
+  <ul class="nyx-file-queue" data-nyx-file-upload-queue aria-label="Upload queue"></ul>
+  <button class="nyx-button" data-nyx-file-upload-start data-variant="primary" disabled type="button">Start queued uploads</button>
+</section>
