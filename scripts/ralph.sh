@@ -54,21 +54,30 @@ for tool in codex git pnpm; do
 done
 
 # An agent already working this tree would race this loop, and both would
-# commit. Refuse to start rather than interleave two agents.
-# pgrep cannot read native Windows command lines, so prefer tasklist there.
-count_running_agents() {
-  if command -v tasklist > /dev/null 2>&1; then
-    tasklist 2>/dev/null | grep -ic "codex.exe"
-  else
-    pgrep -fc "codex exec" 2>/dev/null || echo 0
-  fi
-}
+# commit. A lock file identifies *this* loop's agent, which a bare process
+# count cannot: Codex leaves long-lived daemons running between tasks, so
+# counting processes reports work that finished hours ago.
+LOCK_FILE="$LOG_DIR/ralph.lock"
 
-if [[ "$(count_running_agents)" -gt 0 ]]; then
-  echo "A Codex agent is already running ($(count_running_agents) process(es))." >&2
-  echo "Wait for it to finish, or stop it, before starting the loop." >&2
-  exit 1
+if [[ -f "$LOCK_FILE" ]]; then
+  locked_pid="$(cat "$LOCK_FILE" 2> /dev/null)"
+  if [[ -n "$locked_pid" ]] && kill -0 "$locked_pid" 2> /dev/null; then
+    echo "Another loop is already running (pid $locked_pid)." >&2
+    echo "Stop it first, or remove $LOCK_FILE if it is stale." >&2
+    exit 1
+  fi
+  echo "Clearing a stale lock from pid ${locked_pid:-unknown}."
+  rm -f "$LOCK_FILE"
 fi
+
+echo $$ > "$LOCK_FILE"
+
+# Installed immediately after acquiring the lock, so no later exit path can
+# leave a stale lock behind and block the next run.
+release_lock() {
+  rm -f "$LOCK_FILE"
+}
+trap release_lock EXIT
 
 # Uncommitted work would be swept into the agent's first commit and
 # attributed to work it did not do.
