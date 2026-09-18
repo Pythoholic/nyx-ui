@@ -5,6 +5,7 @@ import {
   type NyxDropdownMenuEventDetail,
 } from "./dropdown-menu.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 import { NyxRovingFocus } from "./internal/roving-focus.js";
 
 export interface NyxMenubarEventDetail {
@@ -153,8 +154,10 @@ export class NyxMenubar {
     let nextIndex = currentIndex;
     if (event.key === "Home") nextIndex = 0;
     else if (event.key === "End") nextIndex = this.items.length - 1;
-    else if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % this.items.length;
-    else nextIndex = (currentIndex - 1 + this.items.length) % this.items.length;
+    else {
+      const delta = horizontalArrowDelta(event.key, this.element);
+      nextIndex = (currentIndex + delta + this.items.length) % this.items.length;
+    }
     const shouldOpen = Boolean(this.active);
     const next = this.items[nextIndex];
     if (!next) return;

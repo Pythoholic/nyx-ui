@@ -227,6 +227,28 @@ describe("NyxDropdownMenu", () => {
     expect(document.activeElement).toBe(more);
   });
 
+  it("mirrors submenu arrow keys and default placement in RTL", async () => {
+    document.querySelector<HTMLElement>("#actions")?.setAttribute("dir", "rtl");
+    initialized = initDropdownMenus();
+    const [menu, submenu] = initialized;
+    const more = document.querySelector<HTMLElement>("#more");
+    const nestedAlpha = document.querySelector<HTMLElement>("#nested-alpha");
+    if (!menu || !submenu || !more || !nestedAlpha) throw new Error("Menus were not initialized.");
+
+    menu.open();
+    more.focus();
+    more.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(submenu.value).toBe(true);
+    await vi.waitFor(() => expect(floating.computePosition).toHaveBeenCalledWith(
+      more,
+      submenu.element,
+      expect.objectContaining({ placement: "left-start" }),
+    ));
+    nestedAlpha.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(submenu.value).toBe(false);
+    expect(document.activeElement).toBe(more);
+  });
+
   it("updates checkbox and radio states with group exclusivity", () => {
     initialized = initDropdownMenus();
     const [menu] = initialized;

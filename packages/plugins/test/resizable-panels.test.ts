@@ -57,6 +57,21 @@ describe("NyxResizablePanels", () => {
     expect(document.documentElement.classList.contains("nyx-resizing")).toBe(false);
   });
 
+  it("mirrors horizontal keyboard and pointer resizing in RTL", () => {
+    const root = document.querySelector<HTMLElement>("[data-nyx-resizable]")!;
+    root.dir = "rtl";
+    initialized = initResizablePanels();
+    const group = initialized[0]!;
+    group.handle.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(group.size).toBe(35);
+
+    vi.spyOn(group.element, "getBoundingClientRect").mockReturnValue({ left: 0, right: 400, top: 0, bottom: 200, width: 400, height: 200, x: 0, y: 0, toJSON: () => ({}) });
+    group.handle.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, button: 0, clientX: 160, pointerId: 8 }));
+    group.handle.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: 200, pointerId: 8 }));
+    expect(group.size).toBe(25);
+    group.handle.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 8 }));
+  });
+
   it("makes persistence opt-in and respects cancelable resize", () => {
     renderPanels(true);
     const storage = { getItem: vi.fn(() => "60"), setItem: vi.fn() } as unknown as Storage;

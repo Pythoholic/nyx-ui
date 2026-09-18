@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 
 export type NyxStepperChangeReason = "api" | "next" | "previous" | "step";
 
@@ -177,8 +178,10 @@ export class NyxStepper {
     const available = this.triggers.filter((trigger) => !trigger.disabled);
     const availableIndex = target ? available.indexOf(target) : -1;
     let next: HTMLButtonElement | undefined;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = available[(availableIndex + 1) % available.length];
-    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = available[(availableIndex - 1 + available.length) % available.length];
+    const horizontalDelta = horizontalArrowDelta(event.key, this.element);
+    if (horizontalDelta !== 0) next = available[(availableIndex + horizontalDelta + available.length) % available.length];
+    else if (event.key === "ArrowDown") next = available[(availableIndex + 1) % available.length];
+    else if (event.key === "ArrowUp") next = available[(availableIndex - 1 + available.length) % available.length];
     else if (event.key === "Home") next = available[0];
     else if (event.key === "End") next = available.at(-1);
     else return;

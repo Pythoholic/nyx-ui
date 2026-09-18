@@ -68,6 +68,16 @@ describe("NyxInputOtp", () => {
     expect(otp.value).toBe("12456");
   });
 
+  it("mirrors physical arrow navigation in an RTL subtree", () => {
+    document.querySelector<HTMLElement>("#otp")?.setAttribute("dir", "rtl");
+    initialized = initInputOtps();
+    const [otp] = initialized;
+    if (!otp) throw new Error("OTP did not initialize.");
+    otp.cells[2]?.focus();
+    otp.cells[2]?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(otp.cells[3]);
+  });
+
   it("configures numeric text inputs and autofill on the first cell only", () => {
     initialized = initInputOtps();
     const [otp] = initialized;

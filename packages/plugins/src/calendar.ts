@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 
 export interface NyxCalendarDate {
   day: number;
@@ -405,8 +406,11 @@ export class NyxCalendar {
     if (!current) return;
     let next: NyxCalendarDate | undefined;
     let direction: 1 | -1 = 1;
-    if (event.key === "ArrowRight") next = addDays(current, 1);
-    else if (event.key === "ArrowLeft") { next = addDays(current, -1); direction = -1; }
+    const horizontalDelta = horizontalArrowDelta(event.key, this.element);
+    if (horizontalDelta !== 0) {
+      next = addDays(current, horizontalDelta);
+      direction = horizontalDelta;
+    }
     else if (event.key === "ArrowDown") next = addDays(current, 7);
     else if (event.key === "ArrowUp") { next = addDays(current, -7); direction = -1; }
     else if (event.key === "Home") { next = this.enabledWithin(addDays(current, -((dayOfWeek(current) - this.weekStartsOn + 7) % 7)), 1, 7); direction = 1; }

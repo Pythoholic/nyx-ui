@@ -62,6 +62,18 @@ describe("NyxMenubar", () => {
     expect(document.activeElement).toBe(firstItem);
   });
 
+  it("mirrors horizontal root navigation in RTL", () => {
+    const root = render();
+    root.dir = "rtl";
+    initialized = initMenubars();
+    const file = root.querySelector<HTMLElement>("#file-trigger")!;
+    const edit = root.querySelector<HTMLElement>("#edit-trigger")!;
+    file.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(edit);
+    edit.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(document.activeElement).toBe(file);
+  });
+
   it("emits cancelable lifecycle events and keeps only one root menu open", () => {
     const root = render();
     initialized = initMenubars();

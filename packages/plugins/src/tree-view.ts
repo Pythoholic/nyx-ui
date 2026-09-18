@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { inlineBackwardArrow, inlineForwardArrow } from "./internal/direction.js";
 
 export type NyxTreeSelectionMode = "multiple" | "none" | "single";
 export type NyxTreeChangeReason = "api" | "keyboard" | "pointer";
@@ -236,7 +237,7 @@ export class NyxTreeView {
     else if (event.key === "ArrowUp") next = visible[Math.max(index - 1, 0)];
     else if (event.key === "Home") next = visible[0];
     else if (event.key === "End") next = visible.at(-1);
-    else if (event.key === "ArrowRight") {
+    else if (event.key === inlineForwardArrow(this.element)) {
       event.preventDefault();
       if (item.getAttribute("aria-expanded") === "false") this.expand(item, "keyboard");
       else {
@@ -246,7 +247,7 @@ export class NyxTreeView {
         this.focus(child);
       }
       return;
-    } else if (event.key === "ArrowLeft") {
+    } else if (event.key === inlineBackwardArrow(this.element)) {
       event.preventDefault();
       if (item.getAttribute("aria-expanded") === "true") this.collapse(item, "keyboard");
       else this.focus(this.parentItem(item) ?? undefined);

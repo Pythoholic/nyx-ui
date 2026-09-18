@@ -75,6 +75,17 @@ describe("NyxTabs", () => {
     expect(document.activeElement).toBe(tabs[2]);
   });
 
+  it("mirrors horizontal arrow navigation in an RTL subtree", () => {
+    const element = renderTabs();
+    element.dir = "rtl";
+    initTabs(element);
+    const tabs = Array.from(element.querySelectorAll<HTMLButtonElement>("[role='tab']"));
+    tabs[0]?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+    expect(document.activeElement).toBe(tabs[2]);
+    tabs[2]?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(tabs[0]);
+  });
+
   it("keeps nested tab sets isolated", () => {
     document.body.innerHTML = `<div data-nyx-tabs id="outer"><div role="tablist"><button aria-controls="outer-preview" aria-selected="true" role="tab">Preview</button><button aria-controls="outer-code" role="tab">HTML</button></div>
       <section id="outer-preview" role="tabpanel"><div data-nyx-tabs id="inner"><div role="tablist"><button aria-controls="inner-one" aria-selected="true" role="tab">One</button><button aria-controls="inner-two" role="tab">Two</button></div><section id="inner-one" role="tabpanel">One</section><section id="inner-two" role="tabpanel">Two</section></div></section>

@@ -3,6 +3,8 @@ import blockquoteMarkup from "../../../../registry/components/blockquote.html?ra
 import codeBlockMarkup from "../../../../registry/components/code-block.html?raw";
 import containerColumnsMarkup from "../../../../registry/components/container-columns.html?raw";
 import iconCatalogMarkup from "../../../../registry/components/icon-catalog.html?raw";
+import visuallyHiddenMarkup from "../../../../registry/components/visually-hidden.html?raw";
+import directionMarkup from "../../../../registry/components/direction.html?raw";
 import staticPrimitivesMarkup from "../../../../registry/components/static-primitives.html?raw";
 import styledLinksMarkup from "../../../../registry/components/styled-links.html?raw";
 import { paths } from "../routes.js";
@@ -72,5 +74,23 @@ export const primitivePages = [
     description: "A compact inline-SVG vocabulary demonstrates Nyx's shared size, stroke, and current-color contract without coupling components to an icon package.",
     searchTerms: "icon catalog inline svg stroke current color search check close plus arrow folder lock user",
     body: `<section class="docs-prose-section"><h2>Meaning comes from context</h2><p>Decorative icons use <code>aria-hidden="true"</code>. When an icon is the only visible content in a control, give the native control an accessible name; when an illustration conveys information, name the SVG with <code>aria-labelledby</code> or visible text.</p></section>${card("Interface symbols", iconCatalogMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.primitives.visuallyHidden,
+    categoryId: "primitives",
+    categoryLabel: "Primitives",
+    title: "Visually Hidden",
+    description: "A reusable utility keeps meaningful labels, context, and live status in the accessibility tree while removing them from visual layout.",
+    searchTerms: "visually hidden screen reader accessible name label live region skip link focusable utility",
+    body: `<section class="docs-prose-section"><h2>Hide presentation, not meaning</h2><p>Use <code>nyx-visually-hidden</code> for text that must remain available to assistive technology. Do not use it to conceal content that should be unavailable to everyone; use <code>hidden</code> instead. The companion <code>nyx-visually-hidden-focusable</code> utility reveals skip links and other focus targets while they have focus.</p></section>${card("Accessible labels and focus target", visuallyHiddenMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.primitives.direction,
+    categoryId: "primitives",
+    categoryLabel: "Primitives",
+    title: "RTL and Direction",
+    description: "Inherited text direction mirrors logical component geometry, directional motion, overlay placement, and horizontal keyboard navigation.",
+    searchTerms: "rtl right to left direction dir localization internationalization logical properties bidi arabic hebrew",
+    body: `<section class="docs-prose-section"><h2>Declare direction at the language boundary</h2><p>Set <code>dir="rtl"</code> and the appropriate <code>lang</code> on the document or the smallest subtree whose language direction changes. Nyx uses logical geometry and reads inherited direction for horizontal Arrow-key behavior. Wrap machine identifiers or user data with an unknown direction in <code>bdi</code> so it cannot reorder surrounding text.</p></section>${card("Right-to-left workspace", directionMarkup, "Registry source")}`,
   }),
 ];

@@ -60,6 +60,20 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "visually-hidden",
+      "type": "utility",
+      "status": "preview",
+      "files": ["components/visually-hidden.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "direction",
+      "type": "utility",
+      "status": "preview",
+      "files": ["components/direction.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "toggles",
       "type": "component-group",
       "status": "preview",

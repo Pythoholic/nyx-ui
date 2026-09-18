@@ -54,6 +54,25 @@ describe("small primitive registry markup", () => {
     expect(samples.map((sample) => sample.querySelector("code")?.textContent)).toContain("search");
   });
 
+  it("keeps visually hidden text semantic and provides a focus-revealed skip target", () => {
+    const component = loadComponent("visually-hidden");
+    const hidden = Array.from(component.querySelectorAll<HTMLElement>(".nyx-visually-hidden"));
+    const focusable = component.querySelector<HTMLAnchorElement>("a.nyx-visually-hidden-focusable");
+    expect(hidden.length).toBeGreaterThanOrEqual(3);
+    expect(component.querySelector("button .nyx-visually-hidden")?.textContent).toContain("Cancel transfer");
+    expect(component.querySelector("[role='status'][aria-live='polite']")).not.toBeNull();
+    expect(focusable?.getAttribute("href")).toBe("#nyx-visually-hidden-example-end");
+  });
+
+  it("declares localized RTL content and isolates bidirectional identifiers", () => {
+    const component = loadComponent("direction");
+    const surface = component.querySelector<HTMLElement>("[dir='rtl'][lang='ar']");
+    expect(surface).not.toBeNull();
+    expect(surface?.querySelector(".nyx-blockquote")).not.toBeNull();
+    expect(surface?.querySelector(".nyx-select")).not.toBeNull();
+    expect(surface?.querySelector("bdi")?.textContent).toBe("edge-api-204");
+  });
+
   it("publishes one registry record for each canonical source", () => {
     const registry = JSON.parse(readFileSync(resolve(process.cwd(), "../../registry/registry.json"), "utf8")) as {
       items: Array<{ name: string; files: string[]; requires: string[] }>;
@@ -64,6 +83,8 @@ describe("small primitive registry markup", () => {
       ["styled-links", "components/styled-links.html"],
       ["blockquote", "components/blockquote.html"],
       ["icon-catalog", "components/icon-catalog.html"],
+      ["visually-hidden", "components/visually-hidden.html"],
+      ["direction", "components/direction.html"],
     ]);
     expected.forEach((file, name) => {
       const item = registry.items.find((candidate) => candidate.name === name);

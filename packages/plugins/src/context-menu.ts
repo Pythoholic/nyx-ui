@@ -5,6 +5,7 @@ import {
   type NyxDropdownMenuEventDetail,
 } from "./dropdown-menu.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { getTextDirection } from "./internal/direction.js";
 
 export interface NyxContextMenuEventDetail {
   contextMenu: NyxContextMenu;
@@ -51,7 +52,7 @@ export class NyxContextMenu {
     this.element = element;
     this.reference.contextElement = element;
     this.menu = getOrCreateDropdownMenu(menuElement, element.ownerDocument, {
-      placement: "right-start",
+      placement: getTextDirection(element) === "rtl" ? "left-start" : "right-start",
       reference: this.reference,
     });
 
@@ -83,7 +84,10 @@ export class NyxContextMenu {
 
   openAt(x: number, y: number, returnFocusTo?: HTMLElement): void {
     this.point = { x, y };
-    this.menu.setPositioning(this.reference, "right-start");
+    this.menu.setPositioning(
+      this.reference,
+      getTextDirection(this.element) === "rtl" ? "left-start" : "right-start",
+    );
     this.menu.open(returnFocusTo ?? this.activeElement());
   }
 

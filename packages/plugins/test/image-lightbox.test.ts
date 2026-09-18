@@ -79,6 +79,18 @@ describe("NyxImageLightbox", () => {
     expect(lightbox.value).toBe(0);
   });
 
+  it("mirrors image navigation arrows in RTL", () => {
+    const root = renderLightbox(true);
+    root.dir = "rtl";
+    initialized = initImageLightboxes(root);
+    const lightbox = initialized[0]!;
+    lightbox.open(0);
+    lightbox.dialog.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, cancelable: true, key: "ArrowLeft" }));
+    expect(lightbox.value).toBe(1);
+    lightbox.dialog.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, cancelable: true, key: "ArrowRight" }));
+    expect(lightbox.value).toBe(0);
+  });
+
   it("allows close vetoes and returns focus after accepted dismissal", () => {
     initialized = initImageLightboxes();
     const lightbox = initialized[0]!;

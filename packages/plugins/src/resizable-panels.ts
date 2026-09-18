@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { getTextDirection, horizontalArrowDelta } from "./internal/direction.js";
 
 export type NyxResizableOrientation = "horizontal" | "vertical";
 export type NyxResizableReason = "api" | "keyboard" | "pointer" | "restore";
@@ -209,8 +210,11 @@ export class NyxResizablePanels {
     let next: number | undefined;
     if (event.key === "Home") next = this.collapsible ? 0 : this.minimum;
     else if (event.key === "End") next = this.maximum;
-    else if (event.key === (horizontal ? "ArrowLeft" : "ArrowUp")) next = this.sizeState - this.step;
-    else if (event.key === (horizontal ? "ArrowRight" : "ArrowDown")) next = this.sizeState + this.step;
+    else if (horizontal && horizontalArrowDelta(event.key, this.element) !== 0) {
+      next = this.sizeState + horizontalArrowDelta(event.key, this.element) * this.step;
+    }
+    else if (!horizontal && event.key === "ArrowUp") next = this.sizeState - this.step;
+    else if (!horizontal && event.key === "ArrowDown") next = this.sizeState + this.step;
     else if (event.key === "Enter" && this.collapsible) {
       event.preventDefault();
       this.toggleCollapse("keyboard");
@@ -238,7 +242,8 @@ export class NyxResizablePanels {
     const extent = this.orientation === "horizontal" ? rect.width : rect.height;
     if (extent <= 0) return;
     const coordinate = this.orientation === "horizontal" ? event.clientX : event.clientY;
-    this.resize(this.sizeStart + ((coordinate - this.pointerStart) / extent) * 100, "pointer");
+    const direction = this.orientation === "horizontal" && getTextDirection(this.element) === "rtl" ? -1 : 1;
+    this.resize(this.sizeStart + ((coordinate - this.pointerStart) / extent) * 100 * direction, "pointer");
   };
 
   private readonly handlePointerEnd = (event: PointerEvent): void => {

@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 
 export type NyxInputOtpChangeReason = "api" | "backspace" | "clear" | "input" | "paste";
 
@@ -178,7 +179,7 @@ export class NyxInputOtp {
     const index = this.cells.indexOf(cell);
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
-      const offset = event.key === "ArrowLeft" ? -1 : 1;
+      const offset = horizontalArrowDelta(event.key, this.element);
       this.cells[Math.max(0, Math.min(this.cells.length - 1, index + offset))]?.focus();
       return;
     }

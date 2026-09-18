@@ -49,6 +49,18 @@ describe("NyxTreeView", () => {
     expect(document.activeElement).toBe(charlie);
   });
 
+  it("mirrors expand and parent navigation arrows in RTL", () => {
+    document.querySelector<HTMLElement>("[data-nyx-tree]")!.dir = "rtl";
+    initialized = initTreeViews();
+    const [alpha, child] = document.querySelectorAll<HTMLElement>("[data-nyx-tree-item]");
+    alpha!.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(alpha!.getAttribute("aria-expanded")).toBe("true");
+    alpha!.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(child);
+    child!.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(document.activeElement).toBe(alpha);
+  });
+
   it("typeahead searches the current visible set", () => {
     vi.useFakeTimers();
     initialized = initTreeViews();

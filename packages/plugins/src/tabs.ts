@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 
 export interface NyxTabsEventDetail {
   index: number;
@@ -114,8 +115,10 @@ export class NyxTabs {
     );
     let nextIndex = currentIndex;
 
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex += 1;
-    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex -= 1;
+    const horizontalDelta = horizontalArrowDelta(event.key, event.currentTarget as HTMLElement);
+    if (horizontalDelta !== 0) nextIndex += horizontalDelta;
+    else if (event.key === "ArrowDown") nextIndex += 1;
+    else if (event.key === "ArrowUp") nextIndex -= 1;
     else if (event.key === "Home") nextIndex = 0;
     else if (event.key === "End") nextIndex = this.tabs.length - 1;
     else return;

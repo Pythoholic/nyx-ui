@@ -46,4 +46,19 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-icon\[data-size="small"\]\s*\{[^}]*inline-size:\s*1rem;/);
     expect(css).toMatch(/\.nyx-icon-catalog\s*\{[^}]*grid-template-columns:/);
   });
+
+  it("visually hides accessible content without removing it from layout semantics", () => {
+    expect(css).toMatch(/\.nyx-visually-hidden:not\(\.nyx-visually-hidden-focusable\)/);
+    expect(css).toMatch(/\.sr-only:not\(\.nyx-visually-hidden-focusable\)/);
+    expect(css).toMatch(/\.nyx-visually-hidden-focusable:not\(:focus\):not\(:focus-within\)/);
+    expect(css).toMatch(/clip-path:\s*inset\(50%\)/);
+    expect(css).not.toMatch(/\.nyx-visually-hidden[^}]*display:\s*none/);
+  });
+
+  it("mirrors direction-sensitive component styling", () => {
+    expect(css).toMatch(/\.nyx-select:dir\(rtl\)\s*\{[^}]*background-position:\s*left/);
+    expect(css).toMatch(/\.nyx-switch:dir\(rtl\)[^{]*\{[^}]*translateX\(-1\.25rem\)/);
+    expect(css).toMatch(/\.nyx-progress\[data-indeterminate="true"\]:dir\(rtl\)\s+\.nyx-progress-bar\s*\{[^}]*animation-name:\s*nyx-progress-rtl/);
+    expect(css).toMatch(/\.nyx-before-after-reveal:dir\(rtl\)\s*\{[^}]*clip-path:/);
+  });
 });

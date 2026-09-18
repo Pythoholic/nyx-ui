@@ -44,6 +44,8 @@ export const paths = {
       blockquote: "/components/primitives/blockquote",
       codeBlock: "/components/primitives/code-block",
       iconCatalog: "/components/primitives/icons",
+      visuallyHidden: "/components/primitives/visually-hidden",
+      direction: "/components/primitives/direction",
     },
     navigation: {
       topBar: "/components/navigation/top-bar",

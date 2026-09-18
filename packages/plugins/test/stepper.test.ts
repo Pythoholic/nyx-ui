@@ -88,4 +88,16 @@ describe("NyxStepper", () => {
     expect(document.activeElement).toBe(triggers[0]);
     expect(stepper.value).toBe(1);
   });
+
+  it("mirrors horizontal step focus in RTL", () => {
+    const root = renderStepper(false);
+    root.dir = "rtl";
+    initialized = initSteppers(root);
+    const stepper = initialized[0]!;
+    const triggers = stepper.element.querySelectorAll<HTMLButtonElement>("[data-nyx-stepper-trigger]");
+    triggers[0]?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(document.activeElement).toBe(triggers[2]);
+    triggers[2]?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(triggers[0]);
+  });
 });

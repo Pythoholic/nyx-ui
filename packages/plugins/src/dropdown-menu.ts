@@ -1,4 +1,5 @@
 import { NyxOverlayDismissal, type NyxOverlayDismissReason } from "./internal/dismissal.js";
+import { getTextDirection, inlineBackwardArrow, inlineForwardArrow } from "./internal/direction.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import {
   positionOverlay,
@@ -115,7 +116,9 @@ export class NyxDropdownMenu {
       (element.dataset.nyxDropdownMenuPlacement as
         | NyxOverlayPlacement
         | undefined) ??
-      (this.isSubmenu() ? "right-start" : "bottom-start");
+      (this.isSubmenu()
+        ? getTextDirection(element) === "rtl" ? "left-start" : "right-start"
+        : "bottom-start");
     this.reference = options.reference;
     this.usesNativePopover =
       typeof element.showPopover === "function" &&
@@ -307,7 +310,7 @@ export class NyxDropdownMenu {
 
     if (this.rovingFocus.handleKeydown(event)) return;
 
-    if (event.key === "ArrowRight") {
+    if (event.key === inlineForwardArrow(this.element)) {
       const submenu = this.getSubmenuForItem(target);
       if (submenu) {
         event.preventDefault();
@@ -316,7 +319,7 @@ export class NyxDropdownMenu {
       return;
     }
 
-    if (event.key === "ArrowLeft" && this.isSubmenu()) {
+    if (event.key === inlineBackwardArrow(this.element) && this.isSubmenu()) {
       event.preventDefault();
       this.close("api");
       return;

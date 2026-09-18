@@ -1,5 +1,6 @@
 import { NyxDialog, type NyxDialogCloseReason, type NyxDialogEventDetail } from "./dialog.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { horizontalArrowDelta } from "./internal/direction.js";
 
 export type NyxImageLightboxChangeReason = "api" | "keyboard" | "next" | "previous" | "trigger";
 
@@ -222,8 +223,9 @@ export class NyxImageLightbox {
   private readonly handleKeyDown = (event: KeyboardEvent): void => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
     let handled = true;
-    if (event.key === "ArrowLeft") this.previous("keyboard");
-    else if (event.key === "ArrowRight") this.next("keyboard");
+    const horizontalDelta = horizontalArrowDelta(event.key, this.element);
+    if (horizontalDelta < 0) this.previous("keyboard");
+    else if (horizontalDelta > 0) this.next("keyboard");
     else if (event.key === "Home") this.goTo(0, "keyboard");
     else if (event.key === "End") this.goTo(this.triggers.length - 1, "keyboard");
     else handled = false;

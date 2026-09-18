@@ -51,6 +51,17 @@ describe("NyxCalendar", () => {
     expect(calendar?.focusedValue).toBe("2027-09-20");
   });
 
+  it("mirrors horizontal date movement in an RTL subtree", () => {
+    const root = renderCalendar();
+    root.dir = "rtl";
+    calendar = initCalendars(root)[0];
+    const active = root.querySelector<HTMLButtonElement>("[data-nyx-calendar-date='2026-09-18']");
+    active?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(calendar?.focusedValue).toBe("2026-09-19");
+    document.activeElement?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(calendar?.focusedValue).toBe("2026-09-18");
+  });
+
   it("supports cancelable single selection and ordered range selection", () => {
     const root = renderCalendar("range");
     calendar = initCalendars(root)[0];

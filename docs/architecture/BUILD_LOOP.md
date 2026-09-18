@@ -76,8 +76,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Blockquote (built, visually unverified)
 - [x] Code block and copy button as a shipped component (built, visually unverified)
 - [x] Icon catalog page (built, visually unverified)
-- [ ] Accessible visually-hidden utility
-- [ ] RTL / direction support
+- [x] Accessible visually-hidden utility (built, visually unverified)
+- [x] RTL / direction support (built, visually unverified)
 - [ ] Loading overlay
 - [ ] Status indicator
 - [ ] Tags / chips

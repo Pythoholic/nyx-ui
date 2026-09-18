@@ -1,3 +1,5 @@
+import { horizontalArrowDelta } from "./direction.js";
+
 export type NyxRovingFocusEdge = "first" | "last";
 export type NyxRovingFocusOrientation = "horizontal" | "vertical";
 
@@ -40,12 +42,15 @@ export class NyxRovingFocus {
   }
 
   handleKeydown(event: KeyboardEvent): boolean {
-    const nextKey = this.orientation === "vertical" ? "ArrowDown" : "ArrowRight";
-    const previousKey =
-      this.orientation === "vertical" ? "ArrowUp" : "ArrowLeft";
+    const horizontalDelta = event.target instanceof Element
+      ? horizontalArrowDelta(event.key, event.target)
+      : 0;
+    const nextKey = this.orientation === "vertical" ? "ArrowDown" : undefined;
+    const previousKey = this.orientation === "vertical" ? "ArrowUp" : undefined;
     if (
       event.key !== nextKey &&
       event.key !== previousKey &&
+      (this.orientation !== "horizontal" || horizontalDelta === 0) &&
       event.key !== "Home" &&
       event.key !== "End"
     ) {
@@ -63,7 +68,9 @@ export class NyxRovingFocus {
 
     if (event.key === "Home") index = 0;
     else if (event.key === "End") index = enabled.length - 1;
-    else if (event.key === nextKey) index = (index + 1) % enabled.length;
+    else if (this.orientation === "horizontal") {
+      index = (index + horizontalDelta + enabled.length) % enabled.length;
+    } else if (event.key === nextKey) index = (index + 1) % enabled.length;
     else index = (index - 1 + enabled.length) % enabled.length;
 
     const item = enabled[index];

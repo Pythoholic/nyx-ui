@@ -48,6 +48,16 @@ describe("NyxCommandBar", () => {
     expect(commandBar.commands[2]?.dataset.state).toBe("current");
   });
 
+  it("mirrors horizontal roving focus in RTL", () => {
+    document.querySelector<HTMLElement>("[data-nyx-command-bar]")!.dir = "rtl";
+    initialized = initCommandBars();
+    const commandBar = initialized[0]!;
+    commandBar.commands[0]?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowRight" }));
+    expect(document.activeElement).toBe(commandBar.commands[2]);
+    commandBar.commands[2]?.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "ArrowLeft" }));
+    expect(document.activeElement).toBe(commandBar.commands[0]);
+  });
+
   it("pairs cancelable run events with an after-event from synchronized DOM", () => {
     initialized = initCommandBars();
     const commandBar = initialized[0]!;
