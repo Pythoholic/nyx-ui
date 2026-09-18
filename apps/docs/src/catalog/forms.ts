@@ -6,6 +6,8 @@ import fileUploadMarkup from "../../../../registry/components/file-upload.html?r
 import inputOtpMarkup from "../../../../registry/components/input-otp.html?raw";
 import numberInputMarkup from "../../../../registry/components/number-input.html?raw";
 import passwordInputMarkup from "../../../../registry/components/password-input.html?raw";
+import searchBoxMarkup from "../../../../registry/components/search-box.html?raw";
+import multiSelectMarkup from "../../../../registry/components/multi-select.html?raw";
 import { paths } from "../routes.js";
 import { card, codeBlock, page, selectMarkup } from "./shared.js";
 
@@ -49,6 +51,26 @@ export const formPages = [
     searchTerms: "password passphrase strength meter show hide visibility autocomplete validation security",
     plugins: ["password-input"],
     body: `<section class="docs-prose-section"><h2>Treat strength as guidance</h2><p>The local meter is an immediate composition heuristic, not proof that a password is safe. Keep server-side policy, compromised-password checks, rate limits, and secure storage in the application. Preserve an appropriate <code>autocomplete</code> value so password managers can help users.</p></section>${card("Password strength and visibility", passwordInputMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.forms.searchBox,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Search Box",
+    description: "A semantic search form presents recent searches for an empty query, filters suggestions as text changes, and emits cancelable application-owned search actions.",
+    searchTerms: "search box suggestions recent history query autocomplete listbox",
+    plugins: ["search-box"],
+    body: `<section class="docs-prose-section"><h2>Search remains application-owned</h2><p>Nyx manages suggestion discovery, keyboard movement, recent-query presentation, clear state, and the search event lifecycle. Your application handles navigation or remote requests after <code>nyx:search-box:search</code>; use the cancelable before-event for controlled integration.</p></section>${card("Search box with recent searches", searchBoxMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.forms.multiSelect,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Multi-select and Tag Input",
+    description: "An editable multi-select filters listbox options, renders removable tags, enforces a value limit, and submits repeated hidden form fields.",
+    searchTerms: "multi select tag input chips multiple listbox removable form values",
+    plugins: ["multi-select"],
+    body: `<section class="docs-prose-section"><h2>Keep values and labels distinct</h2><p>Options provide stable <code>data-value</code> identifiers while their visible text labels generated tags. The configured field name produces one hidden input per selection, which preserves ordinary form submission without turning tags into editable text.</p></section>${card("Multi-select and tag input", multiSelectMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.forms.combobox,

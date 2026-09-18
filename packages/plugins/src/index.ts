@@ -17,6 +17,26 @@ export {
 } from "./combobox.js";
 
 export {
+  NyxSearchBox,
+  initSearchBoxes,
+  type NyxSearchBoxCloseReason,
+  type NyxSearchBoxEventDetail,
+  type NyxSearchBoxEventMap,
+  type NyxSearchBoxOptions,
+  type NyxSearchBoxSearchReason,
+} from "./search-box.js";
+
+export {
+  NyxMultiSelect,
+  initMultiSelects,
+  type NyxMultiSelectChangeReason,
+  type NyxMultiSelectCloseReason,
+  type NyxMultiSelectEventDetail,
+  type NyxMultiSelectEventMap,
+  type NyxMultiSelectOptions,
+} from "./multi-select.js";
+
+export {
   NyxCommandPalette,
   initCommandPalettes,
   type NyxCommandPaletteEventDetail,

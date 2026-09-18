@@ -81,6 +81,20 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
     },
     {
+      "name": "search-box",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/search-box.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/search-box"]
+    },
+    {
+      "name": "multi-select",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/multi-select.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/multi-select"]
+    },
+    {
       "name": "file-upload",
       "type": "component",
       "status": "preview",

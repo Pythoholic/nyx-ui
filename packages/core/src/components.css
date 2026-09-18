@@ -118,6 +118,20 @@
   .nyx-option[aria-disabled="true"], .nyx-command[aria-disabled="true"] { color: var(--nyx-disabled); cursor: not-allowed; }
   .nyx-listbox-empty { margin: 0; padding: var(--nyx-space-5); color: var(--nyx-label); font-size: var(--nyx-type-label); text-align: center; }
 
+  .nyx-search-box, .nyx-multi-select { position: relative; display: grid; inline-size: min(32rem, 100%); gap: var(--nyx-space-2); }
+  .nyx-search-control { display: flex; }
+  .nyx-search-control > .nyx-input { border-start-end-radius: 0; border-end-end-radius: 0; }
+  .nyx-search-clear { min-inline-size: 4.5rem; margin-inline-start: calc(var(--nyx-border) * -1); border-start-start-radius: 0; border-end-start-radius: 0; }
+  .nyx-search-clear[hidden] { display: none; }
+  .nyx-search-group { display: grid; gap: 0.125rem; }
+  .nyx-search-group + .nyx-search-group { margin-block-start: var(--nyx-space-2); padding-block-start: var(--nyx-space-2); border-block-start: var(--nyx-border) solid var(--nyx-line); }
+  .nyx-search-group-label { padding: 0.375rem 0.75rem; color: var(--nyx-label); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
+  .nyx-tag-list { display: flex; min-block-size: 2rem; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-2); }
+  .nyx-tag-list:empty { display: none; }
+  .nyx-tag { display: inline-flex; min-block-size: 2rem; align-items: center; gap: var(--nyx-space-1); padding-inline-start: 0.625rem; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-round); background: var(--nyx-accent-soft); color: var(--nyx-accent); font-size: var(--nyx-type-label); }
+  .nyx-tag > button { display: inline-grid; inline-size: 1.875rem; block-size: 1.875rem; place-items: center; padding: 0; border: 0; border-radius: var(--nyx-radius-round); background: transparent; color: inherit; font: inherit; }
+  .nyx-tag > button:is(:hover, :focus-visible) { outline: 0; background: var(--nyx-accent); color: var(--nyx-accent-ink); }
+
   .nyx-choice { display: flex; align-items: flex-start; gap: var(--nyx-space-3); color: var(--nyx-muted); font-size: var(--nyx-type-body); }
   .nyx-choice input { inline-size: 1.125rem; block-size: 1.125rem; margin: 0.125rem 0 0; accent-color: var(--nyx-accent); }
   .nyx-switch { position: relative; display: inline-grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--nyx-space-3); color: var(--nyx-muted); font-size: var(--nyx-type-body); }

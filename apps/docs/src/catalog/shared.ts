@@ -8,8 +8,10 @@ export type PluginName =
   | "dropdown-menu"
   | "file-upload"
   | "input-otp"
+  | "multi-select"
   | "number-input"
   | "password-input"
+  | "search-box"
   | "menubar"
   | "navigation-menu"
   | "scroll-area"
@@ -320,6 +322,91 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Enter", description: "Toggles the leading panel when it is explicitly collapsible." },
       ],
       accessibility: "The focusable handle uses separator semantics and continuously synchronized aria-valuenow, aria-valuemin, aria-valuemax, aria-valuetext, and aria-orientation. Nested groups discover only their direct ownership scope.",
+    },
+  },
+  "search-box": {
+    className: "NyxSearchBox",
+    initName: "initSearchBoxes",
+    selector: "[data-nyx-search-box]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-search-box", value: "presence", description: "Marks the search input, clear button, and result-list ownership boundary." },
+        { name: "data-nyx-search-box-recent", value: "presence", description: "Keeps an option visible when the query is blank." },
+        { name: "data-nyx-search-box-clear", value: "presence", description: "Marks the native clear button synchronized to query state." },
+        { name: "data-nyx-search-box-empty", value: "presence", description: "Marks the no-results message." },
+        { name: "data-nyx-search-box-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
+        { name: "data-nyx-search-text / data-value", value: "string", description: "Overrides an option's filter text or submitted search text." },
+        { name: "data-state", value: "open | closed", description: "Reflects suggestion-list visibility." },
+      ],
+      options: [{ name: "placement", value: "NyxOverlayPlacement", description: "Sets the preferred anchored popup placement." }],
+      methods: [
+        { name: "value", value: "string", description: "Gets or sets the current query and refreshes filtering." },
+        { name: "expanded", value: "boolean", description: "Reads whether the suggestion list is open." },
+        { name: "open() / close(reason?)", value: "void", description: "Controls the positioned suggestion list and dismissal lifecycle." },
+        { name: "filter(query?)", value: "number", description: "Shows recent options for a blank query or matching suggestions for text." },
+        { name: "search(query?, reason?, option?)", value: "boolean", description: "Requests a search and reports whether it was accepted." },
+        { name: "clear()", value: "boolean", description: "Requests clearing the query, restores recent options, and preserves focus." },
+        { name: "destroy()", value: "void", description: "Closes and removes positioning, dismissal, result state, and listeners." },
+      ],
+      events: [
+        { name: "nyx:search-box:before-open / before-close", value: "cancelable", description: "Fires before suggestion-list state changes; destroy closure cannot be canceled." },
+        { name: "nyx:search-box:open / close", value: "not cancelable", description: "Fires after popup, data-state, and ARIA synchronize." },
+        { name: "nyx:search-box:filter", value: "not cancelable", description: "Reports the query and visible result count." },
+        { name: "nyx:search-box:before-search / search", value: "cancelable / not cancelable", description: "Brackets a submitted query or chosen suggestion." },
+        { name: "nyx:search-box:before-clear / clear", value: "cancelable / not cancelable", description: "Brackets clearing the current query." },
+      ],
+      keyboard: [
+        { name: "Arrow Down / Arrow Up", description: "Opens the list and moves through enabled visible recent searches or suggestions." },
+        { name: "Home / End", description: "Moves to the first or last enabled visible option while open." },
+        { name: "Enter", description: "Searches the active suggestion, or submits the typed query when no option is active." },
+        { name: "Escape", description: "Closes suggestions without clearing the query." },
+        { name: "Tab", description: "Closes suggestions and continues normal focus navigation." },
+      ],
+      accessibility: "The semantic search form contains an editable combobox whose DOM focus remains on the input. The listbox uses aria-controls, aria-expanded, and aria-activedescendant; grouped recent searches and suggestions have accessible labels, and disabled options are skipped. Search execution is application-owned through events rather than hidden navigation.",
+    },
+  },
+  "multi-select": {
+    className: "NyxMultiSelect",
+    initName: "initMultiSelects",
+    selector: "[data-nyx-multi-select]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-multi-select", value: "presence", description: "Marks the multi-value input ownership boundary." },
+        { name: "data-nyx-multi-select-name", value: "field name", description: "Names the repeated hidden inputs used for form submission." },
+        { name: "data-nyx-multi-select-max", value: "positive integer", description: "Limits the number of selected options." },
+        { name: "data-nyx-multi-select-tags / values", value: "presence", description: "Marks generated tag and hidden-input containers." },
+        { name: "data-nyx-multi-select-empty", value: "presence", description: "Marks the no-results message." },
+        { name: "data-nyx-multi-select-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
+        { name: "data-state", value: "empty | filled | max", description: "Reflects the selected-value state." },
+        { name: "data-popup-state", value: "open | closed", description: "Reflects suggestion-list visibility." },
+      ],
+      options: [{ name: "placement", value: "NyxOverlayPlacement", description: "Sets the preferred anchored popup placement." }],
+      methods: [
+        { name: "value", value: "string[]", description: "Gets or sets selected values in option order." },
+        { name: "expanded", value: "boolean", description: "Reads whether the option list is open." },
+        { name: "open() / close(reason?)", value: "void", description: "Controls the positioned listbox and dismissal lifecycle." },
+        { name: "add(optionOrValue, reason?)", value: "boolean", description: "Adds an enabled option within the declared maximum." },
+        { name: "remove(optionOrValue, reason?)", value: "boolean", description: "Removes a selected option." },
+        { name: "toggle(option, reason?) / clear()", value: "boolean", description: "Toggles one option or requests clearing all selected values." },
+        { name: "filter(query?)", value: "number", description: "Filters options and returns the visible count." },
+        { name: "destroy()", value: "void", description: "Removes listeners, generated tags and values, positioning, dismissal, and cached state." },
+      ],
+      events: [
+        { name: "nyx:multi-select:before-open / before-close", value: "cancelable", description: "Fires before listbox state changes; destroy closure cannot be canceled." },
+        { name: "nyx:multi-select:open / close", value: "not cancelable", description: "Fires after popup and ARIA state synchronize." },
+        { name: "nyx:multi-select:filter", value: "not cancelable", description: "Reports the query and visible option count." },
+        { name: "nyx:multi-select:before-add / add", value: "cancelable / not cancelable", description: "Brackets adding a tag and repeated form value." },
+        { name: "nyx:multi-select:before-remove / remove", value: "cancelable / not cancelable", description: "Brackets removing a tag and repeated form value." },
+        { name: "nyx:multi-select:before-clear / clear", value: "cancelable / not cancelable", description: "Brackets clearing the complete selection." },
+      ],
+      keyboard: [
+        { name: "Arrow Down / Arrow Up", description: "Opens the list and moves the active descendant through enabled visible options." },
+        { name: "Home / End", description: "Moves to the first or last enabled visible option while open." },
+        { name: "Enter", description: "Toggles the active option and clears the filter for another choice." },
+        { name: "Backspace", description: "Removes the last selected value when the query is empty." },
+        { name: "Escape / Tab", description: "Closes the list; Tab continues normal focus navigation." },
+      ],
+      accessibility: "The input uses the editable combobox pattern with a multiselectable listbox; DOM focus remains on the input while aria-activedescendant tracks suggestions. Every generated tag has a native remove button with a specific accessible name. Repeated hidden inputs submit selected values without replacing the visible labels or listbox semantics.",
     },
   },
   combobox: {

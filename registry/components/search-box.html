@@ -1,0 +1,49 @@
+<form
+  aria-label="Search operational records"
+  class="nyx-search-box"
+  data-nyx-search-box
+  data-state="closed"
+  role="search"
+>
+  <label class="nyx-label" for="nyx-record-search">Search records</label>
+  <div class="nyx-search-control">
+    <input
+      aria-label="Search operational records"
+      autocomplete="off"
+      class="nyx-input"
+      id="nyx-record-search"
+      name="query"
+      placeholder="Search incidents, services, or owners"
+      role="combobox"
+      type="search"
+    />
+    <button
+      aria-label="Clear search"
+      class="nyx-button nyx-search-clear"
+      data-nyx-search-box-clear
+      hidden
+      type="button"
+    >Clear</button>
+  </div>
+  <div
+    aria-label="Search suggestions"
+    class="nyx-listbox nyx-scrollable-overlay"
+    id="nyx-record-search-results"
+    popover="manual"
+    role="listbox"
+  >
+    <div aria-labelledby="nyx-recent-searches-label" class="nyx-search-group" role="group">
+      <div class="nyx-search-group-label" id="nyx-recent-searches-label">Recent searches</div>
+      <div class="nyx-option" data-nyx-search-box-recent data-value="failed deployments" role="option">Failed deployments</div>
+      <div class="nyx-option" data-nyx-search-box-recent data-value="Tokyo incidents" role="option">Tokyo incidents</div>
+    </div>
+    <div aria-labelledby="nyx-search-suggestions-label" class="nyx-search-group" role="group">
+      <div class="nyx-search-group-label" id="nyx-search-suggestions-label">Suggestions</div>
+      <div class="nyx-option" data-value="deployment status" role="option">Deployment status</div>
+      <div class="nyx-option" data-value="incident timeline" role="option">Incident timeline</div>
+      <div class="nyx-option" data-value="service owners" role="option">Service owners</div>
+      <div aria-disabled="true" class="nyx-option" role="option">Archived records unavailable</div>
+    </div>
+    <p class="nyx-listbox-empty" data-nyx-search-box-empty hidden>No matching search suggestion.</p>
+  </div>
+</form>

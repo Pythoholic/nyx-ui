@@ -17,6 +17,14 @@
       "types": "./dist/combobox.d.ts",
       "default": "./dist/combobox.js"
     },
+    "./search-box": {
+      "types": "./dist/search-box.d.ts",
+      "default": "./dist/search-box.js"
+    },
+    "./multi-select": {
+      "types": "./dist/multi-select.d.ts",
+      "default": "./dist/multi-select.js"
+    },
     "./command-palette": {
       "types": "./dist/command-palette.d.ts",
       "default": "./dist/command-palette.js"

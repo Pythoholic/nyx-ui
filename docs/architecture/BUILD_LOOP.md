@@ -45,8 +45,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Stepper with state management (built, visually unverified)
 - [x] Advanced number input (built, visually unverified)
 - [x] Password strength and visibility controls (built, visually unverified)
-- [ ] Search box with suggestions and recent searches
-- [ ] Multi-select and tag input
+- [x] Search box with suggestions and recent searches (built, visually unverified)
+- [x] Multi-select and tag input (built, visually unverified)
 - [ ] Notification centre
 - [ ] Activity feed
 - [ ] Filter bar

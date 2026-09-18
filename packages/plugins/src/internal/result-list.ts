@@ -6,6 +6,8 @@ export interface NyxResultListOptions {
   options: readonly HTMLElement[];
 }
 
+export type NyxResultFilter = (option: HTMLElement, normalizedQuery: string) => boolean;
+
 function normalized(value: string): string {
   return value.trim().toLocaleLowerCase();
 }
@@ -46,10 +48,12 @@ export class NyxResultList {
     return this.visibleOptions.filter((option) => !isResultDisabled(option));
   }
 
-  filter(query: string): number {
+  filter(query: string, matches?: NyxResultFilter): number {
     const needle = normalized(query);
     this.options.forEach((option) => {
-      option.hidden = Boolean(needle) && !normalized(resultText(option)).includes(needle);
+      option.hidden = matches
+        ? !matches(option, needle)
+        : Boolean(needle) && !normalized(resultText(option)).includes(needle);
     });
     this.groups.forEach((group) => {
       group.hidden = !this.options.some((option) => group.contains(option) && !option.hidden);

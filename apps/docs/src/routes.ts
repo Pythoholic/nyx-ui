@@ -24,6 +24,8 @@ export const paths = {
       selection: "/components/forms/selection-controls",
       numberInput: "/components/forms/number-input",
       passwordInput: "/components/forms/password-input",
+      searchBox: "/components/forms/search-box",
+      multiSelect: "/components/forms/multi-select",
       combobox: "/components/forms/combobox",
       searchableSelect: "/components/forms/searchable-select",
       inputOtp: "/components/forms/input-otp",

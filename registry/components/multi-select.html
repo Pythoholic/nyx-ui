@@ -1,0 +1,39 @@
+<div class="nyx-field">
+  <label class="nyx-label" for="nyx-team-multi-select">Owning teams</label>
+  <span class="nyx-field-hint" id="nyx-team-multi-select-hint">Choose up to three teams. Selected values are submitted as repeated fields.</span>
+</div>
+<div
+  class="nyx-multi-select"
+  data-nyx-multi-select
+  data-nyx-multi-select-max="3"
+  data-nyx-multi-select-name="teams"
+  data-popup-state="closed"
+  data-state="filled"
+>
+  <div aria-label="Selected teams" class="nyx-tag-list" data-nyx-multi-select-tags id="nyx-selected-teams"></div>
+  <input
+    aria-describedby="nyx-team-multi-select-hint nyx-selected-teams"
+    aria-label="Add owning team"
+    autocomplete="off"
+    class="nyx-input"
+    id="nyx-team-multi-select"
+    placeholder="Search teams"
+    role="combobox"
+    type="text"
+  />
+  <div data-nyx-multi-select-values hidden></div>
+  <div
+    aria-label="Available teams"
+    class="nyx-listbox nyx-scrollable-overlay"
+    id="nyx-team-multi-select-options"
+    popover="manual"
+    role="listbox"
+  >
+    <div aria-selected="true" class="nyx-option" data-value="atlas" role="option">Atlas</div>
+    <div class="nyx-option" data-value="helix" role="option">Helix</div>
+    <div class="nyx-option" data-value="nightwatch" role="option">Nightwatch</div>
+    <div class="nyx-option" data-value="vector" role="option">Vector</div>
+    <div aria-disabled="true" class="nyx-option" data-value="archive" role="option">Archive team unavailable</div>
+    <p class="nyx-listbox-empty" data-nyx-multi-select-empty hidden>No matching team.</p>
+  </div>
+</div>
