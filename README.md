@@ -37,6 +37,12 @@ Open `http://127.0.0.1:5173/`.
 ## Validate
 
 ```shell
+pnpm test
 pnpm typecheck
 pnpm build
+pnpm packages:check
 ```
+
+## Release packages
+
+Add a release note for consumer-visible changes with `pnpm changeset`. Maintainers apply pending versions with `pnpm version-packages`, then run `pnpm release` to rebuild, verify the package tarballs, and publish the public packages.

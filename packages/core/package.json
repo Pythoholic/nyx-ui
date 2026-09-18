@@ -2,13 +2,24 @@
   "name": "@nyx-ui/core",
   "version": "0.1.0",
   "description": "Nyx UI tokens, themes, foundations, and component styles.",
+  "keywords": ["nyx-ui", "tailwindcss", "design-system", "css"],
   "license": "Apache-2.0",
   "type": "module",
+  "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
+  "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pythoholic/nyx-stealth.git",
+    "directory": "packages/core"
+  },
   "style": "./src/index.css",
   "exports": {
     ".": "./src/index.css",
     "./theme.css": "./src/index.css"
   },
   "files": ["src/**/*.css"],
-  "sideEffects": ["**/*.css"]
+  "sideEffects": ["**/*.css"],
+  "publishConfig": {
+    "access": "public"
+  }
 }

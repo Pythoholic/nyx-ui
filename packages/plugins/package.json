@@ -2,8 +2,19 @@
   "name": "@nyx-ui/plugins",
   "version": "0.1.0",
   "description": "Optional framework-agnostic behavior for Nyx UI components.",
+  "keywords": ["nyx-ui", "tailwindcss", "design-system", "components"],
   "license": "Apache-2.0",
   "type": "module",
+  "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
+  "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pythoholic/nyx-stealth.git",
+    "directory": "packages/plugins"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -182,7 +193,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run --environment jsdom",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm build"
   },
   "devDependencies": {
     "jsdom": "30.1.0",
@@ -191,5 +203,8 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

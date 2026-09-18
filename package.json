@@ -11,6 +11,13 @@
     "dev": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs dev --host 127.0.0.1",
     "build": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs build",
     "test": "pnpm --filter @nyx-ui/plugins test",
-    "typecheck": "pnpm --filter @nyx-ui/plugins build && pnpm -r typecheck"
+    "typecheck": "pnpm --filter @nyx-ui/plugins build && pnpm -r typecheck",
+    "packages:check": "node scripts/verify-packages.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && pnpm packages:check && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3"
   }
 }
