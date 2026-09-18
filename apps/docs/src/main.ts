@@ -10,6 +10,10 @@ import { initFileUploads, type NyxFileUploadAdapter } from "@nyx-ui/plugins/file
 import { initInputOtps } from "@nyx-ui/plugins/input-otp";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
+import { initHoverCards } from "@nyx-ui/plugins/hover-card";
+import { initResizablePanels } from "@nyx-ui/plugins/resizable-panels";
+import { initScrollAreas } from "@nyx-ui/plugins/scroll-area";
+import { initTreeViews } from "@nyx-ui/plugins/tree-view";
 import { initSidebars } from "@nyx-ui/plugins/sidebar";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
@@ -181,6 +185,10 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "input-otp": addDestroyables(destroyables, initInputOtps(root)); break;
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
+    case "hover-card": addDestroyables(destroyables, initHoverCards(root)); break;
+    case "resizable-panels": addDestroyables(destroyables, initResizablePanels(root)); break;
+    case "scroll-area": addDestroyables(destroyables, initScrollAreas(root)); break;
+    case "tree-view": addDestroyables(destroyables, initTreeViews(root)); break;
     case "sidebar": addDestroyables(destroyables, initSidebars(root)); break;
     case "tabs": addDestroyables(destroyables, initTabs(root)); break;
     case "toast": {

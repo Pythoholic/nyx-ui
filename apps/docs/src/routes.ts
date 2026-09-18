@@ -50,6 +50,7 @@ export const paths = {
       alertDialog: "/components/overlays/alert-dialog",
       drawer: "/components/overlays/drawer",
       commandPalette: "/components/overlays/command-palette",
+      hoverCard: "/components/overlays/hover-card",
     },
     feedback: {
       badges: "/components/feedback/badges",
@@ -64,6 +65,7 @@ export const paths = {
     dataDisplay: {
       records: "/components/data-display/metrics-records-activity",
       dataTable: "/components/data-display/advanced-data-table",
+      treeView: "/components/data-display/tree-view",
     },
     visualization: {
       lineChart: "/components/visualization/line-chart",
@@ -82,6 +84,8 @@ export const paths = {
       sidebar: "/components/layouts/sidebar",
       authentication: "/components/layouts/authentication",
       splitWorkspace: "/components/layouts/split-workspace",
+      scrollArea: "/components/layouts/scroll-area",
+      resizablePanels: "/components/layouts/resizable-panels",
     },
   },
 } as const;

@@ -1,5 +1,6 @@
 import dataDisplayMarkup from "../../../../registry/components/data-display.html?raw";
 import dataTableMarkup from "../../../../registry/components/data-table.html?raw";
+import treeViewMarkup from "../../../../registry/components/tree-view.html?raw";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
 
@@ -12,6 +13,16 @@ export const dataPages = [
     description: "Operational data stays scannable through tabular numbers, strong row boundaries, explicit status, accessible tables, and expandable detail.",
     searchTerms: "data stat card description list table jobs workflow timeline log code record expandable",
     body: card("Metrics, records, and activity", `<div class="docs-stack">${dataDisplayMarkup}</div>`, "Registry source", dataDisplayMarkup),
+  }),
+  page({
+    path: paths.components.dataDisplay.treeView,
+    categoryId: "data-display",
+    categoryLabel: "Data Display",
+    title: "Tree View",
+    description: "A semantic hierarchical list provides expansion, single or multiple selection, visible-item roving focus, and typeahead.",
+    searchTerms: "tree view files hierarchy nested list expansion selection roving focus typeahead keyboard",
+    plugins: ["tree-view"],
+    body: `<section class="docs-prose-section"><h2>Visible-set navigation</h2><p>Every arrow-key and typeahead action derives a fresh ordered list from branches whose ancestors are expanded. Collapsed descendants therefore never receive focus. Nested lists remain native <code>ul</code>/<code>li</code> structures while the controller maintains the complete tree ARIA model.</p></section>${card("Workspace files", treeViewMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.dataDisplay.dataTable,

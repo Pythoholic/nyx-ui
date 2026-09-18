@@ -177,6 +177,34 @@
       "status": "preview",
       "files": ["components/sidebar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/sidebar"]
+    },
+    {
+      "name": "scroll-area",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/scroll-area.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/scroll-area"]
+    },
+    {
+      "name": "hover-card",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/hover-card.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/hover-card"]
+    },
+    {
+      "name": "tree-view",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/tree-view.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tree-view"]
+    },
+    {
+      "name": "resizable-panels",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/resizable-panels.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/resizable-panels"]
     }
   ]
 }

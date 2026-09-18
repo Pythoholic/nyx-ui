@@ -127,6 +127,41 @@ export {
 } from "./navigation-menu.js";
 
 export {
+  NyxScrollArea,
+  initScrollAreas,
+  type NyxScrollAreaEventDetail,
+  type NyxScrollAreaEventMap,
+} from "./scroll-area.js";
+
+export {
+  NyxHoverCard,
+  initHoverCards,
+  type NyxHoverCardCloseReason,
+  type NyxHoverCardEventDetail,
+  type NyxHoverCardEventMap,
+  type NyxHoverCardOptions,
+} from "./hover-card.js";
+
+export {
+  NyxTreeView,
+  initTreeViews,
+  type NyxTreeChangeReason,
+  type NyxTreeSelectionMode,
+  type NyxTreeViewEventDetail,
+  type NyxTreeViewEventMap,
+} from "./tree-view.js";
+
+export {
+  NyxResizablePanels,
+  initResizablePanels,
+  type NyxResizableOrientation,
+  type NyxResizablePanelsEventDetail,
+  type NyxResizablePanelsEventMap,
+  type NyxResizablePanelsOptions,
+  type NyxResizableReason,
+} from "./resizable-panels.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

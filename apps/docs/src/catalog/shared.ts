@@ -9,6 +9,10 @@ export type PluginName =
   | "input-otp"
   | "menubar"
   | "navigation-menu"
+  | "scroll-area"
+  | "hover-card"
+  | "tree-view"
+  | "resizable-panels"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -58,6 +62,131 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "scroll-area": {
+    className: "NyxScrollArea",
+    initName: "initScrollAreas",
+    selector: "[data-nyx-scroll-area]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-scroll-area", value: "presence", description: "Marks the scroll-area root that owns edge state and optional fades." },
+        { name: "data-nyx-scroll-area-viewport", value: "presence", description: "Marks the native overflow viewport; keep its accessible name when it is focusable." },
+        { name: "--nyx-scroll-area-size", value: "CSS length", description: "Sets the viewport's maximum block size." },
+        { name: "data-at-block-start / data-at-block-end", value: "boolean", description: "Reflects the current vertical edges for fade affordances." },
+      ],
+      methods: [
+        { name: "viewport", value: "HTMLElement", description: "Exposes the native scrolling element." },
+        { name: "refresh()", value: "void", description: "Recomputes overflow and edge state after content changes." },
+        { name: "destroy()", value: "void", description: "Removes observation and listeners and releases the cached instance." },
+      ],
+      events: [{ name: "nyx:scroll-area:change", value: "not cancelable", description: "Fires after passive overflow-edge state changes; native scrolling itself is never intercepted." }],
+      keyboard: [{ name: "Arrow keys / Page Up / Page Down / Home / End", description: "Use the browser's native scrolling behavior while the viewport has focus." }],
+      accessibility: "The focusable viewport keeps native scrolling, momentum, and platform keyboard behavior. Give it an accessible name that describes the region. Edge fades are decorative and never cover the scrollbar or intercept input.",
+    },
+  },
+  "hover-card": {
+    className: "NyxHoverCard",
+    initName: "initHoverCards",
+    selector: "[data-nyx-hover-card]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-hover-card", value: "presence", description: "Marks rich hover-card content." },
+        { name: "data-nyx-hover-card-trigger", value: "card id", description: "Associates one or more pointer and keyboard triggers." },
+        { name: "data-nyx-hover-card-open-delay", value: "milliseconds", description: "Sets the intent delay before opening." },
+        { name: "data-nyx-hover-card-close-delay", value: "milliseconds", description: "Sets the dismissal grace period." },
+        { name: "data-nyx-hover-card-placement", value: "placement", description: "Sets the preferred anchored placement." },
+      ],
+      options: [
+        { name: "openDelay / closeDelay", value: "number", description: "Overrides markup delays." },
+        { name: "placement", value: "NyxOverlayPlacement", description: "Overrides the preferred placement." },
+      ],
+      methods: [
+        { name: "value", value: "boolean", description: "Reads whether the card is open." },
+        { name: "open(trigger?)", value: "void", description: "Opens and positions the card for an associated trigger." },
+        { name: "close(reason?)", value: "void", description: "Closes with an optional reason." },
+        { name: "destroy()", value: "void", description: "Closes, clears timers, and releases positioning, dismissal, and listeners." },
+      ],
+      events: [
+        { name: "nyx:hover-card:before-open / before-close", value: "cancelable", description: "Fires before state changes; destroy closure cannot be canceled." },
+        { name: "nyx:hover-card:open / close", value: "not cancelable", description: "Fires after visibility, data-state, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Opening is triggered by focus, and rich interactive content remains reachable." },
+        { name: "Escape", description: "Closes the card through the shared dismissal layer." },
+      ],
+      accessibility: "Hover Card is rich supplementary content, so it deliberately has no tooltip role. It opens from both pointer hover and keyboard focus, remains open while pointer or focus is inside, and exposes aria-controls and aria-expanded on its triggers.",
+    },
+  },
+  "tree-view": {
+    className: "NyxTreeView",
+    initName: "initTreeViews",
+    selector: "[data-nyx-tree]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-tree", value: "presence", description: "Marks the root ul and receives role=tree." },
+        { name: "data-nyx-tree-item", value: "presence", description: "Marks each nested li tree item." },
+        { name: "data-nyx-tree-label", value: "presence", description: "Provides the direct label used by typeahead." },
+        { name: "data-nyx-tree-toggle", value: "presence", description: "Marks the pointer expansion affordance inside a parent row." },
+        { name: "data-nyx-tree-selection", value: "none | single | multiple", description: "Sets the selection model; the default is single." },
+      ],
+      methods: [
+        { name: "selectedItems", value: "HTMLElement[]", description: "Returns the currently selected items." },
+        { name: "expand(item) / collapse(item)", value: "boolean", description: "Requests a parent state transition." },
+        { name: "select(item, selected?)", value: "boolean", description: "Requests a selection transition." },
+        { name: "destroy()", value: "void", description: "Clears typeahead and listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:tree:before-expand / before-collapse", value: "cancelable", description: "Fires before a branch changes." },
+        { name: "nyx:tree:expand / collapse", value: "not cancelable", description: "Fires after aria-expanded, data-state, and group visibility synchronize." },
+        { name: "nyx:tree:before-select", value: "cancelable", description: "Fires before selection changes." },
+        { name: "nyx:tree:select", value: "not cancelable", description: "Fires after aria-selected synchronizes." },
+      ],
+      keyboard: [
+        { name: "Arrow Down / Arrow Up", description: "Moves through the current visible item set without wrapping." },
+        { name: "Arrow Right", description: "Expands a collapsed parent, then moves into its first child." },
+        { name: "Arrow Left", description: "Collapses an expanded parent, then moves to its parent." },
+        { name: "Home / End", description: "Moves to the first or last visible item." },
+        { name: "Printable characters", description: "Moves to the next visible item whose label matches the typeahead buffer." },
+        { name: "Enter / Space", description: "Selects, or toggles selection in a multiple-selection tree." },
+      ],
+      accessibility: "Nested ul and li elements retain the content hierarchy while the controller supplies tree, treeitem, and group roles; aria-level, aria-setsize, and aria-posinset; parent expansion; selection state; and one roving tab stop.",
+    },
+  },
+  "resizable-panels": {
+    className: "NyxResizablePanels",
+    initName: "initResizablePanels",
+    selector: "[data-nyx-resizable]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-resizable", value: "presence", description: "Marks one two-panel splitter group." },
+        { name: "data-nyx-resizable-orientation", value: "horizontal | vertical", description: "Sets panel flow; separator ARIA reports the perpendicular handle orientation." },
+        { name: "data-nyx-resizable-panel", value: "presence", description: "Marks exactly two panels owned by the nearest group." },
+        { name: "data-nyx-resizable-handle", value: "presence", description: "Marks the focusable pointer and keyboard separator." },
+        { name: "data-nyx-min-size / data-nyx-max-size", value: "percent", description: "Constrains each panel." },
+        { name: "data-nyx-collapsible", value: "presence", description: "Allows the leading panel to collapse with Enter or Home." },
+        { name: "data-nyx-resizable-persist", value: "storage key", description: "Opts into local size persistence; omitted means no storage access." },
+      ],
+      options: [{ name: "storage", value: "Storage", description: "Injects storage for an explicitly persistent group." }],
+      methods: [
+        { name: "size / collapsed", value: "number / boolean", description: "Reads leading-panel percentage and collapse state." },
+        { name: "resize(size)", value: "boolean", description: "Requests a constrained resize." },
+        { name: "collapse() / expand() / toggleCollapse()", value: "boolean", description: "Requests a supported collapse transition." },
+        { name: "destroy()", value: "void", description: "Ends any drag, removes listeners, and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:resizable:before-resize", value: "cancelable", description: "Fires before pointer, keyboard, or API sizing is committed." },
+        { name: "nyx:resizable:resize", value: "not cancelable", description: "Fires after size, styles, ARIA, and optional persistence synchronize." },
+        { name: "nyx:resizable:before-collapse / before-expand", value: "cancelable", description: "Fires before an enabled collapse transition." },
+        { name: "nyx:resizable:collapse / expand", value: "not cancelable", description: "Fires after collapse state synchronizes." },
+      ],
+      keyboard: [
+        { name: "Arrow Left / Right", description: "Resizes a horizontal panel flow by the configured step." },
+        { name: "Arrow Up / Down", description: "Resizes a vertical panel flow by the configured step." },
+        { name: "Home / End", description: "Moves to minimum or maximum; Home collapses a collapsible leading panel." },
+        { name: "Enter", description: "Toggles the leading panel when it is explicitly collapsible." },
+      ],
+      accessibility: "The focusable handle uses separator semantics and continuously synchronized aria-valuenow, aria-valuemin, aria-valuemax, aria-valuetext, and aria-orientation. Nested groups discover only their direct ownership scope.",
+    },
+  },
   combobox: {
     className: "NyxCombobox",
     initName: "initComboboxes",

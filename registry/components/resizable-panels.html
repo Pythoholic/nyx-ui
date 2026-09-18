@@ -1,0 +1,17 @@
+<div class="nyx-resizable" data-nyx-resizable data-nyx-resizable-orientation="horizontal" data-nyx-resizable-step="5" id="workspace-split">
+  <section class="nyx-resizable-panel" data-nyx-resizable-panel data-nyx-size="42" data-nyx-min-size="20" data-nyx-max-size="75" data-nyx-collapsible aria-labelledby="editor-heading">
+    <span class="nyx-eyebrow">Configuration</span>
+    <h3 id="editor-heading">Release editor</h3>
+    <label class="nyx-field" for="release-note"><span class="nyx-label">Release note</span><textarea class="nyx-textarea" id="release-note">Promote verified artifacts to production.</textarea></label>
+  </section>
+  <div class="nyx-resizable-handle" data-nyx-resizable-handle aria-label="Resize release editor"></div>
+  <section class="nyx-resizable-panel" data-nyx-resizable-panel data-nyx-min-size="25" data-nyx-max-size="80" aria-labelledby="preview-heading">
+    <span class="nyx-eyebrow">Preview</span>
+    <h3 id="preview-heading">Deployment plan</h3>
+    <div class="nyx-resizable" data-nyx-resizable data-nyx-resizable-orientation="vertical" data-nyx-resizable-step="10">
+      <section class="nyx-resizable-panel" data-nyx-resizable-panel data-nyx-size="55" data-nyx-min-size="25"><strong>Primary region</strong><p class="nyx-item-description">Tokyo · healthy</p></section>
+      <div class="nyx-resizable-handle" data-nyx-resizable-handle aria-label="Resize deployment regions"></div>
+      <section class="nyx-resizable-panel" data-nyx-resizable-panel data-nyx-min-size="25"><strong>Secondary region</strong><p class="nyx-item-description">Singapore · ready</p></section>
+    </div>
+  </section>
+</div>

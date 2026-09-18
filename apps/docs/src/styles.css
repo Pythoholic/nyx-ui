@@ -4,11 +4,6 @@
 
 html { scroll-behavior: auto !important; }
 body { overflow-x: clip; }
-html.nyx-scrollable-overlay::-webkit-scrollbar, .docs-sidebar::-webkit-scrollbar { inline-size: 0.625rem; block-size: 0.625rem; }
-html.nyx-scrollable-overlay::-webkit-scrollbar-track, .docs-sidebar::-webkit-scrollbar-track { background: var(--nyx-panel-raised); }
-html.nyx-scrollable-overlay::-webkit-scrollbar-thumb, .docs-sidebar::-webkit-scrollbar-thumb { border: 0.125rem solid var(--nyx-panel-raised); border-radius: var(--nyx-radius-control); background: var(--nyx-line-strong); }
-html.nyx-scrollable-overlay::-webkit-scrollbar-thumb:hover, .docs-sidebar::-webkit-scrollbar-thumb:hover { background: var(--nyx-muted); }
-
 @layer components {
   .docs-shell { --docs-topbar-size: 4.5rem; display: flex; min-block-size: 100vh; flex-direction: column; }
   .docs-topbar { position: sticky; z-index: var(--nyx-z-sticky); inset-block-start: 0; display: grid; grid-template-columns: auto minmax(16rem, 30rem) auto; min-block-size: var(--docs-topbar-size); align-items: center; gap: var(--nyx-space-5); padding-inline: clamp(1rem, 2vw, 2rem); border-bottom: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-void-glass); backdrop-filter: blur(1rem); }

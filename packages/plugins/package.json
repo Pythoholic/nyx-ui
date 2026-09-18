@@ -61,6 +61,22 @@
       "types": "./dist/navigation-menu.d.ts",
       "default": "./dist/navigation-menu.js"
     },
+    "./scroll-area": {
+      "types": "./dist/scroll-area.d.ts",
+      "default": "./dist/scroll-area.js"
+    },
+    "./hover-card": {
+      "types": "./dist/hover-card.d.ts",
+      "default": "./dist/hover-card.js"
+    },
+    "./tree-view": {
+      "types": "./dist/tree-view.d.ts",
+      "default": "./dist/tree-view.js"
+    },
+    "./resizable-panels": {
+      "types": "./dist/resizable-panels.d.ts",
+      "default": "./dist/resizable-panels.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

@@ -75,7 +75,11 @@ export class NyxOverlayDismissal {
   private readonly handleFocusIn = (event: FocusEvent): void => {
     if (!this.isTopmost()) return;
     const target = event.target;
-    if (target instanceof Node && this.element.contains(target)) return;
+    if (
+      target instanceof Node &&
+      (this.element.contains(target) ||
+        this.pointerInside.some((element) => element.contains(target)))
+    ) return;
     this.onDismiss("focus-leave");
   };
 }

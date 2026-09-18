@@ -2,6 +2,7 @@ import contextMenuMarkup from "../../../../registry/components/context-menu.html
 import dialogMarkup from "../../../../registry/components/dialog.html?raw";
 import alertDialogMarkup from "../../../../registry/components/alert-dialog.html?raw";
 import commandPaletteMarkup from "../../../../registry/components/command-palette.html?raw";
+import hoverCardMarkup from "../../../../registry/components/hover-card.html?raw";
 import overlaysMarkup from "../../../../registry/components/overlays.html?raw";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
@@ -15,6 +16,16 @@ export const overlayPages = [
     description: "Tooltips clarify compact controls without replacing a visible accessible name.",
     searchTerms: "overlay tooltip hover focus label compact control",
     body: card("Tooltip", `<div class="docs-row">${selectMarkup(overlaysMarkup, [".nyx-tooltip-wrap"])}</div>`, "Registry source"),
+  }),
+  page({
+    path: paths.components.overlays.hoverCard,
+    categoryId: "overlays",
+    categoryLabel: "Overlays",
+    title: "Hover Card",
+    description: "Rich supplementary content opens for pointer intent and keyboard focus, remains interactive across the trigger gap, and dismisses with Escape.",
+    searchTerms: "overlay hover card preview rich content focus pointer intent delay escape",
+    plugins: ["hover-card"],
+    body: `<section class="docs-prose-section"><h2>Hover intent without hover-only access</h2><p>A short open delay filters accidental passes. On departure, a geometric corridor spanning the trigger and positioned card preserves the close grace period while the pointer crosses the gap. Focus follows the same open and close contract, and the content deliberately does not use tooltip semantics.</p></section>${card("Operator hover card", `<div class="docs-row">${hoverCardMarkup}</div>`, "Registry source", hoverCardMarkup)}`,
   }),
   page({
     path: paths.components.overlays.dropdownMenu,
