@@ -95,4 +95,4 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 ## Known defects
 
 - [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, visually unverified)
-- [ ] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`.
+- [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, visually unverified)

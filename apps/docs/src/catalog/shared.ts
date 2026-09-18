@@ -1058,6 +1058,8 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "data-nyx-date-picker-trigger", value: "presence", description: "Opens or closes the positioned calendar." },
         { name: "data-nyx-date-picker-popover", value: "presence", description: "Marks the dialog-like positioned surface." },
         { name: "data-nyx-date-picker-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
+        { name: "data-state", value: "open | closed", description: "Reflects synchronized popover visibility on the picker root." },
+        { name: "data-invalid / aria-invalid", value: "presence / true | false", description: "Reflects typed format and Calendar constraint validation on the input." },
       ],
       options: [
         { name: "placement", value: "NyxOverlayPlacement", description: "Overrides the preferred popup placement." },
@@ -1081,7 +1083,7 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Escape", description: "Closes the popup and returns focus to the trigger." },
         { name: "Calendar keys", description: "Uses the full Calendar grid contract while the popover is open." },
       ],
-      accessibility: "The text input remains directly editable and labelled. The trigger owns aria-controls, aria-expanded, and aria-haspopup=dialog. The positioned surface composes Calendar semantics, closes on outside interaction or Escape, and preserves ISO calendar-date values without time-zone conversion.",
+      accessibility: "The text input remains directly editable and labelled, and invalid typed values synchronize aria-invalid, data-invalid, and live error text. The trigger owns aria-controls, aria-expanded, and aria-haspopup=dialog. The positioned surface composes Calendar semantics, closes on outside interaction or Escape, and preserves ISO calendar-date values without time-zone conversion.",
     },
   },
   "data-table": {

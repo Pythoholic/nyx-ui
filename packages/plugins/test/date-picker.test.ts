@@ -35,10 +35,15 @@ describe("NyxDatePicker", () => {
     picker = initDatePickers(root)[0];
     expect(initDatePickers(root)[0]).toBe(picker);
     expect(picker?.input.value).toBe("2026-09-18");
+    expect(root.dataset.state).toBe("closed");
+    expect(picker?.input.getAttribute("aria-invalid")).toBe("false");
+    expect(picker?.input.hasAttribute("data-invalid")).toBe(false);
     picker?.open("api", true);
     expect(picker?.popover.hidden).toBe(false);
     expect(picker?.trigger.getAttribute("aria-expanded")).toBe("true");
+    expect(root.dataset.state).toBe("open");
     picker?.close("api");
+    expect(root.dataset.state).toBe("closed");
     expect(floating.cleanup).toHaveBeenCalledOnce();
   });
 
@@ -52,11 +57,20 @@ describe("NyxDatePicker", () => {
     picker!.input.value = "04/10/2026";
     picker!.input.dispatchEvent(new Event("change", { bubbles: true }));
     expect(picker!.input.getAttribute("aria-invalid")).toBe("true");
+    expect(picker!.input.hasAttribute("data-invalid")).toBe(true);
     expect(picker!.value).toBe("2026-10-04");
 
     picker!.input.value = "2026-08-31";
     picker!.input.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(picker!.input.getAttribute("aria-invalid")).toBe("true");
+    expect(picker!.input.hasAttribute("data-invalid")).toBe(true);
     expect(picker!.value).toBe("2026-10-04");
+
+    picker!.input.value = "2026-10-05";
+    picker!.input.dispatchEvent(new Event("change", { bubbles: true }));
+    expect(picker!.input.getAttribute("aria-invalid")).toBe("false");
+    expect(picker!.input.hasAttribute("data-invalid")).toBe(false);
+    expect(picker!.value).toBe("2026-10-05");
   });
 
   it("synchronizes calendar selection, supports cancellation, and closes on a complete value", () => {

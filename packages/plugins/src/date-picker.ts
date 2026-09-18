@@ -99,6 +99,7 @@ export class NyxDatePicker {
     this.trigger.setAttribute("aria-haspopup", "dialog");
     this.input.setAttribute("aria-controls", this.popover.id);
     this.input.setAttribute("aria-haspopup", "dialog");
+    this.element.dataset.state = this.openState ? "open" : "closed";
     this.syncInput(this.calendar.value);
 
     this.trigger.addEventListener("click", this.handleTriggerClick);
@@ -130,6 +131,7 @@ export class NyxDatePicker {
     if (!dispatchNyxEvent(this.element, "nyx:date-picker:before-open", detail, true)) return false;
     this.popover.hidden = false;
     this.trigger.setAttribute("aria-expanded", "true");
+    this.element.dataset.state = "open";
     this.stopPositioning = positionOverlay(this.trigger, this.popover, { placement: this.placement });
     this.dismissal.activate();
     dispatchNyxEvent(this.element, "nyx:date-picker:open", detail);
@@ -146,6 +148,7 @@ export class NyxDatePicker {
     this.stopPositioning = undefined;
     this.popover.hidden = true;
     this.trigger.setAttribute("aria-expanded", "false");
+    this.element.dataset.state = "closed";
     if (reason === "escape" || reason === "selection") this.trigger.focus();
     dispatchNyxEvent(this.element, "nyx:date-picker:close", detail);
     return true;
@@ -171,8 +174,13 @@ export class NyxDatePicker {
 
   private syncInput(value: NyxCalendarValue): void {
     this.input.value = formatInputValue(value);
-    this.input.removeAttribute("aria-invalid");
-    if (this.error) this.error.textContent = "";
+    this.syncInvalid(false);
+  }
+
+  private syncInvalid(invalid: boolean, message = ""): void {
+    this.input.setAttribute("aria-invalid", String(invalid));
+    this.input.toggleAttribute("data-invalid", invalid);
+    if (this.error) this.error.textContent = message;
   }
 
   private requestValue(value: NyxCalendarValue, reason: NyxDatePickerChangeEventDetail["reason"]): boolean {
@@ -183,8 +191,7 @@ export class NyxDatePicker {
     }
     const dates = typeof value === "string" ? [value] : [value?.start, value?.end].filter((item): item is string => Boolean(item));
     if (dates.some((date) => this.calendar.isDateDisabled(date))) {
-      this.input.setAttribute("aria-invalid", "true");
-      if (this.error) this.error.textContent = "That date is unavailable.";
+      this.syncInvalid(true, "That date is unavailable.");
       return false;
     }
     const detail: NyxDatePickerChangeEventDetail = { datePicker: this, previousValue, reason, value: cloneValue(value) };
@@ -216,8 +223,7 @@ export class NyxDatePicker {
   private readonly handleInputChange = (): void => {
     const parsed = parseInputValue(this.input.value, this.calendar.selectionMode === "range");
     if (parsed === null) {
-      this.input.setAttribute("aria-invalid", "true");
-      if (this.error) this.error.textContent = this.calendar.selectionMode === "range" ? "Enter YYYY-MM-DD / YYYY-MM-DD." : "Enter a date as YYYY-MM-DD.";
+      this.syncInvalid(true, this.calendar.selectionMode === "range" ? "Enter YYYY-MM-DD / YYYY-MM-DD." : "Enter a date as YYYY-MM-DD.");
       return;
     }
     this.requestValue(parsed, parsed ? "input" : "clear");
