@@ -28,6 +28,7 @@ import { initSearchBoxes } from "@nyx-ui/plugins/search-box";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
 import { initHoverCards } from "@nyx-ui/plugins/hover-card";
+import { initTooltips } from "@nyx-ui/plugins/tooltip";
 import { initResizablePanels } from "@nyx-ui/plugins/resizable-panels";
 import { initScrollAreas } from "@nyx-ui/plugins/scroll-area";
 import { initTreeViews } from "@nyx-ui/plugins/tree-view";
@@ -224,6 +225,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
     case "hover-card": addDestroyables(destroyables, initHoverCards(root)); break;
+    case "tooltip": addDestroyables(destroyables, initTooltips(root)); break;
     case "resizable-panels": addDestroyables(destroyables, initResizablePanels(root)); break;
     case "scroll-area": addDestroyables(destroyables, initScrollAreas(root)); break;
     case "tree-view": addDestroyables(destroyables, initTreeViews(root)); break;

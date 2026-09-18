@@ -1,0 +1,49 @@
+<div
+  class="nyx-tooltip-provider"
+  data-nyx-tooltip-provider
+  data-nyx-tooltip-open-delay="500"
+  data-nyx-tooltip-close-delay="100"
+  data-nyx-tooltip-skip-delay="300"
+>
+  <button
+    aria-label="Settings"
+    class="nyx-button nyx-icon-button"
+    data-nyx-tooltip-trigger="nyx-settings-tooltip"
+    type="button"
+  >
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v3m0 14v3M2 12h3m14 0h3" />
+    </svg>
+  </button>
+  <span
+    class="nyx-tooltip"
+    data-nyx-tooltip
+    data-nyx-tooltip-placement="top"
+    hidden
+    id="nyx-settings-tooltip"
+    popover="manual"
+    role="tooltip"
+  >Manage workspace settings</span>
+
+  <button
+    aria-label="Account"
+    class="nyx-button nyx-icon-button"
+    data-nyx-tooltip-trigger="nyx-account-tooltip"
+    type="button"
+  >
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+    </svg>
+  </button>
+  <span
+    class="nyx-tooltip"
+    data-nyx-tooltip
+    data-nyx-tooltip-placement="top"
+    hidden
+    id="nyx-account-tooltip"
+    popover="manual"
+    role="tooltip"
+  >Open account menu</span>
+</div>

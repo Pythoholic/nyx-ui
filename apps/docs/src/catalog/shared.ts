@@ -20,6 +20,7 @@ export type PluginName =
   | "navigation-menu"
   | "scroll-area"
   | "hover-card"
+  | "tooltip"
   | "tree-view"
   | "resizable-panels"
   | "stepper"
@@ -623,6 +624,42 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Escape", description: "Closes the card through the shared dismissal layer." },
       ],
       accessibility: "Hover Card is rich supplementary content, so it deliberately has no tooltip role. It opens from both pointer hover and keyboard focus, remains open while pointer or focus is inside, and exposes aria-controls and aria-expanded on its triggers.",
+    },
+  },
+  "tooltip": {
+    className: "NyxTooltip",
+    initName: "initTooltips",
+    selector: "[data-nyx-tooltip]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-tooltip-provider", value: "presence", description: "Scopes coordinated delay behavior so adjacent tooltips share one warm window." },
+        { name: "data-nyx-tooltip-open-delay", value: "milliseconds", description: "Sets the provider's initial pointer and focus intent delay; the default is 500." },
+        { name: "data-nyx-tooltip-close-delay", value: "milliseconds", description: "Sets the grace period after pointer or focus leaves; the default is 100." },
+        { name: "data-nyx-tooltip-skip-delay", value: "milliseconds", description: "Keeps the provider warm after close so another tooltip opens immediately; the default is 300." },
+        { name: "data-nyx-tooltip-trigger", value: "tooltip id", description: "Associates a trigger with a tooltip in the same provider." },
+        { name: "data-nyx-tooltip", value: "presence", description: "Marks the non-interactive descriptive overlay." },
+        { name: "data-nyx-tooltip-placement", value: "placement", description: "Sets the preferred collision-aware anchored placement." },
+        { name: "data-state", value: "open | closed", description: "Reflects synchronized visibility on the tooltip and its triggers." },
+      ],
+      options: [
+        { name: "openDelay / closeDelay / skipDelay", value: "number", description: "Overrides provider delay attributes for an explicitly constructed tooltip." },
+        { name: "placement", value: "NyxOverlayPlacement", description: "Overrides the tooltip's preferred placement." },
+      ],
+      methods: [
+        { name: "value", value: "boolean", description: "Gets or requests the open state." },
+        { name: "open(trigger?, reason?)", value: "boolean", description: "Requests immediate visibility from an associated trigger." },
+        { name: "close(reason?)", value: "boolean", description: "Requests immediate closure and reports whether it was accepted." },
+        { name: "destroy()", value: "void", description: "Closes, restores descriptions, clears timers, and releases positioning and listeners." },
+      ],
+      events: [
+        { name: "nyx:tooltip:before-open / before-close", value: "cancelable", description: "Fires before visibility changes; destroy closure cannot be canceled." },
+        { name: "nyx:tooltip:open / close", value: "not cancelable", description: "Fires after hidden, data-state, and aria-describedby synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Focus opens a trigger's tooltip after the provider delay and closes it after focus leaves." },
+        { name: "Escape", description: "Closes the visible tooltip without moving focus." },
+      ],
+      accessibility: "Each tooltip has role=tooltip and is referenced through aria-describedby only while visible. The trigger keeps its own accessible name, existing descriptions are preserved, pointer and keyboard focus use the same delay contract, and the overlay never accepts pointer interaction.",
     },
   },
   "tree-view": {

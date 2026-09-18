@@ -81,7 +81,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Loading overlay (built, visually unverified)
 - [x] Status indicator (built, visually unverified)
 - [x] Tags / chips (built, visually unverified)
-- [ ] Tooltip provider and delay rules
+- [x] Tooltip provider and delay rules (built, visually unverified)
 
 ## Release blockers
 

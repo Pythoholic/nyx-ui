@@ -272,9 +272,10 @@
   .nyx-accordion[open] summary::after { content: "\2212"; }
   .nyx-accordion-body { padding: var(--nyx-space-4); border-top: var(--nyx-border) solid var(--nyx-line); color: var(--nyx-muted); }
 
-  .nyx-tooltip-wrap { position: relative; display: inline-flex; }
-  .nyx-tooltip { position: absolute; z-index: var(--nyx-z-dropdown); inset-block-end: calc(100% + 0.5rem); inset-inline-start: 50%; inline-size: max-content; max-inline-size: 16rem; transform: translate(-50%, 0.25rem); padding: 0.5rem 0.625rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-sm); background: var(--nyx-panel-raised); box-shadow: var(--nyx-shadow-raised); color: var(--nyx-ink); font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-meta); opacity: 0; pointer-events: none; transition: opacity var(--nyx-duration-fast), transform var(--nyx-duration-fast); }
-  .nyx-tooltip-wrap:is(:hover, :focus-within) .nyx-tooltip { transform: translate(-50%, 0); opacity: 1; }
+  .nyx-tooltip-provider { display: inline-flex; align-items: center; gap: var(--nyx-space-2); }
+  .nyx-tooltip { position: fixed; z-index: var(--nyx-z-dropdown); inset: 0 auto auto 0; inline-size: max-content; max-inline-size: min(16rem, var(--nyx-overlay-available-width, calc(100vw - 1rem))); margin: 0; padding: 0.5rem 0.625rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-sm); background: var(--nyx-panel-raised); box-shadow: var(--nyx-shadow-raised); color: var(--nyx-ink); font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-meta); opacity: 1; pointer-events: none; transform: translate3d(var(--nyx-overlay-x, 0), var(--nyx-overlay-y, 0), 0); transition: opacity var(--nyx-duration-fast); }
+  .nyx-tooltip:not([data-nyx-positioned]) { opacity: 0; }
+  .nyx-tooltip[popover]:not(:popover-open) { display: none; }
   .nyx-popover { inline-size: max-content; max-inline-size: min(20rem, calc(100vw - 2rem)); padding: 0; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); box-shadow: var(--nyx-shadow-float); color: var(--nyx-ink); }
   .nyx-popover[popover]:not(:popover-open) { display: none; }
   .nyx-scrollable-overlay, [data-nyx-scroll-area-viewport], .nyx-popover[data-nyx-dropdown-menu], [data-nyx-navigation-menu-content] { scrollbar-color: var(--nyx-line-strong) var(--nyx-panel-raised); scrollbar-width: thin; }

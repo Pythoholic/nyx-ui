@@ -207,6 +207,13 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dropdown-menu"]
     },
     {
+      "name": "tooltip",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/tooltip.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tooltip"]
+    },
+    {
       "name": "context-menu",
       "type": "component",
       "status": "preview",

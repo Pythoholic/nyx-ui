@@ -85,6 +85,10 @@
       "types": "./dist/hover-card.d.ts",
       "default": "./dist/hover-card.js"
     },
+    "./tooltip": {
+      "types": "./dist/tooltip.d.ts",
+      "default": "./dist/tooltip.js"
+    },
     "./tree-view": {
       "types": "./dist/tree-view.d.ts",
       "default": "./dist/tree-view.js"

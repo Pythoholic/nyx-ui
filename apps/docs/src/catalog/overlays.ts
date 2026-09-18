@@ -4,6 +4,7 @@ import alertDialogMarkup from "../../../../registry/components/alert-dialog.html
 import commandPaletteMarkup from "../../../../registry/components/command-palette.html?raw";
 import hoverCardMarkup from "../../../../registry/components/hover-card.html?raw";
 import overlaysMarkup from "../../../../registry/components/overlays.html?raw";
+import tooltipMarkup from "../../../../registry/components/tooltip.html?raw";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
 
@@ -14,8 +15,9 @@ export const overlayPages = [
     categoryLabel: "Overlays",
     title: "Tooltip",
     description: "Tooltips clarify compact controls without replacing a visible accessible name.",
-    searchTerms: "overlay tooltip hover focus label compact control",
-    body: card("Tooltip", `<div class="docs-row">${selectMarkup(overlaysMarkup, [".nyx-tooltip-wrap"])}</div>`, "Registry source"),
+    searchTerms: "overlay tooltip provider hover focus delay skip label compact control",
+    plugins: ["tooltip"],
+    body: `<section class="docs-prose-section"><h2>Coordinated intent delays</h2><p>The provider applies an initial delay to avoid accidental activation, a short close grace period, and a skip window that makes adjacent tooltips immediate after one has opened. Tooltips are non-interactive descriptions; use Hover Card when the floating content needs links, buttons, or pointer access.</p></section>${card("Tooltip provider", tooltipMarkup, "Registry source", tooltipMarkup)}`,
   }),
   page({
     path: paths.components.overlays.hoverCard,

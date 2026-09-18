@@ -183,6 +183,16 @@ export {
 } from "./hover-card.js";
 
 export {
+  NyxTooltip,
+  initTooltips,
+  type NyxTooltipCloseReason,
+  type NyxTooltipEventDetail,
+  type NyxTooltipEventMap,
+  type NyxTooltipOpenReason,
+  type NyxTooltipOptions,
+} from "./tooltip.js";
+
+export {
   NyxTreeView,
   initTreeViews,
   type NyxTreeChangeReason,
