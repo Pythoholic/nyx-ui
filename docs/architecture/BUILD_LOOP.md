@@ -90,7 +90,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] CI running test, typecheck and build on push (built, visually unverified)
 - [x] Changesets or equivalent versioning (built, visually unverified)
 - [x] Packages publishable to npm (built, visually unverified)
-- [ ] Playwright or equivalent browser regression coverage
+- [x] Playwright or equivalent browser regression coverage (built, visually unverified)
 
 ## Known defects
 
