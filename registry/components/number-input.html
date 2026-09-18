@@ -1,0 +1,31 @@
+<form class="nyx-panel" aria-labelledby="nyx-number-input-title">
+  <div class="nyx-panel-body">
+    <label class="nyx-field" id="nyx-number-input-title" for="nyx-number-input-control">
+      <span class="nyx-label">Replica count</span>
+      <span class="nyx-field-hint" id="nyx-number-input-hint">Choose 0 to 20 replicas in increments of 0.5.</span>
+    </label>
+    <div
+      class="nyx-number-input"
+      data-nyx-number-input
+      data-nyx-number-input-unit=" replicas"
+      data-state="valid"
+    >
+      <button class="nyx-button nyx-number-input-button" data-nyx-number-input-decrement type="button" aria-label="Decrease replica count">−</button>
+      <input
+        aria-describedby="nyx-number-input-hint nyx-number-input-output"
+        class="nyx-input nyx-number-input-control"
+        data-nyx-number-input-control
+        id="nyx-number-input-control"
+        max="20"
+        min="0"
+        name="replicas"
+        step="0.5"
+        type="number"
+        value="3.5"
+      />
+      <button class="nyx-button nyx-number-input-button" data-nyx-number-input-increment type="button" aria-label="Increase replica count">+</button>
+      <output class="nyx-number-input-output" data-nyx-number-input-output id="nyx-number-input-output" for="nyx-number-input-control" aria-live="polite">3.5 replicas</output>
+    </div>
+    <button class="nyx-button" data-variant="primary" type="submit">Apply capacity</button>
+  </div>
+</form>

@@ -33,6 +33,26 @@ export {
 } from "./input-otp.js";
 
 export {
+  NyxNumberInput,
+  initNumberInputs,
+  type NyxNumberInputChangeReason,
+  type NyxNumberInputEventDetail,
+  type NyxNumberInputEventMap,
+} from "./number-input.js";
+
+export {
+  NyxPasswordInput,
+  initPasswordInputs,
+  scorePassword,
+  type NyxPasswordChangeEventDetail,
+  type NyxPasswordChangeReason,
+  type NyxPasswordEventMap,
+  type NyxPasswordStrength,
+  type NyxPasswordVisibilityEventDetail,
+  type NyxPasswordVisibilityReason,
+} from "./password-input.js";
+
+export {
   NyxFileUpload,
   initFileUploads,
   type NyxFileUploadAdapter,

@@ -22,6 +22,8 @@ export const paths = {
     forms: {
       textFields: "/components/forms/text-fields",
       selection: "/components/forms/selection-controls",
+      numberInput: "/components/forms/number-input",
+      passwordInput: "/components/forms/password-input",
       combobox: "/components/forms/combobox",
       searchableSelect: "/components/forms/searchable-select",
       inputOtp: "/components/forms/input-otp",

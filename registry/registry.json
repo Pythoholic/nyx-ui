@@ -67,6 +67,20 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/input-otp"]
     },
     {
+      "name": "number-input",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/number-input.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/number-input"]
+    },
+    {
+      "name": "password-input",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/password-input.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
+    },
+    {
       "name": "file-upload",
       "type": "component",
       "status": "preview",

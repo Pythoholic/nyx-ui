@@ -9,6 +9,8 @@ import { initDatePickers } from "@nyx-ui/plugins/date-picker";
 import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
 import { initFileUploads, type NyxFileUploadAdapter } from "@nyx-ui/plugins/file-upload";
 import { initInputOtps } from "@nyx-ui/plugins/input-otp";
+import { initNumberInputs } from "@nyx-ui/plugins/number-input";
+import { initPasswordInputs } from "@nyx-ui/plugins/password-input";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
 import { initHoverCards } from "@nyx-ui/plugins/hover-card";
@@ -186,6 +188,8 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "dropdown-menu": addDestroyables(destroyables, initDropdownMenus(root)); break;
     case "file-upload": addDestroyables(destroyables, initFileUploads(root, { transport: demoUpload })); break;
     case "input-otp": addDestroyables(destroyables, initInputOtps(root)); break;
+    case "number-input": addDestroyables(destroyables, initNumberInputs(root)); break;
+    case "password-input": addDestroyables(destroyables, initPasswordInputs(root)); break;
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
     case "hover-card": addDestroyables(destroyables, initHoverCards(root)); break;

@@ -8,6 +8,8 @@ export type PluginName =
   | "dropdown-menu"
   | "file-upload"
   | "input-otp"
+  | "number-input"
+  | "password-input"
   | "menubar"
   | "navigation-menu"
   | "scroll-area"
@@ -64,6 +66,74 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "number-input": {
+    className: "NyxNumberInput",
+    initName: "initNumberInputs",
+    selector: "[data-nyx-number-input]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-number-input", value: "presence", description: "Marks the number control, buttons, and output ownership boundary." },
+        { name: "data-nyx-number-input-control", value: "presence", description: "Marks the required native input[type=number]." },
+        { name: "data-nyx-number-input-decrement / data-nyx-number-input-increment", value: "presence", description: "Marks the native buttons that move by one declared step." },
+        { name: "data-nyx-number-input-output", value: "presence", description: "Marks the optional localized value summary." },
+        { name: "data-nyx-number-input-locale", value: "BCP 47 language tag", description: "Overrides the browser locale used by the optional output." },
+        { name: "data-nyx-number-input-unit", value: "string", description: "Appends a unit to the optional output without changing the submitted number." },
+        { name: "data-state", value: "empty | valid | invalid", description: "Reflects native constraint-validation state." },
+      ],
+      methods: [
+        { name: "value", value: "number | null", description: "Gets or sets the native input value; null clears it." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a bounded value change and reports whether it was accepted." },
+        { name: "increment(multiplier?, reason?) / decrement(multiplier?, reason?)", value: "boolean", description: "Moves by the declared step and clamps to native min/max boundaries." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:number-input:before-change", value: "cancelable", description: "Fires before an API, button, keyboard, or accepted input change is committed." },
+        { name: "nyx:number-input:change", value: "not cancelable", description: "Fires after the value, constraints, controls, output, data-state, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Arrow Up / Arrow Down", description: "Uses the browser's native number-input stepping behavior." },
+        { name: "Page Up / Page Down", description: "Moves by ten declared steps." },
+        { name: "Home / End", description: "Moves to min or max when that boundary is declared." },
+        { name: "Tab / Shift+Tab", description: "Moves through the decrement button, native input, and increment button." },
+      ],
+      accessibility: "The editable control remains a native number input with spinbutton semantics, constraint validation, and mobile keyboard hints. Native buttons have stable accessible names and point to the input with aria-controls. Disabled boundaries are synchronized without blocking direct entry, and the optional output is descriptive rather than a replacement label.",
+    },
+  },
+  "password-input": {
+    className: "NyxPasswordInput",
+    initName: "initPasswordInputs",
+    selector: "[data-nyx-password]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-password", value: "presence", description: "Marks the password field and feedback ownership boundary." },
+        { name: "data-nyx-password-control", value: "presence", description: "Marks the required native input[type=password]." },
+        { name: "data-nyx-password-toggle", value: "presence", description: "Marks the native visibility toggle button." },
+        { name: "data-nyx-password-meter / data-nyx-password-status", value: "presence", description: "Marks the native meter and its polite text equivalent." },
+        { name: "data-nyx-password-min-length", value: "positive integer", description: "Sets the advisory scoring length threshold; native minlength remains the validity rule." },
+        { name: "data-state / data-strength", value: "empty | weak | fair | good | strong", description: "Reflects advisory strength after every accepted change." },
+        { name: "data-visibility", value: "hidden | visible", description: "Reflects whether the input currently exposes text." },
+      ],
+      methods: [
+        { name: "value", value: "string", description: "Gets or sets the current password value." },
+        { name: "score / strength", value: "number / string", description: "Reads the advisory score from zero through four and its named state." },
+        { name: "visible", value: "boolean", description: "Gets or sets visibility through the same cancelable event path." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a value change and reports whether it was accepted." },
+        { name: "setVisible(visible, reason?) / toggleVisibility()", value: "boolean", description: "Requests a visibility change while preserving focus and selection." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:password:before-change", value: "cancelable", description: "Fires before a typed or API value is accepted." },
+        { name: "nyx:password:change", value: "not cancelable", description: "Fires after value, strength, native validity, data-state, and feedback synchronize." },
+        { name: "nyx:password:before-show / before-hide", value: "cancelable", description: "Fires before password visibility changes." },
+        { name: "nyx:password:show / hide", value: "not cancelable", description: "Fires after input type, toggle state, labels, and visibility state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves between the native password input, visibility button, and surrounding form controls." },
+        { name: "Enter / Space", description: "Activates the focused native visibility button." },
+      ],
+      accessibility: "The password remains a native input with autocomplete, minlength, required state, and password-manager compatibility. The toggle is a pressed button with a changing accessible name. A native meter has an aria-valuetext equivalent and a polite text status; strength is explicitly advisory and must not replace server-side policy or breach checks.",
+    },
+  },
   carousel: {
     className: "NyxCarousel",
     initName: "initCarousels",

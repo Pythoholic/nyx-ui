@@ -43,8 +43,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Hover Card (built, visually unverified)
 - [x] Carousel (built, visually unverified)
 - [x] Stepper with state management (built, visually unverified)
-- [ ] Advanced number input
-- [ ] Password strength and visibility controls
+- [x] Advanced number input (built, visually unverified)
+- [x] Password strength and visibility controls (built, visually unverified)
 - [ ] Search box with suggestions and recent searches
 - [ ] Multi-select and tag input
 - [ ] Notification centre

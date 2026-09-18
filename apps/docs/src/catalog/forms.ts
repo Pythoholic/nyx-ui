@@ -4,6 +4,8 @@ import comboboxMarkup from "../../../../registry/components/combobox.html?raw";
 import datePickerMarkup from "../../../../registry/components/date-picker.html?raw";
 import fileUploadMarkup from "../../../../registry/components/file-upload.html?raw";
 import inputOtpMarkup from "../../../../registry/components/input-otp.html?raw";
+import numberInputMarkup from "../../../../registry/components/number-input.html?raw";
+import passwordInputMarkup from "../../../../registry/components/password-input.html?raw";
 import { paths } from "../routes.js";
 import { card, codeBlock, page, selectMarkup } from "./shared.js";
 
@@ -27,6 +29,26 @@ export const formPages = [
     description,
     searchTerms: "select checkbox radio switch number segmented choice forms",
     body: card("Selection", `<div class="docs-form-grid"><label class="nyx-field" for="region"><span class="nyx-label">Region</span><select class="nyx-select" id="region"><option>Tokyo</option><option>London</option><option>New York</option></select></label><label class="nyx-field" for="quantity"><span class="nyx-label">Quantity</span><input class="nyx-input" id="quantity" type="number" value="24" min="1"/></label><label class="nyx-choice" for="notices"><input id="notices" type="checkbox" checked/>Receive operational notices</label><fieldset class="nyx-toggle-fieldset"><legend class="nyx-label">Environment</legend><label class="nyx-choice" for="env-production"><input id="env-production" type="radio" name="env" checked/>Production</label><label class="nyx-choice" for="env-staging"><input id="env-staging" type="radio" name="env"/>Staging</label></fieldset><label class="nyx-switch" for="automatic-deployment"><input id="automatic-deployment" type="checkbox" checked/><span class="nyx-switch-track"></span><span>Automatic deployment</span></label><fieldset class="nyx-segmented-fieldset"><legend class="nyx-label">View mode</legend><div class="nyx-segmented"><input id="seg-a" name="segment" type="radio" checked/><label for="seg-a">Grid</label><input id="seg-b" name="segment" type="radio"/><label for="seg-b">List</label></div></fieldset></div>`, "Keyboard ready"),
+  }),
+  page({
+    path: paths.components.forms.numberInput,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Advanced Number Input",
+    description: "A native number input gains bounded step buttons, coarse keyboard movement, localized output, cancelable changes, and synchronized constraint state.",
+    searchTerms: "advanced number input spinbutton increment decrement min max step quantity numeric",
+    plugins: ["number-input"],
+    body: `<section class="docs-prose-section"><h2>Keep native numeric semantics</h2><p>The editable control remains <code>input[type=number]</code>, so direct entry, native Arrow-key stepping, constraint validation, and mobile keyboard behavior stay intact. The added buttons and coarse keys use the same declared <code>min</code>, <code>max</code>, and <code>step</code>.</p></section>${card("Advanced number input", numberInputMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.forms.passwordInput,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Password Strength and Visibility",
+    description: "A native password input adds cancelable visibility control and advisory strength feedback without compromising autocomplete or form semantics.",
+    searchTerms: "password passphrase strength meter show hide visibility autocomplete validation security",
+    plugins: ["password-input"],
+    body: `<section class="docs-prose-section"><h2>Treat strength as guidance</h2><p>The local meter is an immediate composition heuristic, not proof that a password is safe. Keep server-side policy, compromised-password checks, rate limits, and secure storage in the application. Preserve an appropriate <code>autocomplete</code> value so password managers can help users.</p></section>${card("Password strength and visibility", passwordInputMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.forms.combobox,

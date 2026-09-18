@@ -25,6 +25,14 @@
       "types": "./dist/input-otp.d.ts",
       "default": "./dist/input-otp.js"
     },
+    "./number-input": {
+      "types": "./dist/number-input.d.ts",
+      "default": "./dist/number-input.js"
+    },
+    "./password-input": {
+      "types": "./dist/password-input.d.ts",
+      "default": "./dist/password-input.js"
+    },
     "./file-upload": {
       "types": "./dist/file-upload.d.ts",
       "default": "./dist/file-upload.js"
