@@ -31,9 +31,9 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Sidebar
 - [x] Input OTP / PIN
 - [x] File Upload
-- [ ] Calendar (preview)
-- [ ] Date Picker (preview)
-- [ ] Advanced Data Table (preview)
+- [x] Calendar (preview) (built, visually unverified)
+- [x] Date Picker (preview) (built, visually unverified)
+- [x] Advanced Data Table (preview) (built, visually unverified)
 
 ## Priority 2 - complex workspace components
 
@@ -91,3 +91,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [ ] Changesets or equivalent versioning
 - [ ] Packages publishable to npm
 - [ ] Playwright or equivalent browser regression coverage
+
+## Known defects
+
+- [ ] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection.
+- [ ] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`.
