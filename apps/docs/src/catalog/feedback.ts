@@ -1,6 +1,8 @@
 import feedbackMarkup from "../../../../registry/components/feedback.html?raw";
 import stepperMarkup from "../../../../registry/components/stepper.html?raw";
 import notificationCenterMarkup from "../../../../registry/components/notification-center.html?raw";
+import loadingOverlayMarkup from "../../../../registry/components/loading-overlay.html?raw";
+import statusIndicatorMarkup from "../../../../registry/components/status-indicator.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
@@ -59,10 +61,19 @@ export const feedbackPages = [
     path: paths.components.feedback.loading,
     categoryId: "feedback",
     categoryLabel: "Feedback",
-    title: "Loading",
-    description: "Spinners and skeletons distinguish active status from placeholder content while respecting reduced motion.",
-    searchTerms: "loading spinner skeleton placeholder processing reduced motion",
-    body: card("Loading", `<div class="docs-column"><div class="docs-row"><span class="nyx-spinner" role="status" aria-label="Loading"></span><span>Processing records</span></div><div class="nyx-skeleton" style="height:1.25rem;width:72%"></div><div class="nyx-skeleton" style="height:1rem;width:100%"></div><div class="nyx-skeleton" style="height:1rem;width:86%"></div></div>`),
+    title: "Loading Overlay",
+    description: "A bounded overlay keeps existing content visible while exposing busy state and one concise progress announcement.",
+    searchTerms: "loading overlay spinner busy inert processing progress reduced motion",
+    body: `<section class="docs-prose-section"><h2>Block only the affected region</h2><p>Set <code>aria-busy="true"</code> on the covered content while work is pending, make temporarily unavailable controls inert, and keep one polite status message outside that busy subtree. When work finishes, remove <code>inert</code>, set <code>aria-busy="false"</code> and <code>data-state="idle"</code>, then hide the overlay.</p></section>${card("Refreshing region health", loadingOverlayMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.feedback.statusIndicator,
+    categoryId: "feedback",
+    categoryLabel: "Feedback",
+    title: "Status Indicator",
+    description: "A compact dot-and-text treatment communicates current state without making color the only signal.",
+    searchTerms: "status indicator dot online offline pending warning health service",
+    body: `<section class="docs-prose-section"><h2>Always name the state</h2><p>The dot is decorative; the adjacent text carries the meaning. Add a live-region role only when an existing status changes and that change needs to be announced. Do not repeatedly announce polling updates that require no action.</p></section>${card("Service health", statusIndicatorMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.toast,

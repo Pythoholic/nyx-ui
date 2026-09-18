@@ -78,9 +78,9 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Icon catalog page (built, visually unverified)
 - [x] Accessible visually-hidden utility (built, visually unverified)
 - [x] RTL / direction support (built, visually unverified)
-- [ ] Loading overlay
-- [ ] Status indicator
-- [ ] Tags / chips
+- [x] Loading overlay (built, visually unverified)
+- [x] Status indicator (built, visually unverified)
+- [x] Tags / chips (built, visually unverified)
 - [ ] Tooltip provider and delay rules
 
 ## Release blockers

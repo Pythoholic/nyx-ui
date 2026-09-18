@@ -7,6 +7,7 @@ import visuallyHiddenMarkup from "../../../../registry/components/visually-hidde
 import directionMarkup from "../../../../registry/components/direction.html?raw";
 import staticPrimitivesMarkup from "../../../../registry/components/static-primitives.html?raw";
 import styledLinksMarkup from "../../../../registry/components/styled-links.html?raw";
+import tagsMarkup from "../../../../registry/components/tags.html?raw";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
 
@@ -92,5 +93,14 @@ export const primitivePages = [
     description: "Inherited text direction mirrors logical component geometry, directional motion, overlay placement, and horizontal keyboard navigation.",
     searchTerms: "rtl right to left direction dir localization internationalization logical properties bidi arabic hebrew",
     body: `<section class="docs-prose-section"><h2>Declare direction at the language boundary</h2><p>Set <code>dir="rtl"</code> and the appropriate <code>lang</code> on the document or the smallest subtree whose language direction changes. Nyx uses logical geometry and reads inherited direction for horizontal Arrow-key behavior. Wrap machine identifiers or user data with an unknown direction in <code>bdi</code> so it cannot reorder surrounding text.</p></section>${card("Right-to-left workspace", directionMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.primitives.tags,
+    categoryId: "primitives",
+    categoryLabel: "Primitives",
+    title: "Tags and Chips",
+    description: "Compact labels identify categories, filters, and state without replacing native controls when a value is interactive.",
+    searchTerms: "tag tags chip chips label filter category removable tone small",
+    body: `<section class="docs-prose-section"><h2>Keep interaction native</h2><p>Use list semantics when tags form a collection. A static tag needs no role. If a tag becomes selectable, navigational, or removable, compose the same visual treatment with a native button or link and give icon-only actions a specific accessible name.</p></section>${card("Applied filters", tagsMarkup, "Registry source")}`,
   }),
 ];

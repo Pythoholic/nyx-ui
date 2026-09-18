@@ -46,6 +46,7 @@ export const paths = {
       iconCatalog: "/components/primitives/icons",
       visuallyHidden: "/components/primitives/visually-hidden",
       direction: "/components/primitives/direction",
+      tags: "/components/primitives/tags-chips",
     },
     navigation: {
       topBar: "/components/navigation/top-bar",
@@ -73,6 +74,7 @@ export const paths = {
       progress: "/components/feedback/progress",
       stepper: "/components/feedback/stepper",
       loading: "/components/feedback/loading",
+      statusIndicator: "/components/feedback/status-indicator",
       toast: "/components/feedback/toast",
       notificationCenter: "/components/feedback/notification-centre",
       emptyState: "/components/feedback/empty-state",

@@ -74,6 +74,27 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "tags",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/tags.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "loading-overlay",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/loading-overlay.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "status-indicator",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/status-indicator.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "toggles",
       "type": "component-group",
       "status": "preview",

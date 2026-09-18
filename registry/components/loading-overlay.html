@@ -1,0 +1,38 @@
+<section
+  aria-label="Region health"
+  class="nyx-loading-surface"
+  data-state="loading"
+>
+  <div aria-busy="true" class="nyx-panel" data-nyx-loading-content inert>
+    <header class="nyx-panel-header">
+      <h3 class="nyx-panel-title">Region health</h3>
+      <span class="nyx-badge">3 regions</span>
+    </header>
+    <div class="nyx-panel-body">
+      <div class="nyx-item">
+        <span class="nyx-item-content">
+          <strong class="nyx-item-title">Tokyo</strong>
+          <span class="nyx-item-description">Checking edge latency</span>
+        </span>
+      </div>
+      <div class="nyx-item">
+        <span class="nyx-item-content">
+          <strong class="nyx-item-title">Frankfurt</strong>
+          <span class="nyx-item-description">Checking edge latency</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    aria-atomic="true"
+    aria-live="polite"
+    class="nyx-loading-overlay"
+    data-nyx-loading-overlay
+    role="status"
+  >
+    <span aria-hidden="true" class="nyx-spinner"></span>
+    <strong>Refreshing region health</strong>
+    <span>Current results remain visible while the check completes.</span>
+  </div>
+</section>

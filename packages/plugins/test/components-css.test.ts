@@ -61,4 +61,17 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-progress\[data-indeterminate="true"\]:dir\(rtl\)\s+\.nyx-progress-bar\s*\{[^}]*animation-name:\s*nyx-progress-rtl/);
     expect(css).toMatch(/\.nyx-before-after-reveal:dir\(rtl\)\s*\{[^}]*clip-path:/);
   });
+
+  it("bounds loading overlays and provides an explicit idle hiding contract", () => {
+    expect(css).toMatch(/\.nyx-loading-surface\s*\{[^}]*position:\s*relative;[^}]*isolation:\s*isolate;/);
+    expect(css).toMatch(/\.nyx-loading-overlay\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*backdrop-filter:/);
+    expect(css).toMatch(/\.nyx-loading-overlay\[hidden\],[^{]*\.nyx-loading-surface\[data-state="idle"\][^{]*\{[^}]*display:\s*none;/);
+  });
+
+  it("ships named status and tag variants without relying on color-only dots", () => {
+    expect(css).toMatch(/\.nyx-status-indicator\[data-tone="success"\]\s*\{[^}]*var\(--nyx-signal\)/);
+    expect(css).toMatch(/\.nyx-status-indicator\[data-state="pending"\][^{]*\.nyx-status-dot\s*\{[^}]*animation:\s*nyx-pulse/);
+    expect(css).toMatch(/\.nyx-tag\[data-tone="warning"\]\s*\{[^}]*var\(--nyx-warning-line\)/);
+    expect(css).toMatch(/\.nyx-tag\[data-size="small"\]\s*\{[^}]*font-size:\s*var\(--nyx-type-meta\)/);
+  });
 });

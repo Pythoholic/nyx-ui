@@ -73,6 +73,39 @@ describe("small primitive registry markup", () => {
     expect(surface?.querySelector("bdi")?.textContent).toBe("edge-api-204");
   });
 
+  it("exposes a bounded loading status while making covered content inert", () => {
+    const component = loadComponent("loading-overlay");
+    const surface = component.querySelector<HTMLElement>(".nyx-loading-surface")!;
+    const content = surface.querySelector<HTMLElement>("[data-nyx-loading-content]")!;
+    const overlay = surface.querySelector<HTMLElement>("[data-nyx-loading-overlay]")!;
+    expect(surface.dataset.state).toBe("loading");
+    expect(content.getAttribute("aria-busy")).toBe("true");
+    expect(content.hasAttribute("inert")).toBe(true);
+    expect(overlay.getAttribute("role")).toBe("status");
+    expect(overlay.getAttribute("aria-live")).toBe("polite");
+    expect(overlay.getAttribute("aria-atomic")).toBe("true");
+    expect(overlay.querySelector(".nyx-spinner")?.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  it("pairs every decorative status dot with a visible state label", () => {
+    const component = loadComponent("status-indicator");
+    const indicators = Array.from(component.querySelectorAll<HTMLElement>(".nyx-status-indicator"));
+    expect(indicators).toHaveLength(4);
+    expect(indicators.every((indicator) => indicator.textContent?.trim())).toBe(true);
+    expect(indicators.every((indicator) => indicator.querySelector(".nyx-status-dot")?.getAttribute("aria-hidden") === "true")).toBe(true);
+    expect(indicators.map((indicator) => indicator.dataset.tone)).toEqual(["success", "neutral", "warning", "danger"]);
+  });
+
+  it("uses list semantics for static tags and exposes tone and size variants", () => {
+    const component = loadComponent("tags");
+    const list = component.querySelector<HTMLUListElement>("ul.nyx-tag-list")!;
+    const tags = Array.from(list.querySelectorAll<HTMLLIElement>(":scope > li.nyx-tag"));
+    expect(list.getAttribute("aria-label")).toBe("Applied filters");
+    expect(tags).toHaveLength(5);
+    expect(tags.map((tag) => tag.dataset.tone ?? "neutral")).toEqual(["neutral", "success", "warning", "danger", "neutral"]);
+    expect(tags.at(-1)?.dataset.size).toBe("small");
+  });
+
   it("publishes one registry record for each canonical source", () => {
     const registry = JSON.parse(readFileSync(resolve(process.cwd(), "../../registry/registry.json"), "utf8")) as {
       items: Array<{ name: string; files: string[]; requires: string[] }>;
@@ -85,6 +118,9 @@ describe("small primitive registry markup", () => {
       ["icon-catalog", "components/icon-catalog.html"],
       ["visually-hidden", "components/visually-hidden.html"],
       ["direction", "components/direction.html"],
+      ["loading-overlay", "components/loading-overlay.html"],
+      ["status-indicator", "components/status-indicator.html"],
+      ["tags", "components/tags.html"],
     ]);
     expected.forEach((file, name) => {
       const item = registry.items.find((candidate) => candidate.name === name);
