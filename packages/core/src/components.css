@@ -378,6 +378,29 @@
   .nyx-filter-chip > button { display: inline-grid; inline-size: 1.875rem; block-size: 1.875rem; place-items: center; padding: 0; border: 0; border-radius: var(--nyx-radius-round); background: transparent; color: inherit; font: inherit; }
   .nyx-filter-chip > button:is(:hover, :focus-visible) { outline: 0; background: var(--nyx-accent); color: var(--nyx-accent-ink); }
 
+  .nyx-command-bar { display: flex; min-inline-size: 0; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-2); padding: var(--nyx-space-2); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-command-bar-group { display: flex; min-inline-size: 0; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-1); }
+  .nyx-command-bar-end { display: flex; align-items: center; gap: var(--nyx-space-1); margin-inline-start: auto; }
+  .nyx-command-bar-separator { align-self: stretch; inline-size: var(--nyx-border); min-block-size: 2rem; margin-inline: var(--nyx-space-1); background: var(--nyx-line); }
+  .nyx-command-bar [data-nyx-command][data-state="current"] { border-color: var(--nyx-accent-line); }
+  .nyx-command-bar .nyx-kbd { min-inline-size: auto; min-block-size: 1.375rem; padding: 0.125rem 0.3125rem; font-size: var(--nyx-type-meta); }
+
+  .nyx-bulk-selection { overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-bulk-header { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-bulk-header h2 { margin: var(--nyx-space-1) 0 0; color: var(--nyx-ink); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
+  .nyx-bulk-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-3) var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-accent-line); background: var(--nyx-accent-soft); }
+  .nyx-bulk-toolbar[hidden] { display: none; }
+  .nyx-bulk-count { flex: none; color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-label); text-transform: uppercase; }
+  .nyx-bulk-actions { display: flex; min-inline-size: 0; flex-wrap: wrap; justify-content: flex-end; gap: var(--nyx-space-2); }
+  .nyx-bulk-list { display: grid; margin: 0; padding: 0; list-style: none; }
+  .nyx-bulk-item { display: flex; min-inline-size: 0; align-items: center; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); }
+  .nyx-bulk-item + .nyx-bulk-item { border-block-start: var(--nyx-border-hairline) solid var(--nyx-line); }
+  .nyx-bulk-item[data-selected] { background: var(--nyx-accent-soft); }
+  .nyx-bulk-item .nyx-choice { min-inline-size: 0; align-items: center; }
+  .nyx-bulk-item .nyx-choice span { display: grid; min-inline-size: 0; gap: var(--nyx-space-1); }
+  .nyx-bulk-item .nyx-choice strong { color: var(--nyx-ink); font-size: var(--nyx-type-nav); }
+  .nyx-bulk-item .nyx-choice small { color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+
   .nyx-tree, .nyx-tree [role="group"] { display: grid; gap: var(--nyx-space-1); margin: 0; padding: 0; list-style: none; }
   .nyx-tree [role="group"] { margin-inline-start: 1.25rem; padding-inline-start: var(--nyx-space-2); border-inline-start: var(--nyx-border-hairline) solid var(--nyx-line); }
   .nyx-tree [role="group"][hidden] { display: none; }
@@ -477,6 +500,10 @@
 
 @media (max-width: 48rem) {
   .nyx-filter-controls { grid-template-columns: 1fr; }
+  .nyx-command-bar-end { inline-size: 100%; margin-inline-start: 0; }
+  .nyx-command-bar-separator { display: none; }
+  .nyx-bulk-header, .nyx-bulk-toolbar { align-items: flex-start; flex-direction: column; }
+  .nyx-bulk-actions { justify-content: flex-start; }
   .nyx-notification-header, .nyx-activity-header { align-items: flex-start; flex-direction: column; }
   .nyx-notification-title-row { align-items: flex-start; flex-direction: column; gap: var(--nyx-space-1); }
   .nyx-app-shell, .nyx-app-shell[data-nyx-sidebar-collapsed="true"], .nyx-auth-layout, .nyx-split { grid-template-columns: 1fr; }

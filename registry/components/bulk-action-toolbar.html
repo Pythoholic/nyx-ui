@@ -1,0 +1,35 @@
+<section aria-labelledby="nyx-bulk-title" class="nyx-bulk-selection" data-nyx-bulk-action-toolbar>
+  <header class="nyx-bulk-header">
+    <div>
+      <span class="nyx-eyebrow">// Queue</span>
+      <h2 id="nyx-bulk-title">Deployment targets</h2>
+    </div>
+    <label class="nyx-choice">
+      <input data-nyx-bulk-select-all type="checkbox" />
+      <span>Select all</span>
+    </label>
+  </header>
+  <div aria-label="Selected target actions" class="nyx-bulk-toolbar" data-nyx-bulk-toolbar hidden role="toolbar">
+    <output aria-live="polite" class="nyx-bulk-count" data-nyx-bulk-count>0 selected</output>
+    <div class="nyx-bulk-actions">
+      <button class="nyx-button" data-nyx-bulk-action="retry" data-size="small" type="button">Retry</button>
+      <button class="nyx-button" data-nyx-bulk-action="archive" data-size="small" type="button">Archive</button>
+      <button class="nyx-button" data-nyx-bulk-action="delete" data-size="small" data-variant="danger" type="button">Delete</button>
+      <button class="nyx-button" data-nyx-bulk-clear data-size="small" data-variant="quiet" type="button">Clear selection</button>
+    </div>
+  </div>
+  <ul class="nyx-bulk-list">
+    <li class="nyx-bulk-item" data-nyx-bulk-item>
+      <label class="nyx-choice"><input data-nyx-bulk-select type="checkbox" value="edge-tokyo-03" /><span><strong>edge-tokyo-03</strong><small>Healthy · Tokyo</small></span></label>
+      <span class="nyx-badge" data-tone="success">Ready</span>
+    </li>
+    <li class="nyx-bulk-item" data-nyx-bulk-item>
+      <label class="nyx-choice"><input data-nyx-bulk-select type="checkbox" value="edge-frankfurt-02" /><span><strong>edge-frankfurt-02</strong><small>Degraded · Frankfurt</small></span></label>
+      <span class="nyx-badge" data-tone="warning">Review</span>
+    </li>
+    <li class="nyx-bulk-item" data-nyx-bulk-item>
+      <label class="nyx-choice"><input data-nyx-bulk-select type="checkbox" value="edge-virginia-07" /><span><strong>edge-virginia-07</strong><small>Failed · Virginia</small></span></label>
+      <span class="nyx-badge" data-tone="danger">Failed</span>
+    </li>
+  </ul>
+</section>

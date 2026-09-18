@@ -193,6 +193,20 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/filter-bar"]
     },
     {
+      "name": "command-bar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/command-bar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-bar"]
+    },
+    {
+      "name": "bulk-action-toolbar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/bulk-action-toolbar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/bulk-action-toolbar"]
+    },
+    {
       "name": "advanced-data-table",
       "type": "component",
       "status": "preview",

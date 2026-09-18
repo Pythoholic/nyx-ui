@@ -21,6 +21,8 @@ export type PluginName =
   | "stepper"
   | "notification-center"
   | "filter-bar"
+  | "command-bar"
+  | "bulk-action-toolbar"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -977,6 +979,77 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Enter / Space", description: "Activates a focused remove or clear button." },
       ],
       accessibility: "The root is a labelled native form with persistent labels. Active values are summarized as operable buttons with precise names, the count is announced politely, and vetoed changes restore the previously committed native control state.",
+    },
+  },
+  "command-bar": {
+    className: "NyxCommandBar",
+    initName: "initCommandBars",
+    selector: "[data-nyx-command-bar]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-command-bar", value: "presence", description: "Marks the toolbar ownership boundary." },
+        { name: "data-nyx-command", value: "presence", description: "Marks a native command control managed by roving focus and execution events." },
+        { name: "data-value", value: "unique string", description: "Provides the stable command value; one is generated when omitted." },
+        { name: "data-nyx-command-bar-orientation", value: "horizontal | vertical", description: "Selects the arrow-key axis; horizontal is the default." },
+        { name: "data-state", value: "active | disabled; current | idle | disabled", description: "Reflects toolbar availability and each command's synchronized state." },
+      ],
+      methods: [
+        { name: "value", value: "string | null", description: "Gets or sets the current roving command without moving focus." },
+        { name: "commands", value: "HTMLElement[]", description: "Returns the currently owned command controls." },
+        { name: "focus(commandOrValue?)", value: "HTMLElement | null", description: "Focuses a command, or the first or last enabled command." },
+        { name: "run(commandOrValue, reason?)", value: "boolean", description: "Requests command execution and reports whether it was accepted." },
+        { name: "refresh()", value: "void", description: "Rebuilds roving focus after commands or disabled states change." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:command-bar:before-run", value: "cancelable", description: "Fires before a control or API command is committed." },
+        { name: "nyx:command-bar:run", value: "not cancelable", description: "Fires after the current command, data-state, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Arrow Left / Arrow Right", description: "Moves focus among enabled commands in a horizontal toolbar." },
+        { name: "Arrow Up / Arrow Down", description: "Moves focus among enabled commands when vertical orientation is configured." },
+        { name: "Home / End", description: "Moves to the first or last enabled command." },
+        { name: "Enter / Space", description: "Activates the focused native button and emits the command event pair." },
+      ],
+      accessibility: "The root exposes the toolbar role and orientation, native buttons retain activation semantics, disabled commands are skipped, and roving tabindex reduces the toolbar to one stop in the page tab sequence. Every toolbar needs an accessible name.",
+    },
+  },
+  "bulk-action-toolbar": {
+    className: "NyxBulkActionToolbar",
+    initName: "initBulkActionToolbars",
+    selector: "[data-nyx-bulk-action-toolbar]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-bulk-action-toolbar", value: "presence", description: "Marks the selection and toolbar ownership boundary." },
+        { name: "data-nyx-bulk-select / data-nyx-bulk-select-all", value: "presence", description: "Marks native item and select-all checkboxes." },
+        { name: "data-nyx-bulk-toolbar / data-nyx-bulk-count", value: "presence", description: "Marks the contextual toolbar and its polite selection summary." },
+        { name: "data-nyx-bulk-action", value: "unique action string", description: "Marks a native button and supplies its stable action value." },
+        { name: "data-nyx-bulk-clear", value: "presence", description: "Marks the native clear-selection button." },
+        { name: "data-nyx-bulk-persistent", value: "presence", description: "Keeps the inactive toolbar visible instead of toggling hidden." },
+        { name: "data-state", value: "active | inactive; checked | unchecked | mixed", description: "Reflects toolbar and checkbox state alongside native properties and ARIA." },
+      ],
+      methods: [
+        { name: "value", value: "string[]", description: "Gets or sets selected item values in DOM order." },
+        { name: "selections", value: "HTMLInputElement[]", description: "Returns enabled owned item checkboxes with non-empty values." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests an atomic selection change and reports whether it was accepted." },
+        { name: "clear()", value: "boolean", description: "Requests removal of the complete selection." },
+        { name: "run(actionOrValue, reason?)", value: "boolean", description: "Requests a bulk action with a snapshot of selected values." },
+        { name: "refresh()", value: "void", description: "Re-reads selection and controls after the application changes the collection." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance without altering authored items." },
+      ],
+      events: [
+        { name: "nyx:bulk-action-toolbar:before-change", value: "cancelable", description: "Fires before a checkbox, select-all, clear, or API selection change commits." },
+        { name: "nyx:bulk-action-toolbar:change", value: "not cancelable", description: "Fires after checkboxes, rows, count, visibility, mixed state, data-state, and ARIA synchronize." },
+        { name: "nyx:bulk-action-toolbar:before-run", value: "cancelable", description: "Fires before a selected-item action is dispatched." },
+        { name: "nyx:bulk-action-toolbar:run", value: "not cancelable", description: "Fires with the action value and a stable selection snapshot." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves between native selection controls and the contextual toolbar." },
+        { name: "Arrow Left / Arrow Right", description: "Moves among enabled toolbar controls while the toolbar is active." },
+        { name: "Home / End", description: "Moves to the first or last enabled toolbar control." },
+        { name: "Space", description: "Toggles a focused checkbox or activates a focused native button." },
+      ],
+      accessibility: "Selection uses native checkboxes, including a programmatic mixed select-all state. A polite output reports the count, the contextual toolbar is named, and clearing from within a toolbar that becomes hidden returns focus to select all.",
     },
   },
   toast: {

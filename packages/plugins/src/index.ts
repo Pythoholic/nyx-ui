@@ -235,6 +235,24 @@ export {
 } from "./filter-bar.js";
 
 export {
+  NyxCommandBar,
+  initCommandBars,
+  type NyxCommandBarEventDetail,
+  type NyxCommandBarEventMap,
+  type NyxCommandBarRunReason,
+} from "./command-bar.js";
+
+export {
+  NyxBulkActionToolbar,
+  initBulkActionToolbars,
+  type NyxBulkActionChangeEventDetail,
+  type NyxBulkActionChangeReason,
+  type NyxBulkActionRunEventDetail,
+  type NyxBulkActionRunReason,
+  type NyxBulkActionToolbarEventMap,
+} from "./bulk-action-toolbar.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

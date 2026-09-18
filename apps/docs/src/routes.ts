@@ -18,6 +18,8 @@ export const paths = {
     actions: {
       button: "/components/actions/button",
       toggles: "/components/actions/toggles",
+      commandBar: "/components/actions/command-bar",
+      bulkActionToolbar: "/components/actions/bulk-action-toolbar",
     },
     forms: {
       textFields: "/components/forms/text-fields",

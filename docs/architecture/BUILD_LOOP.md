@@ -50,8 +50,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Notification centre (built, visually unverified)
 - [x] Activity feed (built, visually unverified)
 - [x] Filter bar (built, visually unverified)
-- [ ] Command bar
-- [ ] Bulk-action toolbar
+- [x] Command bar (built, visually unverified)
+- [x] Bulk-action toolbar (built, visually unverified)
 
 ## Priority 3 - media and AI-product patterns
 
@@ -94,5 +94,5 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Known defects
 
-- [ ] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection.
+- [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, visually unverified)
 - [ ] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`.

@@ -172,7 +172,9 @@ export class NyxCalendar {
     this.announcer = this.required<HTMLElement>("[data-nyx-calendar-announcer]");
     this.valueInput = element.querySelector<HTMLInputElement>("[data-nyx-calendar-value]") ?? undefined;
 
-    const declaredValue = options.value ?? this.valueInput?.value ?? element.dataset.nyxCalendarValue;
+    const declaredValue = options.value !== undefined
+      ? options.value
+      : this.valueInput?.value || element.dataset.nyxCalendarValue;
     const normalizedValue = this.normalizeValue(declaredValue);
     const normalizedDates = typeof normalizedValue === "string" ? [normalizedValue] : [normalizedValue?.start, normalizedValue?.end].filter((item): item is string => Boolean(item));
     this.selectedValue = normalizedDates.some((item) => this.isDisabled(parseCalendarDate(item) ?? today())) ? undefined : normalizedValue;

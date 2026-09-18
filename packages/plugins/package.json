@@ -109,6 +109,14 @@
       "types": "./dist/filter-bar.d.ts",
       "default": "./dist/filter-bar.js"
     },
+    "./command-bar": {
+      "types": "./dist/command-bar.d.ts",
+      "default": "./dist/command-bar.js"
+    },
+    "./bulk-action-toolbar": {
+      "types": "./dist/bulk-action-toolbar.d.ts",
+      "default": "./dist/bulk-action-toolbar.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"
