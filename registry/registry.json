@@ -256,6 +256,34 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/attachment-previews"]
     },
     {
+      "name": "generation-queue",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/generation-queue.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/generation-queue"]
+    },
+    {
+      "name": "model-selector",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/model-selector.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/model-selector"]
+    },
+    {
+      "name": "parameter-inspector",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/parameter-inspector.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/parameter-inspector"]
+    },
+    {
+      "name": "before-after-comparison",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/before-after.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/before-after"]
+    },
+    {
       "name": "layouts",
       "type": "component-group",
       "status": "preview",

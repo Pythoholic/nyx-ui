@@ -129,6 +129,22 @@
       "types": "./dist/attachment-previews.d.ts",
       "default": "./dist/attachment-previews.js"
     },
+    "./generation-queue": {
+      "types": "./dist/generation-queue.d.ts",
+      "default": "./dist/generation-queue.js"
+    },
+    "./model-selector": {
+      "types": "./dist/model-selector.d.ts",
+      "default": "./dist/model-selector.js"
+    },
+    "./parameter-inspector": {
+      "types": "./dist/parameter-inspector.d.ts",
+      "default": "./dist/parameter-inspector.js"
+    },
+    "./before-after": {
+      "types": "./dist/before-after.d.ts",
+      "default": "./dist/before-after.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

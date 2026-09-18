@@ -1,0 +1,32 @@
+<form class="nyx-parameter-inspector" data-nyx-parameter-inspector aria-labelledby="nyx-parameter-title">
+  <header class="nyx-parameter-header">
+    <div>
+      <span class="nyx-eyebrow">// Generation controls</span>
+      <h2 id="nyx-parameter-title">Parameters</h2>
+    </div>
+    <button class="nyx-button" data-size="small" data-variant="quiet" data-nyx-parameter-reset type="reset" disabled>Reset</button>
+  </header>
+  <div class="nyx-parameter-list">
+    <label class="nyx-parameter-field">
+      <span class="nyx-label">Aspect ratio</span>
+      <select class="nyx-select" data-nyx-parameter name="aspect">
+        <option value="1:1">Square · 1:1</option>
+        <option value="4:3">Landscape · 4:3</option>
+        <option value="16:9">Wide · 16:9</option>
+      </select>
+    </label>
+    <label class="nyx-parameter-field">
+      <span class="nyx-parameter-row"><span class="nyx-label">Guidance</span><output data-nyx-parameter-output="guidance">7</output></span>
+      <input class="nyx-range" data-nyx-parameter name="guidance" type="range" min="1" max="20" step="0.5" value="7">
+    </label>
+    <label class="nyx-parameter-field">
+      <span class="nyx-label">Steps</span>
+      <input class="nyx-input" data-nyx-parameter name="steps" type="number" min="1" max="100" value="32" required>
+    </label>
+    <label class="nyx-switch nyx-parameter-switch">
+      <input data-nyx-parameter name="enhance" type="checkbox" checked>
+      <span class="nyx-switch-track"></span>
+      <span>Prompt enhancement</span>
+    </label>
+  </div>
+</form>

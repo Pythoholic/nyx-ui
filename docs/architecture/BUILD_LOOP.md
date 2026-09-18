@@ -59,10 +59,10 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Prompt composer (built, visually unverified)
 - [x] Message scroller (built, visually unverified)
 - [x] Attachment previews (built, visually unverified)
-- [ ] Generation queue
-- [ ] Model selector
-- [ ] Parameter inspector
-- [ ] Before/after comparison
+- [x] Generation queue (built, visually unverified)
+- [x] Model selector (built, visually unverified)
+- [x] Parameter inspector (built, visually unverified)
+- [x] Before/after comparison (built, visually unverified)
 - [ ] Image lightbox
 - [ ] Media carousel
 - [ ] Upload dropzone with queue

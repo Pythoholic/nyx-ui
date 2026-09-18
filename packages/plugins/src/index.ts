@@ -281,6 +281,42 @@ export {
 } from "./attachment-previews.js";
 
 export {
+  NyxGenerationQueue,
+  initGenerationQueues,
+  type NyxGenerationQueueEventDetail,
+  type NyxGenerationQueueEventMap,
+  type NyxGenerationQueueItem,
+  type NyxGenerationQueueReason,
+  type NyxGenerationState,
+} from "./generation-queue.js";
+
+export {
+  NyxModelSelector,
+  initModelSelectors,
+  type NyxModelSelectorEventDetail,
+  type NyxModelSelectorEventMap,
+  type NyxModelSelectorReason,
+} from "./model-selector.js";
+
+export {
+  NyxParameterInspector,
+  initParameterInspectors,
+  type NyxParameterInspectorEventDetail,
+  type NyxParameterInspectorEventMap,
+  type NyxParameterInspectorReason,
+  type NyxParameterInspectorValue,
+  type NyxParameterValue,
+} from "./parameter-inspector.js";
+
+export {
+  NyxBeforeAfter,
+  initBeforeAfters,
+  type NyxBeforeAfterEventDetail,
+  type NyxBeforeAfterEventMap,
+  type NyxBeforeAfterReason,
+} from "./before-after.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

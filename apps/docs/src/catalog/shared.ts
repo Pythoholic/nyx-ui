@@ -26,6 +26,10 @@ export type PluginName =
   | "prompt-composer"
   | "message-scroller"
   | "attachment-previews"
+  | "generation-queue"
+  | "model-selector"
+  | "parameter-inspector"
+  | "before-after"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -75,6 +79,126 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "generation-queue": {
+    className: "NyxGenerationQueue",
+    initName: "initGenerationQueues",
+    selector: "[data-nyx-generation-queue]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-generation-queue", value: "presence", description: "Marks the queue state and delegated-control ownership boundary." },
+        { name: "data-nyx-generation-item / id", value: "presence / unique string", description: "Marks one queue item and its stable application identifier." },
+        { name: "data-state", value: "queued | running | complete | failed | canceled", description: "Declares and reflects each item's current lifecycle state." },
+        { name: "data-progress", value: "0–100", description: "Declares and reflects bounded completion progress." },
+        { name: "data-nyx-generation-action", value: "cancel | retry | remove", description: "Marks native action buttons whose visibility follows item state." },
+        { name: "data-nyx-generation-count / progress / status / empty", value: "presence", description: "Marks synchronized native output, progress, status, and empty-state elements." },
+      ],
+      methods: [
+        { name: "value", value: "NyxGenerationQueueItem[]", description: "Gets queue state or requests updates for matching authored items." },
+        { name: "items", value: "HTMLElement[]", description: "Reads the currently authored queue items." },
+        { name: "setStatus(itemOrId, state, progress?, reason?)", value: "boolean", description: "Requests a state or progress transition without performing generation transport." },
+        { name: "remove(itemOrId, reason?)", value: "boolean", description: "Requests removal of one settled item." },
+        { name: "refresh() / destroy()", value: "void", description: "Synchronizes authored items, or removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:generation-queue:before-change / before-remove", value: "cancelable", description: "Fires before an item transition or removal is applied." },
+        { name: "nyx:generation-queue:change / remove", value: "not cancelable", description: "Fires after item controls, progress, queue counts, state, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves among the visible native item action buttons." },
+        { name: "Enter / Space", description: "Activates the focused cancel, retry, or remove button." },
+      ],
+      accessibility: "The queue is an ordered list and every item exposes a native progress element, text status, and named native actions. Queue and item aria-busy state reflects active work, while the polite count output announces aggregate changes. Nyx never starts or cancels transport; applications consume the events and update status through the public method.",
+    },
+  },
+  "model-selector": {
+    className: "NyxModelSelector",
+    initName: "initModelSelectors",
+    selector: "[data-nyx-model-selector]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-model-selector", value: "presence", description: "Marks the native radio group and selection ownership boundary." },
+        { name: "data-nyx-model-value", value: "presence on radio", description: "Marks each native radio input as a selectable model value." },
+        { name: "data-nyx-model-option", value: "presence", description: "Marks the visual label synchronized to selected or unselected state." },
+        { name: "data-state", value: "ready | empty | disabled / selected | unselected", description: "Reflects group availability and per-option selection." },
+      ],
+      methods: [
+        { name: "value", value: "string", description: "Gets or requests the selected native radio value." },
+        { name: "inputs", value: "HTMLInputElement[]", description: "Reads the model radios owned by the selector." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a selection and reports whether it was accepted." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:model-selector:before-change", value: "cancelable", description: "Fires before a radio or API selection becomes accepted state." },
+        { name: "nyx:model-selector:change", value: "not cancelable", description: "Fires after checked state and visual data state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves into and out of the native radio group." },
+        { name: "Arrow keys", description: "Uses native radio-group navigation and selection." },
+        { name: "Space", description: "Selects the focused native radio option." },
+      ],
+      accessibility: "A fieldset and legend provide the group name, and native radio inputs retain platform keyboard, form, and assistive-technology behavior. Descriptions and badges are visible text inside each label; application-specific availability should use the native disabled attribute.",
+    },
+  },
+  "parameter-inspector": {
+    className: "NyxParameterInspector",
+    initName: "initParameterInspectors",
+    selector: "[data-nyx-parameter-inspector]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-parameter-inspector", value: "presence on form", description: "Marks the native form and parameter-state ownership boundary." },
+        { name: "data-nyx-parameter", value: "presence", description: "Marks a named native control included in the value record." },
+        { name: "data-nyx-parameter-output", value: "control name", description: "Marks an optional output synchronized to one parameter." },
+        { name: "data-nyx-parameter-reset", value: "presence", description: "Marks the native reset button synchronized to modified state." },
+        { name: "data-state", value: "pristine | modified | invalid", description: "Reflects comparison with initial values and native validity." },
+      ],
+      methods: [
+        { name: "value", value: "Record<string, string | number | boolean>", description: "Gets or requests named parameter values using native control types." },
+        { name: "defaults", value: "record", description: "Reads the initial value snapshot used by reset and modified state." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a partial value update and reports whether it was accepted." },
+        { name: "reset(reason?)", value: "boolean", description: "Requests restoration of the initial snapshot." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:parameter-inspector:before-change / before-reset", value: "cancelable", description: "Fires before a parameter update or reset is applied." },
+        { name: "nyx:parameter-inspector:change / reset", value: "not cancelable", description: "Fires after controls, outputs, validity, reset availability, and data state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through native parameter controls and the reset button." },
+        { name: "Arrow keys", description: "Adjusts the focused range, number, or select control through native behavior." },
+        { name: "Space", description: "Toggles the focused native checkbox." },
+      ],
+      accessibility: "The inspector is a native form made from labelled select, range, number, and checkbox controls. Constraint validity is mirrored through aria-invalid, outputs supplement rather than replace labels, and reset remains a standard button. Applications own parameter meaning and generation requests.",
+    },
+  },
+  "before-after": {
+    className: "NyxBeforeAfter",
+    initName: "initBeforeAfters",
+    selector: "[data-nyx-before-after]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-before-after", value: "presence", description: "Marks the comparison figure and reveal-state ownership boundary." },
+        { name: "data-nyx-before-after-control", value: "presence on range", description: "Marks the required native range input." },
+        { name: "data-nyx-before-after-output", value: "presence", description: "Marks the optional text output synchronized to the reveal percentage." },
+        { name: "data-position", value: "range value", description: "Reflects the current comparison position." },
+        { name: "data-state", value: "before | mixed | after", description: "Reflects whether the result is fully hidden, partially revealed, or fully shown." },
+      ],
+      methods: [
+        { name: "value", value: "number", description: "Gets or requests the bounded native range value." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a reveal change and reports whether it was accepted." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:before-after:before-change", value: "cancelable", description: "Fires before an input or API reveal change is accepted." },
+        { name: "nyx:before-after:change", value: "not cancelable", description: "Fires after the clip position, output, data state, and range ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Arrow keys", description: "Moves the native range by one declared step." },
+        { name: "Page Up / Page Down", description: "Moves through the range in larger native increments." },
+        { name: "Home / End", description: "Shows the complete before or after endpoint." },
+      ],
+      accessibility: "The comparison is a figure with one meaningful labelled image and a native labelled range input. The overlaid result is presentation-only to prevent duplicate image announcements, and aria-valuetext plus visible output describe the revealed proportion without relying on position or color.",
+    },
+  },
   "message-scroller": {
     className: "NyxMessageScroller",
     initName: "initMessageScrollers",

@@ -2,6 +2,10 @@ import chatThreadMarkup from "../../../../registry/components/chat-thread.html?r
 import promptComposerMarkup from "../../../../registry/components/prompt-composer.html?raw";
 import messageScrollerMarkup from "../../../../registry/components/message-scroller.html?raw";
 import attachmentPreviewsMarkup from "../../../../registry/components/attachment-previews.html?raw";
+import generationQueueMarkup from "../../../../registry/components/generation-queue.html?raw";
+import modelSelectorMarkup from "../../../../registry/components/model-selector.html?raw";
+import parameterInspectorMarkup from "../../../../registry/components/parameter-inspector.html?raw";
+import beforeAfterMarkup from "../../../../registry/components/before-after.html?raw";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
 
@@ -44,5 +48,45 @@ export const aiPages = [
     searchTerms: "ai attachment preview file image document remove restore prompt context",
     plugins: ["attachment-previews"],
     body: `<section class="docs-prose-section"><h2>Preview state stays reversible</h2><p>Nyx owns presentation and removal state for already selected files. The application owns file acquisition, validation, object URL creation and revocation, transport, and whether a canceled removal should be restored.</p></section>${card("Prompt attachments", attachmentPreviewsMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.ai.generationQueue,
+    categoryId: "ai",
+    categoryLabel: "AI Patterns",
+    title: "Generation Queue",
+    description: "An ordered work queue keeps progress, lifecycle state, aggregate activity, and cancel, retry, and removal controls synchronized without owning transport.",
+    searchTerms: "ai generation queue render progress cancel retry job task pipeline",
+    plugins: ["generation-queue"],
+    body: `<section class="docs-prose-section"><h2>State management without transport</h2><p>Nyx reflects application-owned work as queued, running, complete, failed, or canceled. Cancelable events create the transport boundary; the application performs the operation and can publish later progress through <code>setStatus()</code>.</p></section>${card("Render queue", generationQueueMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.ai.modelSelector,
+    categoryId: "ai",
+    categoryLabel: "AI Patterns",
+    title: "Model Selector",
+    description: "A native radio group presents mutually exclusive model profiles with descriptive metadata and a controlled selection boundary.",
+    searchTerms: "ai model selector radio inference profile latency quality fidelity",
+    plugins: ["model-selector"],
+    body: `<section class="docs-prose-section"><h2>Selection remains native</h2><p>Models are mutually exclusive choices, so the component preserves a fieldset, legend, and radio inputs instead of recreating selection with an application role. Metadata is authored content; applications own availability and pricing.</p></section>${card("Inference model", modelSelectorMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.ai.parameterInspector,
+    categoryId: "ai",
+    categoryLabel: "AI Patterns",
+    title: "Parameter Inspector",
+    description: "A native parameter form exposes typed values, validity, modified state, synchronized outputs, and reversible reset behavior.",
+    searchTerms: "ai parameter inspector settings guidance steps aspect ratio generation controls",
+    plugins: ["parameter-inspector"],
+    body: `<section class="docs-prose-section"><h2>Parameters remain ordinary form data</h2><p>The inspector reads named native controls into a typed record and tracks the initial snapshot. It does not prescribe a model schema or submit a generation request, so applications can compose only the controls their model supports.</p></section>${card("Generation parameters", parameterInspectorMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.ai.beforeAfter,
+    categoryId: "ai",
+    categoryLabel: "AI Patterns",
+    title: "Before/After Comparison",
+    description: "A keyboard-operable range control reveals an enhanced result while exposing the comparison position in text and synchronized state.",
+    searchTerms: "ai before after comparison image reveal slider original enhanced",
+    plugins: ["before-after"],
+    body: `<section class="docs-prose-section"><h2>Comparison does not require dragging</h2><p>The reveal follows a native range input, so pointer, touch, and keyboard users share one value model. Only the original illustration is announced as an image; the visual overlay is hidden to avoid duplicate descriptions.</p></section>${card("Concept enhancement", beforeAfterMarkup, "Registry source")}`,
   }),
 ];

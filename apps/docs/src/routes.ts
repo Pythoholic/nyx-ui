@@ -94,6 +94,10 @@ export const paths = {
       promptComposer: "/components/ai/prompt-composer",
       messageScroller: "/components/ai/message-scroller",
       attachmentPreviews: "/components/ai/attachment-previews",
+      generationQueue: "/components/ai/generation-queue",
+      modelSelector: "/components/ai/model-selector",
+      parameterInspector: "/components/ai/parameter-inspector",
+      beforeAfter: "/components/ai/before-after-comparison",
     },
     layouts: {
       applicationShell: "/components/layouts/application-shell",

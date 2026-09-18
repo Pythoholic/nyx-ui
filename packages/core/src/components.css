@@ -495,6 +495,61 @@
   .nyx-attachment-body span { color: var(--nyx-label); font-size: var(--nyx-type-meta); }
   .nyx-attachment-empty { margin: 0; padding: var(--nyx-space-6); color: var(--nyx-label); font-size: var(--nyx-type-body); text-align: center; }
 
+  .nyx-generation-queue, .nyx-parameter-inspector, .nyx-before-after { overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-generation-header, .nyx-parameter-header { display: flex; align-items: end; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-generation-header h2, .nyx-parameter-header h2 { margin: var(--nyx-space-1) 0 0; color: var(--nyx-ink); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
+  .nyx-generation-header output { color: var(--nyx-label); font-size: var(--nyx-type-meta); font-variant-numeric: tabular-nums; letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
+  .nyx-generation-list { display: grid; gap: var(--nyx-space-3); margin: 0; padding: var(--nyx-space-4); list-style: none; }
+  .nyx-generation-item { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) 7rem auto; align-items: center; gap: var(--nyx-space-3); padding: var(--nyx-space-3); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-control); background: var(--nyx-panel-raised); }
+  .nyx-generation-item[data-state="failed"] { border-color: var(--nyx-danger-line); }
+  .nyx-generation-item[data-state="running"] { border-color: var(--nyx-accent-line); }
+  .nyx-generation-thumb { display: grid; aspect-ratio: 1; place-items: center; border: var(--nyx-border-hairline) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: radial-gradient(circle at 70% 20%, var(--nyx-accent-soft), transparent 42%), var(--nyx-void); color: var(--nyx-ink); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-bold); }
+  .nyx-generation-body { display: grid; min-inline-size: 0; gap: var(--nyx-space-1); }
+  .nyx-generation-body strong { overflow: hidden; color: var(--nyx-ink); font-size: var(--nyx-type-body); text-overflow: ellipsis; white-space: nowrap; }
+  .nyx-generation-body > span, .nyx-generation-status { color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+  .nyx-generation-body progress { inline-size: 100%; block-size: 0.375rem; margin-block-start: var(--nyx-space-1); accent-color: var(--nyx-accent); }
+  .nyx-generation-status { font-variant-numeric: tabular-nums; text-transform: uppercase; }
+  .nyx-generation-actions { display: flex; justify-content: flex-end; }
+  .nyx-generation-actions [hidden] { display: none; }
+  .nyx-generation-empty { margin: 0; padding: var(--nyx-space-6); color: var(--nyx-label); text-align: center; }
+
+  .nyx-model-selector { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+  .nyx-model-selector > legend { display: grid; inline-size: 100%; gap: var(--nyx-space-1); margin-block-end: var(--nyx-space-3); color: var(--nyx-ink); }
+  .nyx-model-selector > legend strong { font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
+  .nyx-model-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nyx-space-3); }
+  .nyx-model-option { position: relative; display: grid; min-inline-size: 0; gap: var(--nyx-space-3); padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); cursor: pointer; }
+  .nyx-model-option:has(input:focus-visible) { outline: var(--nyx-border) solid var(--nyx-accent); outline-offset: var(--nyx-border); }
+  .nyx-model-option[data-state="selected"] { border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); }
+  .nyx-model-option:has(input:disabled) { cursor: not-allowed; opacity: 0.72; }
+  .nyx-model-option > input { position: absolute; inset-block-start: var(--nyx-space-3); inset-inline-end: var(--nyx-space-3); accent-color: var(--nyx-accent); }
+  .nyx-model-option-body { display: grid; gap: var(--nyx-space-2); padding-inline-end: var(--nyx-space-5); }
+  .nyx-model-option-body strong { color: var(--nyx-ink); font-size: var(--nyx-type-body); text-transform: uppercase; }
+  .nyx-model-option-body span { color: var(--nyx-muted); font-size: var(--nyx-type-nav); line-height: 1.5; }
+  .nyx-model-option > .nyx-badge { justify-self: start; }
+
+  .nyx-parameter-list { display: grid; gap: var(--nyx-space-4); padding: var(--nyx-space-4); }
+  .nyx-parameter-field { display: grid; gap: var(--nyx-space-2); }
+  .nyx-parameter-row { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-3); }
+  .nyx-parameter-row output { color: var(--nyx-ink); font-size: var(--nyx-type-data); font-variant-numeric: tabular-nums; }
+  .nyx-parameter-switch { justify-self: start; }
+  .nyx-parameter-inspector[data-state="invalid"] { border-color: var(--nyx-danger-line); }
+
+  .nyx-before-after { --nyx-before-after-position: 50%; }
+  .nyx-before-after-stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--nyx-void); }
+  .nyx-before-after-media { display: block; inline-size: 100%; block-size: 100%; }
+  .nyx-before-after-reveal { position: absolute; inset: 0; overflow: hidden; clip-path: inset(0 calc(100% - var(--nyx-before-after-position)) 0 0); }
+  .nyx-before-after-divider { position: absolute; inset-block: 0; inset-inline-start: var(--nyx-before-after-position); inline-size: var(--nyx-border); transform: translateX(-50%); background: var(--nyx-accent); pointer-events: none; }
+  .nyx-before-after-divider span { position: absolute; inset-block-start: 50%; inset-inline-start: 50%; inline-size: 2rem; block-size: 2rem; transform: translate(-50%, -50%); border: var(--nyx-border) solid var(--nyx-accent); border-radius: 50%; background: var(--nyx-panel); box-shadow: var(--nyx-shadow-raised); }
+  .nyx-before-after-divider span::before, .nyx-before-after-divider span::after { position: absolute; inset-block-start: 50%; content: ""; border-block: 0.25rem solid transparent; transform: translateY(-50%); }
+  .nyx-before-after-divider span::before { inset-inline-start: 0.35rem; border-inline-end: 0.35rem solid var(--nyx-accent); }
+  .nyx-before-after-divider span::after { inset-inline-end: 0.35rem; border-inline-start: 0.35rem solid var(--nyx-accent); }
+  .nyx-before-after-label { position: absolute; inset-block-start: var(--nyx-space-3); padding: var(--nyx-space-1) var(--nyx-space-2); border: var(--nyx-border-hairline) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: var(--nyx-overlay); color: var(--nyx-ink); font-size: var(--nyx-type-meta); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
+  .nyx-before-after-label[data-side="before"] { inset-inline-start: var(--nyx-space-3); }
+  .nyx-before-after-label[data-side="after"] { inset-inline-end: var(--nyx-space-3); }
+  .nyx-before-after-controls { display: grid; grid-template-columns: auto minmax(8rem, 1fr) auto; align-items: center; gap: var(--nyx-space-3); padding: var(--nyx-space-4); border-block-start: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-before-after-controls label { color: var(--nyx-muted); font-size: var(--nyx-type-nav); }
+  .nyx-before-after-controls output { min-inline-size: 5rem; color: var(--nyx-label); font-size: var(--nyx-type-meta); font-variant-numeric: tabular-nums; text-align: end; text-transform: uppercase; }
+
   .nyx-prompt-composer { overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
   .nyx-prompt-composer-header { display: flex; align-items: end; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
   .nyx-prompt-composer-hint { display: inline-flex; align-items: center; gap: var(--nyx-space-1); color: var(--nyx-label); font-size: var(--nyx-type-meta); white-space: nowrap; }
@@ -552,12 +607,19 @@
   .nyx-command-bar-separator { display: none; }
   .nyx-bulk-header, .nyx-bulk-toolbar { align-items: flex-start; flex-direction: column; }
   .nyx-bulk-actions { justify-content: flex-start; }
-  .nyx-notification-header, .nyx-activity-header, .nyx-chat-header, .nyx-attachment-header, .nyx-prompt-composer-header { align-items: flex-start; flex-direction: column; }
+  .nyx-notification-header, .nyx-activity-header, .nyx-chat-header, .nyx-attachment-header, .nyx-prompt-composer-header, .nyx-generation-header, .nyx-parameter-header { align-items: flex-start; flex-direction: column; }
   .nyx-notification-title-row { align-items: flex-start; flex-direction: column; gap: var(--nyx-space-1); }
   .nyx-chat-message { max-inline-size: 100%; }
   .nyx-attachment-preview { grid-template-columns: 3.75rem minmax(0, 1fr); }
   .nyx-attachment-remove { grid-column: 1 / -1; justify-self: stretch; }
   .nyx-prompt-composer-hint { white-space: normal; }
+  .nyx-generation-item { grid-template-columns: 3.5rem minmax(0, 1fr); }
+  .nyx-generation-status { grid-column: 2; }
+  .nyx-generation-actions { grid-column: 1 / -1; justify-content: stretch; }
+  .nyx-generation-actions .nyx-button { inline-size: 100%; }
+  .nyx-model-options { grid-template-columns: 1fr; }
+  .nyx-before-after-controls { grid-template-columns: 1fr auto; }
+  .nyx-before-after-controls .nyx-range { grid-column: 1 / -1; grid-row: 2; }
   .nyx-app-shell, .nyx-app-shell[data-nyx-sidebar-collapsed="true"], .nyx-auth-layout, .nyx-split { grid-template-columns: 1fr; }
   .nyx-app-shell[data-nyx-sidebar] { overflow: visible; }
   .nyx-app-shell[data-nyx-sidebar] > .nyx-sidebar-dialog { position: fixed; display: none; inline-size: min(30rem, 92vw); block-size: 100vh; max-block-size: 100vh; margin: 0 auto 0 0; overflow: auto; border-inline-end: var(--nyx-border) solid var(--nyx-accent-line); }
