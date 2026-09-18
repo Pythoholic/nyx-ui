@@ -56,6 +56,45 @@ export {
 } from "./sidebar.js";
 
 export {
+  NyxCalendar,
+  compareCalendarDates,
+  formatCalendarDate,
+  initCalendars,
+  parseCalendarDate,
+  type NyxCalendarDate,
+  type NyxCalendarDisabledPredicate,
+  type NyxCalendarEventMap,
+  type NyxCalendarMonthEventDetail,
+  type NyxCalendarOptions,
+  type NyxCalendarRange,
+  type NyxCalendarSelectEventDetail,
+  type NyxCalendarSelectionMode,
+  type NyxCalendarValue,
+} from "./calendar.js";
+
+export {
+  NyxDatePicker,
+  initDatePickers,
+  type NyxDatePickerChangeEventDetail,
+  type NyxDatePickerEventMap,
+  type NyxDatePickerOpenEventDetail,
+  type NyxDatePickerOptions,
+} from "./date-picker.js";
+
+export {
+  NyxDataTable,
+  initDataTables,
+  type NyxDataTableComparator,
+  type NyxDataTableEventMap,
+  type NyxDataTableOptions,
+  type NyxDataTablePredicate,
+  type NyxDataTableSelectionEventDetail,
+  type NyxDataTableSortDirection,
+  type NyxDataTableState,
+  type NyxDataTableStateEventDetail,
+} from "./data-table.js";
+
+export {
   NyxDropdownMenu,
   getOrCreateDropdownMenu,
   initDropdownMenus,

@@ -1,0 +1,36 @@
+<div class="nyx-data-table" data-nyx-data-table data-nyx-data-table-page-size="3">
+  <div class="nyx-data-table-toolbar">
+    <label class="nyx-field" for="job-filter"><span class="nyx-label">Filter jobs</span><input class="nyx-input" data-nyx-data-table-filter id="job-filter" type="search" placeholder="Name, owner, or status" /></label>
+    <span class="nyx-data-table-page-status" data-nyx-data-table-page-status aria-live="polite"></span>
+  </div>
+  <div class="nyx-table-wrap">
+    <table class="nyx-table">
+      <caption class="sr-only">Deployment jobs</caption>
+      <thead><tr>
+        <th class="nyx-table-selection" scope="col"><input data-nyx-data-table-select-all type="checkbox" aria-label="Select all jobs on this page" /></th>
+        <th aria-sort="none" scope="col"><button class="nyx-table-sort" data-nyx-data-table-sort="name" type="button">Job</button></th>
+        <th aria-sort="none" scope="col"><button class="nyx-table-sort" data-nyx-data-table-sort="status" type="button">Status</button></th>
+        <th aria-sort="none" scope="col"><button class="nyx-table-sort" data-nyx-data-table-sort="duration" type="button">Duration</button></th>
+        <th aria-sort="none" scope="col"><button class="nyx-table-sort" data-nyx-data-table-sort="owner" type="button">Owner</button></th>
+      </tr></thead>
+      <tbody>
+        <tr data-row-key="job-024"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-024" /></td><th data-column="name" scope="row">render-024</th><td data-column="status">Complete</td><td data-column="duration" data-sort-value="102">01:42</td><td data-column="owner">Aiko</td></tr>
+        <tr data-row-key="job-025"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-025" /></td><th data-column="name" scope="row">render-025</th><td data-column="status">Running</td><td data-column="duration" data-sort-value="38">00:38</td><td data-column="owner">Noah</td></tr>
+        <tr data-row-key="job-026"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-026" /></td><th data-column="name" scope="row">render-026</th><td data-column="status">Queued</td><td data-column="duration" data-sort-value="0">—</td><td data-column="owner">Mina</td></tr>
+        <tr data-row-key="job-027"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-027" /></td><th data-column="name" scope="row">render-027</th><td data-column="status">Complete</td><td data-column="duration" data-sort-value="87">01:27</td><td data-column="owner">Luis</td></tr>
+        <tr data-row-key="job-028"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-028" /></td><th data-column="name" scope="row">render-028</th><td data-column="status">Failed</td><td data-column="duration" data-sort-value="14">00:14</td><td data-column="owner">Aiko</td></tr>
+        <tr data-row-key="job-029"><td class="nyx-table-selection"><input data-nyx-data-table-row-select type="checkbox" aria-label="Select render-029" /></td><th data-column="name" scope="row">render-029</th><td data-column="status">Queued</td><td data-column="duration" data-sort-value="0">—</td><td data-column="owner">Noah</td></tr>
+        <tr data-nyx-data-table-empty hidden><td colspan="5">No jobs match this filter.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nyx-data-table-footer">
+    <span class="nyx-field-hint">Selection is retained when the page or filter changes.</span>
+    <nav class="nyx-pagination" aria-label="Table pages">
+      <button class="nyx-page" data-nyx-data-table-page="previous" type="button" aria-label="Previous page">←</button>
+      <button class="nyx-page" data-nyx-data-table-page="1" type="button">1</button>
+      <button class="nyx-page" data-nyx-data-table-page="2" type="button">2</button>
+      <button class="nyx-page" data-nyx-data-table-page="next" type="button" aria-label="Next page">→</button>
+    </nav>
+  </div>
+</div>

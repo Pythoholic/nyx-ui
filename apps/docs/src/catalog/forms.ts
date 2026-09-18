@@ -1,5 +1,7 @@
 import { icon } from "../icons.js";
+import calendarMarkup from "../../../../registry/components/calendar.html?raw";
 import comboboxMarkup from "../../../../registry/components/combobox.html?raw";
+import datePickerMarkup from "../../../../registry/components/date-picker.html?raw";
 import fileUploadMarkup from "../../../../registry/components/file-upload.html?raw";
 import inputOtpMarkup from "../../../../registry/components/input-otp.html?raw";
 import { paths } from "../routes.js";
@@ -64,6 +66,26 @@ export const formPages = [
     description: "Native range, date, and time inputs retain platform behavior while inheriting the Nyx visual contract.",
     searchTerms: "range slider date time native input form strength",
     body: card("Range, date, and time", `<div class="docs-form-grid"><label class="nyx-field docs-form-span" for="strength"><span class="nyx-label">Strength · <output data-range-output for="strength">68</output></span><input class="nyx-range" id="strength" data-range-input type="range" min="0" max="100" value="68"/></label><label class="nyx-field" for="start-date"><span class="nyx-label">Date</span><input class="nyx-input" id="start-date" type="date" value="2026-09-17"/></label><label class="nyx-field" for="start-time"><span class="nyx-label">Time</span><input class="nyx-input" id="start-time" type="time" value="17:30"/></label></div>`, "Native"),
+  }),
+  page({
+    path: paths.components.forms.calendar,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Calendar",
+    description: "A preview month-grid controller for single dates and ranges, with locale-aware labels, week starts, constraints, and complete keyboard movement.",
+    searchTerms: "calendar month grid single range locale week start minimum maximum disabled date keyboard preview",
+    plugins: ["calendar"],
+    body: `<section class="docs-prose-section"><h2>Calendar dates, not moments</h2><p>Values use <code>YYYY-MM-DD</code> and never carry a time or time zone. Month and weekday labels come from <code>Intl.DateTimeFormat</code>; the default first weekday comes from <code>Intl.Locale</code> and can be overridden. Supply a <code>disabled</code> predicate for application rules such as blackout days.</p></section>${card("Single date and range", `<div class="docs-row" style="align-items:start">${calendarMarkup}</div>`, "Preview", calendarMarkup)}`,
+  }),
+  page({
+    path: paths.components.forms.datePicker,
+    categoryId: "forms",
+    categoryLabel: "Forms",
+    title: "Date Picker",
+    description: "A preview Calendar composition keeps typed ISO input and popover selection synchronized while reusing Nyx positioning and dismissal.",
+    searchTerms: "date picker input calendar popover typed parse positioning dismissal native date preview",
+    plugins: ["date-picker"],
+    body: `<section class="docs-prose-section"><h2>Use native date input first</h2><p>For a simple date field, prefer <code>input[type=date]</code>: it is smaller and uses the platform picker. Use Date Picker when the product needs the same custom Calendar across platforms, date-range selection, disabled-date rules, or visible adjacent-month context. Typed values use <code>YYYY-MM-DD</code>; range mode accepts two ISO dates separated by a slash.</p></section>${card("Date picker", datePickerMarkup, "Preview")}`,
   }),
   page({
     path: paths.components.forms.fileUpload,

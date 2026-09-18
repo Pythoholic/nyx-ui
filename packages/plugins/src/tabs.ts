@@ -30,7 +30,7 @@ export class NyxTabs {
     this.element = element;
     this.tabs = Array.from(
       element.querySelectorAll<HTMLButtonElement>("[role='tab']"),
-    );
+    ).filter((tab) => tab.closest(tabsSelector) === element);
     this.panels = this.tabs.flatMap((tab) => {
       const panelId = tab.getAttribute("aria-controls");
       const panel = panelId

@@ -33,6 +33,18 @@
       "types": "./dist/sidebar.d.ts",
       "default": "./dist/sidebar.js"
     },
+    "./calendar": {
+      "types": "./dist/calendar.d.ts",
+      "default": "./dist/calendar.js"
+    },
+    "./date-picker": {
+      "types": "./dist/date-picker.d.ts",
+      "default": "./dist/date-picker.js"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.ts",
+      "default": "./dist/data-table.js"
+    },
     "./dropdown-menu": {
       "types": "./dist/dropdown-menu.d.ts",
       "default": "./dist/dropdown-menu.js"

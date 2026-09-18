@@ -1,7 +1,10 @@
 import { initComboboxes } from "@nyx-ui/plugins/combobox";
+import { initCalendars } from "@nyx-ui/plugins/calendar";
 import { initCommandPalettes, type NyxCommandPalette, type NyxCommandPaletteEventDetail } from "@nyx-ui/plugins/command-palette";
 import { initContextMenus } from "@nyx-ui/plugins/context-menu";
 import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDataTables } from "@nyx-ui/plugins/data-table";
+import { initDatePickers } from "@nyx-ui/plugins/date-picker";
 import { initDropdownMenus } from "@nyx-ui/plugins/dropdown-menu";
 import { initFileUploads, type NyxFileUploadAdapter } from "@nyx-ui/plugins/file-upload";
 import { initInputOtps } from "@nyx-ui/plugins/input-otp";
@@ -166,10 +169,13 @@ const demoUpload: NyxFileUploadAdapter = (file, { reportProgress, signal }) => n
 
 function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: Destroyable[]): NyxToast | undefined {
   switch (plugin) {
+    case "calendar": addDestroyables(destroyables, initCalendars(root)); break;
     case "combobox": addDestroyables(destroyables, initComboboxes(root)); break;
     case "command-palette": addDestroyables(destroyables, initCommandPalettes(root)); break;
     case "context-menu": addDestroyables(destroyables, initContextMenus(root)); break;
     case "dialog": addDestroyables(destroyables, initDialogs(root)); break;
+    case "data-table": addDestroyables(destroyables, initDataTables(root)); break;
+    case "date-picker": addDestroyables(destroyables, initDatePickers(root)); break;
     case "dropdown-menu": addDestroyables(destroyables, initDropdownMenus(root)); break;
     case "file-upload": addDestroyables(destroyables, initFileUploads(root, { transport: demoUpload })); break;
     case "input-otp": addDestroyables(destroyables, initInputOtps(root)); break;
@@ -191,6 +197,7 @@ function initializePage(page: DocPage): () => void {
   const destroyables: Destroyable[] = [];
   const copyResetTimers: number[] = [];
   let toast: NyxToast | undefined;
+  addDestroyables(destroyables, initTabs(main));
   page.plugins?.forEach((plugin) => {
     toast = initializePlugin(plugin, main, destroyables) ?? toast;
   });
@@ -218,7 +225,8 @@ function initializePage(page: DocPage): () => void {
 
   main.querySelectorAll<HTMLButtonElement>("[data-copy-code]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const code = button.closest(".docs-code")?.querySelector("code")?.textContent;
+      const container = button.closest("[data-docs-example]") ?? button.closest(".docs-code");
+      const code = container?.querySelector("code")?.textContent;
       const status = button.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
       if (!code || !status) return;
       try {

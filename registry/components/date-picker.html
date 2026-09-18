@@ -1,0 +1,23 @@
+<div class="nyx-date-picker" data-nyx-date-picker>
+  <label class="nyx-label" for="deployment-date">Deployment date</label>
+  <div class="nyx-date-picker-control">
+    <input class="nyx-input" data-nyx-date-picker-input id="deployment-date" name="deployment-date" placeholder="YYYY-MM-DD" value="2026-09-18" />
+    <button class="nyx-button nyx-icon-button" data-nyx-date-picker-trigger type="button" aria-label="Choose deployment date">▦</button>
+  </div>
+  <span class="nyx-field-hint">Type YYYY-MM-DD or choose from the calendar.</span>
+  <span class="nyx-field-error" data-nyx-date-picker-error aria-live="polite"></span>
+  <div class="nyx-popover" data-nyx-date-picker-popover id="deployment-date-popover" role="dialog" aria-label="Choose deployment date" hidden>
+    <div class="nyx-calendar" data-nyx-calendar data-nyx-calendar-min="2026-09-04" data-nyx-calendar-max="2026-11-28" data-nyx-calendar-value="2026-09-18">
+      <div class="nyx-calendar-header">
+        <button class="nyx-button nyx-icon-button" data-nyx-calendar-previous type="button" aria-label="Previous month">←</button>
+        <h3 class="nyx-calendar-heading" data-nyx-calendar-heading id="picker-calendar-heading" aria-live="polite"></h3>
+        <button class="nyx-button nyx-icon-button" data-nyx-calendar-next type="button" aria-label="Next month">→</button>
+      </div>
+      <table class="nyx-calendar-grid" role="grid" aria-labelledby="picker-calendar-heading">
+        <thead><tr data-nyx-calendar-weekdays role="row"></tr></thead>
+        <tbody data-nyx-calendar-grid></tbody>
+      </table>
+      <span class="sr-only" data-nyx-calendar-announcer role="status" aria-live="polite"></span>
+    </div>
+  </div>
+</div>

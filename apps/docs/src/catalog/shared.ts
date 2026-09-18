@@ -1,4 +1,5 @@
 export type PluginName =
+  | "calendar"
   | "combobox"
   | "command-palette"
   | "context-menu"
@@ -9,6 +10,8 @@ export type PluginName =
   | "menubar"
   | "navigation-menu"
   | "sidebar"
+  | "date-picker"
+  | "data-table"
   | "tabs"
   | "toast";
 
@@ -238,6 +241,127 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Escape", description: "Closes the mobile drawer through the composed Dialog and returns focus to the toggle." },
       ],
       accessibility: "The aside and nav landmarks remain in the DOM in both modes. Desktop collapse leaves a usable icon rail with explicitly named links. The toggle owns aria-controls and aria-expanded. Mobile uses native modal Dialog focus containment and document inertness.",
+    },
+  },
+  calendar: {
+    className: "NyxCalendar",
+    initName: "initCalendars",
+    selector: "[data-nyx-calendar]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-calendar", value: "presence", description: "Marks the standalone month-grid controller." },
+        { name: "data-nyx-calendar-selection", value: "single | range", description: "Selects one date or an inclusive date range." },
+        { name: "data-nyx-calendar-value", value: "YYYY-MM-DD[/YYYY-MM-DD]", description: "Sets the initial value and marks an optional synchronized hidden input." },
+        { name: "data-nyx-calendar-locale", value: "BCP 47 language tag", description: "Controls localized month, weekday, and announced date labels." },
+        { name: "data-nyx-calendar-week-start", value: "0–6", description: "Overrides the locale-derived first weekday; zero is Sunday." },
+        { name: "data-nyx-calendar-min / max", value: "YYYY-MM-DD", description: "Constrains selectable calendar dates without introducing time or zone semantics." },
+      ],
+      options: [
+        { name: "locale", value: "string", description: "Overrides the language used by Intl.DateTimeFormat and Intl.Locale." },
+        { name: "weekStartsOn", value: "number", description: "Overrides the locale week start with Sunday=0 through Saturday=6." },
+        { name: "selectionMode", value: "single | range", description: "Controls the value model." },
+        { name: "min / max", value: "YYYY-MM-DD", description: "Sets inclusive date bounds." },
+        { name: "disabled", value: "(date, value) => boolean", description: "Disables application-specific dates in addition to min/max." },
+      ],
+      methods: [
+        { name: "value", value: "string | range | undefined", description: "Gets or sets the selected date or range." },
+        { name: "focusedValue", value: "string", description: "Returns the roving-focus date as YYYY-MM-DD." },
+        { name: "isDateDisabled(value)", value: "boolean", description: "Tests min, max, and the consumer disabled-date predicate." },
+        { name: "focus()", value: "void", description: "Moves DOM focus to the active date." },
+        { name: "showMonth(value)", value: "boolean", description: "Requests a month change and reports whether it was accepted." },
+        { name: "select(value)", value: "boolean", description: "Requests selection of an enabled calendar date." },
+        { name: "destroy()", value: "void", description: "Removes delegated grid listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:calendar:before-select", value: "cancelable", description: "Fires before a single or range value changes." },
+        { name: "nyx:calendar:select", value: "not cancelable", description: "Fires after selection, hidden value, and grid state synchronize." },
+        { name: "nyx:calendar:before-month-change", value: "cancelable", description: "Fires before navigation changes the displayed month." },
+        { name: "nyx:calendar:month-change", value: "not cancelable", description: "Fires after the month grid has rendered." },
+      ],
+      keyboard: [
+        { name: "Arrow keys", description: "Moves by one day horizontally or one week vertically, skipping disabled dates." },
+        { name: "Home / End", description: "Moves to the first or last enabled date in the current week." },
+        { name: "Page Up / Page Down", description: "Moves by month; hold Shift to move by year." },
+        { name: "Enter / Space", description: "Selects the focused date." },
+      ],
+      accessibility: "The semantic table exposes grid, row, columnheader, and gridcell roles. Date buttons use roving tabindex, full localized accessible names, aria-current for today, disabled state, and gridcell aria-selected. A polite live region announces the focused date.",
+    },
+  },
+  "date-picker": {
+    className: "NyxDatePicker",
+    initName: "initDatePickers",
+    selector: "[data-nyx-date-picker]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-date-picker", value: "presence", description: "Marks the input, trigger, popover, and Calendar owner." },
+        { name: "data-nyx-date-picker-input", value: "presence", description: "Marks the editable ISO date input." },
+        { name: "data-nyx-date-picker-trigger", value: "presence", description: "Opens or closes the positioned calendar." },
+        { name: "data-nyx-date-picker-popover", value: "presence", description: "Marks the dialog-like positioned surface." },
+        { name: "data-nyx-date-picker-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
+      ],
+      options: [
+        { name: "placement", value: "NyxOverlayPlacement", description: "Overrides the preferred popup placement." },
+        { name: "Calendar options", value: "NyxCalendarOptions", description: "Passes locale, week start, selection, constraints, and the disabled predicate to the composed Calendar." },
+      ],
+      methods: [
+        { name: "value", value: "string | range | undefined", description: "Gets or sets the synchronized Calendar and input value." },
+        { name: "openState", value: "boolean", description: "Reads whether the calendar popover is open." },
+        { name: "open(reason?, focusCalendar?)", value: "boolean", description: "Opens, positions, and activates dismissal." },
+        { name: "close(reason?)", value: "boolean", description: "Closes and removes positioning and dismissal listeners." },
+        { name: "destroy()", value: "void", description: "Destroys the composed Calendar and all picker listeners." },
+      ],
+      events: [
+        { name: "nyx:date-picker:before-open / before-close", value: "cancelable", description: "Fires before popup state changes; API and destroy closure cannot be vetoed." },
+        { name: "nyx:date-picker:open / close", value: "not cancelable", description: "Fires after popup state, ARIA, positioning, and focus synchronize." },
+        { name: "nyx:date-picker:before-change", value: "cancelable", description: "Fires before a typed or Calendar value is committed." },
+        { name: "nyx:date-picker:change", value: "not cancelable", description: "Fires after input and Calendar values synchronize." },
+      ],
+      keyboard: [
+        { name: "Arrow Down", description: "Opens from the input and focuses the active calendar date." },
+        { name: "Escape", description: "Closes the popup and returns focus to the trigger." },
+        { name: "Calendar keys", description: "Uses the full Calendar grid contract while the popover is open." },
+      ],
+      accessibility: "The text input remains directly editable and labelled. The trigger owns aria-controls, aria-expanded, and aria-haspopup=dialog. The positioned surface composes Calendar semantics, closes on outside interaction or Escape, and preserves ISO calendar-date values without time-zone conversion.",
+    },
+  },
+  "data-table": {
+    className: "NyxDataTable",
+    initName: "initDataTables",
+    selector: "[data-nyx-data-table]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-data-table", value: "presence", description: "Marks the semantic table enhancement owner." },
+        { name: "data-row-key", value: "unique string", description: "Provides stable row identity for selection across transforms and pages." },
+        { name: "data-column", value: "column key", description: "Maps cell text or data-sort-value to a sortable column." },
+        { name: "data-nyx-data-table-sort", value: "column key", description: "Marks a real header button as sortable." },
+        { name: "data-nyx-data-table-page-size", value: "number", description: "Sets the client page size." },
+        { name: "data-nyx-data-table-controlled", value: "true", description: "Emits requested state while leaving row transforms to the consumer." },
+      ],
+      options: [
+        { name: "comparators", value: "Record<string, comparator>", description: "Overrides client ordering per column." },
+        { name: "predicate", value: "(row, query) => boolean", description: "Overrides client filtering." },
+        { name: "controlled", value: "boolean", description: "Disables client row transforms for server-owned data." },
+        { name: "pageSize / totalRows", value: "number", description: "Controls pagination and server-mode page counts." },
+      ],
+      methods: [
+        { name: "state", value: "NyxDataTableState", description: "Gets or sets filter, sort, page, and page-size state." },
+        { name: "selectedKeys", value: "readonly string[]", description: "Returns stable selected row keys across pages." },
+        { name: "sort / filter / goToPage", value: "boolean", description: "Requests a state transition and reports whether it was accepted." },
+        { name: "select(key, selected)", value: "boolean", description: "Changes persistent row selection through cancelable events." },
+        { name: "refresh()", value: "void", description: "Re-reads server-replaced or application-mutated body rows." },
+        { name: "destroy()", value: "void", description: "Removes delegated controls and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:data-table:before-sort / filter / page", value: "cancelable", description: "Fires before client transforms or controlled-mode requests are committed." },
+        { name: "nyx:data-table:sort / filter / page", value: "not cancelable", description: "Fires with previous and requested state after UI synchronization." },
+        { name: "nyx:data-table:before-select", value: "cancelable", description: "Fires before one row or the current page selection changes." },
+        { name: "nyx:data-table:select", value: "not cancelable", description: "Fires with the full persistent selected-key set." },
+      ],
+      keyboard: [
+        { name: "Tab", description: "Moves through the filter, selection checkboxes, sortable header buttons, and pagination." },
+        { name: "Enter / Space", description: "Activates native sort, selection, and page controls." },
+      ],
+      accessibility: "The component retains native table, caption, thead, tbody, th, and td semantics. Sort controls are buttons inside column headers, aria-sort is maintained on each th, selection uses labelled checkboxes, and page status is announced politely.",
     },
   },
   tabs: {
@@ -509,6 +633,7 @@ function highlightScript(source: string): string {
 }
 
 let codeBlockIndex = 0;
+let exampleIndex = 0;
 
 export function codeBlock(source: string, language: CodeLanguage, label: string): string {
   const normalized = source.trim();
@@ -557,8 +682,17 @@ export function renderPage(page: DocPage): string {
   return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header"><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${page.body}${reference}</section>`;
 }
 
-export function card(title: string, body: string, badge = "Ready", source = body): string {
-  return `<article class="docs-component-card"><header class="docs-component-head"><h2>${title}</h2><span class="nyx-badge">${badge}</span></header><div class="docs-component-body" data-example-preview>${body}</div>${codeBlock(source, "html", "HTML")}</article>`;
+export function card(title: string, body: string, _badge = "Ready", source = body): string {
+  const normalized = source.trim();
+  const highlighted = highlightMarkup(normalized);
+  const index = exampleIndex++;
+  const prefix = `docs-example-${index}`;
+  const previewTabId = `${prefix}-preview-tab`;
+  const htmlTabId = `${prefix}-html-tab`;
+  const previewPanelId = `${prefix}-preview-panel`;
+  const htmlPanelId = `${prefix}-html-panel`;
+  const statusId = `${prefix}-copy-status`;
+  return `<article class="docs-component-card" data-docs-example><header class="docs-component-head"><h2>${title}</h2></header><div class="docs-example" data-nyx-tabs><div class="docs-example-toolbar"><div class="nyx-tabs-list docs-example-tabs" role="tablist" aria-label="${escapeHtml(title)} example views"><button class="nyx-tab" id="${previewTabId}" type="button" role="tab" aria-controls="${previewPanelId}" aria-selected="true">Preview</button><button class="nyx-tab" id="${htmlTabId}" type="button" role="tab" aria-controls="${htmlPanelId}" aria-selected="false">HTML</button></div><button class="docs-copy-button" type="button" data-copy-code aria-describedby="${statusId}">Copy</button><span class="sr-only" id="${statusId}" role="status" aria-live="polite" data-copy-status></span></div><div class="docs-example-panels"><div class="docs-component-body docs-example-panel" id="${previewPanelId}" role="tabpanel" aria-labelledby="${previewTabId}" data-example-preview>${body}</div><div class="docs-code docs-example-panel" id="${htmlPanelId}" role="tabpanel" aria-labelledby="${htmlTabId}" hidden><pre class="nyx-scrollable-overlay" tabindex="0"><code>${highlighted}</code></pre></div></div></div></article>`;
 }
 
 export function selectMarkup(markup: string, selectors: string[]): string {

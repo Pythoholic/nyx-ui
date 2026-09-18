@@ -74,6 +74,20 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/file-upload"]
     },
     {
+      "name": "calendar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/calendar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/calendar"]
+    },
+    {
+      "name": "date-picker",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/date-picker.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/date-picker"]
+    },
+    {
       "name": "navigation",
       "type": "component-group",
       "status": "preview",
@@ -128,6 +142,13 @@
       "status": "preview",
       "files": ["components/data-display.html"],
       "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "advanced-data-table",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/data-table.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/data-table"]
     },
     {
       "name": "visualization",

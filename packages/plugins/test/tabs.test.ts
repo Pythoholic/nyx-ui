@@ -74,4 +74,19 @@ describe("NyxTabs", () => {
     tabs[0]?.dispatchEvent(new KeyboardEvent("keydown", { key: "End" }));
     expect(document.activeElement).toBe(tabs[2]);
   });
+
+  it("keeps nested tab sets isolated", () => {
+    document.body.innerHTML = `<div data-nyx-tabs id="outer"><div role="tablist"><button aria-controls="outer-preview" aria-selected="true" role="tab">Preview</button><button aria-controls="outer-code" role="tab">HTML</button></div>
+      <section id="outer-preview" role="tabpanel"><div data-nyx-tabs id="inner"><div role="tablist"><button aria-controls="inner-one" aria-selected="true" role="tab">One</button><button aria-controls="inner-two" role="tab">Two</button></div><section id="inner-one" role="tabpanel">One</section><section id="inner-two" role="tabpanel">Two</section></div></section>
+      <section id="outer-code" role="tabpanel">Code</section></div>`;
+    const [outer, inner] = initTabs();
+    if (!outer || !inner) throw new Error("Nested tabs did not initialize.");
+    inner.activate(1, false);
+    expect(inner.value).toBe(1);
+    expect(outer.value).toBe(0);
+    expect(document.querySelector<HTMLElement>("#outer-preview")?.hidden).toBe(false);
+    expect(document.querySelector<HTMLElement>("#inner-one")?.hidden).toBe(true);
+    outer.destroy();
+    inner.destroy();
+  });
 });

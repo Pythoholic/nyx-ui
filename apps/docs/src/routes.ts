@@ -26,6 +26,8 @@ export const paths = {
       searchableSelect: "/components/forms/searchable-select",
       inputOtp: "/components/forms/input-otp",
       dateTime: "/components/forms/range-date-time",
+      calendar: "/components/forms/calendar",
+      datePicker: "/components/forms/date-picker",
       fileUpload: "/components/forms/file-upload",
     },
     primitives: {
@@ -61,6 +63,7 @@ export const paths = {
     },
     dataDisplay: {
       records: "/components/data-display/metrics-records-activity",
+      dataTable: "/components/data-display/advanced-data-table",
     },
     visualization: {
       lineChart: "/components/visualization/line-chart",
