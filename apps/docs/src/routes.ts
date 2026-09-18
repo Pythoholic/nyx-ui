@@ -42,6 +42,8 @@ export const paths = {
       containerColumns: "/components/primitives/container-responsive-columns",
       styledLinks: "/components/primitives/styled-links",
       blockquote: "/components/primitives/blockquote",
+      codeBlock: "/components/primitives/code-block",
+      iconCatalog: "/components/primitives/icons",
     },
     navigation: {
       topBar: "/components/navigation/top-bar",

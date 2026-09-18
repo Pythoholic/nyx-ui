@@ -355,6 +355,17 @@ export {
 } from "./before-after.js";
 
 export {
+  NyxCodeBlock,
+  initCodeBlocks,
+  type NyxCodeBlockCopyReason,
+  type NyxCodeBlockErrorEventDetail,
+  type NyxCodeBlockEventDetail,
+  type NyxCodeBlockEventMap,
+  type NyxCodeBlockOptions,
+  type NyxCodeBlockState,
+} from "./code-block.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

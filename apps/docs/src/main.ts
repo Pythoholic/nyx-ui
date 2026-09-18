@@ -23,6 +23,7 @@ import { initGenerationQueues } from "@nyx-ui/plugins/generation-queue";
 import { initModelSelectors } from "@nyx-ui/plugins/model-selector";
 import { initParameterInspectors } from "@nyx-ui/plugins/parameter-inspector";
 import { initBeforeAfters } from "@nyx-ui/plugins/before-after";
+import { initCodeBlocks } from "@nyx-ui/plugins/code-block";
 import { initSearchBoxes } from "@nyx-ui/plugins/search-box";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
@@ -232,6 +233,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "filter-bar": addDestroyables(destroyables, initFilterBars(root)); break;
     case "command-bar": addDestroyables(destroyables, initCommandBars(root)); break;
     case "bulk-action-toolbar": addDestroyables(destroyables, initBulkActionToolbars(root)); break;
+    case "code-block": break;
     case "tabs": addDestroyables(destroyables, initTabs(root)); break;
     case "toast": {
       const toasts = initToasts(root);
@@ -245,9 +247,9 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
 function initializePage(page: DocPage): () => void {
   const abortController = new AbortController();
   const destroyables: Destroyable[] = [];
-  const copyResetTimers: number[] = [];
   let toast: NyxToast | undefined;
   addDestroyables(destroyables, initTabs(main));
+  addDestroyables(destroyables, initCodeBlocks(main));
   page.plugins?.forEach((plugin) => {
     toast = initializePlugin(plugin, main, destroyables) ?? toast;
   });
@@ -273,41 +275,8 @@ function initializePage(page: DocPage): () => void {
     toast?.notify({ title: "Release validated", description: "All component contracts passed.", tone: "success" });
   }, { signal: abortController.signal });
 
-  main.querySelectorAll<HTMLButtonElement>("[data-copy-code]").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const container = button.closest("[data-docs-example]") ?? button.closest(".docs-code");
-      const code = container?.querySelector("code")?.textContent;
-      const status = button.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
-      if (!code || !status) return;
-      try {
-        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(code);
-        else {
-          const textarea = document.createElement("textarea");
-          textarea.value = code;
-          textarea.style.position = "fixed";
-          textarea.style.opacity = "0";
-          document.body.append(textarea);
-          textarea.select();
-          const copied = document.execCommand("copy");
-          textarea.remove();
-          if (!copied) throw new Error("Copy command was rejected.");
-        }
-        button.textContent = "Copied";
-        status.textContent = "Code copied to clipboard.";
-        copyResetTimers.push(window.setTimeout(() => {
-          button.textContent = "Copy";
-          status.textContent = "";
-        }, 2000));
-      } catch {
-        button.textContent = "Copy failed";
-        status.textContent = "Copy failed. Select the code and copy it manually.";
-      }
-    }, { signal: abortController.signal });
-  });
-
   return () => {
     abortController.abort();
-    copyResetTimers.forEach((timer) => window.clearTimeout(timer));
     [...destroyables].reverse().forEach((instance) => instance.destroy());
   };
 }

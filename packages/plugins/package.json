@@ -161,6 +161,10 @@
       "types": "./dist/before-after.d.ts",
       "default": "./dist/before-after.js"
     },
+    "./code-block": {
+      "types": "./dist/code-block.d.ts",
+      "default": "./dist/code-block.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

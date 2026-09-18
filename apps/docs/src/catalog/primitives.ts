@@ -1,6 +1,8 @@
 import aspectRatioMarkup from "../../../../registry/components/aspect-ratio.html?raw";
 import blockquoteMarkup from "../../../../registry/components/blockquote.html?raw";
+import codeBlockMarkup from "../../../../registry/components/code-block.html?raw";
 import containerColumnsMarkup from "../../../../registry/components/container-columns.html?raw";
+import iconCatalogMarkup from "../../../../registry/components/icon-catalog.html?raw";
 import staticPrimitivesMarkup from "../../../../registry/components/static-primitives.html?raw";
 import styledLinksMarkup from "../../../../registry/components/styled-links.html?raw";
 import { paths } from "../routes.js";
@@ -51,5 +53,24 @@ export const primitivePages = [
     description: "Quoted material keeps native document semantics, a restrained accent boundary, and an optional visible citation.",
     searchTerms: "blockquote quote citation cite footer prose document semantic",
     body: `<section class="docs-prose-section"><h2>Cite the work, not the speaker</h2><p>The native <code>blockquote</code> marks an extended quotation. Use <code>cite</code> for the title of a referenced work and ordinary text for a person or team attribution.</p></section>${card("Operational principle", blockquoteMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.primitives.codeBlock,
+    categoryId: "primitives",
+    categoryLabel: "Primitives",
+    title: "Code Block",
+    description: "Selectable preformatted code gains an explicit clipboard action, durable status feedback, and a framework-free lifecycle.",
+    searchTerms: "code block pre clipboard copy button source syntax developer",
+    plugins: ["code-block"],
+    body: `<section class="docs-prose-section"><h2>Copy only what is displayed</h2><p>The copy button identifies one code source with <code>aria-controls</code>. Nyx reads that element's exact text content, so highlighted or decorated presentations should keep the underlying code text intact.</p></section>${card("Deployment snippet", codeBlockMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.primitives.iconCatalog,
+    categoryId: "primitives",
+    categoryLabel: "Primitives",
+    title: "Icon Catalog",
+    description: "A compact inline-SVG vocabulary demonstrates Nyx's shared size, stroke, and current-color contract without coupling components to an icon package.",
+    searchTerms: "icon catalog inline svg stroke current color search check close plus arrow folder lock user",
+    body: `<section class="docs-prose-section"><h2>Meaning comes from context</h2><p>Decorative icons use <code>aria-hidden="true"</code>. When an icon is the only visible content in a control, give the native control an accessible name; when an illustration conveys information, name the SVG with <code>aria-labelledby</code> or visible text.</p></section>${card("Interface symbols", iconCatalogMarkup, "Registry source")}`,
   }),
 ];

@@ -90,7 +90,13 @@
   .nyx-button-group-input { position: absolute; opacity: 0; pointer-events: none; }
   .nyx-button-group-input:checked + .nyx-button { position: relative; z-index: 1; border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); color: var(--nyx-accent); }
   .nyx-button-group-input:focus-visible + .nyx-button { position: relative; z-index: 2; outline: var(--nyx-border) solid var(--nyx-accent); outline-offset: 0.1875rem; }
-  .nyx-icon { inline-size: 1.25rem; block-size: 1.25rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+  .nyx-icon { inline-size: 1.25rem; block-size: 1.25rem; flex: none; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .nyx-icon[data-size="small"] { inline-size: 1rem; block-size: 1rem; }
+  .nyx-icon[data-size="large"] { inline-size: 1.5rem; block-size: 1.5rem; }
+  .nyx-icon-catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: var(--nyx-space-3); margin: 0; padding: 0; list-style: none; }
+  .nyx-icon-sample { display: grid; min-block-size: 7rem; place-items: center; align-content: center; gap: var(--nyx-space-3); padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-control); background: var(--nyx-panel-raised); color: var(--nyx-muted); }
+  .nyx-icon-sample > .nyx-icon { inline-size: 1.5rem; block-size: 1.5rem; color: var(--nyx-accent); }
+  .nyx-icon-sample > code { color: var(--nyx-label); font: var(--nyx-weight-medium) var(--nyx-type-meta)/1.4 var(--font-nyx); }
 
   .nyx-badge { display: inline-flex; min-height: 1.75rem; align-items: center; gap: 0.4375rem; padding: 0.25rem 0.5625rem; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-sm); background: var(--nyx-accent-soft); color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-meta); line-height: 1.5; text-transform: uppercase; }
   .nyx-badge[data-tone="success"] { border-color: var(--nyx-signal-line); background: var(--nyx-signal-soft); color: var(--nyx-signal); }
@@ -469,7 +475,14 @@
   .nyx-timeline-item { position: relative; padding-inline-start: 2rem; }
   .nyx-timeline-item::before { content: ""; position: absolute; inset-block-start: 0.4rem; inset-inline-start: 0.25rem; inline-size: 0.625rem; block-size: 0.625rem; border-radius: 50%; background: var(--nyx-accent); box-shadow: 0 0 0 0.25rem var(--nyx-accent-soft); }
   .nyx-timeline-item:not(:last-child)::after { content: ""; position: absolute; inset-block: 1.1rem -1rem; inset-inline-start: 0.52rem; inline-size: var(--nyx-border); background: var(--nyx-line-strong); }
+  .nyx-code-block { min-inline-size: 0; overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-void); }
+  .nyx-code-block-toolbar { display: flex; min-block-size: 3rem; align-items: center; gap: var(--nyx-space-3); padding: 0.375rem 0.75rem 0.375rem 1rem; background: var(--nyx-panel-raised); }
+  .nyx-code-block-toolbar > .nyx-label { margin-inline-end: auto; }
+  .nyx-code-status { min-inline-size: 7rem; color: var(--nyx-label); font-size: var(--nyx-type-meta); text-align: end; }
+  .nyx-code-block[data-state="copied"] .nyx-code-status { color: var(--nyx-signal); }
+  .nyx-code-block[data-state="error"] .nyx-code-status { color: var(--nyx-danger); }
   .nyx-code, .nyx-log { overflow: auto; margin: 0; padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-control); background: var(--nyx-void); color: var(--nyx-muted); font: var(--nyx-weight-medium) var(--nyx-type-nav)/1.7 var(--font-nyx); tab-size: 2; }
+  .nyx-code-block > .nyx-code { max-block-size: 30rem; border: 0; border-block-start: var(--nyx-border-hairline) solid var(--nyx-line); border-radius: 0; white-space: pre; }
   .nyx-log { max-block-size: 16rem; }
   .nyx-log-line { display: grid; grid-template-columns: 5rem 5rem 1fr; gap: var(--nyx-space-3); }
   .nyx-log-time { color: var(--nyx-label); }

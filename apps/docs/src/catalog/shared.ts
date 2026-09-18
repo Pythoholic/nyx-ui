@@ -34,6 +34,7 @@ export type PluginName =
   | "model-selector"
   | "parameter-inspector"
   | "before-after"
+  | "code-block"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -1086,6 +1087,41 @@ const pluginApis: Record<PluginName, PluginApi> = {
       accessibility: "The component retains native table, caption, thead, tbody, th, and td semantics. Sort controls are buttons inside column headers, aria-sort is maintained on each th, selection uses labelled checkboxes, and page status is announced politely.",
     },
   },
+  "code-block": {
+    className: "NyxCodeBlock",
+    initName: "initCodeBlocks",
+    selector: "[data-nyx-code-block]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-code-block", value: "presence", description: "Marks the code, copy control, and announcement ownership boundary." },
+        { name: "data-nyx-code-copy / source / status", value: "presence", description: "Marks the native button, exact copied text source, and live status output." },
+        { name: "data-nyx-code-label", value: "string", description: "On the copy button, overrides its idle accessible label; Copy is the default." },
+        { name: "data-nyx-code-reset-delay", value: "milliseconds", description: "Sets how long copied or error feedback remains visible before returning to idle." },
+        { name: "data-state", value: "idle | copying | copied | error", description: "Reflects clipboard state on the root and copy button alongside aria-busy and aria-disabled." },
+      ],
+      options: [
+        { name: "copy", value: "(text) => Promise<void> | void", description: "Supplies a clipboard adapter when the application does not use the browser clipboard API." },
+        { name: "resetDelay", value: "number", description: "Overrides the feedback reset delay; zero resets immediately." },
+      ],
+      methods: [
+        { name: "value", value: "string", description: "Returns the exact textContent of the controlled code source." },
+        { name: "state", value: "NyxCodeBlockState", description: "Returns the synchronized clipboard feedback state." },
+        { name: "copy(reason?)", value: "Promise<boolean>", description: "Requests a copy and reports whether it completed successfully." },
+        { name: "destroy()", value: "void", description: "Clears feedback timers, removes the click listener, resets state, and uncaches the instance." },
+      ],
+      events: [
+        { name: "nyx:code-block:before-copy", value: "cancelable", description: "Fires with the exact source text before clipboard access begins." },
+        { name: "nyx:code-block:copy", value: "not cancelable", description: "Fires after clipboard writing and copied-state synchronization succeed." },
+        { name: "nyx:code-block:error", value: "not cancelable", description: "Fires after a rejected clipboard operation synchronizes the error state and guidance." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves to or away from the native copy button and optional scrollable code region." },
+        { name: "Enter / Space", description: "Activates the focused native copy button." },
+        { name: "Arrow keys", description: "Scroll the focused preformatted region when its content overflows." },
+      ],
+      accessibility: "A native button controls a specifically identified code source. Clipboard progress is exposed with aria-busy, completion or failure is announced by a polite atomic status, and the code remains selectable when clipboard access is unavailable.",
+    },
+  },
   tabs: {
     className: "NyxTabs",
     initName: "initTabs",
@@ -1498,8 +1534,10 @@ let exampleIndex = 0;
 export function codeBlock(source: string, language: CodeLanguage, label: string): string {
   const normalized = source.trim();
   const highlighted = language === "html" ? highlightMarkup(normalized) : highlightScript(normalized);
-  const statusId = `copy-status-${codeBlockIndex++}`;
-  return `<div class="docs-code" data-code-language="${language}"><div class="docs-code-toolbar"><span>${label}</span><button class="docs-copy-button" type="button" data-copy-code aria-describedby="${statusId}">Copy</button><span class="sr-only" id="${statusId}" role="status" aria-live="polite" data-copy-status></span></div><pre class="nyx-scrollable-overlay" tabindex="0"><code>${highlighted}</code></pre></div>`;
+  const prefix = `docs-code-${codeBlockIndex++}`;
+  const statusId = `${prefix}-status`;
+  const sourceId = `${prefix}-source`;
+  return `<div class="docs-code" data-code-language="${language}" data-nyx-code-block><div class="docs-code-toolbar"><span>${label}</span><button class="docs-copy-button" type="button" data-nyx-code-copy aria-controls="${sourceId}" aria-describedby="${statusId}"><span data-nyx-code-copy-label>Copy</span></button><span class="sr-only" id="${statusId}" data-nyx-code-status></span></div><pre class="nyx-scrollable-overlay" tabindex="0"><code id="${sourceId}" data-nyx-code-source>${highlighted}</code></pre></div>`;
 }
 
 function table(title: string, headings: string[], rows: ReferenceRow[]): string {
@@ -1555,7 +1593,8 @@ export function card(title: string, body: string, _badge = "Ready", source = bod
   const previewPanelId = `${prefix}-preview-panel`;
   const htmlPanelId = `${prefix}-html-panel`;
   const statusId = `${prefix}-copy-status`;
-  return `<article class="docs-component-card" data-docs-example><header class="docs-component-head"><h2>${title}</h2></header><div class="docs-example" data-nyx-tabs><div class="docs-example-toolbar"><div class="nyx-tabs-list docs-example-tabs" role="tablist" aria-label="${escapeHtml(title)} example views"><button class="nyx-tab" id="${previewTabId}" type="button" role="tab" aria-controls="${previewPanelId}" aria-selected="true">Preview</button><button class="nyx-tab" id="${htmlTabId}" type="button" role="tab" aria-controls="${htmlPanelId}" aria-selected="false">HTML</button></div><button class="docs-copy-button" type="button" data-copy-code aria-describedby="${statusId}">Copy</button><span class="sr-only" id="${statusId}" role="status" aria-live="polite" data-copy-status></span></div><div class="docs-example-panels"><div class="docs-component-body docs-example-panel" id="${previewPanelId}" role="tabpanel" aria-labelledby="${previewTabId}" data-example-preview>${body}</div><div class="docs-code docs-example-panel" id="${htmlPanelId}" role="tabpanel" aria-labelledby="${htmlTabId}" hidden><pre class="nyx-scrollable-overlay" tabindex="0"><code>${highlighted}</code></pre></div></div></div></article>`;
+  const sourceId = `${prefix}-source`;
+  return `<article class="docs-component-card" data-docs-example data-nyx-code-block><header class="docs-component-head"><h2>${title}</h2></header><div class="docs-example" data-nyx-tabs><div class="docs-example-toolbar"><div class="nyx-tabs-list docs-example-tabs" role="tablist" aria-label="${escapeHtml(title)} example views"><button class="nyx-tab" id="${previewTabId}" type="button" role="tab" aria-controls="${previewPanelId}" aria-selected="true">Preview</button><button class="nyx-tab" id="${htmlTabId}" type="button" role="tab" aria-controls="${htmlPanelId}" aria-selected="false">HTML</button></div><button class="docs-copy-button" type="button" data-nyx-code-copy aria-controls="${sourceId}" aria-describedby="${statusId}"><span data-nyx-code-copy-label>Copy</span></button><span class="sr-only" id="${statusId}" data-nyx-code-status></span></div><div class="docs-example-panels"><div class="docs-component-body docs-example-panel" id="${previewPanelId}" role="tabpanel" aria-labelledby="${previewTabId}" data-example-preview>${body}</div><div class="docs-code docs-example-panel" id="${htmlPanelId}" role="tabpanel" aria-labelledby="${htmlTabId}" hidden><pre class="nyx-scrollable-overlay" tabindex="0"><code id="${sourceId}" data-nyx-code-source>${highlighted}</code></pre></div></div></div></article>`;
 }
 
 export function selectMarkup(markup: string, selectors: string[]): string {

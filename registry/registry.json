@@ -46,6 +46,20 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "code-block",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/code-block.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/code-block"]
+    },
+    {
+      "name": "icon-catalog",
+      "type": "component-reference",
+      "status": "preview",
+      "files": ["components/icon-catalog.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "toggles",
       "type": "component-group",
       "status": "preview",

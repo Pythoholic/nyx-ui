@@ -44,6 +44,16 @@ describe("small primitive registry markup", () => {
     expect(quote.querySelector("footer cite")?.textContent).toBe("Incident review 184");
   });
 
+  it("publishes decorative inline SVG icons under the shared icon contract", () => {
+    const component = loadComponent("icon-catalog");
+    const catalog = component.querySelector<HTMLElement>(".nyx-icon-catalog")!;
+    const samples = Array.from(catalog.querySelectorAll<HTMLElement>(".nyx-icon-sample"));
+    expect(catalog.getAttribute("aria-label")).toBeTruthy();
+    expect(samples).toHaveLength(8);
+    expect(samples.every((sample) => sample.querySelector("svg.nyx-icon[aria-hidden='true'][viewBox='0 0 24 24']"))).toBe(true);
+    expect(samples.map((sample) => sample.querySelector("code")?.textContent)).toContain("search");
+  });
+
   it("publishes one registry record for each canonical source", () => {
     const registry = JSON.parse(readFileSync(resolve(process.cwd(), "../../registry/registry.json"), "utf8")) as {
       items: Array<{ name: string; files: string[]; requires: string[] }>;
@@ -53,6 +63,7 @@ describe("small primitive registry markup", () => {
       ["container-responsive-columns", "components/container-columns.html"],
       ["styled-links", "components/styled-links.html"],
       ["blockquote", "components/blockquote.html"],
+      ["icon-catalog", "components/icon-catalog.html"],
     ]);
     expected.forEach((file, name) => {
       const item = registry.items.find((candidate) => candidate.name === name);

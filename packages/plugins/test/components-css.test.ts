@@ -39,4 +39,11 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-link\s*\{[^}]*text-decoration-line:\s*underline;/);
     expect(css).toMatch(/\.nyx-blockquote,[^{]*\.nyx-activity-quote\s*\{[^}]*border-inline-start:/);
   });
+
+  it("ships code block states and the inline icon sizing contract", () => {
+    expect(css).toMatch(/\.nyx-code-block\s*\{[^}]*overflow:\s*hidden;[^}]*border:/);
+    expect(css).toMatch(/\.nyx-code-block\[data-state="error"\][^{]*\.nyx-code-status\s*\{[^}]*var\(--nyx-danger\)/);
+    expect(css).toMatch(/\.nyx-icon\[data-size="small"\]\s*\{[^}]*inline-size:\s*1rem;/);
+    expect(css).toMatch(/\.nyx-icon-catalog\s*\{[^}]*grid-template-columns:/);
+  });
 });

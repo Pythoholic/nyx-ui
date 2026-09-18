@@ -74,8 +74,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Container and responsive columns (built, visually unverified)
 - [x] Styled links (built, visually unverified)
 - [x] Blockquote (built, visually unverified)
-- [ ] Code block and copy button as a shipped component
-- [ ] Icon catalog page
+- [x] Code block and copy button as a shipped component (built, visually unverified)
+- [x] Icon catalog page (built, visually unverified)
 - [ ] Accessible visually-hidden utility
 - [ ] RTL / direction support
 - [ ] Loading overlay
