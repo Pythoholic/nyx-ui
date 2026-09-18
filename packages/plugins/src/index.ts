@@ -263,6 +263,24 @@ export {
 } from "./prompt-composer.js";
 
 export {
+  NyxMessageScroller,
+  initMessageScrollers,
+  type NyxMessageScrollerEventDetail,
+  type NyxMessageScrollerEventMap,
+  type NyxMessageScrollerMessagesEventDetail,
+  type NyxMessageScrollerOptions,
+  type NyxMessageScrollerReason,
+} from "./message-scroller.js";
+
+export {
+  NyxAttachmentPreviews,
+  initAttachmentPreviews,
+  type NyxAttachmentPreviewsEventDetail,
+  type NyxAttachmentPreviewsEventMap,
+  type NyxAttachmentPreviewsReason,
+} from "./attachment-previews.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

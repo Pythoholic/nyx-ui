@@ -57,8 +57,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 - [x] Chat bubbles and message threads (built, visually unverified)
 - [x] Prompt composer (built, visually unverified)
-- [ ] Message scroller
-- [ ] Attachment previews
+- [x] Message scroller (built, visually unverified)
+- [x] Attachment previews (built, visually unverified)
 - [ ] Generation queue
 - [ ] Model selector
 - [ ] Parameter inspector

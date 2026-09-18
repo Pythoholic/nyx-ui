@@ -92,6 +92,8 @@ export const paths = {
     ai: {
       chatThread: "/components/ai/chat-thread",
       promptComposer: "/components/ai/prompt-composer",
+      messageScroller: "/components/ai/message-scroller",
+      attachmentPreviews: "/components/ai/attachment-previews",
     },
     layouts: {
       applicationShell: "/components/layouts/application-shell",

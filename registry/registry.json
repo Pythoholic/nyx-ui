@@ -242,6 +242,20 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/prompt-composer"]
     },
     {
+      "name": "message-scroller",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/message-scroller.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/message-scroller"]
+    },
+    {
+      "name": "attachment-previews",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/attachment-previews.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/attachment-previews"]
+    },
+    {
       "name": "layouts",
       "type": "component-group",
       "status": "preview",

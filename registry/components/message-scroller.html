@@ -1,0 +1,64 @@
+<section
+  aria-labelledby="nyx-message-scroller-title"
+  class="nyx-message-scroller"
+  data-nyx-message-scroller
+  data-state="following"
+>
+  <header class="nyx-chat-header">
+    <div>
+      <span class="nyx-eyebrow">// Live conversation</span>
+      <h2 id="nyx-message-scroller-title">Release review</h2>
+    </div>
+    <span class="nyx-badge" data-tone="success"><span class="nyx-status-dot"></span>Streaming</span>
+  </header>
+  <div
+    aria-label="Release review messages"
+    class="nyx-message-scroller-viewport nyx-scrollable-overlay"
+    data-nyx-message-scroller-viewport
+    role="region"
+    tabindex="0"
+  >
+    <ol class="nyx-chat-messages">
+      <li data-nyx-message-scroller-message>
+        <article class="nyx-chat-message" data-author="assistant" data-state="complete">
+          <header class="nyx-chat-message-header">
+            <span class="nyx-avatar" data-size="small" aria-hidden="true">NX</span>
+            <strong>Nyx assistant</strong>
+            <time datetime="2026-09-19T10:02:00+09:00">10:02</time>
+          </header>
+          <div class="nyx-chat-bubble"><p>I checked the interaction suite. Keyboard behavior is passing.</p></div>
+        </article>
+      </li>
+      <li data-nyx-message-scroller-message>
+        <article class="nyx-chat-message" data-author="self" data-state="complete">
+          <header class="nyx-chat-message-header">
+            <strong>Akira K.</strong>
+            <time datetime="2026-09-19T10:04:00+09:00">10:04</time>
+          </header>
+          <div class="nyx-chat-bubble"><p>Keep the viewport paused if I scroll up to compare earlier output.</p></div>
+        </article>
+      </li>
+      <li data-nyx-message-scroller-message>
+        <article class="nyx-chat-message" data-author="assistant" data-state="complete">
+          <header class="nyx-chat-message-header">
+            <span class="nyx-avatar" data-size="small" aria-hidden="true">NX</span>
+            <strong>Nyx assistant</strong>
+            <time datetime="2026-09-19T10:05:00+09:00">10:05</time>
+          </header>
+          <div class="nyx-chat-bubble"><p>Understood. New-message state will accumulate without pulling focus or changing your reading position.</p></div>
+        </article>
+      </li>
+      <li data-nyx-message-scroller-message>
+        <article class="nyx-chat-message" data-author="assistant" data-state="pending" aria-label="Nyx assistant is responding">
+          <header class="nyx-chat-message-header">
+            <span class="nyx-avatar" data-size="small" aria-hidden="true">NX</span>
+            <strong>Nyx assistant</strong>
+          </header>
+          <div class="nyx-chat-bubble"><span class="nyx-chat-thinking">Preparing visual checklist<span aria-hidden="true">...</span></span></div>
+        </article>
+      </li>
+    </ol>
+  </div>
+  <button class="nyx-button nyx-message-scroller-jump" data-nyx-message-scroller-jump data-size="small" data-variant="primary" hidden type="button">Jump to latest</button>
+  <output class="sr-only" data-nyx-message-scroller-status aria-live="polite"></output>
+</section>

@@ -121,6 +121,14 @@
       "types": "./dist/prompt-composer.d.ts",
       "default": "./dist/prompt-composer.js"
     },
+    "./message-scroller": {
+      "types": "./dist/message-scroller.d.ts",
+      "default": "./dist/message-scroller.js"
+    },
+    "./attachment-previews": {
+      "types": "./dist/attachment-previews.d.ts",
+      "default": "./dist/attachment-previews.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

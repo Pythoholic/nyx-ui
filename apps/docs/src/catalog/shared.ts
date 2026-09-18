@@ -24,6 +24,8 @@ export type PluginName =
   | "command-bar"
   | "bulk-action-toolbar"
   | "prompt-composer"
+  | "message-scroller"
+  | "attachment-previews"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -73,6 +75,76 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "message-scroller": {
+    className: "NyxMessageScroller",
+    initName: "initMessageScrollers",
+    selector: "[data-nyx-message-scroller]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-message-scroller", value: "presence", description: "Marks the message viewport, jump control, and following-state ownership boundary." },
+        { name: "data-nyx-message-scroller-viewport", value: "presence", description: "Marks the required native scrolling region." },
+        { name: "data-nyx-message-scroller-message", value: "presence", description: "Marks a newly inserted message that contributes to the unread count while paused." },
+        { name: "data-nyx-message-scroller-jump / status", value: "presence", description: "Marks the optional jump button and polite unread-count output." },
+        { name: "data-nyx-message-scroller-threshold", value: "CSS pixels", description: "Sets the distance from the end that counts as following; the default is 24." },
+        { name: "data-state", value: "following | paused", description: "Reflects whether new content keeps the viewport pinned to the end." },
+        { name: "data-at-end / data-unread", value: "boolean / number", description: "Reflects scroll-edge and accumulated new-message state." },
+      ],
+      options: [{ name: "endThreshold", value: "number", description: "Overrides the authored distance from the scroll end that resumes following." }],
+      methods: [
+        { name: "following", value: "boolean", description: "Gets or requests automatic following through the same cancelable transition boundary." },
+        { name: "unread", value: "number", description: "Reads the number of messages accumulated while the viewport is paused." },
+        { name: "follow(reason?) / pause(reason?)", value: "boolean", description: "Requests a following-state transition and reports whether it occurred." },
+        { name: "refresh()", value: "void", description: "Recomputes edge state after layout or content changes." },
+        { name: "destroy()", value: "void", description: "Disconnects observation, removes listeners, and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:message-scroller:before-follow / before-pause", value: "cancelable", description: "Fires before automatic following changes." },
+        { name: "nyx:message-scroller:follow / pause", value: "not cancelable", description: "Fires after scroll position, unread count, data state, and controls synchronize." },
+        { name: "nyx:message-scroller:new-messages", value: "not cancelable", description: "Fires after inserted marked messages are followed or counted." },
+      ],
+      keyboard: [
+        { name: "Arrow keys / Page Up / Page Down / Home / End", description: "Use native scrolling while the named viewport has focus; scrolling away pauses following." },
+        { name: "Tab / Shift+Tab", description: "Moves to the viewport and, while paused, the jump-to-latest button." },
+        { name: "Enter / Space", description: "Activates the jump button and resumes following." },
+      ],
+      accessibility: "The focusable viewport remains a named native scrolling region instead of a live log, so historical transcript content is not repeatedly announced. A separate polite output announces only the unread count while reading is paused. Following never moves keyboard focus, and the native jump button provides an explicit route back to the newest content.",
+    },
+  },
+  "attachment-previews": {
+    className: "NyxAttachmentPreviews",
+    initName: "initAttachmentPreviews",
+    selector: "[data-nyx-attachment-previews]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-attachment-previews", value: "presence", description: "Marks the attachment collection and removal ownership boundary." },
+        { name: "data-nyx-attachment-preview", value: "presence", description: "Marks one semantic list item retained for reversible controlled state." },
+        { name: "data-nyx-attachment-id", value: "unique string", description: "Provides the stable value used by methods and event details." },
+        { name: "data-nyx-attachment-remove", value: "presence", description: "Marks a native remove button within one attachment." },
+        { name: "data-nyx-attachment-count / empty", value: "presence", description: "Marks optional synchronized count and empty-state elements." },
+        { name: "data-state", value: "ready | empty / active | removed", description: "Reflects collection and per-attachment state; removed items are hidden and aria-hidden." },
+        { name: "data-count", value: "number", description: "Reflects the number of active attachments." },
+      ],
+      methods: [
+        { name: "value", value: "string[]", description: "Gets or requests the active attachment identifiers without destroying authored preview DOM." },
+        { name: "attachments", value: "HTMLElement[]", description: "Reads every owned attachment, including currently removed items." },
+        { name: "setValue(ids, reason?)", value: "boolean", description: "Requests a bulk active-set change and reports whether it occurred." },
+        { name: "remove(itemOrId, reason?) / restore(itemOrId, reason?)", value: "boolean", description: "Requests one reversible item transition." },
+        { name: "clear()", value: "boolean", description: "Requests an empty active set through the bulk change boundary." },
+        { name: "refresh() / destroy()", value: "void", description: "Synchronizes newly authored items, or disconnects observation and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:attachment-previews:before-change", value: "cancelable", description: "Fires before a bulk value or clear request is applied." },
+        { name: "nyx:attachment-previews:change", value: "not cancelable", description: "Fires after bulk item visibility, count, state, and ARIA synchronize." },
+        { name: "nyx:attachment-previews:before-remove / before-restore", value: "cancelable", description: "Fires before one attachment changes active state." },
+        { name: "nyx:attachment-previews:remove / restore", value: "not cancelable", description: "Fires after the requested attachment and collection state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves among active attachments' native remove buttons and surrounding controls." },
+        { name: "Enter / Space", description: "Activates the focused remove button." },
+      ],
+      accessibility: "Attachments remain a semantic list with visible file names and metadata. Decorative previews are hidden from assistive technology, while each native remove button names its file. Removed items stay in the DOM only to support controlled restoration and are hidden from every input modality with hidden and aria-hidden.",
+    },
+  },
   "prompt-composer": {
     className: "NyxPromptComposer",
     initName: "initPromptComposers",

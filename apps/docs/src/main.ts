@@ -13,6 +13,8 @@ import { initMultiSelects } from "@nyx-ui/plugins/multi-select";
 import { initNumberInputs } from "@nyx-ui/plugins/number-input";
 import { initPasswordInputs } from "@nyx-ui/plugins/password-input";
 import { initPromptComposers } from "@nyx-ui/plugins/prompt-composer";
+import { initMessageScrollers } from "@nyx-ui/plugins/message-scroller";
+import { initAttachmentPreviews } from "@nyx-ui/plugins/attachment-previews";
 import { initSearchBoxes } from "@nyx-ui/plugins/search-box";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
@@ -199,6 +201,8 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "number-input": addDestroyables(destroyables, initNumberInputs(root)); break;
     case "password-input": addDestroyables(destroyables, initPasswordInputs(root)); break;
     case "prompt-composer": addDestroyables(destroyables, initPromptComposers(root)); break;
+    case "message-scroller": addDestroyables(destroyables, initMessageScrollers(root)); break;
+    case "attachment-previews": addDestroyables(destroyables, initAttachmentPreviews(root)); break;
     case "search-box": addDestroyables(destroyables, initSearchBoxes(root)); break;
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
