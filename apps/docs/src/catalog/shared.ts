@@ -19,6 +19,8 @@ export type PluginName =
   | "tree-view"
   | "resizable-panels"
   | "stepper"
+  | "notification-center"
+  | "filter-bar"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -908,6 +910,73 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Escape", description: "Closes an open panel and returns focus to its trigger." },
       ],
       accessibility: "The root remains a semantic nav instead of a menu widget. Nyx connects each button and panel with aria-controls, updates aria-expanded, and leaves links with their native behavior.",
+    },
+  },
+  "notification-center": {
+    className: "NyxNotificationCenter",
+    initName: "initNotificationCenters",
+    selector: "[data-nyx-notification-center]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-notification-center", value: "presence", description: "Marks the notification collection and ownership boundary." },
+        { name: "data-nyx-notification", value: "presence", description: "Marks an item whose read state and dismissal are managed." },
+        { name: "data-nyx-notification-id", value: "unique string", description: "Provides the stable value used by the API; an ID is generated when omitted." },
+        { name: "data-state", value: "unread | all-read | empty; unread | read", description: "Reflects collection state on the root and read state on each item." },
+        { name: "data-nyx-notification-read / data-nyx-notification-dismiss", value: "presence", description: "Marks native item action buttons." },
+        { name: "data-nyx-notification-mark-all", value: "presence", description: "Marks the native bulk read button." },
+        { name: "data-nyx-notification-count / data-nyx-notification-empty", value: "presence", description: "Marks the polite unread summary and empty state." },
+      ],
+      methods: [
+        { name: "value", value: "string[]", description: "Gets or sets the stable IDs currently marked unread." },
+        { name: "notifications", value: "HTMLElement[]", description: "Returns the currently owned notification elements." },
+        { name: "setRead(itemOrId, read?, reason?)", value: "boolean", description: "Requests a read or unread transition." },
+        { name: "markAllRead()", value: "number", description: "Marks every accepted unread item read and returns the changed count." },
+        { name: "dismiss(itemOrId, reason?)", value: "boolean", description: "Requests removal of one notification." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance without deleting authored items." },
+      ],
+      events: [
+        { name: "nyx:notification-center:before-read / before-unread", value: "cancelable", description: "Fires before an item's read state changes." },
+        { name: "nyx:notification-center:read / unread", value: "not cancelable", description: "Fires after item, count, controls, data-state, and ARIA synchronize." },
+        { name: "nyx:notification-center:before-dismiss", value: "cancelable", description: "Fires before an item is removed." },
+        { name: "nyx:notification-center:dismiss", value: "not cancelable", description: "Fires after removal and collection-state synchronization." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through notification links and native action buttons." },
+        { name: "Enter / Space", description: "Activates the focused native button; Enter follows a focused link." },
+      ],
+      accessibility: "Notifications remain a semantic labelled section containing a list. A polite output announces unread-count changes, read toggles expose aria-pressed with stable accessible names, disabled bulk state is synchronized, and removal never steals focus programmatically.",
+    },
+  },
+  "filter-bar": {
+    className: "NyxFilterBar",
+    initName: "initFilterBars",
+    selector: "[data-nyx-filter-bar]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-filter-bar", value: "presence", description: "Marks the native form controls and active-summary ownership boundary." },
+        { name: "data-nyx-filter-label", value: "string", description: "Provides the compact label used in a generated active-filter chip." },
+        { name: "data-nyx-filter-bar-active", value: "presence", description: "Marks the container that receives removable active-filter chips." },
+        { name: "data-nyx-filter-bar-count", value: "presence", description: "Marks the polite active-filter count." },
+        { name: "data-nyx-filter-bar-clear", value: "presence", description: "Marks the native clear-all button." },
+        { name: "data-state", value: "active | inactive", description: "Reflects whether any named control has a non-empty value." },
+      ],
+      methods: [
+        { name: "value", value: "Record<string, string[]>", description: "Gets or sets normalized values keyed by native control name." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests an atomic filter change and reports whether it was accepted." },
+        { name: "remove(name, value)", value: "boolean", description: "Requests removal of one named filter value." },
+        { name: "clear()", value: "boolean", description: "Requests removal of every active filter." },
+        { name: "destroy()", value: "void", description: "Removes listeners and generated chips, then releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:filter-bar:before-change", value: "cancelable", description: "Fires before a native, API, chip-removal, or clear-all change is committed." },
+        { name: "nyx:filter-bar:change", value: "not cancelable", description: "Fires after controls, chips, count, data-state, and clear-button ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through native filter controls, generated remove buttons, and clear all." },
+        { name: "Control-specific keys", description: "Search, select, and checkbox controls retain their native keyboard behavior." },
+        { name: "Enter / Space", description: "Activates a focused remove or clear button." },
+      ],
+      accessibility: "The root is a labelled native form with persistent labels. Active values are summarized as operable buttons with precise names, the count is announced politely, and vetoed changes restore the previously committed native control state.",
     },
   },
   toast: {

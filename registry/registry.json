@@ -165,11 +165,32 @@
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/toast"]
     },
     {
+      "name": "notification-center",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/notification-center.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/notification-center"]
+    },
+    {
       "name": "data-display",
       "type": "component-group",
       "status": "preview",
       "files": ["components/data-display.html"],
       "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "activity-feed",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/activity-feed.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "filter-bar",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/filter-bar.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/filter-bar"]
     },
     {
       "name": "advanced-data-table",

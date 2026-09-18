@@ -218,6 +218,23 @@ export {
 } from "./stepper.js";
 
 export {
+  NyxNotificationCenter,
+  initNotificationCenters,
+  type NyxNotificationCenterEventDetail,
+  type NyxNotificationCenterEventMap,
+  type NyxNotificationCenterReason,
+} from "./notification-center.js";
+
+export {
+  NyxFilterBar,
+  initFilterBars,
+  type NyxFilterBarEventDetail,
+  type NyxFilterBarEventMap,
+  type NyxFilterBarReason,
+  type NyxFilterBarValue,
+} from "./filter-bar.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

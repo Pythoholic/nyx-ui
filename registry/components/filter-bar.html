@@ -1,0 +1,36 @@
+<form aria-label="Filter deployments" class="nyx-filter-bar" data-nyx-filter-bar>
+  <div class="nyx-filter-controls">
+    <label class="nyx-field nyx-filter-query">
+      <span class="nyx-label">Search</span>
+      <input class="nyx-input" data-nyx-filter-label="Search" name="query" placeholder="Release or owner" type="search" />
+    </label>
+    <label class="nyx-field">
+      <span class="nyx-label">Status</span>
+      <select class="nyx-select" data-nyx-filter-label="Status" name="status">
+        <option value="">Any status</option>
+        <option value="running" selected>Running</option>
+        <option value="queued">Queued</option>
+        <option value="complete">Complete</option>
+        <option value="failed">Failed</option>
+      </select>
+    </label>
+    <label class="nyx-field">
+      <span class="nyx-label">Region</span>
+      <select class="nyx-select" data-nyx-filter-label="Region" name="region">
+        <option value="">All regions</option>
+        <option value="tokyo">Tokyo</option>
+        <option value="frankfurt">Frankfurt</option>
+        <option value="virginia">Virginia</option>
+      </select>
+    </label>
+    <label class="nyx-choice nyx-filter-check">
+      <input data-nyx-filter-label="Owner" name="owner" type="checkbox" value="me" checked />
+      <span>Assigned to me</span>
+    </label>
+  </div>
+  <div class="nyx-filter-summary">
+    <output aria-live="polite" class="nyx-filter-count" data-nyx-filter-bar-count>2 active filters</output>
+    <div class="nyx-filter-active" data-nyx-filter-bar-active aria-label="Active filters"></div>
+    <button class="nyx-button" data-nyx-filter-bar-clear data-size="small" data-variant="quiet" type="button">Clear all</button>
+  </div>
+</form>

@@ -20,7 +20,7 @@ export const overviewPage = page({
   navigationLabel: "Overview",
   description: "A complete working reference for building precise interfaces with stable typography, semantic markup, themeable tokens, and optional framework-free behavior.",
   searchTerms: "overview foundation catalog components system getting started",
-  body: `<div class="docs-readout" aria-label="Catalog status"><div class="docs-readout-row"><span>Foundation groups</span><strong>4</strong></div><div class="docs-readout-row"><span>Component pages</span><strong>57</strong></div><div class="docs-readout-row"><span>Typography roles</span><strong>6 canonical</strong></div><div class="docs-readout-row"><span>Motion tokens</span><strong>10 durations</strong></div><div class="docs-readout-row"><span>Behavior</span><strong style="color:var(--nyx-signal)">Operational</strong></div></div>`,
+  body: `<div class="docs-readout" aria-label="Catalog status"><div class="docs-readout-row"><span>Foundation groups</span><strong>4</strong></div><div class="docs-readout-row"><span>Component pages</span><strong>60</strong></div><div class="docs-readout-row"><span>Typography roles</span><strong>6 canonical</strong></div><div class="docs-readout-row"><span>Motion tokens</span><strong>10 durations</strong></div><div class="docs-readout-row"><span>Behavior</span><strong style="color:var(--nyx-signal)">Operational</strong></div></div>`,
 });
 
 export const componentCategories: NavigationCategory[] = [

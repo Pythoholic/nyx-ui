@@ -21,6 +21,8 @@ import { initScrollAreas } from "@nyx-ui/plugins/scroll-area";
 import { initTreeViews } from "@nyx-ui/plugins/tree-view";
 import { initSidebars } from "@nyx-ui/plugins/sidebar";
 import { initSteppers } from "@nyx-ui/plugins/stepper";
+import { initNotificationCenters } from "@nyx-ui/plugins/notification-center";
+import { initFilterBars } from "@nyx-ui/plugins/filter-bar";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
 import {
@@ -202,6 +204,8 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "tree-view": addDestroyables(destroyables, initTreeViews(root)); break;
     case "sidebar": addDestroyables(destroyables, initSidebars(root)); break;
     case "stepper": addDestroyables(destroyables, initSteppers(root)); break;
+    case "notification-center": addDestroyables(destroyables, initNotificationCenters(root)); break;
+    case "filter-bar": addDestroyables(destroyables, initFilterBars(root)); break;
     case "tabs": addDestroyables(destroyables, initTabs(root)); break;
     case "toast": {
       const toasts = initToasts(root);

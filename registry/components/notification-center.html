@@ -1,0 +1,61 @@
+<section
+  aria-labelledby="nyx-notification-center-title"
+  class="nyx-notification-center"
+  data-nyx-notification-center
+>
+  <header class="nyx-notification-header">
+    <div>
+      <h2 id="nyx-notification-center-title">Notifications</h2>
+      <output aria-live="polite" class="nyx-notification-count" data-nyx-notification-count>2 unread</output>
+    </div>
+    <button class="nyx-button" data-nyx-notification-mark-all data-size="small" type="button">Mark all read</button>
+  </header>
+  <ul class="nyx-notification-list">
+    <li class="nyx-notification" data-nyx-notification data-nyx-notification-id="release-ready" data-state="unread">
+      <span class="nyx-notification-marker" aria-hidden="true"></span>
+      <div class="nyx-notification-body">
+        <div class="nyx-notification-title-row">
+          <strong>Release ready</strong>
+          <time datetime="2026-09-18T14:32:00+09:00">2 min ago</time>
+        </div>
+        <p>Version 0.2 passed validation and is ready for review.</p>
+        <div class="nyx-notification-actions">
+          <a class="nyx-link" href="#release">View release</a>
+          <button class="nyx-button" data-nyx-notification-read data-size="small" data-variant="quiet" type="button">Read</button>
+          <button class="nyx-button" data-nyx-notification-dismiss data-size="small" data-variant="quiet" type="button">Dismiss</button>
+        </div>
+      </div>
+    </li>
+    <li class="nyx-notification" data-nyx-notification data-nyx-notification-id="policy-update" data-state="unread">
+      <span class="nyx-notification-marker" aria-hidden="true"></span>
+      <div class="nyx-notification-body">
+        <div class="nyx-notification-title-row">
+          <strong>Policy update</strong>
+          <time datetime="2026-09-18T13:08:00+09:00">1 hr ago</time>
+        </div>
+        <p>Two deployment rules now require owner approval.</p>
+        <div class="nyx-notification-actions">
+          <a class="nyx-link" href="#policy">Review policy</a>
+          <button class="nyx-button" data-nyx-notification-read data-size="small" data-variant="quiet" type="button">Read</button>
+          <button class="nyx-button" data-nyx-notification-dismiss data-size="small" data-variant="quiet" type="button">Dismiss</button>
+        </div>
+      </div>
+    </li>
+    <li class="nyx-notification" data-nyx-notification data-nyx-notification-id="export-complete" data-state="read">
+      <span class="nyx-notification-marker" aria-hidden="true"></span>
+      <div class="nyx-notification-body">
+        <div class="nyx-notification-title-row">
+          <strong>Export complete</strong>
+          <time datetime="2026-09-17T18:40:00+09:00">Yesterday</time>
+        </div>
+        <p>Your audit archive is available for download.</p>
+        <div class="nyx-notification-actions">
+          <a class="nyx-link" href="#export">Download</a>
+          <button class="nyx-button" data-nyx-notification-read data-size="small" data-variant="quiet" type="button">Read</button>
+          <button class="nyx-button" data-nyx-notification-dismiss data-size="small" data-variant="quiet" type="button">Dismiss</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <p class="nyx-notification-empty" data-nyx-notification-empty hidden>No notifications.</p>
+</section>

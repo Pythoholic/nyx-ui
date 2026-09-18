@@ -1,6 +1,8 @@
 import dataDisplayMarkup from "../../../../registry/components/data-display.html?raw";
 import dataTableMarkup from "../../../../registry/components/data-table.html?raw";
 import treeViewMarkup from "../../../../registry/components/tree-view.html?raw";
+import activityFeedMarkup from "../../../../registry/components/activity-feed.html?raw";
+import filterBarMarkup from "../../../../registry/components/filter-bar.html?raw";
 import { paths } from "../routes.js";
 import { card, page } from "./shared.js";
 
@@ -13,6 +15,25 @@ export const dataPages = [
     description: "Operational data stays scannable through tabular numbers, strong row boundaries, explicit status, accessible tables, and expandable detail.",
     searchTerms: "data stat card description list table jobs workflow timeline log code record expandable",
     body: card("Metrics, records, and activity", `<div class="docs-stack">${dataDisplayMarkup}</div>`, "Registry source", dataDisplayMarkup),
+  }),
+  page({
+    path: paths.components.dataDisplay.activityFeed,
+    categoryId: "data-display",
+    categoryLabel: "Data Display",
+    title: "Activity Feed",
+    description: "A semantic chronological feed combines actors, actions, linked objects, timestamps, status, and optional quoted context.",
+    searchTerms: "activity feed timeline audit history actor events chronological updates comments",
+    body: `<section class="docs-prose-section"><h2>Readable chronology</h2><p>The ordered list is the source of sequence. Native <code>time</code>, links, and blockquotes retain their meaning without a JavaScript timeline role, while <code>aria-current</code> identifies the newest relevant event.</p></section>${card("Workspace activity", activityFeedMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.dataDisplay.filterBar,
+    categoryId: "data-display",
+    categoryLabel: "Data Display",
+    title: "Filter Bar",
+    description: "Native named controls become an atomic filter value with removable summaries, a polite count, clear-all behavior, and cancelable controlled integration.",
+    searchTerms: "filter bar query status region checkbox facets chips clear active filters controlled",
+    plugins: ["filter-bar"],
+    body: `<section class="docs-prose-section"><h2>Native controls, one value</h2><p>The form remains usable without custom keyboard handling. The controller normalizes non-empty named values, restores the prior state when a change is canceled, and creates removable summaries from the current controls.</p></section>${card("Deployment filters", filterBarMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.dataDisplay.treeView,

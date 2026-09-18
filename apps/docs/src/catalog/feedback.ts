@@ -1,5 +1,6 @@
 import feedbackMarkup from "../../../../registry/components/feedback.html?raw";
 import stepperMarkup from "../../../../registry/components/stepper.html?raw";
+import notificationCenterMarkup from "../../../../registry/components/notification-center.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
@@ -43,6 +44,16 @@ export const feedbackPages = [
     searchTerms: "stepper steps progress complete current pending linear panel state management",
     plugins: ["stepper"],
     body: `<section class="docs-prose-section"><h2>Progressive flow</h2><p>Linear mode allows revisiting completed steps and advancing only to the next unvisited step. Consumers may cancel a transition to validate or save the current panel before moving.</p></section>${card("Deployment setup", stepperMarkup, "Registry source")}`,
+  }),
+  page({
+    path: paths.components.feedback.notificationCenter,
+    categoryId: "feedback",
+    categoryLabel: "Feedback",
+    title: "Notification Centre",
+    description: "A persistent notification collection manages unread state, bulk acknowledgement, dismissal, counts, and empty state without conflating durable updates with transient toasts.",
+    searchTerms: "notification centre center inbox unread read dismiss mark all persistent updates",
+    plugins: ["notification-center"],
+    body: `<section class="docs-prose-section"><h2>Durable updates</h2><p>Use the centre for updates people may revisit. Each item keeps semantic list structure and independent links while the controller owns only read state, dismissal, and collection summaries.</p></section>${card("Workspace notifications", notificationCenterMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.loading,

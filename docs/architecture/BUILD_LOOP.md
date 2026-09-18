@@ -47,9 +47,9 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Password strength and visibility controls (built, visually unverified)
 - [x] Search box with suggestions and recent searches (built, visually unverified)
 - [x] Multi-select and tag input (built, visually unverified)
-- [ ] Notification centre
-- [ ] Activity feed
-- [ ] Filter bar
+- [x] Notification centre (built, visually unverified)
+- [x] Activity feed (built, visually unverified)
+- [x] Filter bar (built, visually unverified)
 - [ ] Command bar
 - [ ] Bulk-action toolbar
 

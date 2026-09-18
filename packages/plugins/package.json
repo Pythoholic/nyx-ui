@@ -101,6 +101,14 @@
       "types": "./dist/stepper.d.ts",
       "default": "./dist/stepper.js"
     },
+    "./notification-center": {
+      "types": "./dist/notification-center.d.ts",
+      "default": "./dist/notification-center.js"
+    },
+    "./filter-bar": {
+      "types": "./dist/filter-bar.d.ts",
+      "default": "./dist/filter-bar.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"
