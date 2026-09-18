@@ -1,0 +1,31 @@
+<section class="nyx-stepper" data-nyx-stepper data-nyx-stepper-linear aria-label="Deployment setup">
+  <ol class="nyx-steps" style="--nyx-step-count: 3">
+    <li class="nyx-step" data-nyx-stepper-step data-state="current">
+      <button data-nyx-stepper-trigger type="button">Configure</button>
+    </li>
+    <li class="nyx-step" data-nyx-stepper-step>
+      <button data-nyx-stepper-trigger type="button">Validate</button>
+    </li>
+    <li class="nyx-step" data-nyx-stepper-step>
+      <button data-nyx-stepper-trigger type="button">Deploy</button>
+    </li>
+  </ol>
+  <div class="nyx-stepper-panels">
+    <section class="nyx-stepper-panel" data-nyx-stepper-panel>
+      <h3>Configure target</h3>
+      <p>Choose the environment and confirm the release inputs before validation.</p>
+    </section>
+    <section class="nyx-stepper-panel" data-nyx-stepper-panel>
+      <h3>Validate release</h3>
+      <p>Run policy and compatibility checks against the selected target.</p>
+    </section>
+    <section class="nyx-stepper-panel" data-nyx-stepper-panel>
+      <h3>Deploy version</h3>
+      <p>Review the final change set, then begin the controlled deployment.</p>
+    </section>
+  </div>
+  <div class="nyx-stepper-controls">
+    <button class="nyx-button" data-nyx-stepper-previous type="button">Previous</button>
+    <button class="nyx-button" data-nyx-stepper-next data-variant="primary" type="button">Continue</button>
+  </div>
+</section>

@@ -41,8 +41,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Resizable Panels / Layout Splitter (built, visually unverified)
 - [x] Scroll Area and styled scrollbar (built, visually unverified)
 - [x] Hover Card (built, visually unverified)
-- [ ] Carousel
-- [ ] Stepper with state management
+- [x] Carousel (built, visually unverified)
+- [x] Stepper with state management (built, visually unverified)
 - [ ] Advanced number input
 - [ ] Password strength and visibility controls
 - [ ] Search box with suggestions and recent searches

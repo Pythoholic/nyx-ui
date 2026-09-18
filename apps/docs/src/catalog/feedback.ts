@@ -1,4 +1,5 @@
 import feedbackMarkup from "../../../../registry/components/feedback.html?raw";
+import stepperMarkup from "../../../../registry/components/stepper.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
@@ -34,13 +35,14 @@ export const feedbackPages = [
     body: card("Progress", `<div class="docs-column">${selectMarkup(feedbackMarkup, [".nyx-progress"])}<div class="nyx-progress" data-indeterminate="true" aria-label="Processing"><div class="nyx-progress-bar"></div></div></div>`, "Registry source"),
   }),
   page({
-    path: paths.components.feedback.steps,
+    path: paths.components.feedback.stepper,
     categoryId: "feedback",
     categoryLabel: "Feedback",
-    title: "Steps",
-    description: "Steps expose completed, current, and pending phases with ordered semantic structure.",
-    searchTerms: "steps progress complete current queued build verify release",
-    body: card("Steps", selectMarkup(feedbackMarkup, [".nyx-steps"]), "Registry source"),
+    title: "Stepper",
+    description: "Stepper manages a linear or freely navigable sequence while keeping progress, controls, panels, and ARIA synchronized.",
+    searchTerms: "stepper steps progress complete current pending linear panel state management",
+    plugins: ["stepper"],
+    body: `<section class="docs-prose-section"><h2>Progressive flow</h2><p>Linear mode allows revisiting completed steps and advancing only to the next unvisited step. Consumers may cancel a transition to validate or save the current panel before moving.</p></section>${card("Deployment setup", stepperMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.loading,

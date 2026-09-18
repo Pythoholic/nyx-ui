@@ -205,6 +205,20 @@
       "status": "preview",
       "files": ["components/resizable-panels.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/resizable-panels"]
+    },
+    {
+      "name": "carousel",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/carousel.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/carousel"]
+    },
+    {
+      "name": "stepper",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/stepper.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/stepper"]
     }
   ]
 }

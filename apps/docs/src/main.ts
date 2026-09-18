@@ -1,4 +1,5 @@
 import { initComboboxes } from "@nyx-ui/plugins/combobox";
+import { initCarousels } from "@nyx-ui/plugins/carousel";
 import { initCalendars } from "@nyx-ui/plugins/calendar";
 import { initCommandPalettes, type NyxCommandPalette, type NyxCommandPaletteEventDetail } from "@nyx-ui/plugins/command-palette";
 import { initContextMenus } from "@nyx-ui/plugins/context-menu";
@@ -15,6 +16,7 @@ import { initResizablePanels } from "@nyx-ui/plugins/resizable-panels";
 import { initScrollAreas } from "@nyx-ui/plugins/scroll-area";
 import { initTreeViews } from "@nyx-ui/plugins/tree-view";
 import { initSidebars } from "@nyx-ui/plugins/sidebar";
+import { initSteppers } from "@nyx-ui/plugins/stepper";
 import { initTabs } from "@nyx-ui/plugins/tabs";
 import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
 import {
@@ -174,6 +176,7 @@ const demoUpload: NyxFileUploadAdapter = (file, { reportProgress, signal }) => n
 function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: Destroyable[]): NyxToast | undefined {
   switch (plugin) {
     case "calendar": addDestroyables(destroyables, initCalendars(root)); break;
+    case "carousel": addDestroyables(destroyables, initCarousels(root)); break;
     case "combobox": addDestroyables(destroyables, initComboboxes(root)); break;
     case "command-palette": addDestroyables(destroyables, initCommandPalettes(root)); break;
     case "context-menu": addDestroyables(destroyables, initContextMenus(root)); break;
@@ -190,6 +193,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "scroll-area": addDestroyables(destroyables, initScrollAreas(root)); break;
     case "tree-view": addDestroyables(destroyables, initTreeViews(root)); break;
     case "sidebar": addDestroyables(destroyables, initSidebars(root)); break;
+    case "stepper": addDestroyables(destroyables, initSteppers(root)); break;
     case "tabs": addDestroyables(destroyables, initTabs(root)); break;
     case "toast": {
       const toasts = initToasts(root);

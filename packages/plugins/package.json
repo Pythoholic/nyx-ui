@@ -77,6 +77,14 @@
       "types": "./dist/resizable-panels.d.ts",
       "default": "./dist/resizable-panels.js"
     },
+    "./carousel": {
+      "types": "./dist/carousel.d.ts",
+      "default": "./dist/carousel.js"
+    },
+    "./stepper": {
+      "types": "./dist/stepper.d.ts",
+      "default": "./dist/stepper.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

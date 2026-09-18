@@ -41,6 +41,7 @@ export const paths = {
       pagination: "/components/navigation/pagination",
       accordion: "/components/navigation/accordion",
       tabs: "/components/navigation/tabs",
+      carousel: "/components/navigation/carousel",
     },
     overlays: {
       tooltip: "/components/overlays/tooltip",
@@ -56,7 +57,7 @@ export const paths = {
       badges: "/components/feedback/badges",
       alerts: "/components/feedback/alerts",
       progress: "/components/feedback/progress",
-      steps: "/components/feedback/steps",
+      stepper: "/components/feedback/stepper",
       loading: "/components/feedback/loading",
       toast: "/components/feedback/toast",
       emptyState: "/components/feedback/empty-state",

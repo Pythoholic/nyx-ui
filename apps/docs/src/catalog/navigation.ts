@@ -1,5 +1,6 @@
 import menubarMarkup from "../../../../registry/components/menubar.html?raw";
 import navigationMarkup from "../../../../registry/components/navigation.html?raw";
+import carouselMarkup from "../../../../registry/components/carousel.html?raw";
 import navigationMenuMarkup from "../../../../registry/components/navigation-menu.html?raw";
 import { icon } from "../icons.js";
 import { paths } from "../routes.js";
@@ -71,5 +72,15 @@ export const navigationPages = [
     searchTerms: "tabs tablist panel arrow home end keyboard selection",
     plugins: ["tabs"],
     body: card("Tabs", selectMarkup(navigationMarkup, ["[data-nyx-tabs]"]), "Registry source"),
+  }),
+  page({
+    path: paths.components.navigation.carousel,
+    categoryId: "navigation",
+    categoryLabel: "Navigation",
+    title: "Carousel",
+    description: "Carousel presents one item from an ordered set with explicit, deterministic navigation and no automatic rotation.",
+    searchTerms: "carousel slides previous next indicators region ordered content",
+    plugins: ["carousel"],
+    body: `<section class="docs-prose-section"><h2>Content navigation primitive</h2><p>The generic carousel owns ordered visibility, boundary controls, indicators, and announcements. Rich media remains a composition on top of this contract rather than a separate navigation engine.</p></section>${card("Release highlights", carouselMarkup, "Registry source")}`,
   }),
 ];

@@ -1,4 +1,5 @@
 export type PluginName =
+  | "carousel"
   | "calendar"
   | "combobox"
   | "command-palette"
@@ -13,6 +14,7 @@ export type PluginName =
   | "hover-card"
   | "tree-view"
   | "resizable-panels"
+  | "stepper"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -62,6 +64,69 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  carousel: {
+    className: "NyxCarousel",
+    initName: "initCarousels",
+    selector: "[data-nyx-carousel]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-carousel", value: "presence", description: "Marks the carousel region and ownership boundary." },
+        { name: "data-nyx-carousel-slide", value: "presence", description: "Marks an ordered slide; inactive slides are hidden from every input modality." },
+        { name: "data-nyx-carousel-previous / data-nyx-carousel-next", value: "presence", description: "Marks native buttons that move one slide." },
+        { name: "data-nyx-carousel-go-to", value: "zero-based index", description: "Marks a native indicator button that selects one slide." },
+        { name: "data-nyx-carousel-loop", value: "presence", description: "Allows previous and next navigation to wrap at either end." },
+        { name: "data-nyx-carousel-index", value: "zero-based index", description: "Declares and reflects the active slide index." },
+        { name: "data-nyx-carousel-status", value: "presence", description: "Marks the polite text status synchronized to the active position." },
+      ],
+      methods: [
+        { name: "value", value: "number", description: "Gets or sets the zero-based active index." },
+        { name: "goTo(index, reason?)", value: "boolean", description: "Requests an indexed transition and reports whether it occurred." },
+        { name: "next(reason?) / previous(reason?)", value: "boolean", description: "Requests an adjacent transition, respecting the loop setting." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:carousel:before-change", value: "cancelable", description: "Fires before the active slide changes." },
+        { name: "nyx:carousel:change", value: "not cancelable", description: "Fires after slide visibility, controls, indicators, status, and ARIA synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through the native previous, next, and slide-indicator buttons." },
+        { name: "Enter / Space", description: "Activates the focused native navigation button." },
+      ],
+      accessibility: "The named region uses the carousel roledescription. Each slide is a labelled group with its position in the set, and inactive slides are both hidden and aria-hidden. Native navigation buttons expose disabled boundaries, while a polite atomic status announces the new position without automatic rotation.",
+    },
+  },
+  stepper: {
+    className: "NyxStepper",
+    initName: "initSteppers",
+    selector: "[data-nyx-stepper]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-stepper", value: "presence", description: "Marks the stepper root and ownership boundary." },
+        { name: "data-nyx-stepper-linear", value: "presence", description: "Prevents jumping beyond the next unvisited step." },
+        { name: "data-nyx-stepper-step", value: "presence", description: "Marks each ordered step and receives current, complete, or pending state." },
+        { name: "data-nyx-stepper-trigger", value: "presence", description: "Marks the native button associated with one panel." },
+        { name: "data-nyx-stepper-panel", value: "presence", description: "Marks one panel in the same order as its step." },
+        { name: "data-nyx-stepper-previous / data-nyx-stepper-next", value: "presence", description: "Marks native buttons for adjacent transitions." },
+        { name: "data-nyx-stepper-index", value: "zero-based index", description: "Declares and reflects the current step index." },
+      ],
+      methods: [
+        { name: "value", value: "number", description: "Gets or sets the zero-based current step index." },
+        { name: "goTo(index, reason?)", value: "boolean", description: "Requests an indexed transition and reports whether it occurred." },
+        { name: "next(reason?) / previous(reason?)", value: "boolean", description: "Requests an adjacent transition." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:stepper:before-change", value: "cancelable", description: "Fires before the current step changes." },
+        { name: "nyx:stepper:change", value: "not cancelable", description: "Fires after step, panel, control, data-state, and ARIA synchronization." },
+      ],
+      keyboard: [
+        { name: "Arrow keys", description: "Moves focus among currently available step buttons without changing the current step." },
+        { name: "Home / End", description: "Moves focus to the first or last currently available step button." },
+        { name: "Enter / Space", description: "Activates the focused step, previous, or next button." },
+      ],
+      accessibility: "The ordered list preserves sequence. The current item uses aria-current=step, one step trigger participates in the tab order, and every trigger controls a labelled panel. Hidden panels are removed from navigation, and unavailable future steps in a linear flow are disabled.",
+    },
+  },
   "scroll-area": {
     className: "NyxScrollArea",
     initName: "initScrollAreas",

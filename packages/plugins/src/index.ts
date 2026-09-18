@@ -162,6 +162,22 @@ export {
 } from "./resizable-panels.js";
 
 export {
+  NyxCarousel,
+  initCarousels,
+  type NyxCarouselChangeReason,
+  type NyxCarouselEventDetail,
+  type NyxCarouselEventMap,
+} from "./carousel.js";
+
+export {
+  NyxStepper,
+  initSteppers,
+  type NyxStepperChangeReason,
+  type NyxStepperEventDetail,
+  type NyxStepperEventMap,
+} from "./stepper.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,
