@@ -38,6 +38,10 @@ export const paths = {
     },
     primitives: {
       staticPrimitives: "/components/primitives/static-primitives",
+      aspectRatio: "/components/primitives/aspect-ratio",
+      containerColumns: "/components/primitives/container-responsive-columns",
+      styledLinks: "/components/primitives/styled-links",
+      blockquote: "/components/primitives/blockquote",
     },
     navigation: {
       topBar: "/components/navigation/top-bar",

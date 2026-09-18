@@ -22,3 +22,21 @@ describe("overlay component CSS", () => {
     );
   });
 });
+
+describe("small primitive CSS", () => {
+  it("ships named aspect ratios and media fitting without scripts", () => {
+    expect(css).toMatch(/\.nyx-aspect-ratio\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9;/);
+    expect(css).toMatch(/\.nyx-aspect-ratio\[data-ratio="square"\]\s*\{[^}]*aspect-ratio:\s*1;/);
+    expect(css).toMatch(/\.nyx-aspect-ratio\s*>\s*:is\(img, video\)\s*\{[^}]*object-fit:\s*cover;/);
+  });
+
+  it("collapses authored column counts at both responsive thresholds", () => {
+    expect(css).toMatch(/@media \(max-width:\s*64rem\)[\s\S]*?\.nyx-columns\[data-columns="3"\][^}]*--nyx-column-count:\s*2;/);
+    expect(css).toMatch(/@media \(max-width:\s*40rem\)[\s\S]*?\.nyx-columns\[data-columns\][^}]*--nyx-column-count:\s*1;/);
+  });
+
+  it("keeps links visibly distinguished and quotes logically bordered", () => {
+    expect(css).toMatch(/\.nyx-link\s*\{[^}]*text-decoration-line:\s*underline;/);
+    expect(css).toMatch(/\.nyx-blockquote,[^{]*\.nyx-activity-quote\s*\{[^}]*border-inline-start:/);
+  });
+});

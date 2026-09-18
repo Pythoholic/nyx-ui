@@ -18,6 +18,34 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "aspect-ratio",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/aspect-ratio.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "container-responsive-columns",
+      "type": "component-group",
+      "status": "preview",
+      "files": ["components/container-columns.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "styled-links",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/styled-links.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "blockquote",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/blockquote.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "toggles",
       "type": "component-group",
       "status": "preview",

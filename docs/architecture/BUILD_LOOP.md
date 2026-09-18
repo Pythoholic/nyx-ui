@@ -70,10 +70,10 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Small primitives
 
-- [ ] Aspect-ratio container
-- [ ] Container and responsive columns
-- [ ] Styled links
-- [ ] Blockquote
+- [x] Aspect-ratio container (built, visually unverified)
+- [x] Container and responsive columns (built, visually unverified)
+- [x] Styled links (built, visually unverified)
+- [x] Blockquote (built, visually unverified)
 - [ ] Code block and copy button as a shipped component
 - [ ] Icon catalog page
 - [ ] Accessible visually-hidden utility
