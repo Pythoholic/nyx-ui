@@ -1,4 +1,36 @@
-<button class="nyx-button" data-variant="primary" type="button">
+<button class="nyx-button" data-nyx-example="button-primary" data-variant="primary" type="button">
   Primary action
 </button>
 
+<div class="nyx-cluster" data-nyx-example="button-variants" role="group" aria-label="Action priority">
+  <button class="nyx-button" data-variant="primary" type="button">
+    Primary
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+  </button>
+  <button class="nyx-button" type="button">Secondary</button>
+  <button class="nyx-button" data-variant="quiet" type="button">Quiet</button>
+  <button class="nyx-button" data-variant="danger" type="button">Destructive</button>
+</div>
+
+<div class="nyx-cluster" data-nyx-example="button-sizes-states" role="group" aria-label="Button sizes and states">
+  <button class="nyx-button" data-size="small" type="button">Small</button>
+  <button class="nyx-button" type="button">Default</button>
+  <button class="nyx-button" data-size="large" type="button">Large</button>
+  <button class="nyx-button" disabled type="button">Disabled</button>
+  <button class="nyx-button" data-loading="true" disabled type="button">
+    <span aria-hidden="true" class="nyx-spinner"></span>
+    <span>Loading</span>
+  </button>
+</div>
+
+<div class="nyx-cluster" data-nyx-example="button-icons" role="group" aria-label="Icon controls">
+  <button class="nyx-button nyx-icon-button" aria-label="Add item" type="button">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+  </button>
+  <button class="nyx-button nyx-icon-button" aria-label="Settings" type="button">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" /></svg>
+  </button>
+  <button class="nyx-button nyx-icon-button" aria-label="Account" type="button">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></svg>
+  </button>
+</div>

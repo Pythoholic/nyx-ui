@@ -1,4 +1,4 @@
-<div class="nyx-app-shell">
+<div class="nyx-app-shell" data-nyx-example="application-shell">
   <aside class="nyx-app-sidebar" aria-label="Workspace navigation">
     <a href="#overview" aria-current="page">Overview</a>
     <a href="#records">Records</a>
@@ -10,4 +10,46 @@
     <h1>Operational overview</h1>
     <p>Compose application screens from shared Nyx foundations and components.</p>
   </main>
+</div>
+
+<div class="nyx-auth-layout" data-nyx-example="authentication-layout">
+  <div class="nyx-auth-art">
+    <div>
+      <span class="nyx-eyebrow">Secure workspace</span>
+      <h2 class="nyx-panel-title">Access the system</h2>
+    </div>
+  </div>
+  <form class="nyx-auth-form">
+    <label class="nyx-field" for="nyx-auth-email">
+      <span class="nyx-label">Email</span>
+      <input class="nyx-input" id="nyx-auth-email" type="email" placeholder="operator@example.com" />
+    </label>
+    <label class="nyx-field" for="nyx-auth-password">
+      <span class="nyx-label">Password</span>
+      <input class="nyx-input" id="nyx-auth-password" type="password" value="password" />
+    </label>
+    <button class="nyx-button" data-variant="primary" type="submit">Sign in</button>
+  </form>
+</div>
+
+<div class="nyx-split" data-nyx-example="split-workspace">
+  <section>
+    <span class="nyx-eyebrow">Configuration</span>
+    <div class="nyx-split-controls">
+      <label class="nyx-field" for="nyx-workspace-prompt">
+        <span class="nyx-label">Prompt</span>
+        <textarea class="nyx-textarea" id="nyx-workspace-prompt">A precise technical interface...</textarea>
+      </label>
+      <label class="nyx-field" for="nyx-workspace-strength">
+        <span class="nyx-label">Strength</span>
+        <input class="nyx-range" id="nyx-workspace-strength" type="range" value="72" />
+      </label>
+    </div>
+  </section>
+  <section class="nyx-split-preview">
+    <span class="nyx-eyebrow">Live result</span>
+    <div class="nyx-media-preview" role="img" aria-label="Generated interface preview">
+      <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg>
+    </div>
+  </section>
 </div>

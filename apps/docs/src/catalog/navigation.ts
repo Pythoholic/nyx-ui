@@ -2,7 +2,6 @@ import menubarMarkup from "../../../../registry/components/menubar.html?raw";
 import navigationMarkup from "../../../../registry/components/navigation.html?raw";
 import carouselMarkup from "../../../../registry/components/carousel.html?raw";
 import navigationMenuMarkup from "../../../../registry/components/navigation-menu.html?raw";
-import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
 
@@ -14,7 +13,7 @@ export const navigationPages = [
     title: "Top Bar",
     description: "Application top bars keep product identity, status, and account actions visible without adopting application-menu semantics.",
     searchTerms: "navigation topbar status account workspace",
-    body: card("Application top bar", `<div class="nyx-topbar"><div class="docs-brand"><span class="docs-mark">N</span><strong>Workspace</strong></div><div class="docs-row"><span class="nyx-badge" data-tone="success"><span class="nyx-status-dot"></span>Operational</span><button class="nyx-button nyx-icon-button" aria-label="Account">${icon("user")}</button></div></div>`),
+    body: card("Application top bar", selectMarkup(navigationMarkup, ["[data-nyx-example='top-bar']"]), "Registry source"),
   }),
   page({
     path: paths.components.navigation.menubar,

@@ -6,175 +6,175 @@
     {
       "name": "button",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/button.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "static-primitives",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/static-primitives.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "aspect-ratio",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/aspect-ratio.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "container-responsive-columns",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/container-columns.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "styled-links",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/styled-links.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "blockquote",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/blockquote.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "code-block",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/code-block.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/code-block"]
     },
     {
       "name": "icon-catalog",
       "type": "component-reference",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/icon-catalog.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "visually-hidden",
       "type": "utility",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/visually-hidden.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "direction",
       "type": "utility",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/direction.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "tags",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/tags.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "loading-overlay",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/loading-overlay.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "status-indicator",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/status-indicator.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "toggles",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/toggles.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "dialog",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/dialog.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
     },
     {
       "name": "alert-dialog",
       "type": "component-configuration",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/alert-dialog.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
     },
     {
       "name": "forms",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/forms.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "combobox",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/combobox.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
     },
     {
       "name": "searchable-select",
       "type": "component-configuration",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/combobox.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
     },
     {
       "name": "input-otp",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/input-otp.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/input-otp"]
     },
     {
       "name": "number-input",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/number-input.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/number-input"]
     },
     {
       "name": "password-input",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/password-input.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
     },
     {
       "name": "search-box",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/search-box.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/search-box"]
     },
     {
       "name": "multi-select",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/multi-select.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/multi-select"]
     },
     {
       "name": "file-upload",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/file-upload.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/file-upload"]
     },
@@ -195,98 +195,98 @@
     {
       "name": "navigation",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/navigation.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tabs"]
     },
     {
       "name": "overlays",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/overlays.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dropdown-menu"]
     },
     {
       "name": "tooltip",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/tooltip.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tooltip"]
     },
     {
       "name": "context-menu",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/context-menu.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/context-menu"]
     },
     {
       "name": "command-palette",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/command-palette.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-palette"]
     },
     {
       "name": "menubar",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/menubar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/menubar"]
     },
     {
       "name": "navigation-menu",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/navigation-menu.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/navigation-menu"]
     },
     {
       "name": "feedback",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/feedback.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/toast"]
     },
     {
       "name": "notification-center",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/notification-center.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/notification-center"]
     },
     {
       "name": "data-display",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/data-display.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "activity-feed",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/activity-feed.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "filter-bar",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/filter-bar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/filter-bar"]
     },
     {
       "name": "command-bar",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/command-bar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-bar"]
     },
     {
       "name": "bulk-action-toolbar",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/bulk-action-toolbar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/bulk-action-toolbar"]
     },
@@ -300,154 +300,154 @@
     {
       "name": "visualization",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/visualization.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "media",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/media.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "image-lightbox",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/image-lightbox.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/image-lightbox"]
     },
     {
       "name": "media-carousel",
       "type": "component-configuration",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/media-carousel.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/media-carousel"]
     },
     {
       "name": "upload-dropzone",
       "type": "component-configuration",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/upload-dropzone.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/upload-dropzone"]
     },
     {
       "name": "batch-progress-monitor",
       "type": "component-configuration",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/batch-progress-monitor.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/batch-progress-monitor"]
     },
     {
       "name": "chat-thread",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/chat-thread.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "prompt-composer",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/prompt-composer.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/prompt-composer"]
     },
     {
       "name": "message-scroller",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/message-scroller.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/message-scroller"]
     },
     {
       "name": "attachment-previews",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/attachment-previews.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/attachment-previews"]
     },
     {
       "name": "generation-queue",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/generation-queue.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/generation-queue"]
     },
     {
       "name": "model-selector",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/model-selector.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/model-selector"]
     },
     {
       "name": "parameter-inspector",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/parameter-inspector.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/parameter-inspector"]
     },
     {
       "name": "before-after-comparison",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/before-after.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/before-after"]
     },
     {
       "name": "layouts",
       "type": "component-group",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/layouts.html"],
       "requires": ["@nyx-ui/core"]
     },
     {
       "name": "sidebar",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/sidebar.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/sidebar"]
     },
     {
       "name": "scroll-area",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/scroll-area.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/scroll-area"]
     },
     {
       "name": "hover-card",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/hover-card.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/hover-card"]
     },
     {
       "name": "tree-view",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/tree-view.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tree-view"]
     },
     {
       "name": "resizable-panels",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/resizable-panels.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/resizable-panels"]
     },
     {
       "name": "carousel",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/carousel.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/carousel"]
     },
     {
       "name": "stepper",
       "type": "component",
-      "status": "preview",
+      "status": "stable",
       "files": ["components/stepper.html"],
       "requires": ["@nyx-ui/core", "@nyx-ui/plugins/stepper"]
     }

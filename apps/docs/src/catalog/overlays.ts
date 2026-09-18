@@ -27,7 +27,7 @@ export const overlayPages = [
     description: "Rich supplementary content opens for pointer intent and keyboard focus, remains interactive across the trigger gap, and dismisses with Escape.",
     searchTerms: "overlay hover card preview rich content focus pointer intent delay escape",
     plugins: ["hover-card"],
-    body: `<section class="docs-prose-section"><h2>Hover intent without hover-only access</h2><p>A short open delay filters accidental passes. On departure, a geometric corridor spanning the trigger and positioned card preserves the close grace period while the pointer crosses the gap. Focus follows the same open and close contract, and the content deliberately does not use tooltip semantics.</p></section>${card("Operator hover card", `<div class="docs-row">${hoverCardMarkup}</div>`, "Registry source", hoverCardMarkup)}`,
+    body: `<section class="docs-prose-section"><h2>Hover intent without hover-only access</h2><p>A short open delay filters accidental passes. On departure, a geometric corridor spanning the trigger and positioned card preserves the close grace period while the pointer crosses the gap. Focus follows the same open and close contract, and the content deliberately does not use tooltip semantics.</p></section>${card("Operator hover card", hoverCardMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.dropdownMenu,
@@ -37,7 +37,7 @@ export const overlayPages = [
     description: "Action menus use the Popover API, explicit menu semantics, roving focus, typeahead, submenus, and focus-safe dismissal.",
     searchTerms: "overlay dropdown menu popover submenu checkbox radio typeahead keyboard",
     plugins: ["dropdown-menu"],
-    body: card("Dropdown menu", `<div class="docs-row">${selectMarkup(overlaysMarkup, ["[data-nyx-dropdown-menu-trigger='nyx-action-menu']", "#nyx-action-menu"])}</div>`, "Registry source"),
+    body: card("Dropdown menu", selectMarkup(overlaysMarkup, ["[data-nyx-dropdown-menu-trigger='nyx-action-menu']", "#nyx-action-menu"]), "Registry source"),
   }),
   page({
     path: paths.components.overlays.contextMenu,
@@ -57,7 +57,7 @@ export const overlayPages = [
     description: "Modal dialogs use the native dialog element with controlled initial focus, dismissal, focus return, and scroll locking.",
     searchTerms: "overlay modal dialog confirmation focus escape backdrop",
     plugins: ["dialog"],
-    body: card("Dialog", `<div class="docs-row">${selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-dialog']", "#nyx-example-dialog"])}</div>`, "Registry source"),
+    body: card("Dialog", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-dialog']", "#nyx-example-dialog"]), "Registry source"),
   }),
   page({
     path: paths.components.overlays.alertDialog,
@@ -77,7 +77,7 @@ export const overlayPages = [
     description: "Drawer is a spatial Dialog composition and deliberately shares the same controller and accessibility contract.",
     searchTerms: "overlay drawer sheet dialog side panel record details",
     plugins: ["dialog"],
-    body: card("Drawer", `<div class="docs-row">${selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-drawer']", "#nyx-example-drawer"])}</div>`, "Registry source"),
+    body: card("Drawer", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-drawer']", "#nyx-example-drawer"]), "Registry source"),
   }),
   page({
     path: paths.components.overlays.commandPalette,
@@ -87,6 +87,6 @@ export const overlayPages = [
     description: "A centred modal palette composes Dialog focus management with filterable, grouped listbox results and active-descendant navigation.",
     searchTerms: "command palette dialog modal search grouped results keyboard shortcut",
     plugins: ["command-palette"],
-    body: card("Command palette", `<div class="docs-row">${commandPaletteMarkup}</div>`, "Registry source"),
+    body: card("Command palette", commandPaletteMarkup, "Registry source"),
   }),
 ];

@@ -1,28 +1,82 @@
-<form class="nyx-panel" aria-labelledby="nyx-profile-title">
-  <header class="nyx-panel-header"><h2 id="nyx-profile-title">Profile settings</h2></header>
-  <div class="nyx-panel-body">
-    <label class="nyx-field" for="nyx-display-name">
-      <span class="nyx-label">Display name</span>
-      <input class="nyx-input" id="nyx-display-name" name="displayName" />
-      <span class="nyx-field-hint">Shown to workspace members.</span>
-    </label>
-    <label class="nyx-field" for="nyx-region">
-      <span class="nyx-label">Region</span>
-      <select class="nyx-select" id="nyx-region" name="region">
-        <option>Tokyo</option>
-        <option>London</option>
-        <option>New York</option>
-      </select>
-    </label>
-    <label class="nyx-choice" for="nyx-notices">
-      <input id="nyx-notices" name="notices" type="checkbox" />
-      Receive operational notices
-    </label>
-    <label class="nyx-switch" for="nyx-automatic-deployment">
-      <input id="nyx-automatic-deployment" name="automaticDeployment" type="checkbox" />
-      <span class="nyx-switch-track"></span>
-      <span>Automatic deployment</span>
-    </label>
-    <button class="nyx-button" data-variant="primary" type="submit">Save changes</button>
-  </div>
-</form>
+<div class="nyx-form-grid" data-nyx-example="text-fields">
+  <label class="nyx-field" for="nyx-project-name">
+    <span class="nyx-label">Project name</span>
+    <input class="nyx-input" id="nyx-project-name" value="night-operations" />
+  </label>
+  <label class="nyx-field" for="nyx-record-search">
+    <span class="nyx-label">Search</span>
+    <span class="nyx-input-group">
+      <input class="nyx-input" id="nyx-record-search" placeholder="Filter records" />
+      <button class="nyx-button nyx-icon-button" type="button" aria-label="Search">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
+      </button>
+    </span>
+  </label>
+  <label class="nyx-field nyx-form-span" for="nyx-project-description">
+    <span class="nyx-label">Description</span>
+    <textarea class="nyx-textarea" id="nyx-project-description">Reusable operational interface components.</textarea>
+    <span class="nyx-field-hint">Maximum 240 characters.</span>
+  </label>
+  <label class="nyx-field" for="nyx-invalid-value">
+    <span class="nyx-label">Invalid value</span>
+    <input class="nyx-input" id="nyx-invalid-value" aria-invalid="true" aria-describedby="nyx-validation-error" value="bad/value" />
+    <span class="nyx-field-error" id="nyx-validation-error">Use letters, numbers, and hyphens.</span>
+  </label>
+  <label class="nyx-field" for="nyx-disabled-value">
+    <span class="nyx-label">Disabled</span>
+    <input class="nyx-input" id="nyx-disabled-value" disabled value="Unavailable" />
+  </label>
+</div>
+
+<div class="nyx-form-grid" data-nyx-example="selection-controls">
+  <label class="nyx-field" for="nyx-region">
+    <span class="nyx-label">Region</span>
+    <select class="nyx-select" id="nyx-region">
+      <option>Tokyo</option>
+      <option>London</option>
+      <option>New York</option>
+    </select>
+  </label>
+  <label class="nyx-field" for="nyx-quantity">
+    <span class="nyx-label">Quantity</span>
+    <input class="nyx-input" id="nyx-quantity" type="number" value="24" min="1" />
+  </label>
+  <label class="nyx-choice" for="nyx-notices">
+    <input id="nyx-notices" type="checkbox" checked />
+    Receive operational notices
+  </label>
+  <fieldset class="nyx-toggle-fieldset">
+    <legend class="nyx-label">Environment</legend>
+    <label class="nyx-choice" for="nyx-env-production"><input id="nyx-env-production" type="radio" name="nyx-env" checked />Production</label>
+    <label class="nyx-choice" for="nyx-env-staging"><input id="nyx-env-staging" type="radio" name="nyx-env" />Staging</label>
+  </fieldset>
+  <label class="nyx-switch" for="nyx-automatic-deployment">
+    <input id="nyx-automatic-deployment" type="checkbox" checked />
+    <span class="nyx-switch-track"></span>
+    <span>Automatic deployment</span>
+  </label>
+  <fieldset class="nyx-segmented-fieldset">
+    <legend class="nyx-label">View mode</legend>
+    <div class="nyx-segmented">
+      <input id="nyx-segment-grid" name="nyx-segment" type="radio" checked />
+      <label for="nyx-segment-grid">Grid</label>
+      <input id="nyx-segment-list" name="nyx-segment" type="radio" />
+      <label for="nyx-segment-list">List</label>
+    </div>
+  </fieldset>
+</div>
+
+<div class="nyx-form-grid" data-nyx-example="range-date-time">
+  <label class="nyx-field nyx-form-span" for="nyx-strength">
+    <span class="nyx-label">Strength &middot; <output data-range-output for="nyx-strength">68</output></span>
+    <input class="nyx-range" id="nyx-strength" data-range-input type="range" min="0" max="100" value="68" />
+  </label>
+  <label class="nyx-field" for="nyx-start-date">
+    <span class="nyx-label">Date</span>
+    <input class="nyx-input" id="nyx-start-date" type="date" value="2026-09-17" />
+  </label>
+  <label class="nyx-field" for="nyx-start-time">
+    <span class="nyx-label">Time</span>
+    <input class="nyx-input" id="nyx-start-time" type="time" value="17:30" />
+  </label>
+</div>

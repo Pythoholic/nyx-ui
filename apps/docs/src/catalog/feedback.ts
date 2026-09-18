@@ -3,7 +3,6 @@ import stepperMarkup from "../../../../registry/components/stepper.html?raw";
 import notificationCenterMarkup from "../../../../registry/components/notification-center.html?raw";
 import loadingOverlayMarkup from "../../../../registry/components/loading-overlay.html?raw";
 import statusIndicatorMarkup from "../../../../registry/components/status-indicator.html?raw";
-import { icon } from "../icons.js";
 import { paths } from "../routes.js";
 import { card, page, selectMarkup } from "./shared.js";
 
@@ -17,7 +16,7 @@ export const feedbackPages = [
     title: "Badges",
     description,
     searchTerms: "badge status active success warning danger failed",
-    body: card("Badges", `<div class="docs-row"><span class="nyx-badge">Active</span><span class="nyx-badge" data-tone="success">Success</span><span class="nyx-badge" data-tone="warning">Warning</span><span class="nyx-badge" data-tone="danger">Failed</span></div>`),
+    body: card("Badges", selectMarkup(feedbackMarkup, ["[data-nyx-example='badges']"]), "Registry source"),
   }),
   page({
     path: paths.components.feedback.alerts,
@@ -26,7 +25,7 @@ export const feedbackPages = [
     title: "Alerts",
     description,
     searchTerms: "alert notice message success danger validation status",
-    body: card("Alerts", `<div class="docs-column">${selectMarkup(feedbackMarkup, [".nyx-alert"])}<div class="nyx-alert" data-tone="danger">${icon("alert")}<div><strong class="nyx-alert-title">Validation failed</strong>Correct two fields before continuing.</div></div></div>`, "Registry source"),
+    body: card("Alerts", selectMarkup(feedbackMarkup, ["[data-nyx-example='alerts']"]), "Registry source"),
   }),
   page({
     path: paths.components.feedback.progress,
@@ -35,7 +34,7 @@ export const feedbackPages = [
     title: "Progress",
     description: "Progress communicates determinate and indeterminate work with a native progressbar contract.",
     searchTerms: "progress bar loading processing determinate indeterminate",
-    body: card("Progress", `<div class="docs-column">${selectMarkup(feedbackMarkup, [".nyx-progress"])}<div class="nyx-progress" data-indeterminate="true" aria-label="Processing"><div class="nyx-progress-bar"></div></div></div>`, "Registry source"),
+    body: card("Progress", selectMarkup(feedbackMarkup, ["[data-nyx-example='progress']"]), "Registry source"),
   }),
   page({
     path: paths.components.feedback.stepper,
@@ -83,7 +82,7 @@ export const feedbackPages = [
     description: "Transient notifications enter a live region, announce useful status, and clean up timers and controls when destroyed.",
     searchTerms: "toast notification live region dismiss transient status",
     plugins: ["toast"],
-    body: `${card("Toast", `<div class="docs-column"><p style="margin:0;color:var(--nyx-muted)">Notifications enter the live region and dismiss automatically.</p><button class="nyx-button" data-toast-demo type="button">Send notification</button></div>`, "Live region")} ${selectMarkup(feedbackMarkup, ["[data-nyx-toast-region]"])}`,
+    body: card("Toast", selectMarkup(feedbackMarkup, ["[data-nyx-example='toast']"]), "Registry source"),
   }),
   page({
     path: paths.components.feedback.emptyState,
@@ -92,7 +91,7 @@ export const feedbackPages = [
     title: "Empty State",
     description: "Empty states explain what is absent and provide a clear next action where one exists.",
     searchTerms: "empty state no records action create",
-    body: card("Empty state", selectMarkup(feedbackMarkup, [".nyx-empty"]), "Registry source"),
+    body: card("Empty state", selectMarkup(feedbackMarkup, ["[data-nyx-example='empty-state']"]), "Registry source"),
   }),
   page({
     path: paths.components.feedback.errorState,
@@ -101,6 +100,6 @@ export const feedbackPages = [
     title: "Error State",
     description: "Recoverable error states pair a plain-language explanation with the safest next action.",
     searchTerms: "error state failed unavailable retry recoverable",
-    body: card("Error state", `<div class="nyx-empty" style="border-color:var(--nyx-danger-line)">${icon("alert")}<div><strong style="color:var(--nyx-danger)">Unable to load records</strong><p style="margin:.5rem 0 0">The service did not respond. Your changes were not lost.</p></div><button class="nyx-button">Try again</button></div>`, "Recoverable"),
+    body: card("Error state", selectMarkup(feedbackMarkup, ["[data-nyx-example='error-state']"]), "Registry source"),
   }),
 ];

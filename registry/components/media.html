@@ -1,4 +1,4 @@
-<article class="nyx-panel nyx-media-card">
+<article class="nyx-panel nyx-media-card" data-nyx-example="media-card">
   <div class="nyx-media-preview" role="img" aria-label="Generated landscape preview"></div>
   <div class="nyx-media-body">
     <div><strong>Landscape study</strong><span class="nyx-field-hint">2048 x 2048</span></div>
@@ -6,8 +6,31 @@
   </div>
 </article>
 
-<fieldset class="nyx-rating">
+<fieldset class="nyx-rating" data-nyx-example="rating">
   <legend class="sr-only">Rate this result</legend>
   <input class="sr-only" id="nyx-rating-5" name="rating" type="radio" value="5" />
   <label for="nyx-rating-5" aria-label="5 stars"><svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z" /></svg></label>
 </fieldset>
+
+<div class="nyx-sensitive" data-nyx-example="protected-media">
+  <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+  <div>
+    <strong>Protected preview</strong>
+    <p class="nyx-panel-description">Confirm access before revealing this asset.</p>
+  </div>
+  <button class="nyx-button" type="button">Reveal preview</button>
+</div>
+
+<section class="nyx-batch-plan" data-nyx-example="batch-plan" aria-label="Batch plans">
+  <article class="nyx-panel nyx-batch-tile" data-selected="true">
+    <header class="nyx-batch-header"><strong>Balanced plan</strong><span class="nyx-badge">Selected</span></header>
+    <p class="nyx-panel-description">12 outputs &middot; two variations &middot; high fidelity</p>
+    <div class="nyx-progress" aria-label="Balanced plan progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72" role="progressbar">
+      <div class="nyx-progress-bar" style="--nyx-progress: 72%"></div>
+    </div>
+  </article>
+  <article class="nyx-panel nyx-batch-tile">
+    <strong>Rapid plan</strong>
+    <p class="nyx-panel-description">6 outputs &middot; one variation &middot; preview quality</p>
+  </article>
+</section>

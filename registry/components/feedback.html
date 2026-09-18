@@ -1,16 +1,49 @@
-<div class="nyx-alert" data-tone="success" role="status">
-  <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
-  <div><strong class="nyx-alert-title">Deployment complete</strong>The new version is active.</div>
+<div class="nyx-cluster" data-nyx-example="badges" aria-label="Status badges">
+  <span class="nyx-badge">Active</span>
+  <span class="nyx-badge" data-tone="success">Success</span>
+  <span class="nyx-badge" data-tone="warning">Warning</span>
+  <span class="nyx-badge" data-tone="danger">Failed</span>
 </div>
 
-<div class="nyx-progress" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68" role="progressbar">
-  <span class="nyx-progress-bar" style="--nyx-progress: 68%"></span>
+<div class="nyx-stack" data-nyx-example="alerts">
+  <div class="nyx-alert" data-tone="success" role="status">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+    <div><strong class="nyx-alert-title">Deployment complete</strong>The new version is active.</div>
+  </div>
+  <div class="nyx-alert" data-tone="danger">
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+    <div><strong class="nyx-alert-title">Validation failed</strong>Correct two fields before continuing.</div>
+  </div>
 </div>
 
-<div class="nyx-empty">
+<div class="nyx-stack" data-nyx-example="progress">
+  <div class="nyx-progress" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68" role="progressbar">
+    <span class="nyx-progress-bar" style="--nyx-progress: 68%"></span>
+  </div>
+  <div class="nyx-progress" data-indeterminate="true" aria-label="Processing" role="progressbar">
+    <span class="nyx-progress-bar"></span>
+  </div>
+</div>
+
+<div data-nyx-example="toast">
+  <div class="nyx-stack">
+    <p class="nyx-panel-description">Notifications enter the live region and dismiss automatically.</p>
+    <button class="nyx-button" data-toast-demo type="button">Send notification</button>
+  </div>
+  <div class="nyx-toast-region" data-nyx-toast-region></div>
+</div>
+
+<div class="nyx-empty" data-nyx-example="empty-state">
   <strong>No records yet</strong>
   <span>Create your first record to start the workspace.</span>
   <button class="nyx-button" data-variant="primary" type="button">Create first record</button>
 </div>
 
-<div class="nyx-toast-region" data-nyx-toast-region></div>
+<div class="nyx-empty nyx-empty-error" data-nyx-example="error-state">
+  <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+  <div>
+    <strong>Unable to load records</strong>
+    <p>The service did not respond. Your changes were not lost.</p>
+  </div>
+  <button class="nyx-button" type="button">Try again</button>
+</div>

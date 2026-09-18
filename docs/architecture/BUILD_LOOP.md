@@ -85,8 +85,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Release blockers
 
-- [ ] Promote non-preview components from `preview` to `stable` in registry.json per ruling 1
-- [ ] Promote catalog-only example variants into canonical registry files
+- [x] Promote non-preview components from `preview` to `stable` in registry.json per ruling 1 (built, visually unverified)
+- [x] Promote catalog-only example variants into canonical registry files (built, visually unverified)
 - [ ] CI running test, typecheck and build on push
 - [ ] Changesets or equivalent versioning
 - [ ] Packages publishable to npm
