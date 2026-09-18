@@ -5,3 +5,6 @@ coverage/
 *.tsbuildinfo
 .DS_Store
 
+
+# Autonomous build loop logs
+.ralph-logs/
