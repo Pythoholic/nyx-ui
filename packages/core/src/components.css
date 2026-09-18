@@ -457,6 +457,32 @@
   .nyx-batch-tile { display: grid; gap: var(--nyx-space-3); padding: var(--nyx-space-4); }
   .nyx-batch-tile[data-selected="true"] { border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); }
 
+  .nyx-chat-thread { overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-chat-header { display: flex; align-items: end; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-chat-header h2, .nyx-prompt-composer-header h2 { margin: var(--nyx-space-1) 0 0; color: var(--nyx-ink); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
+  .nyx-chat-messages { display: grid; gap: var(--nyx-space-5); margin: 0; padding: var(--nyx-space-5); list-style: none; }
+  .nyx-chat-message { display: grid; max-inline-size: min(42rem, 88%); gap: var(--nyx-space-2); }
+  .nyx-chat-message[data-author="self"] { justify-self: end; justify-items: end; }
+  .nyx-chat-message-header { display: flex; align-items: center; gap: var(--nyx-space-2); color: var(--nyx-label); font-size: var(--nyx-type-meta); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
+  .nyx-chat-message-header strong { color: var(--nyx-muted); font-size: var(--nyx-type-label); }
+  .nyx-chat-message-header time { color: var(--nyx-label); font-variant-numeric: tabular-nums; }
+  .nyx-chat-bubble { padding: var(--nyx-space-3) var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); color: var(--nyx-muted); font-size: var(--nyx-type-body); line-height: 1.65; }
+  .nyx-chat-bubble > :first-child { margin-block-start: 0; }
+  .nyx-chat-bubble > :last-child { margin-block-end: 0; }
+  .nyx-chat-message[data-author="self"] .nyx-chat-bubble { border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); color: var(--nyx-ink); }
+  .nyx-chat-message[data-state="pending"] .nyx-chat-bubble { border-style: dashed; color: var(--nyx-label); }
+  .nyx-chat-thinking { font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-label); text-transform: uppercase; }
+
+  .nyx-prompt-composer { overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-prompt-composer-header { display: flex; align-items: end; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-4); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-prompt-composer-hint { display: inline-flex; align-items: center; gap: var(--nyx-space-1); color: var(--nyx-label); font-size: var(--nyx-type-meta); white-space: nowrap; }
+  .nyx-prompt-composer-hint .nyx-kbd { min-inline-size: auto; min-block-size: 1.375rem; padding: 0.125rem 0.3125rem; font-size: var(--nyx-type-meta); }
+  .nyx-prompt-composer-input { min-block-size: 8rem; max-block-size: 24rem; border: 0; border-radius: 0; background: var(--nyx-panel); resize: vertical; }
+  .nyx-prompt-composer-input:focus { position: relative; z-index: 1; box-shadow: inset 0 0 0 var(--nyx-border) var(--nyx-accent); }
+  .nyx-prompt-composer-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-4); padding: var(--nyx-space-3) var(--nyx-space-4); border-block-start: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-prompt-composer-count { color: var(--nyx-label); font-size: var(--nyx-type-meta); font-variant-numeric: tabular-nums; }
+  .nyx-prompt-composer[data-state="invalid"] { border-color: var(--nyx-danger-line); }
+
   .nyx-app-shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); min-height: 20rem; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; transition: grid-template-columns var(--nyx-duration-normal) var(--nyx-ease-standard); }
   .nyx-app-shell[data-nyx-sidebar-persist]:not([data-nyx-sidebar-ready]) { visibility: hidden; }
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] { grid-template-columns: 4.5rem minmax(0, 1fr); }
@@ -504,8 +530,10 @@
   .nyx-command-bar-separator { display: none; }
   .nyx-bulk-header, .nyx-bulk-toolbar { align-items: flex-start; flex-direction: column; }
   .nyx-bulk-actions { justify-content: flex-start; }
-  .nyx-notification-header, .nyx-activity-header { align-items: flex-start; flex-direction: column; }
+  .nyx-notification-header, .nyx-activity-header, .nyx-chat-header, .nyx-prompt-composer-header { align-items: flex-start; flex-direction: column; }
   .nyx-notification-title-row { align-items: flex-start; flex-direction: column; gap: var(--nyx-space-1); }
+  .nyx-chat-message { max-inline-size: 100%; }
+  .nyx-prompt-composer-hint { white-space: normal; }
   .nyx-app-shell, .nyx-app-shell[data-nyx-sidebar-collapsed="true"], .nyx-auth-layout, .nyx-split { grid-template-columns: 1fr; }
   .nyx-app-shell[data-nyx-sidebar] { overflow: visible; }
   .nyx-app-shell[data-nyx-sidebar] > .nyx-sidebar-dialog { position: fixed; display: none; inline-size: min(30rem, 92vw); block-size: 100vh; max-block-size: 100vh; margin: 0 auto 0 0; overflow: auto; border-inline-end: var(--nyx-border) solid var(--nyx-accent-line); }

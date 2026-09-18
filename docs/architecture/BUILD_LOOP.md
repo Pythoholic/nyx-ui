@@ -55,8 +55,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Priority 3 - media and AI-product patterns
 
-- [ ] Chat bubbles and message threads
-- [ ] Prompt composer
+- [x] Chat bubbles and message threads (built, visually unverified)
+- [x] Prompt composer (built, visually unverified)
 - [ ] Message scroller
 - [ ] Attachment previews
 - [ ] Generation queue

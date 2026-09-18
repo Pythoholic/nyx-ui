@@ -23,6 +23,7 @@ export type PluginName =
   | "filter-bar"
   | "command-bar"
   | "bulk-action-toolbar"
+  | "prompt-composer"
   | "sidebar"
   | "date-picker"
   | "data-table"
@@ -72,6 +73,40 @@ interface PluginApi {
 }
 
 const pluginApis: Record<PluginName, PluginApi> = {
+  "prompt-composer": {
+    className: "NyxPromptComposer",
+    initName: "initPromptComposers",
+    selector: "[data-nyx-prompt-composer]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-prompt-composer", value: "presence on form", description: "Marks the native form and component ownership boundary." },
+        { name: "data-nyx-prompt-composer-input", value: "presence", description: "Marks the required textarea that owns the prompt value." },
+        { name: "data-nyx-prompt-composer-submit", value: "presence", description: "Marks the native submit button synchronized with validity." },
+        { name: "data-nyx-prompt-composer-count", value: "presence", description: "Marks the optional output showing current and maximum character counts." },
+        { name: "data-state", value: "empty | ready | invalid | disabled", description: "Reflects the composer's synchronized interaction state." },
+        { name: "data-invalid / aria-invalid", value: "presence / true | false", description: "Reflects invalid state after a submission attempt." },
+      ],
+      methods: [
+        { name: "value", value: "string", description: "Gets or requests a change to the textarea value." },
+        { name: "setValue(value, reason?)", value: "boolean", description: "Requests a value change and reports whether it was accepted." },
+        { name: "clear()", value: "boolean", description: "Requests an empty value through the same cancelable change boundary." },
+        { name: "submit(reason?)", value: "boolean", description: "Validates and requests prompt submission without performing transport." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance." },
+      ],
+      events: [
+        { name: "nyx:prompt-composer:before-change", value: "cancelable", description: "Fires before an API, clear, or direct-input value change is accepted." },
+        { name: "nyx:prompt-composer:change", value: "not cancelable", description: "Fires after value, count, validity, state, and controls synchronize." },
+        { name: "nyx:prompt-composer:before-submit", value: "cancelable", description: "Fires with a valid prompt before the application submission boundary." },
+        { name: "nyx:prompt-composer:submit", value: "not cancelable", description: "Fires after a valid submission request is accepted." },
+      ],
+      keyboard: [
+        { name: "Enter", description: "Inserts a new line through native textarea behavior." },
+        { name: "Ctrl+Enter / Command+Enter", description: "Requests submission when the prompt is valid." },
+        { name: "Tab / Shift+Tab", description: "Moves between the textarea and submit button through native form navigation." },
+      ],
+      accessibility: "The composer is a native form with a labelled textarea, native validity, a descriptive character-count output, and a submit button whose disabled and aria-disabled states stay synchronized. The documented shortcut supplements rather than replaces the submit button, and the component does not announce transport state it does not own.",
+    },
+  },
   "number-input": {
     className: "NyxNumberInput",
     initName: "initNumberInputs",

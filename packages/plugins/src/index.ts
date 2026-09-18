@@ -253,6 +253,16 @@ export {
 } from "./bulk-action-toolbar.js";
 
 export {
+  NyxPromptComposer,
+  initPromptComposers,
+  type NyxPromptComposerChangeEventDetail,
+  type NyxPromptComposerChangeReason,
+  type NyxPromptComposerEventMap,
+  type NyxPromptComposerSubmitEventDetail,
+  type NyxPromptComposerSubmitReason,
+} from "./prompt-composer.js";
+
+export {
   NyxTabs,
   initTabs,
   type NyxTabsEventDetail,

@@ -89,6 +89,10 @@ export const paths = {
       protectedMedia: "/components/media/protected-media",
       batchPlan: "/components/media/batch-plan",
     },
+    ai: {
+      chatThread: "/components/ai/chat-thread",
+      promptComposer: "/components/ai/prompt-composer",
+    },
     layouts: {
       applicationShell: "/components/layouts/application-shell",
       sidebar: "/components/layouts/sidebar",

@@ -117,6 +117,10 @@
       "types": "./dist/bulk-action-toolbar.d.ts",
       "default": "./dist/bulk-action-toolbar.js"
     },
+    "./prompt-composer": {
+      "types": "./dist/prompt-composer.d.ts",
+      "default": "./dist/prompt-composer.js"
+    },
     "./tabs": {
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"

@@ -1,0 +1,15 @@
+<form class="nyx-prompt-composer" data-nyx-prompt-composer aria-labelledby="nyx-prompt-composer-title">
+  <header class="nyx-prompt-composer-header">
+    <div>
+      <span class="nyx-eyebrow">// New message</span>
+      <h2 id="nyx-prompt-composer-title">Prompt composer</h2>
+    </div>
+    <span class="nyx-prompt-composer-hint"><kbd class="nyx-kbd">Ctrl</kbd> + <kbd class="nyx-kbd">Enter</kbd> to send</span>
+  </header>
+  <label class="sr-only" for="nyx-prompt-composer-input">Message</label>
+  <textarea class="nyx-textarea nyx-prompt-composer-input" id="nyx-prompt-composer-input" name="prompt" rows="4" maxlength="2000" required aria-describedby="nyx-prompt-composer-count" data-nyx-prompt-composer-input placeholder="Describe the next task..."></textarea>
+  <footer class="nyx-prompt-composer-footer">
+    <output class="nyx-prompt-composer-count" id="nyx-prompt-composer-count" for="nyx-prompt-composer-input" data-nyx-prompt-composer-count>0 / 2000</output>
+    <button class="nyx-button" data-variant="primary" data-nyx-prompt-composer-submit type="submit">Send prompt</button>
+  </footer>
+</form>

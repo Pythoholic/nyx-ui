@@ -228,6 +228,20 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "chat-thread",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/chat-thread.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "prompt-composer",
+      "type": "component",
+      "status": "preview",
+      "files": ["components/prompt-composer.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/prompt-composer"]
+    },
+    {
       "name": "layouts",
       "type": "component-group",
       "status": "preview",

@@ -12,6 +12,7 @@ import { initInputOtps } from "@nyx-ui/plugins/input-otp";
 import { initMultiSelects } from "@nyx-ui/plugins/multi-select";
 import { initNumberInputs } from "@nyx-ui/plugins/number-input";
 import { initPasswordInputs } from "@nyx-ui/plugins/password-input";
+import { initPromptComposers } from "@nyx-ui/plugins/prompt-composer";
 import { initSearchBoxes } from "@nyx-ui/plugins/search-box";
 import { initMenubars } from "@nyx-ui/plugins/menubar";
 import { initNavigationMenus } from "@nyx-ui/plugins/navigation-menu";
@@ -197,6 +198,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "multi-select": addDestroyables(destroyables, initMultiSelects(root)); break;
     case "number-input": addDestroyables(destroyables, initNumberInputs(root)); break;
     case "password-input": addDestroyables(destroyables, initPasswordInputs(root)); break;
+    case "prompt-composer": addDestroyables(destroyables, initPromptComposers(root)); break;
     case "search-box": addDestroyables(destroyables, initSearchBoxes(root)); break;
     case "menubar": addDestroyables(destroyables, initMenubars(root)); break;
     case "navigation-menu": addDestroyables(destroyables, initNavigationMenus(root)); break;
