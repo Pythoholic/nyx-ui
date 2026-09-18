@@ -199,4 +199,13 @@ while :; do
   fi
 
   echo "Verified: tests, typecheck and build all pass."
+
+  # A one-line status a reviewer can read without re-running anything.
+  {
+    echo "iteration: $iteration"
+    echo "finished: $(date +'%Y-%m-%d %H:%M:%S')"
+    echo "commit: $(git log --oneline -1)"
+    echo "remaining: $(grep -c '^- \[ \]' "$BACKLOG_FILE")"
+    echo "verified: tests, typecheck and build passed"
+  } > "$LOG_DIR/status.txt"
 done
