@@ -37,10 +37,10 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Priority 2 - complex workspace components
 
-- [x] Tree View
-- [x] Resizable Panels / Layout Splitter
-- [x] Scroll Area and styled scrollbar
-- [x] Hover Card
+- [x] Tree View (built, visually unverified)
+- [x] Resizable Panels / Layout Splitter (built, visually unverified)
+- [x] Scroll Area and styled scrollbar (built, visually unverified)
+- [x] Hover Card (built, visually unverified)
 - [ ] Carousel
 - [ ] Stepper with state management
 - [ ] Advanced number input
