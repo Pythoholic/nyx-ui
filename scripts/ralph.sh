@@ -17,18 +17,82 @@ set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT" || exit 1
 
-MAX_ITERATIONS="${1:-0}"
-MODE="${2:-build}"
+# Accept the mode in either argument position, so `ralph.sh plan` works as
+# readily as `ralph.sh 1 plan`.
+MAX_ITERATIONS=0
+MODE="build"
+for arg in "$@"; do
+  case "$arg" in
+    plan|build) MODE="$arg" ;;
+    ''|*[!0-9]*)
+      echo "Unrecognized argument: $arg" >&2
+      echo "Usage: ralph.sh [max-iterations] [plan|build]" >&2
+      exit 2
+      ;;
+    *) MAX_ITERATIONS="$arg" ;;
+  esac
+done
+
 PROMPT_FILE="docs/architecture/RALPH_PROMPT.md"
 BACKLOG_FILE="docs/architecture/BUILD_LOOP.md"
 LOG_DIR=".ralph-logs"
 
 mkdir -p "$LOG_DIR"
 
-if [[ ! -f "$PROMPT_FILE" ]]; then
-  echo "Missing $PROMPT_FILE" >&2
+for required in "$PROMPT_FILE" "$BACKLOG_FILE"; do
+  if [[ ! -f "$required" ]]; then
+    echo "Missing $required" >&2
+    exit 1
+  fi
+done
+
+for tool in codex git pnpm; do
+  if ! command -v "$tool" > /dev/null 2>&1; then
+    echo "Required tool not on PATH: $tool" >&2
+    exit 1
+  fi
+done
+
+# An agent already working this tree would race this loop, and both would
+# commit. Refuse to start rather than interleave two agents.
+# pgrep cannot read native Windows command lines, so prefer tasklist there.
+count_running_agents() {
+  if command -v tasklist > /dev/null 2>&1; then
+    tasklist 2>/dev/null | grep -ic "codex.exe"
+  else
+    pgrep -fc "codex exec" 2>/dev/null || echo 0
+  fi
+}
+
+if [[ "$(count_running_agents)" -gt 0 ]]; then
+  echo "A Codex agent is already running ($(count_running_agents) process(es))." >&2
+  echo "Wait for it to finish, or stop it, before starting the loop." >&2
   exit 1
 fi
+
+# Uncommitted work would be swept into the agent's first commit and
+# attributed to work it did not do.
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "The working tree is dirty. Commit or stash before starting the loop." >&2
+  git status --short >&2
+  exit 1
+fi
+
+agent_pid=""
+
+# Without this, Ctrl+C kills the loop but leaves the agent running: mid-edit,
+# unsupervised and still spending tokens.
+cleanup() {
+  echo ""
+  echo "Interrupted. Stopping the agent."
+  if [[ -n "$agent_pid" ]] && kill -0 "$agent_pid" 2> /dev/null; then
+    kill "$agent_pid" 2> /dev/null
+    sleep 2
+    kill -9 "$agent_pid" 2> /dev/null
+  fi
+  exit 130
+}
+trap cleanup INT TERM
 
 iteration=0
 previous_was_noop=0
@@ -59,15 +123,27 @@ while :; do
   if [[ "$MODE" == "plan" ]]; then
     printf 'MODE: PLAN ONLY. Report the next phase you would implement and stop. Change no files.\n\n%s\n' \
       "$(cat "$PROMPT_FILE")" \
-      | codex exec --dangerously-bypass-approvals-and-sandbox -c model_reasoning_effort=high - \
-      > "$log_file" 2>&1
+      > "$LOG_DIR/plan-input-$stamp.txt"
+    codex exec --dangerously-bypass-approvals-and-sandbox -c model_reasoning_effort=high - \
+      < "$LOG_DIR/plan-input-$stamp.txt" > "$log_file" 2>&1 &
+    agent_pid=$!
+    wait "$agent_pid"
+    agent_pid=""
     echo "Plan written to $log_file"
+    if [[ -n "$(git status --porcelain)" ]]; then
+      echo "WARNING: plan mode modified the working tree. Review before continuing." >&2
+      git status --short >&2
+    fi
     exit 0
   fi
 
+  # Backgrounded so the interrupt trap has a PID to kill.
   codex exec --dangerously-bypass-approvals-and-sandbox -c model_reasoning_effort=high - \
-    < "$PROMPT_FILE" > "$log_file" 2>&1
+    < "$PROMPT_FILE" > "$log_file" 2>&1 &
+  agent_pid=$!
+  wait "$agent_pid"
   exit_code=$?
+  agent_pid=""
 
   after_head="$(git rev-parse HEAD)"
 
@@ -101,6 +177,15 @@ while :; do
 
   if ! pnpm build >> "$verify_log" 2>&1; then
     echo "BUILD FAILING after this iteration. Stopping. See $verify_log" >&2
+    exit 1
+  fi
+
+  # Leftover changes would be silently absorbed into the next iteration's
+  # commit, crediting them to unrelated work.
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "Uncommitted changes remain after this iteration:" >&2
+    git status --short >&2
+    echo "Stopping so this can be resolved rather than folded into the next commit." >&2
     exit 1
   fi
 
