@@ -8,6 +8,66 @@ function example(page: Page, name: string): Locator {
 
 test.use({ viewport: { width: 1440, height: 1000 } });
 
+test("documentation content shares a responsive measure", async ({ page }) => {
+  const measure = async (width: number) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/guides/installation");
+    return page.locator(".docs-section").evaluate((section) => {
+      const box = (selector: string) => {
+        const element = document.querySelector<HTMLElement>(selector);
+        if (!element) throw new Error(`Documentation measure target did not render: ${selector}`);
+        return element.getBoundingClientRect();
+      };
+      const sectionBox = section.getBoundingClientRect();
+      const introBox = box(".docs-intro");
+      const proseBox = box(".docs-prose-section > p");
+      const frameBox = box(".docs-prose-section > .docs-code");
+      const headerBox = box(".docs-page-header");
+      return {
+        frameWidth: frameBox.width,
+        headerWidth: headerBox.width,
+        introWidth: introBox.width,
+        leftEdges: [sectionBox.x, headerBox.x, introBox.x, proseBox.x, frameBox.x],
+        proseWidth: proseBox.width,
+        sectionWidth: sectionBox.width,
+      };
+    });
+  };
+
+  const measurements = [];
+  for (const width of [390, 1280, 1920, 2560]) measurements.push(await measure(width));
+  const [mobile, medium, wide, ultrawide] = measurements;
+
+  for (const metrics of [mobile, medium, wide, ultrawide]) {
+    expect(Math.max(...metrics.leftEdges) - Math.min(...metrics.leftEdges), "prose and frames share a left edge").toBeLessThanOrEqual(1);
+    expect(metrics.headerWidth, "the header rule uses the content measure").toBeCloseTo(metrics.sectionWidth, 0);
+    expect(metrics.frameWidth, "code frames use the content measure").toBeCloseTo(metrics.sectionWidth, 0);
+  }
+  expect(medium.sectionWidth, "the content column grows beyond mobile").toBeGreaterThan(mobile.sectionWidth);
+  expect(wide.sectionWidth, "the content column responds between desktop widths").toBeGreaterThan(medium.sectionWidth);
+  expect(ultrawide.sectionWidth, "the content column has one deliberate wide-screen cap").toBeCloseTo(wide.sectionWidth, 0);
+  expect(wide.proseWidth, "long-form copy grows with the content column").toBeGreaterThan(medium.proseWidth);
+  expect(wide.proseWidth, "long-form copy retains a readable line length").toBeLessThan(wide.frameWidth);
+  expect(mobile.introWidth, "narrow copy fills the available content column").toBeCloseTo(mobile.sectionWidth, 0);
+
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  for (const [path, frameSelector] of [
+    ["/components/actions/button", ".docs-grid"],
+    ["/components/data-display/advanced-data-table", ".docs-table-wrap"],
+  ] as const) {
+    await page.goto(path);
+    const edges = await page.locator(".docs-section").evaluate((section, selector) => {
+      const frame = document.querySelector<HTMLElement>(selector);
+      if (!frame) throw new Error(`Documentation frame did not render: ${selector}`);
+      const sectionBox = section.getBoundingClientRect();
+      const frameBox = frame.getBoundingClientRect();
+      return { frameLeft: frameBox.x, frameRight: frameBox.right, sectionLeft: sectionBox.x, sectionRight: sectionBox.right };
+    }, frameSelector);
+    expect(Math.abs(edges.frameLeft - edges.sectionLeft), `${path} frame left edge`).toBeLessThanOrEqual(1);
+    expect(Math.abs(edges.frameRight - edges.sectionRight), `${path} frame right edge`).toBeLessThanOrEqual(1);
+  }
+});
+
 test("buttons keep one declared height when their contents differ", async ({ page }) => {
   await page.goto("/components/actions/command-bar");
   const buttons = example(page, "Document commands").locator(".nyx-command-bar-group").first().getByRole("button");
