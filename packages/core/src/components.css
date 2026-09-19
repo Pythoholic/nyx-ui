@@ -761,12 +761,17 @@
   .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-panel:last-child { flex: 1 1 0; }
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-panel:first-child { flex: 0 0 var(--nyx-resizable-first, 50%); }
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-panel:last-child { flex: 1 1 0; }
-  .nyx-resizable-handle { position: relative; z-index: 1; flex: 0 0 0.75rem; outline: 0; background: var(--nyx-panel-raised); touch-action: none; }
+  .nyx-resizable-handle { position: relative; z-index: 1; flex: 0 0 0.75rem; outline: 0; background: var(--nyx-panel-raised); touch-action: none; transition: background-color var(--nyx-duration-fast), box-shadow var(--nyx-duration-fast); }
+  .nyx-resizable-handle::before { position: absolute; z-index: 1; inset: 50% auto auto 50%; border-radius: var(--nyx-radius-pill); background-color: var(--nyx-line-strong); content: ""; transform: translate(-50%, -50%); transition: background-color var(--nyx-duration-fast), scale var(--nyx-duration-fast) var(--nyx-ease-standard); }
   .nyx-resizable-handle::after { position: absolute; content: ""; background: var(--nyx-line-strong); transition: background-color var(--nyx-duration-fast); }
   .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-handle { cursor: col-resize; }
+  .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-handle::before { inline-size: 0.25rem; block-size: 2rem; background: radial-gradient(circle, currentColor 0 0.125rem, transparent 0.15rem) center / 0.25rem 0.5rem; color: var(--nyx-line-strong); }
   .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-handle::after { inset-block: 0; inset-inline: calc(50% - var(--nyx-border-hairline)); inline-size: var(--nyx-border); }
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-handle { cursor: row-resize; }
+  .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-handle::before { inline-size: 2rem; block-size: 0.25rem; background: radial-gradient(circle, currentColor 0 0.125rem, transparent 0.15rem) center / 0.5rem 0.25rem; color: var(--nyx-line-strong); }
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-handle::after { inset-inline: 0; inset-block: calc(50% - var(--nyx-border-hairline)); block-size: var(--nyx-border); }
+  .nyx-resizable-handle:is(:hover, :focus-visible), .nyx-resizable[data-nyx-resizing] > .nyx-resizable-handle { background: var(--nyx-accent-soft); box-shadow: inset 0 0 0 var(--nyx-border-hairline) var(--nyx-accent-line); }
+  .nyx-resizable-handle:is(:hover, :focus-visible)::before, .nyx-resizable[data-nyx-resizing] > .nyx-resizable-handle::before { color: var(--nyx-accent); scale: 1.15; }
   .nyx-resizable-handle:is(:hover, :focus-visible)::after, .nyx-resizable[data-nyx-resizing] > .nyx-resizable-handle::after { background: var(--nyx-accent); }
   .nyx-resizable-panel[data-state="collapsed"] { overflow: hidden; padding-inline: 0; }
   html.nyx-resizing, html.nyx-resizing * { user-select: none !important; }

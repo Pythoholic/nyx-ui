@@ -303,3 +303,27 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await expect(shell).toHaveAttribute("data-state", "collapsed");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
 });
+
+test("resizable separators expose a visible responsive grip", async ({ page }) => {
+  await page.goto("/components/layouts/resizable-panels");
+  const demo = example(page, "Nested deployment workspace");
+  const handle = demo.getByRole("separator", { name: "Resize release editor" });
+
+  await expect(handle).toHaveCSS("cursor", "col-resize");
+  const idle = await handle.evaluate((element) => {
+    const grip = getComputedStyle(element, "::before");
+    const style = getComputedStyle(element);
+    return { background: grip.backgroundImage, blockSize: grip.blockSize, transition: style.transitionProperty };
+  });
+  expect(idle.background).toContain("radial-gradient");
+  expect(parseFloat(idle.blockSize)).toBeGreaterThanOrEqual(32);
+  expect(idle.transition).toContain("background-color");
+
+  await handle.focus();
+  const focused = await handle.evaluate((element) => ({
+    background: getComputedStyle(element).backgroundColor,
+    gripColor: getComputedStyle(element, "::before").color,
+  }));
+  expect(focused.background).not.toBe("rgba(0, 0, 0, 0)");
+  expect(focused.gripColor).not.toBe("rgb(52, 65, 74)");
+});
