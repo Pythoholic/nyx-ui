@@ -65,7 +65,7 @@ test("dropdown positioning follows its trigger relationship", async ({ page }) =
   await page.goto("/components/overlays/dropdown-menu");
   const demo = example(page, "Dropdown menu");
   const trigger = demo.getByRole("button", { name: /Open menu/ });
-  const panel = demo.getByRole("menu", { name: /Open menu/ });
+  const panel = demo.locator("#nyx-action-menu");
 
   await trigger.click();
   await expectOverlayWithinViewport(page, panel);
@@ -78,6 +78,23 @@ test("dropdown positioning follows its trigger relationship", async ({ page }) =
   expect(gap, "dropdown opens just below its trigger").toBeGreaterThan(0);
   expect(gap, "dropdown gap stays small").toBeLessThanOrEqual(12);
   expect(Math.abs(panelBox.x - triggerBox.x), "dropdown and trigger left edges align").toBeLessThanOrEqual(2);
+});
+
+test("menu content has an intrinsic width cap independent of available space", async ({ page }) => {
+  await page.goto("/components/overlays/dropdown-menu");
+  const demo = example(page, "Dropdown menu");
+  const trigger = demo.getByRole("button", { name: /Open menu/ });
+  const panel = demo.locator("#nyx-action-menu");
+
+  await panel.locator(".nyx-menu-item").first().evaluate((item) => {
+    item.textContent = "A deliberately unbroken menu label that would otherwise make the shared overlay consume all available viewport width";
+  });
+  await trigger.click();
+  await expect(panel).toBeVisible();
+  const box = await panel.boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+  expect(box.width, "shared menu overlays stay within the 24rem content cap").toBeLessThanOrEqual(384 + 1);
 });
 
 test("dropdown flips above a trigger near the viewport edge", async ({ page }) => {

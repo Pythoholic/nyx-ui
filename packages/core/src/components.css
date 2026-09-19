@@ -301,7 +301,7 @@
   .nyx-scroll-area[data-overflow-y="true"][data-at-block-start="false"]::before, .nyx-scroll-area[data-overflow-y="true"][data-at-block-end="false"]::after { opacity: 1; }
   [data-nyx-scroll-area-viewport] { max-block-size: var(--nyx-scroll-area-size, 18rem); overflow: auto; }
   [data-nyx-scroll-area-viewport]:focus-visible { outline: var(--nyx-border) solid var(--nyx-accent); outline-offset: calc(var(--nyx-border) * -1); }
-  .nyx-popover[data-nyx-dropdown-menu] { position: fixed; inset: 0 auto auto 0; inline-size: max-content; max-inline-size: var(--nyx-overlay-available-width, calc(100vw - 1rem)); max-block-size: var(--nyx-overlay-available-height, calc(100vh - 1rem)); margin: 0; overflow-x: hidden; overflow-y: auto; transform: translate3d(var(--nyx-overlay-x, 0), var(--nyx-overlay-y, 0), 0); }
+  .nyx-popover[data-nyx-dropdown-menu] { position: fixed; inset: 0 auto auto 0; inline-size: max-content; max-inline-size: min(24rem, var(--nyx-overlay-available-width, calc(100vw - 1rem))); max-block-size: var(--nyx-overlay-available-height, calc(100vh - 1rem)); margin: 0; overflow-x: hidden; overflow-y: auto; transform: translate3d(var(--nyx-overlay-x, 0), var(--nyx-overlay-y, 0), 0); }
   .nyx-popover[data-nyx-dropdown-menu]:not([data-nyx-positioned]) { opacity: 0; pointer-events: none; }
   .nyx-menu { display: grid; gap: 0.25rem; min-inline-size: min(14rem, var(--nyx-overlay-available-width, calc(100vw - 1rem))); padding: 0.5rem; }
   .nyx-menu-group { display: grid; gap: 0.25rem; }
