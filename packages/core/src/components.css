@@ -145,6 +145,12 @@
   .nyx-select:dir(rtl) { background-position: left 0.875rem center; }
   .nyx-select option, .nyx-select optgroup { background-color: var(--nyx-panel-raised); color: var(--nyx-ink); }
   .nyx-select optgroup { font-weight: var(--nyx-weight-semibold); }
+  .nyx-input:is([type="date"], [type="time"]) { position: relative; appearance: none; padding-inline-end: 3rem; color-scheme: dark; background-color: var(--nyx-input); background-position: right 0.875rem center; background-repeat: no-repeat; background-size: 1rem; font-variant-numeric: tabular-nums; }
+  .nyx-input[type="date"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23a8b4b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8'%3E%3Crect x='2.5' y='4' width='15' height='13.5' rx='2'/%3E%3Cpath d='M6 2.5v3M14 2.5v3M2.5 8h15'/%3E%3C/svg%3E"); }
+  .nyx-input[type="time"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23a8b4b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.8'%3E%3Ccircle cx='10' cy='10' r='7.5'/%3E%3Cpath d='M10 5.5V10l3 2'/%3E%3C/svg%3E"); }
+  .nyx-input:is([type="date"], [type="time"]):dir(rtl) { background-position: left 0.875rem center; }
+  .nyx-input:is([type="date"], [type="time"])::-webkit-calendar-picker-indicator { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 2.75rem; block-size: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .nyx-input:is([type="date"], [type="time"])::-webkit-date-and-time-value { min-block-size: 1.4em; text-align: start; }
   .nyx-textarea { min-height: 7rem; resize: vertical; }
   .nyx-input::placeholder, .nyx-textarea::placeholder { color: var(--nyx-label); }
   .nyx-input:hover:not(:disabled), .nyx-select:hover:not(:disabled), .nyx-textarea:hover:not(:disabled) { border-color: var(--nyx-muted); }
@@ -410,6 +416,11 @@
   .nyx-empty-error strong { color: var(--nyx-danger); }
   .nyx-empty-error p { margin: var(--nyx-space-2) 0 0; }
 
+  .nyx-calendar-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); gap: var(--nyx-space-5); }
+  .nyx-calendar-example { display: grid; align-content: start; gap: var(--nyx-space-3); }
+  .nyx-calendar-example-copy { display: grid; gap: var(--nyx-space-1); }
+  .nyx-calendar-example-copy > :is(h3, p) { margin: 0; }
+  .nyx-calendar-example-copy > p { color: var(--nyx-label); font-size: var(--nyx-type-label); }
   .nyx-calendar { inline-size: min(22rem, 100%); padding: var(--nyx-space-3); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
   .nyx-calendar-header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--nyx-space-2); margin-block-end: var(--nyx-space-3); }
   .nyx-calendar-heading { margin: 0; color: var(--nyx-ink); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-nav); text-align: center; text-transform: uppercase; }

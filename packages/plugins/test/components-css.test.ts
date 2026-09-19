@@ -63,6 +63,13 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-before-after-reveal:dir\(rtl\)\s*\{[^}]*clip-path:/);
   });
 
+  it("styles native date and time surfaces without replacing their controls", () => {
+    expect(css).toMatch(/\.nyx-input:is\(\[type="date"\], \[type="time"\]\)\s*\{[^}]*appearance:\s*none;[^}]*background-color:\s*var\(--nyx-input\)/);
+    expect(css).toMatch(/\.nyx-input\[type="date"\]\s*\{[^}]*background-image:/);
+    expect(css).toMatch(/\.nyx-input\[type="time"\]\s*\{[^}]*background-image:/);
+    expect(css).toMatch(/::-webkit-calendar-picker-indicator\s*\{[^}]*opacity:\s*0;[^}]*cursor:\s*pointer/);
+  });
+
   it("bounds loading overlays and provides an explicit idle hiding contract", () => {
     expect(css).toMatch(/\.nyx-loading-surface\s*\{[^}]*position:\s*relative;[^}]*isolation:\s*isolate;/);
     expect(css).toMatch(/\.nyx-loading-overlay\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*backdrop-filter:/);

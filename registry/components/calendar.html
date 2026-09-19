@@ -1,4 +1,10 @@
-<div class="nyx-calendar" data-nyx-calendar data-nyx-calendar-locale="en-US" data-nyx-calendar-min="2026-09-04" data-nyx-calendar-max="2026-11-28" data-nyx-calendar-value="2026-09-18">
+<div class="nyx-calendar-examples">
+<section class="nyx-calendar-example" aria-labelledby="single-calendar-example-title">
+  <div class="nyx-calendar-example-copy">
+    <h3 id="single-calendar-example-title">Single date · Sunday start</h3>
+    <p>Select one date within a constrained range.</p>
+  </div>
+  <div class="nyx-calendar" data-nyx-calendar data-nyx-calendar-locale="en-US" data-nyx-calendar-min="2026-09-04" data-nyx-calendar-max="2026-11-28" data-nyx-calendar-value="2026-09-18">
   <div class="nyx-calendar-header">
     <button class="nyx-button nyx-icon-button" data-nyx-calendar-previous type="button" aria-label="Previous month">←</button>
     <h3 class="nyx-calendar-heading" data-nyx-calendar-heading id="single-calendar-heading" aria-live="polite"></h3>
@@ -11,8 +17,14 @@
   <input data-nyx-calendar-value name="scheduled-date" type="hidden" />
   <span class="sr-only" data-nyx-calendar-announcer role="status" aria-live="polite"></span>
 </div>
+</section>
 
-<div class="nyx-calendar" data-nyx-calendar data-nyx-calendar-selection="range" data-nyx-calendar-week-start="1" data-nyx-calendar-value="2026-09-14/2026-09-18">
+<section class="nyx-calendar-example" aria-labelledby="range-calendar-example-title">
+  <div class="nyx-calendar-example-copy">
+    <h3 id="range-calendar-example-title">Date range · Monday start</h3>
+    <p>Select the beginning and end of an inclusive range.</p>
+  </div>
+  <div class="nyx-calendar" data-nyx-calendar data-nyx-calendar-selection="range" data-nyx-calendar-week-start="1" data-nyx-calendar-value="2026-09-14/2026-09-18">
   <div class="nyx-calendar-header">
     <button class="nyx-button nyx-icon-button" data-nyx-calendar-previous type="button" aria-label="Previous month">←</button>
     <h3 class="nyx-calendar-heading" data-nyx-calendar-heading id="range-calendar-heading" aria-live="polite"></h3>
@@ -24,4 +36,6 @@
   </table>
   <input data-nyx-calendar-value name="deployment-window" type="hidden" />
   <span class="sr-only" data-nyx-calendar-announcer role="status" aria-live="polite"></span>
+</div>
+</section>
 </div>

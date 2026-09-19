@@ -204,3 +204,43 @@ test("the icon inventory contains every Nyx interface symbol and no sample-only 
     "menu", "plus", "records", "search", "settings", "star", "upload", "user",
   ]);
 });
+
+test("native date and time controls use the Nyx surface without changing semantics", async ({ page }) => {
+  await page.goto("/components/forms/range-date-time");
+  const demo = example(page, "Range, date, and time");
+  const date = demo.locator('input[type="date"]');
+  const time = demo.locator('input[type="time"]');
+
+  await expect(date).toHaveValue("2026-09-17");
+  await expect(time).toHaveValue("17:30");
+  const surfaces = await Promise.all([date, time].map((control) => control.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      appearance: style.appearance,
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      borderColor: style.borderColor,
+      fontFamily: style.fontFamily,
+      height: element.getBoundingClientRect().height,
+    };
+  })));
+  expect({ ...surfaces[0], backgroundImage: undefined }).toEqual({ ...surfaces[1], backgroundImage: undefined });
+  expect(surfaces[0].appearance).toBe("none");
+  expect(surfaces[0].backgroundImage).not.toBe("none");
+  expect(surfaces[1].backgroundImage).not.toBe("none");
+  expect(surfaces[0].height).toBe(47);
+
+  await date.focus();
+  await expect(date).not.toHaveCSS("box-shadow", "none");
+});
+
+test("calendar examples identify their selection and week-start modes", async ({ page }) => {
+  await page.goto("/components/forms/calendar");
+  const demo = example(page, "Single date and range");
+  const examples = demo.locator(".nyx-calendar-example");
+  await expect(examples).toHaveCount(2);
+  await expect(examples.nth(0).getByRole("heading", { name: /Single date.*Sunday start/ })).toBeVisible();
+  await expect(examples.nth(1).getByRole("heading", { name: /Date range.*Monday start/ })).toBeVisible();
+  await expect(examples.nth(0).locator("[data-nyx-calendar]")).not.toHaveAttribute("data-nyx-calendar-selection", "range");
+  await expect(examples.nth(1).locator("[data-nyx-calendar]")).toHaveAttribute("data-nyx-calendar-week-start", "1");
+});

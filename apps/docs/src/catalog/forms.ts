@@ -107,7 +107,7 @@ export const formPages = [
     categoryId: "forms",
     categoryLabel: "Forms",
     title: "Range, Date, and Time",
-    description: "Native range, date, and time inputs retain platform behavior while inheriting the Nyx visual contract.",
+    description: "Range, date, and time inputs use the Nyx control surface while retaining native picker behavior, validation, and mobile keyboards.",
     searchTerms: "range slider date time native input form strength",
     body: card("Range, date, and time", selectMarkup(formsMarkup, ["[data-nyx-example='range-date-time']"]), "Registry source"),
   }),
