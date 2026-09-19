@@ -738,7 +738,10 @@
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] [data-nyx-sidebar-label] { display: none; }
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-sidebar-header { justify-content: center; }
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-sidebar-nav a { justify-content: center; padding-inline: 0.5rem; }
-  .nyx-app-content { padding: var(--nyx-space-5); background: var(--nyx-void); }
+  .nyx-app-content { min-inline-size: 0; background: var(--nyx-void); }
+  .nyx-app-content > .nyx-topbar { padding: var(--nyx-space-3) var(--nyx-space-5); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
+  .nyx-app-main { display: grid; align-content: start; gap: var(--nyx-space-3); padding: var(--nyx-space-6) var(--nyx-space-5); }
+  .nyx-app-main > :is(h2, p) { margin: 0; }
   .nyx-auth-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); min-height: 24rem; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
   .nyx-auth-art { display: grid; place-items: end start; padding: var(--nyx-space-8); background: radial-gradient(circle at 80% 20%, var(--nyx-accent-soft), transparent 42%), var(--nyx-radial); }
   .nyx-auth-form { display: grid; align-content: center; gap: var(--nyx-space-4); padding: var(--nyx-space-8); background: var(--nyx-panel); }

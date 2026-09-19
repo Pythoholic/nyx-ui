@@ -244,3 +244,32 @@ test("calendar examples identify their selection and week-start modes", async ({
   await expect(examples.nth(0).locator("[data-nyx-calendar]")).not.toHaveAttribute("data-nyx-calendar-selection", "range");
   await expect(examples.nth(1).locator("[data-nyx-calendar]")).toHaveAttribute("data-nyx-calendar-week-start", "1");
 });
+
+test("application shell reuses sidebar navigation and separates content regions", async ({ page }) => {
+  await page.goto("/components/layouts/application-shell");
+  const demo = example(page, "Application shell");
+  const nav = demo.getByRole("navigation", { name: "Workspace" });
+  const links = nav.getByRole("link");
+
+  await expect(links).toHaveCount(3);
+  await expect(links.first()).toHaveAttribute("aria-current", "page");
+  const metrics = await demo.evaluate((root) => {
+    const link = root.querySelector<HTMLElement>(".nyx-sidebar-nav a");
+    const topbar = root.querySelector<HTMLElement>(".nyx-app-content > .nyx-topbar");
+    const main = root.querySelector<HTMLElement>(".nyx-app-main");
+    if (!link || !topbar || !main) throw new Error("Application shell regions did not render.");
+    const linkStyle = getComputedStyle(link);
+    const topbarStyle = getComputedStyle(topbar);
+    return {
+      linkHeight: link.getBoundingClientRect().height,
+      linkDisplay: linkStyle.display,
+      topbarBorder: parseFloat(topbarStyle.borderBottomWidth),
+      regionGap: main.getBoundingClientRect().y - topbar.getBoundingClientRect().bottom,
+    };
+  });
+
+  expect(metrics.linkDisplay).toBe("flex");
+  expect(metrics.linkHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.topbarBorder).toBeGreaterThan(0);
+  expect(metrics.regionGap).toBe(0);
+});
