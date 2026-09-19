@@ -109,3 +109,37 @@ test("date picker accepts valid typed dates and marks invalid text", async ({ pa
   await expect(input).toHaveAttribute("data-invalid", "");
   await expect(demo.getByText("Enter a date as YYYY-MM-DD.", { exact: true })).toBeVisible();
 });
+
+test("authentication layouts expose complete native account paths", async ({ page }) => {
+  await page.goto("/components/layouts/authentication");
+  const signIn = page.locator('[data-nyx-auth-layout="sign-in"]');
+  await expect(signIn.getByLabel("Email address")).toHaveAttribute("autocomplete", "email");
+  await expect(signIn.getByLabel("Password")).toHaveAttribute("autocomplete", "current-password");
+  await expect(signIn.getByRole("link", { name: "Forgot password?" })).toBeVisible();
+  await expect(signIn.getByRole("link", { name: "Create an account" })).toBeVisible();
+
+  await page.goto("/components/layouts/registration");
+  const registration = page.locator('[data-nyx-auth-layout="registration"]');
+  const email = registration.getByLabel("Email address");
+  const password = registration.getByRole("textbox", { name: "Password", exact: true });
+  await expect(email).toHaveAttribute("required", "");
+  await expect(email).toHaveAttribute("autocomplete", "email");
+  await expect(password).toHaveAttribute("autocomplete", "new-password");
+  await expect(password).toHaveAttribute("minlength", "12");
+  await expect(registration.getByRole("checkbox", { name: /workspace terms/ })).toHaveAttribute("required", "");
+
+  await email.fill("not-an-email");
+  await password.pressSequentially("short");
+  await registration.getByRole("button", { name: "Create account" }).click();
+  expect(await email.evaluate((control: HTMLInputElement) => control.validity.typeMismatch)).toBe(true);
+  expect(await password.evaluate((control: HTMLInputElement) => control.validity.tooShort)).toBe(true);
+  await expect(registration.getByText("Enter a valid email address.")).toBeVisible();
+  await expect(registration.getByText("Use at least 12 characters.", { exact: true })).toBeVisible();
+
+  await page.goto("/components/layouts/welcome-back");
+  const returning = page.locator('[data-nyx-auth-layout="welcome-back"]');
+  await expect(returning.getByText("Mina Park", { exact: true })).toBeVisible();
+  await expect(returning.getByText("mina@example.com · Operations")).toBeVisible();
+  await expect(returning.getByRole("link", { name: "Continue to workspace" })).toBeVisible();
+  await expect(returning.getByRole("link", { name: "Sign in as someone else" })).toBeVisible();
+});

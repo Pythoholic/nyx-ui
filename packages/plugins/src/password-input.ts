@@ -153,12 +153,13 @@ export class NyxPasswordInput {
 
   private commit(value: string, reason: NyxPasswordChangeReason, previousValue = this.acceptedValue): boolean {
     if (value === previousValue) {
-      this.input.value = value;
+      if (this.input.value !== value) this.input.value = value;
       this.syncStrength();
       return true;
     }
     const score = (() => {
       const current = this.input.value;
+      if (current === value) return this.score;
       this.input.value = value;
       const result = this.score;
       this.input.value = current;
@@ -177,7 +178,7 @@ export class NyxPasswordInput {
       this.syncStrength();
       return false;
     }
-    this.input.value = value;
+    if (this.input.value !== value) this.input.value = value;
     this.acceptedValue = value;
     this.syncStrength();
     dispatchNyxEvent(this.element, "nyx:password:change", detail);

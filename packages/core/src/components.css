@@ -748,6 +748,22 @@
   .nyx-auth-art { display: grid; place-items: end start; padding: var(--nyx-space-8); background: radial-gradient(circle at 80% 20%, var(--nyx-accent-soft), transparent 42%), var(--nyx-radial); }
   .nyx-auth-form { display: grid; align-content: center; gap: var(--nyx-space-4); padding: var(--nyx-space-8); background: var(--nyx-panel); }
   .nyx-auth-art .nyx-panel-title { margin-block-start: var(--nyx-space-2); }
+  .nyx-auth-art-content { display: grid; max-inline-size: 38rem; gap: var(--nyx-space-4); }
+  .nyx-auth-art-content > :is(h2, p, ul), .nyx-auth-heading > :is(h2, p), .nyx-auth-alternate, .nyx-auth-note { margin: 0; }
+  .nyx-auth-art-content p, .nyx-auth-heading p, .nyx-auth-note { color: var(--nyx-muted); line-height: 1.65; }
+  .nyx-auth-points { display: grid; gap: var(--nyx-space-2); padding-inline-start: var(--nyx-space-5); color: var(--nyx-muted); }
+  .nyx-auth-heading { display: grid; gap: var(--nyx-space-2); }
+  .nyx-auth-heading h2 { font-size: var(--nyx-type-display); text-transform: uppercase; }
+  .nyx-auth-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--nyx-space-3); }
+  .nyx-auth-alternate { color: var(--nyx-muted); text-align: center; }
+  .nyx-auth-form > .nyx-button, .nyx-auth-form > a.nyx-button { inline-size: 100%; }
+  .nyx-auth-form .nyx-password { inline-size: 100%; }
+  .nyx-auth-consent { align-items: start; line-height: 1.5; }
+  .nyx-auth-form .nyx-field-error { display: none; color: var(--nyx-danger); font-size: var(--nyx-type-meta); }
+  .nyx-auth-form .nyx-field:has(.nyx-input:user-invalid) > .nyx-field-error, .nyx-auth-form .nyx-field:has([data-nyx-password-control]:user-invalid) > .nyx-field-error { display: block; }
+  .nyx-auth-account { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--nyx-space-3); padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-control); background: var(--nyx-panel-raised); }
+  .nyx-auth-account > span:last-child { display: grid; gap: var(--nyx-space-1); min-inline-size: 0; }
+  .nyx-auth-account small { overflow: hidden; color: var(--nyx-muted); text-overflow: ellipsis; white-space: nowrap; }
   .nyx-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-height: 18rem; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
   .nyx-split > * { padding: var(--nyx-space-5); }
   .nyx-split > * + * { border-inline-start: var(--nyx-border) solid var(--nyx-line); }

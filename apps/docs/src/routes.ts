@@ -117,6 +117,8 @@ export const paths = {
       applicationShell: "/components/layouts/application-shell",
       sidebar: "/components/layouts/sidebar",
       authentication: "/components/layouts/authentication",
+      registration: "/components/layouts/registration",
+      welcomeBack: "/components/layouts/welcome-back",
       splitWorkspace: "/components/layouts/split-workspace",
       scrollArea: "/components/layouts/scroll-area",
       resizablePanels: "/components/layouts/resizable-panels",

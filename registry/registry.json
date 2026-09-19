@@ -403,6 +403,27 @@
       "requires": ["@nyx-ui/core"]
     },
     {
+      "name": "authentication",
+      "type": "layout",
+      "status": "stable",
+      "files": ["components/authentication.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
+      "name": "registration",
+      "type": "layout",
+      "status": "stable",
+      "files": ["components/registration.html"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
+    },
+    {
+      "name": "welcome-back",
+      "type": "layout",
+      "status": "stable",
+      "files": ["components/welcome-back.html"],
+      "requires": ["@nyx-ui/core"]
+    },
+    {
       "name": "sidebar",
       "type": "component",
       "status": "stable",

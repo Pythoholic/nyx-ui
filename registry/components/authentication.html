@@ -1,0 +1,31 @@
+<div class="nyx-auth-layout" data-nyx-auth-layout="sign-in">
+  <section class="nyx-auth-art" aria-labelledby="nyx-sign-in-message">
+    <div class="nyx-auth-art-content">
+      <span class="nyx-eyebrow">Secure workspace</span>
+      <h2 class="nyx-panel-title" id="nyx-sign-in-message">Resume work without losing context</h2>
+      <p>Sign in to review deployment history, saved records, and workspace settings from one place.</p>
+      <ul class="nyx-auth-points">
+        <li>Workspace activity stays attached to your account.</li>
+        <li>Access is limited by your organisation’s permissions.</li>
+      </ul>
+    </div>
+  </section>
+  <form class="nyx-auth-form" action="#" method="post">
+    <header class="nyx-auth-heading">
+      <span class="nyx-eyebrow">Account access</span>
+      <h2>Sign in</h2>
+      <p>Use the email address associated with your workspace.</p>
+    </header>
+    <label class="nyx-field" for="nyx-sign-in-email">
+      <span class="nyx-label">Email address</span>
+      <input autocomplete="email" class="nyx-input" id="nyx-sign-in-email" name="email" placeholder="operator@example.com" required type="email" />
+    </label>
+    <label class="nyx-field" for="nyx-sign-in-password">
+      <span class="nyx-label">Password</span>
+      <input autocomplete="current-password" class="nyx-input" id="nyx-sign-in-password" name="password" required type="password" />
+    </label>
+    <div class="nyx-auth-row"><label class="nyx-check"><input name="remember" type="checkbox" /> <span>Keep me signed in</span></label><a class="nyx-link" href="#forgot-password">Forgot password?</a></div>
+    <button class="nyx-button" data-variant="primary" type="submit">Sign in</button>
+    <p class="nyx-auth-alternate">New to Nyx? <a class="nyx-link" href="#create-account">Create an account</a></p>
+  </form>
+</div>
