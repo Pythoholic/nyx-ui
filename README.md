@@ -91,6 +91,20 @@ pnpm install
 pnpm dev
 ```
 
+`pnpm dev` builds the behavior package, then serves the documentation catalog on
+`http://127.0.0.1:5173/`. The port is not pinned: if 5173 is already in use the dev server takes
+the next free port and prints the URL it chose, so read the terminal output rather than assuming
+5173. Stop the server with `Ctrl+C`; leaving one running is what holds the port for the next run.
+
+To pin the port explicitly, pass it through:
+
+```shell
+pnpm dev -- --port 5173 --strictPort
+```
+
+`--strictPort` fails loudly instead of silently moving to another port, which is what you want
+when a test run or a script expects a fixed URL.
+
 Before committing a phase, run:
 
 ```shell
