@@ -148,3 +148,18 @@ test("dialog keyboard dismissal restores state, scroll ownership, and focus", as
   await expect(page.locator("body")).not.toHaveAttribute("data-nyx-scroll-locked", "true");
   await expect(trigger).toBeFocused();
 });
+
+test("the three-page voice sample gives adoption guidance at different component scales", async ({ page }) => {
+  const samples = [
+    { path: "/components/primitives/blockquote", heading: "Choose it for quoted material", phrase: "Start with the native" },
+    { path: "/components/overlays/dropdown-menu", heading: "Use a menu for compact command sets", phrase: "Keep frequent or high-consequence actions visible" },
+    { path: "/components/ai/generation-queue", heading: "Keep transport outside the queue", phrase: "Give every job a stable identifier" },
+  ];
+
+  for (const sample of samples) {
+    await page.goto(sample.path);
+    const guidance = page.locator(".docs-prose-section");
+    await expect(guidance.getByRole("heading", { name: sample.heading })).toBeVisible();
+    await expect(guidance).toContainText(sample.phrase);
+  }
+});

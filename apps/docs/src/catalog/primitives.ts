@@ -53,9 +53,9 @@ export const primitivePages = [
     categoryId: "primitives",
     categoryLabel: "Primitives",
     title: "Blockquote",
-    description: "Quoted material keeps native document semantics, a restrained accent boundary, and an optional visible citation.",
+    description: "Use Blockquote for text quoted from another source, with native document semantics and a visible route back to that source when one is available.",
     searchTerms: "blockquote quote citation cite footer prose document semantic",
-    body: `<section class="docs-prose-section"><h2>Cite the work, not the speaker</h2><p>The native <code>blockquote</code> marks an extended quotation. Use <code>cite</code> for the title of a referenced work and ordinary text for a person or team attribution.</p></section>${card("Operational principle", blockquoteMarkup, "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Choose it for quoted material</h2><p>Start with the native <code>blockquote</code> when a passage comes from another source; use ordinary paragraphs for your own emphasized prose. When the source has a stable location, put it in the <code>cite</code> attribute so the relationship remains available beyond the visual treatment.</p><p>Keep the attribution visible when readers need it. The <code>cite</code> element names the referenced work, such as a report or incident review, while a person or team name remains ordinary text.</p></section>${card("Operational principle", blockquoteMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.primitives.codeBlock,

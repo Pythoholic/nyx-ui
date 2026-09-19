@@ -34,10 +34,10 @@ export const overlayPages = [
     categoryId: "overlays",
     categoryLabel: "Overlays",
     title: "Dropdown Menu",
-    description: "Action menus use the Popover API, explicit menu semantics, roving focus, typeahead, submenus, and focus-safe dismissal.",
+    description: "Use Dropdown Menu to place related application commands behind one trigger when keeping every action visible would add more noise than clarity.",
     searchTerms: "overlay dropdown menu popover submenu checkbox radio typeahead keyboard",
     plugins: ["dropdown-menu"],
-    body: card("Dropdown menu", selectMarkup(overlaysMarkup, ["[data-nyx-dropdown-menu-trigger='nyx-action-menu']", "#nyx-action-menu"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use a menu for compact command sets</h2><p>Keep frequent or high-consequence actions visible when space allows. A dropdown is a better fit for secondary commands that belong together and can be understood from a concise trigger. Use native buttons for actions and links only when an item navigates; the menu roles describe keyboard behavior, not visual styling.</p><p>Nyx coordinates the popover, anchored position, roving focus, typeahead, submenus, dismissal, and focus return. Your application still performs the selected command. Use the cancelable before-events when a controlled workflow must veto opening, closing, or selection.</p></section>${card("Dropdown menu", selectMarkup(overlaysMarkup, ["[data-nyx-dropdown-menu-trigger='nyx-action-menu']", "#nyx-action-menu"]), "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.contextMenu,

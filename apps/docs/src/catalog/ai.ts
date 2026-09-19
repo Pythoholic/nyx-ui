@@ -54,10 +54,10 @@ export const aiPages = [
     categoryId: "ai",
     categoryLabel: "AI Patterns",
     title: "Generation Queue",
-    description: "An ordered work queue keeps progress, lifecycle state, aggregate activity, and cancel, retry, and removal controls synchronized without owning transport.",
+    description: "Use Generation Queue when people need to follow several long-running jobs, understand each outcome, and act on failures without losing the overall workload state.",
     searchTerms: "ai generation queue render progress cancel retry job task pipeline",
     plugins: ["generation-queue"],
-    body: `<section class="docs-prose-section"><h2>State management without transport</h2><p>Nyx reflects application-owned work as queued, running, complete, failed, or canceled. Cancelable events create the transport boundary; the application performs the operation and can publish later progress through <code>setStatus()</code>.</p></section>${card("Render queue", generationQueueMarkup, "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Keep transport outside the queue</h2><p>Give every job a stable identifier, render its current lifecycle state, and call <code>setStatus()</code> as application work progresses. Nyx keeps row controls, progress values, aggregate counts, busy state, and announcements synchronized; it does not start, cancel, or retry network work.</p><p>Treat cancelable events as the handoff to your job system. Prevent a transition when the operation cannot proceed, then publish the confirmed state back to the queue. Keep completed and failed jobs available long enough for people to understand the result before offering removal.</p></section>${card("Render queue", generationQueueMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.ai.modelSelector,
