@@ -32,7 +32,6 @@ export function positionOverlay(
       middleware: [
         offset(options.offset ?? 6),
         flip({ padding }),
-        shift({ padding }),
         size({
           padding,
           apply({ availableHeight, availableWidth, rects }) {
@@ -50,6 +49,7 @@ export function positionOverlay(
             );
           },
         }),
+        shift({ padding }),
       ],
       placement: options.placement ?? "bottom-start",
       strategy: "fixed",

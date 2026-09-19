@@ -33,9 +33,20 @@ async function expectOverlayWithinViewport(page: Page, panel: Locator): Promise<
 async function expectAnchored(trigger: Locator, panel: Locator, maximumGap = 16): Promise<void> {
   const triggerBox = await trigger.boundingBox();
   const panelBox = await panel.boundingBox();
+  const viewport = trigger.page().viewportSize();
   expect(triggerBox).not.toBeNull();
   expect(panelBox).not.toBeNull();
-  if (!triggerBox || !panelBox) return;
+  expect(viewport, "the test uses a fixed viewport").not.toBeNull();
+  if (!triggerBox || !panelBox || !viewport) return;
+
+  expect(panelBox.width, "panel remains materially narrower than the page").toBeLessThan(viewport.width * 0.75);
+
+  const triggerEdges = [triggerBox.x, triggerBox.x + triggerBox.width / 2, triggerBox.x + triggerBox.width];
+  const panelEdges = [panelBox.x, panelBox.x + panelBox.width / 2, panelBox.x + panelBox.width];
+  const horizontalAlignment = Math.min(
+    ...triggerEdges.flatMap((triggerEdge) => panelEdges.map((panelEdge) => Math.abs(triggerEdge - panelEdge))),
+  );
+  expect(horizontalAlignment, "a panel edge or centre stays horizontally aligned with its trigger").toBeLessThanOrEqual(maximumGap);
 
   const horizontalGap = Math.max(
     triggerBox.x - (panelBox.x + panelBox.width),
