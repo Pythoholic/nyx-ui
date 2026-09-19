@@ -5,6 +5,7 @@
     .nyx-visually-hidden-focusable:not(:focus):not(:focus-within)
   ) {
     position: absolute !important;
+    inset-inline-start: 0 !important;
     inline-size: 1px !important;
     block-size: 1px !important;
     margin: -1px !important;

@@ -5,14 +5,6 @@ interface ConsoleFailure {
   text: string;
 }
 
-const knownRouteDefects: Record<string, string[]> = {
-  "2560x1440": ["/components/layouts/application-shell:h1-count"],
-  mobile: [
-    "/components/data-display/metrics-records-activity:horizontal-overflow",
-    "/components/layouts/application-shell:h1-count",
-  ],
-};
-
 async function sidebarRoutes(page: Page): Promise<string[]> {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Documentation" });
@@ -57,7 +49,7 @@ for (const viewport of [
     expect(failures, `console errors at ${viewport.name}: ${JSON.stringify(failures, null, 2)}`).toEqual([]);
     expect(
       routeDefects,
-      `known route defects changed at ${viewport.name}: ${JSON.stringify(routeDefectDetails)}`,
-    ).toEqual(knownRouteDefects[viewport.name]);
+      `route defects at ${viewport.name}: ${JSON.stringify(routeDefectDetails)}`,
+    ).toEqual([]);
   });
 }

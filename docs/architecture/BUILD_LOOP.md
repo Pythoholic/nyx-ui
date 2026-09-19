@@ -96,8 +96,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 - [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, verified)
 - [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, verified)
-- [ ] Application Shell: the docs route renders both the page title and the embedded shell title as `h1`, so the document contains two level-one headings.
-- [ ] Metrics, Records, and Activity: the docs route creates 81px of horizontal page overflow at the 390px mobile viewport.
+- [x] Application Shell: the docs route renders both the page title and the embedded shell title as `h1`, so the document contains two level-one headings. (fixed, verified)
+- [x] Metrics, Records, and Activity: the docs route creates 81px of horizontal page overflow at the 390px mobile viewport. (fixed, verified)
 
 ## Browser regression coverage
 

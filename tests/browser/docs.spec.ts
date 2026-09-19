@@ -36,6 +36,39 @@ test("the documentation shell remains bounded and functional type remains stable
   }
 });
 
+test("the focusable visually-hidden utility is bounded and returns to natural flow on focus", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expectPage(page, "/components/primitives/visually-hidden", "Visually Hidden");
+  const skipLink = page.locator("[data-example-preview] .nyx-visually-hidden-focusable");
+
+  for (const direction of ["ltr", "rtl"] as const) {
+    await page.locator("html").evaluate((element, dir) => { element.dir = dir; }, direction);
+    const hiddenStyles = await skipLink.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        clipPath: styles.clipPath,
+        insetInlineStart: styles.insetInlineStart,
+        position: styles.position,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+
+    expect(hiddenStyles.position, `${direction} hidden positioning`).toBe("absolute");
+    expect(hiddenStyles.insetInlineStart, `${direction} logical inline anchor`).toBe("0px");
+    expect(hiddenStyles.clipPath, `${direction} hidden clipping`).not.toBe("none");
+    expect(hiddenStyles.overflow, `${direction} page overflow`).toBeLessThanOrEqual(1);
+
+    await skipLink.focus();
+    await expect(skipLink).toBeFocused();
+    await expect(skipLink).toHaveCSS("position", "static");
+    await expect(skipLink).toHaveCSS("clip-path", "none");
+    const focusedBox = await skipLink.boundingBox();
+    expect(focusedBox?.width, `${direction} focused width`).toBeGreaterThan(1);
+    expect(focusedBox?.height, `${direction} focused height`).toBeGreaterThan(1);
+    await skipLink.evaluate((element) => element.blur());
+  }
+});
+
 test("tabbed examples copy canonical source and survive client-side page cleanup", async ({ context, page }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await expectPage(page, "/components/actions/button", "Button");

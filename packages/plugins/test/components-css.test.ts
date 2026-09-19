@@ -51,6 +51,7 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-visually-hidden:not\(\.nyx-visually-hidden-focusable\)/);
     expect(css).toMatch(/\.sr-only:not\(\.nyx-visually-hidden-focusable\)/);
     expect(css).toMatch(/\.nyx-visually-hidden-focusable:not\(:focus\):not\(:focus-within\)/);
+    expect(css).toMatch(/inset-inline-start:\s*0\s*!important/);
     expect(css).toMatch(/clip-path:\s*inset\(50%\)/);
     expect(css).not.toMatch(/\.nyx-visually-hidden[^}]*display:\s*none/);
   });
