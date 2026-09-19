@@ -123,8 +123,9 @@ export class NyxHoverCard {
     this.positionCleanup?.();
     this.positionCleanup = undefined;
     this.dismissal.deactivate();
+    const nativePopover = typeof this.element.hidePopover === "function";
     try { this.element.hidePopover?.(); } catch { /* Hidden fallback closes it. */ }
-    this.element.hidden = true;
+    if (!nativePopover) this.element.hidden = true;
     this.openState = false;
     this.syncState();
     this.activeTrigger = undefined;

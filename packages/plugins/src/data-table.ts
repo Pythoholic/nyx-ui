@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { animateReorder } from "./internal/motion.js";
 
 export type NyxDataTableSortDirection = "ascending" | "descending";
 export type NyxDataTableComparator = (
@@ -213,7 +214,10 @@ export class NyxDataTable {
       const start = (this.tableState.page - 1) * this.tableState.pageSize;
       const visible = new Set(sorted.slice(start, start + this.tableState.pageSize));
       this.rows.forEach((row) => { row.hidden = !visible.has(row); });
-      sorted.forEach((row) => this.tbody.append(row));
+      sorted.forEach((row) => {
+        this.tbody.append(row);
+        animateReorder(row);
+      });
     }
     this.element.querySelectorAll<HTMLButtonElement>("[data-nyx-data-table-sort]").forEach((button) => {
       const column = button.dataset.nyxDataTableSort;

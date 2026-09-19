@@ -157,7 +157,7 @@ export class NyxFilterBar {
     if (!this.active) return;
     const chips = entries.map(({ name, value }) => {
       const chip = document.createElement("span");
-      chip.className = "nyx-filter-chip";
+      chip.className = "nyx-filter-chip nyx-motion-fade";
       const control = this.controls.find((candidate) => candidate.name === name && (!(candidate instanceof HTMLInputElement) || !["checkbox", "radio"].includes(candidate.type) || candidate.value === value));
       const label = control?.dataset.nyxFilterLabel ?? name;
       const displayValue = control instanceof HTMLSelectElement

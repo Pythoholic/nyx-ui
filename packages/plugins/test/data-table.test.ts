@@ -38,6 +38,7 @@ describe("NyxDataTable", () => {
     const visible = Array.from(root.querySelectorAll<HTMLTableRowElement>("tr[data-row-key]")).filter((row) => !row.hidden);
     expect(visible.map((row) => row.dataset.rowKey)).toEqual(["alpha", "bravo"]);
     expect(root.querySelector("th[aria-sort='ascending']")).not.toBeNull();
+    expect(root.querySelectorAll("[data-nyx-motion='reordered']")).toHaveLength(0);
   });
 
   it("filters and paginates in client mode", () => {

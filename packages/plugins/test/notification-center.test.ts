@@ -90,6 +90,7 @@ describe("NyxNotificationCenter", () => {
     expect(center.dismiss("alpha")).toBe(true);
     expect(center.dismiss("beta")).toBe(true);
     expect(center.notifications).toHaveLength(0);
+    expect(center.element.querySelectorAll("[data-nyx-motion='removing']")).toHaveLength(0);
     expect(center.element.dataset.state).toBe("empty");
     expect((center.element.querySelector("[data-nyx-notification-empty]") as HTMLElement).hidden).toBe(false);
   });

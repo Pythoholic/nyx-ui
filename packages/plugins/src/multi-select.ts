@@ -233,7 +233,7 @@ export class NyxMultiSelect {
     this.tags.replaceChildren(...selected.map((option) => {
       const value = this.optionValue(option);
       const tag = ownerDocument.createElement("span");
-      tag.className = "nyx-tag";
+      tag.className = "nyx-tag nyx-motion-fade";
       tag.dataset.value = value;
       const label = ownerDocument.createElement("span");
       label.textContent = option.dataset.nyxMultiSelectLabel ?? resultText(option).trim();

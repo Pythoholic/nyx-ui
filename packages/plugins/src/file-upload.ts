@@ -252,7 +252,7 @@ export class NyxFileUpload {
     const document = this.element.ownerDocument;
     const nodes = this.items.map((item) => {
       const row = document.createElement("li");
-      row.className = "nyx-file-item";
+      row.className = "nyx-file-item nyx-motion-fade";
       row.dataset.state = item.state;
       row.dataset.nyxFileId = item.id;
       if (item.objectUrl) {

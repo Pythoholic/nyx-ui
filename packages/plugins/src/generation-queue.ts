@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { animateRemoval } from "./internal/motion.js";
 
 export type NyxGenerationState = "queued" | "running" | "complete" | "failed" | "canceled";
 export type NyxGenerationQueueReason = "api" | "control";
@@ -50,7 +51,7 @@ export class NyxGenerationQueue {
 
   get items(): HTMLElement[] {
     return Array.from(this.element.querySelectorAll<HTMLElement>(itemSelector)).filter(
-      (item) => item.closest(selector) === this.element,
+      (item) => item.closest(selector) === this.element && item.dataset.nyxMotion !== "removing",
     );
   }
 
@@ -98,7 +99,7 @@ export class NyxGenerationQueue {
       reason,
     };
     if (!dispatchNyxEvent(this.element, "nyx:generation-queue:before-remove", detail, true)) return false;
-    item.remove();
+    animateRemoval(item);
     this.syncQueue();
     dispatchNyxEvent(this.element, "nyx:generation-queue:remove", detail);
     return true;

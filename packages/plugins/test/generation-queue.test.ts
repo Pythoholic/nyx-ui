@@ -54,5 +54,6 @@ describe("NyxGenerationQueue", () => {
     expect(queue.remove("two")).toBe(false);
     expect(queue.remove("two")).toBe(true);
     expect(queue.value).toHaveLength(1);
+    expect(queue.element.querySelector("[data-nyx-generation-id='two']")).toBeNull();
   });
 });

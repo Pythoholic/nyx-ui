@@ -21,6 +21,20 @@ describe("overlay component CSS", () => {
       /\.nyx-popover\[popover\]:not\(:popover-open\)\s*\{\s*display:\s*none;/,
     );
   });
+
+  it("applies tokenized enter and exit motion to overlays and dialogs", () => {
+    expect(css).toMatch(/\.nyx-popover\[popover\][^}]*opacity:\s*0|:is\(\.nyx-tooltip,[^}]*opacity:\s*0/);
+    expect(css).toMatch(/transition-behavior:\s*allow-discrete/);
+    expect(css).toMatch(/\.nyx-dialog\s*\{[^}]*opacity:\s*0;[^}]*scale:\s*0\.98;[^}]*var\(--nyx-duration-normal\)/);
+    expect(css).toMatch(/\.nyx-dialog\[data-layout="drawer"\][^{]*\{[^}]*translate:\s*2rem 0/);
+  });
+
+  it("uses existing motion vocabulary for collection and loading changes", () => {
+    expect(css).toMatch(/\[data-nyx-motion="removing"\][^{]*\{[^}]*nyx-slide-out/);
+    expect(css).toMatch(/tr\[data-nyx-motion="reordered"\][^{]*\{[^}]*nyx-fade-in/);
+    expect(css).toMatch(/\.nyx-loading-surface\[data-state="loading"\][^{]*\.nyx-loading-overlay\s*\{[^}]*nyx-fade-in/);
+    expect(css).toMatch(/\.nyx-generation-item\[data-state="running"\][^{]*\.nyx-generation-thumb\s*\{[^}]*nyx-pulse/);
+  });
 });
 
 describe("small primitive CSS", () => {

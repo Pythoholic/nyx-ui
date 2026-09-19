@@ -1,4 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
+import { animateRemoval } from "./internal/motion.js";
 
 export type NyxNotificationCenterReason = "api" | "control" | "mark-all";
 
@@ -52,7 +53,7 @@ export class NyxNotificationCenter {
 
   get notifications(): HTMLElement[] {
     return Array.from(this.element.querySelectorAll<HTMLElement>(notificationSelector)).filter(
-      (notification) => notification.closest(selector) === this.element,
+      (notification) => notification.closest(selector) === this.element && notification.dataset.nyxMotion !== "removing",
     );
   }
 
@@ -105,7 +106,7 @@ export class NyxNotificationCenter {
     const read = notification.dataset.state === "read";
     const detail: NyxNotificationCenterEventDetail = { id, notification, notificationCenter: this, read, reason };
     if (!dispatchNyxEvent(this.element, "nyx:notification-center:before-dismiss", detail, true)) return false;
-    notification.remove();
+    animateRemoval(notification);
     this.sync();
     dispatchNyxEvent(this.element, "nyx:notification-center:dismiss", detail);
     return true;

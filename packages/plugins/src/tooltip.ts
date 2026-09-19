@@ -158,8 +158,9 @@ export class NyxTooltip {
     this.positionCleanup?.();
     this.positionCleanup = undefined;
     this.element.ownerDocument.removeEventListener("keydown", this.handleKeyDown, true);
+    const nativePopover = typeof this.element.hidePopover === "function";
     try { this.element.hidePopover?.(); } catch { /* The hidden fallback closes it. */ }
-    this.element.hidden = true;
+    if (!nativePopover) this.element.hidden = true;
     this.openState = false;
     if (this.providerState.active === this) this.providerState.active = undefined;
     this.providerState.warmUntil = Date.now() + this.skipDelay;
