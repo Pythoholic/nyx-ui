@@ -423,7 +423,7 @@
   .nyx-date-picker-control { display: flex; }
   .nyx-date-picker-control > .nyx-input { border-start-end-radius: 0; border-end-end-radius: 0; }
   .nyx-date-picker-control > .nyx-button { margin-inline-start: calc(var(--nyx-border) * -1); border-start-start-radius: 0; border-end-start-radius: 0; }
-  [data-nyx-date-picker-popover] { position: fixed; z-index: var(--nyx-z-dropdown); inset: 0 auto auto 0; inline-size: max-content; max-inline-size: var(--nyx-overlay-available-width, calc(100vw - 1rem)); max-block-size: var(--nyx-overlay-available-height, calc(100vh - 1rem)); margin: 0; transform: translate3d(var(--nyx-overlay-x, 0), var(--nyx-overlay-y, 0), 0); }
+  [data-nyx-date-picker-popover] { position: fixed; z-index: var(--nyx-z-dropdown); inset: 0 auto auto 0; inline-size: 22rem; max-inline-size: var(--nyx-overlay-available-width, calc(100vw - 1rem)); max-block-size: var(--nyx-overlay-available-height, calc(100vh - 1rem)); margin: 0; transform: translate3d(var(--nyx-overlay-x, 0), var(--nyx-overlay-y, 0), 0); }
   [data-nyx-date-picker-popover]:not([data-nyx-positioned]) { opacity: 0; pointer-events: none; }
 
   .nyx-data-table { display: grid; gap: var(--nyx-space-3); }
@@ -452,8 +452,8 @@
   .nyx-notification-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--nyx-space-3); }
   .nyx-notification-title-row time { color: var(--nyx-label); font-size: var(--nyx-type-meta); white-space: nowrap; }
   .nyx-notification-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-2); }
-  .nyx-notification-actions > :is(a, button) { display: inline-flex; block-size: 2.25rem; align-items: center; justify-content: center; padding: 0.4375rem 0.75rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: transparent; color: var(--nyx-muted); font: inherit; font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-nav); line-height: 1.4; text-decoration: none; text-transform: uppercase; }
-  .nyx-notification-actions > :is(a, button):is(:hover, :focus-visible) { border-color: var(--nyx-accent-line); outline: 0; background: var(--nyx-accent-soft); color: var(--nyx-accent); }
+  .nyx-notification-actions > :is(.nyx-link, .nyx-button) { display: inline-flex; block-size: 2.25rem; align-items: center; justify-content: center; padding: 0.4375rem 0.75rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: transparent; color: var(--nyx-muted); font: inherit; font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-nav); line-height: 1.4; text-decoration: none; text-transform: uppercase; }
+  .nyx-notification-actions > :is(.nyx-link, .nyx-button):is(:hover, :focus-visible) { border-color: var(--nyx-accent-line); outline: 0; background: var(--nyx-accent-soft); color: var(--nyx-accent); }
   .nyx-activity-feed a { color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); text-underline-offset: 0.2em; }
   .nyx-notification-empty { margin: 0; padding: var(--nyx-space-6); color: var(--nyx-label); text-align: center; }
   .nyx-notification-empty[hidden] { display: none; }

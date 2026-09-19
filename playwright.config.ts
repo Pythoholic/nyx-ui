@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = 4173;
+const port = 5174;
 const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
@@ -25,7 +25,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `pnpm build && pnpm --filter @nyx-ui/docs exec vite preview --host 127.0.0.1 --port ${port} --strictPort`,
+    command: `pnpm dev -- --port ${port} --strictPort`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

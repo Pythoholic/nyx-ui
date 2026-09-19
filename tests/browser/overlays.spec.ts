@@ -39,7 +39,7 @@ async function expectAnchored(trigger: Locator, panel: Locator, maximumGap = 16)
   expect(viewport, "the test uses a fixed viewport").not.toBeNull();
   if (!triggerBox || !panelBox || !viewport) return;
 
-  expect(panelBox.width, "panel remains materially narrower than the page").toBeLessThan(viewport.width * 0.75);
+  expect(panelBox.width, "panel remains materially narrower than the page").toBeLessThan(viewport.width * 0.5);
 
   const triggerEdges = [triggerBox.x, triggerBox.x + triggerBox.width / 2, triggerBox.x + triggerBox.width];
   const panelEdges = [panelBox.x, panelBox.x + panelBox.width / 2, panelBox.x + panelBox.width];
