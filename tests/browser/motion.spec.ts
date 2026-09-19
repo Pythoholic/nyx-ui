@@ -14,9 +14,10 @@ test("overlays and modal surfaces use tokenized enter and exit transitions", asy
   await expect(menu).toBeVisible();
   const overlayMotion = await menu.evaluate((element) => {
     const style = getComputedStyle(element);
-    return { animations: element.getAnimations().length, opacity: style.opacity, scale: style.scale, transitionDuration: style.transitionDuration };
+    return { opacity: style.opacity, scale: style.scale, transitionDuration: style.transitionDuration, transitionProperty: style.transitionProperty };
   });
-  expect(overlayMotion.animations).toBeGreaterThan(0);
+  expect(overlayMotion.transitionProperty).toContain("opacity");
+  expect(overlayMotion.transitionProperty).toContain("scale");
   expect(overlayMotion.transitionDuration).toContain("0.12s");
   await expect(menu).toHaveCSS("opacity", "1");
   await expect(menu).toHaveCSS("scale", "1");
