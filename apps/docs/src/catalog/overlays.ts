@@ -47,7 +47,7 @@ export const overlayPages = [
     description: "Context Menu reuses action-menu behavior at pointer or keyboard invocation coordinates.",
     searchTerms: "overlay context menu right click shift f10 keyboard actions",
     plugins: ["context-menu"],
-    body: card("Context menu", contextMenuMarkup, "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Provide another path to every command</h2><p>Context Menu opens at pointer coordinates and from the keyboard context-menu gesture, then reuses the shared menu interaction contract. Because context menus are easy to miss, do not make them the only route to an essential action. The application executes the selected command and decides which commands apply to the target.</p></section>${card("Context menu", contextMenuMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.dialog,
@@ -57,7 +57,7 @@ export const overlayPages = [
     description: "Modal dialogs use the native dialog element with controlled initial focus, dismissal, focus return, and scroll locking.",
     searchTerms: "overlay modal dialog confirmation focus escape backdrop",
     plugins: ["dialog"],
-    body: card("Dialog", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-dialog']", "#nyx-example-dialog"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use when work must interrupt the current page</h2><p>The native dialog supplies the modal boundary while Nyx manages initial focus, Escape and backdrop dismissal, scroll locking, nested dialogs, and focus return. Keep a visible title and description connected to the dialog. The application owns validation, submission, and whether closing with unsaved work is allowed.</p></section>${card("Dialog", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-dialog']", "#nyx-example-dialog"]), "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.alertDialog,
@@ -77,7 +77,7 @@ export const overlayPages = [
     description: "Drawer is a spatial Dialog composition and deliberately shares the same controller and accessibility contract.",
     searchTerms: "overlay drawer sheet dialog side panel record details",
     plugins: ["dialog"],
-    body: card("Drawer", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-drawer']", "#nyx-example-drawer"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Choose for contextual work that benefits from page orientation</h2><p>Drawer changes Dialog's geometry, not its semantics: it is still modal, traps focus, locks page scroll, and returns focus when closed. Use a non-modal page region when users must interact with the underlying content at the same time. Data loading and save behavior remain application-owned.</p></section>${card("Drawer", selectMarkup(dialogMarkup, ["[data-nyx-dialog-trigger='nyx-example-drawer']", "#nyx-example-drawer"]), "Registry source")}`,
   }),
   page({
     path: paths.components.overlays.commandPalette,
@@ -87,6 +87,6 @@ export const overlayPages = [
     description: "A centred modal palette composes Dialog focus management with filterable, grouped listbox results and active-descendant navigation.",
     searchTerms: "command palette dialog modal search grouped results keyboard shortcut",
     plugins: ["command-palette"],
-    body: card("Command palette", commandPaletteMarkup, "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use as a fast path, not the sole path</h2><p>The palette filters an authored command set and moves an active descendant while focus remains in the search field. Commands should also be discoverable in the ordinary interface. Nyx owns the modal, result navigation, empty state, and selection lifecycle; the application registers commands and performs the chosen action.</p></section>${card("Command palette", commandPaletteMarkup, "Registry source")}`,
   }),
 ];
