@@ -11,6 +11,7 @@
     "dev": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs dev --host 127.0.0.1",
     "build": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs build",
     "test": "pnpm test:unit && pnpm test:browser",
+    "test:ci": "pnpm test:unit && pnpm test:browser",
     "test:unit": "pnpm --filter @nyx-ui/plugins test",
     "test:browser": "playwright test",
     "typecheck": "pnpm --filter @nyx-ui/plugins build && pnpm -r typecheck",

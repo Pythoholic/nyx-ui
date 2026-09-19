@@ -96,6 +96,8 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 - [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, verified)
 - [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, verified)
+- [ ] Application Shell: the docs route renders both the page title and the embedded shell title as `h1`, so the document contains two level-one headings.
+- [ ] Metrics, Records, and Activity: the docs route creates 81px of horizontal page overflow at the 390px mobile viewport.
 
 ## Browser regression coverage
 
@@ -104,9 +106,9 @@ interactive components by hand. No defects were found. These assertions now need
 encoded as Playwright specs so they hold permanently rather than depending on a repeat
 manual pass.
 
-- [ ] Overlay positioning specs: dropdown, context menu, menubar, hover card, popover, tooltip, date picker. Assert the panel is anchored to its trigger (not at the viewport origin), sits within the viewport, flips near an edge, and carries no unexpected scrollbars.
-- [ ] Dialog family specs: dialog, alert dialog, drawer, command palette. Assert focus moves inside on open, Escape closes, scroll lock is taken and released, focus returns to the trigger, and stacked dialogs release the lock correctly.
-- [ ] Keyboard navigation specs: tabs, menubar, tree view, calendar, combobox, carousel, stepper. Assert a single tab stop where roving focus applies, arrow and Home/End behaviour, and that only visible items are reachable.
-- [ ] Form component specs: input OTP paste across cells, number input, password visibility, multi-select, file upload validation, date picker typed input and invalid state.
-- [ ] Data table specs: sort alternates ascending and descending with aria-sort tracking, pagination hides rows, selection survives paging.
-- [ ] Site-wide route sweep spec: every route renders, has one h1, produces no console errors, and causes no horizontal page scroll at 2560 wide and at mobile width.
+- [x] Overlay positioning specs: dropdown, context menu, menubar, hover card, popover, tooltip, date picker. Assert the panel is anchored to its trigger (not at the viewport origin), sits within the viewport, flips near an edge, and carries no unexpected scrollbars.
+- [x] Dialog family specs: dialog, alert dialog, drawer, command palette. Assert focus moves inside on open, Escape closes, scroll lock is taken and released, focus returns to the trigger, and stacked dialogs release the lock correctly.
+- [x] Keyboard navigation specs: tabs, menubar, tree view, calendar, combobox, carousel, stepper. Assert a single tab stop where roving focus applies, arrow and Home/End behaviour, and that only visible items are reachable.
+- [x] Form component specs: input OTP paste across cells, number input, password visibility, multi-select, file upload validation, date picker typed input and invalid state.
+- [x] Data table specs: sort alternates ascending and descending with aria-sort tracking, pagination hides rows, selection survives paging.
+- [x] Site-wide route sweep spec: every route renders, has one h1, produces no console errors, and causes no horizontal page scroll at 2560 wide and at mobile width.
