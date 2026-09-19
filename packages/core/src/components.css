@@ -87,7 +87,7 @@
   .nyx-blockquote > footer > :not(:last-child)::after { content: "\00b7"; margin-inline-start: var(--nyx-space-2); }
   .nyx-blockquote cite { color: var(--nyx-muted); font-style: normal; }
 
-  .nyx-button { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; gap: 0.625rem; padding: 0.6875rem 1rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: var(--nyx-chip); color: var(--nyx-muted); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-panel); line-height: 1.4; text-transform: uppercase; transition: border-color var(--nyx-duration-fast) var(--nyx-ease-standard), background-color var(--nyx-duration-fast) var(--nyx-ease-standard), color var(--nyx-duration-fast) var(--nyx-ease-standard), transform var(--nyx-duration-fast) var(--nyx-ease-standard); }
+  .nyx-button { display: inline-flex; block-size: 2.75rem; align-items: center; justify-content: center; gap: 0.625rem; padding: 0.6875rem 1rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: var(--nyx-chip); color: var(--nyx-muted); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-panel); line-height: 1.4; text-transform: uppercase; transition: border-color var(--nyx-duration-fast) var(--nyx-ease-standard), background-color var(--nyx-duration-fast) var(--nyx-ease-standard), color var(--nyx-duration-fast) var(--nyx-ease-standard), transform var(--nyx-duration-fast) var(--nyx-ease-standard); }
   .nyx-button:hover:not(:disabled) { border-color: var(--nyx-muted); color: var(--nyx-ink); transform: translateY(-0.0625rem); }
   .nyx-button:active:not(:disabled) { transform: translateY(0); }
   .nyx-button[data-variant="primary"] { border-color: var(--nyx-accent); background: var(--nyx-accent); color: var(--nyx-accent-ink); }
@@ -95,8 +95,8 @@
   .nyx-button[data-variant="primary"]:hover:not(:disabled) { border-color: var(--nyx-accent-hi); background: var(--nyx-accent-hi); color: var(--nyx-accent-ink); }
   .nyx-button[data-variant="quiet"] { border-color: transparent; background: transparent; }
   .nyx-button[data-variant="danger"] { border-color: var(--nyx-danger-line); background: var(--nyx-danger-soft); color: var(--nyx-danger); }
-  .nyx-button[data-size="small"] { min-height: 2.25rem; padding: 0.4375rem 0.75rem; font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-nav); }
-  .nyx-button[data-size="large"] { min-height: 3.25rem; padding: 0.875rem 1.25rem; font-size: var(--nyx-type-body); }
+  .nyx-button[data-size="small"] { block-size: 2.25rem; padding: 0.4375rem 0.75rem; font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-nav); }
+  .nyx-button[data-size="large"] { block-size: 3.25rem; padding: 0.875rem 1.25rem; font-size: var(--nyx-type-body); }
   .nyx-button:disabled, .nyx-button[aria-disabled="true"] { border-color: var(--nyx-line); background: var(--nyx-input); color: var(--nyx-disabled); opacity: 0.72; }
   .nyx-button[data-loading="true"] { pointer-events: none; }
   .nyx-button[aria-pressed="true"] { border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); color: var(--nyx-accent); }
