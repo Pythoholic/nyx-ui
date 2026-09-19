@@ -48,10 +48,13 @@ describe("small primitive registry markup", () => {
     const component = loadComponent("icon-catalog");
     const catalog = component.querySelector<HTMLElement>(".nyx-icon-catalog")!;
     const samples = Array.from(catalog.querySelectorAll<HTMLElement>(".nyx-icon-sample"));
-    expect(catalog.getAttribute("aria-label")).toBeTruthy();
-    expect(samples).toHaveLength(8);
+    expect(catalog.getAttribute("aria-label")).toBe("Icons used by Nyx components");
+    expect(samples).toHaveLength(17);
     expect(samples.every((sample) => sample.querySelector("svg.nyx-icon[aria-hidden='true'][viewBox='0 0 24 24']"))).toBe(true);
-    expect(samples.map((sample) => sample.querySelector("code")?.textContent)).toContain("search");
+    expect(samples.map((sample) => sample.querySelector("code")?.textContent)).toEqual([
+      "alert", "arrow-left", "arrow-right", "chevron-down", "check", "close", "grid", "image", "lock",
+      "menu", "plus", "records", "search", "settings", "star", "upload", "user",
+    ]);
   });
 
   it("keeps visually hidden text semantic and provides a focus-revealed skip target", () => {
@@ -98,12 +101,14 @@ describe("small primitive registry markup", () => {
 
   it("uses list semantics for static tags and exposes tone and size variants", () => {
     const component = loadComponent("tags");
-    const list = component.querySelector<HTMLUListElement>("ul.nyx-tag-list")!;
-    const tags = Array.from(list.querySelectorAll<HTMLLIElement>(":scope > li.nyx-tag"));
-    expect(list.getAttribute("aria-label")).toBe("Applied filters");
-    expect(tags).toHaveLength(5);
-    expect(tags.map((tag) => tag.dataset.tone ?? "neutral")).toEqual(["neutral", "success", "warning", "danger", "neutral"]);
-    expect(tags.at(-1)?.dataset.size).toBe("small");
+    const lists = Array.from(component.querySelectorAll<HTMLUListElement>("ul.nyx-tag-list"));
+    const tags = Array.from(component.querySelectorAll<HTMLLIElement>("li.nyx-tag"));
+    expect(lists).toHaveLength(3);
+    expect(lists.every((list) => Boolean(list.getAttribute("aria-label")))).toBe(true);
+    expect(tags).toHaveLength(12);
+    expect(tags.filter((tag) => tag.dataset.variant === "solid")).toHaveLength(4);
+    expect(tags.filter((tag) => tag.dataset.variant === "minimal")).toHaveLength(4);
+    expect(component.querySelectorAll(".nyx-tag-status[aria-hidden='true']")).toHaveLength(3);
   });
 
   it("publishes one registry record for each canonical source", () => {

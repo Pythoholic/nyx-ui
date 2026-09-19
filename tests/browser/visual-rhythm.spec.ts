@@ -167,3 +167,40 @@ test("notification links and buttons use one native action treatment", async ({ 
   expect(styles[2]).toEqual(styles[0]);
   await expect(demo.locator(".nyx-notification").nth(2).getByRole("button", { name: "Mark notification unread" })).toHaveText("Mark unread");
 });
+
+test("tag variants preserve label sizing and solid-fill contrast", async ({ page }) => {
+  await page.goto("/components/primitives/tags-chips");
+  const demo = example(page, "Tag emphasis variants");
+  const tags = demo.locator(".nyx-tag");
+  await expect(tags).toHaveCount(12);
+  await expect(tags.first()).toHaveCSS("font-size", "14px");
+  await expect(demo.locator('.nyx-tag[data-variant="minimal"]')).toHaveCount(4);
+
+  const ratios = await demo.locator('.nyx-tag[data-variant="solid"]').evaluateAll((elements) => {
+    const luminance = (value: string): number => {
+      const channels = value.match(/[\d.]+/g)?.slice(0, 3).map(Number) ?? [];
+      const linear = channels.map((channel) => {
+        const normalized = channel / 255;
+        return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+    };
+    return elements.map((element) => {
+      const style = getComputedStyle(element);
+      const foreground = luminance(style.color);
+      const background = luminance(style.backgroundColor);
+      return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+    });
+  });
+  expect(ratios.every((ratio) => ratio >= 4.5), `solid tag contrast ratios: ${ratios.join(", ")}`).toBe(true);
+});
+
+test("the icon inventory contains every Nyx interface symbol and no sample-only folder", async ({ page }) => {
+  await page.goto("/components/primitives/icons");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Icons Nyx Uses");
+  const labels = await page.locator(".nyx-icon-sample code").allTextContents();
+  expect(labels).toEqual([
+    "alert", "arrow-left", "arrow-right", "chevron-down", "check", "close", "grid", "image", "lock",
+    "menu", "plus", "records", "search", "settings", "star", "upload", "user",
+  ]);
+});

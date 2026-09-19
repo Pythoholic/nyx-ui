@@ -73,6 +73,9 @@ describe("small primitive CSS", () => {
     expect(css).toMatch(/\.nyx-status-indicator\[data-tone="success"\]\s*\{[^}]*var\(--nyx-signal\)/);
     expect(css).toMatch(/\.nyx-status-indicator\[data-state="pending"\][^{]*\.nyx-status-dot\s*\{[^}]*animation:\s*nyx-pulse/);
     expect(css).toMatch(/\.nyx-tag\[data-tone="warning"\]\s*\{[^}]*var\(--nyx-warning-line\)/);
+    expect(css).toMatch(/\.nyx-tag\[data-variant="solid"\]\s*\{[^}]*background:\s*var\(--nyx-accent\);[^}]*color:\s*var\(--nyx-accent-ink\)/);
+    expect(css).toMatch(/\.nyx-tag\[data-variant="minimal"\]\s*\{[^}]*border-color:\s*transparent;[^}]*background:\s*transparent/);
+    expect(css).toMatch(/\.nyx-tag\s*\{[^}]*font-size:\s*0\.875rem/);
     expect(css).toMatch(/\.nyx-tag\[data-size="small"\]\s*\{[^}]*font-size:\s*var\(--nyx-type-meta\)/);
   });
 });

@@ -1,7 +1,23 @@
-<ul aria-label="Applied filters" class="nyx-tag-list">
-  <li class="nyx-tag">Production</li>
-  <li class="nyx-tag" data-tone="success">Healthy</li>
-  <li class="nyx-tag" data-tone="warning">Needs review</li>
-  <li class="nyx-tag" data-tone="danger">Blocked</li>
-  <li class="nyx-tag" data-size="small">Tokyo</li>
-</ul>
+<div class="nyx-stack">
+  <div class="nyx-stack">
+    <strong>Outlined</strong>
+    <ul aria-label="Outlined environment tags" class="nyx-tag-list">
+      <li class="nyx-tag">Production</li><li class="nyx-tag" data-tone="success">Healthy</li><li class="nyx-tag" data-tone="warning">Needs review</li><li class="nyx-tag" data-tone="danger">Blocked</li>
+    </ul>
+  </div>
+  <div class="nyx-stack">
+    <strong>Solid fill</strong>
+    <ul aria-label="High-emphasis status tags" class="nyx-tag-list">
+      <li class="nyx-tag" data-variant="solid">Active</li><li class="nyx-tag" data-tone="success" data-variant="solid">Ready</li><li class="nyx-tag" data-tone="warning" data-variant="solid">Attention</li><li class="nyx-tag" data-tone="danger" data-variant="solid">Failed</li>
+    </ul>
+  </div>
+  <div class="nyx-stack">
+    <strong>Minimal</strong>
+    <ul aria-label="Dense service statuses" class="nyx-tag-list">
+      <li class="nyx-tag" data-variant="minimal">Tokyo</li>
+      <li class="nyx-tag" data-tone="success" data-variant="minimal"><span aria-hidden="true" class="nyx-tag-status"></span>Online</li>
+      <li class="nyx-tag" data-tone="warning" data-variant="minimal"><span aria-hidden="true" class="nyx-tag-status"></span>Degraded</li>
+      <li class="nyx-tag" data-tone="danger" data-variant="minimal"><span aria-hidden="true" class="nyx-tag-status"></span>Offline</li>
+    </ul>
+  </div>
+</div>

@@ -201,11 +201,17 @@
   .nyx-search-group-label { padding: 0.375rem 0.75rem; color: var(--nyx-label); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
   .nyx-tag-list { display: flex; min-block-size: 2rem; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-2); margin: 0; padding: 0; list-style: none; }
   .nyx-tag-list:empty { display: none; }
-  .nyx-tag { display: inline-flex; min-block-size: 2rem; align-items: center; gap: var(--nyx-space-1); padding-inline: 0.625rem; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-round); background: var(--nyx-accent-soft); color: var(--nyx-accent); font-size: var(--nyx-type-label); line-height: 1.4; list-style: none; }
+  .nyx-tag { display: inline-flex; min-block-size: 2rem; align-items: center; gap: var(--nyx-space-1); padding-inline: 0.625rem; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-round); background: var(--nyx-accent-soft); color: var(--nyx-accent); font-size: 0.875rem; line-height: 1.4; list-style: none; }
   .nyx-tag:has(> button) { padding-inline-end: 0; }
   .nyx-tag[data-tone="success"] { border-color: var(--nyx-signal-line); background: var(--nyx-signal-soft); color: var(--nyx-signal); }
   .nyx-tag[data-tone="warning"] { border-color: var(--nyx-warning-line); background: var(--nyx-warning-soft); color: var(--nyx-warning); }
   .nyx-tag[data-tone="danger"] { border-color: var(--nyx-danger-line); background: var(--nyx-danger-soft); color: var(--nyx-danger); }
+  .nyx-tag[data-variant="solid"] { border-color: var(--nyx-accent); background: var(--nyx-accent); color: var(--nyx-accent-ink); font-weight: var(--nyx-weight-semibold); }
+  .nyx-tag[data-variant="solid"][data-tone="success"] { border-color: var(--nyx-signal); background: var(--nyx-signal); color: var(--nyx-accent-ink); }
+  .nyx-tag[data-variant="solid"][data-tone="warning"] { border-color: var(--nyx-warning); background: var(--nyx-warning); color: var(--nyx-accent-ink); }
+  .nyx-tag[data-variant="solid"][data-tone="danger"] { border-color: var(--nyx-danger); background: var(--nyx-danger); color: var(--nyx-accent-ink); }
+  .nyx-tag[data-variant="minimal"] { min-block-size: 1.5rem; padding-inline: 0; border-color: transparent; border-radius: 0; background: transparent; }
+  .nyx-tag-status { inline-size: 0.4375rem; block-size: 0.4375rem; flex: none; border-radius: var(--nyx-radius-round); background: currentColor; }
   .nyx-tag[data-size="small"] { min-block-size: 1.625rem; padding-inline: var(--nyx-space-2); font-size: var(--nyx-type-meta); }
   .nyx-tag > button { display: inline-grid; inline-size: 1.875rem; block-size: 1.875rem; place-items: center; padding: 0; border: 0; border-radius: var(--nyx-radius-round); background: transparent; color: inherit; font: inherit; }
   .nyx-tag > button:is(:hover, :focus-visible) { outline: 0; background: var(--nyx-accent); color: var(--nyx-accent-ink); }
