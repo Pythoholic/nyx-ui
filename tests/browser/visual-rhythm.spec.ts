@@ -273,3 +273,33 @@ test("application shell reuses sidebar navigation and separates content regions"
   expect(metrics.topbarBorder).toBeGreaterThan(0);
   expect(metrics.regionGap).toBe(0);
 });
+
+test("sidebar stays inside its shell and makes rail changes legible", async ({ page }) => {
+  await page.goto("/components/layouts/sidebar");
+  const demo = example(page, "Sidebar");
+  const shell = demo.locator("[data-nyx-sidebar]");
+  const panel = shell.locator("[data-nyx-sidebar-panel]");
+  const content = shell.locator(".nyx-app-content");
+  const toggle = shell.getByRole("button", { name: "Toggle workspace navigation" });
+
+  const [shellBox, panelBox, contentBox] = await Promise.all([shell.boundingBox(), panel.boundingBox(), content.boundingBox()]);
+  expect(shellBox).not.toBeNull();
+  expect(panelBox).not.toBeNull();
+  expect(contentBox).not.toBeNull();
+  if (!shellBox || !panelBox || !contentBox) return;
+  expect(panelBox.x + panelBox.width).toBeLessThanOrEqual(contentBox.x + 1);
+  expect(panelBox.x + panelBox.width).toBeLessThanOrEqual(shellBox.x + shellBox.width + 1);
+  await expect(shell.getByRole("button", { name: "Create record" })).toBeVisible();
+  await expect(shell.getByRole("button", { name: "View activity" })).toBeVisible();
+
+  const transition = await shell.evaluate((root) => ({
+    grid: getComputedStyle(root).transitionProperty,
+    label: getComputedStyle(root.querySelector<HTMLElement>("[data-nyx-sidebar-label]")!).transitionProperty,
+  }));
+  expect(transition.grid).toContain("grid-template-columns");
+  expect(transition.label).toContain("opacity");
+
+  await toggle.click();
+  await expect(shell).toHaveAttribute("data-state", "collapsed");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+});
