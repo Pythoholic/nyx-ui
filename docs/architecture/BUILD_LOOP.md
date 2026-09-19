@@ -31,68 +31,82 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Sidebar
 - [x] Input OTP / PIN
 - [x] File Upload
-- [x] Calendar (preview) (built, visually unverified)
-- [x] Date Picker (preview) (built, visually unverified)
-- [x] Advanced Data Table (preview) (built, visually unverified)
+- [x] Calendar (preview) (verified)
+- [x] Date Picker (preview) (verified)
+- [x] Advanced Data Table (preview) (verified)
 
 ## Priority 2 - complex workspace components
 
-- [x] Tree View (built, visually unverified)
-- [x] Resizable Panels / Layout Splitter (built, visually unverified)
-- [x] Scroll Area and styled scrollbar (built, visually unverified)
-- [x] Hover Card (built, visually unverified)
-- [x] Carousel (built, visually unverified)
-- [x] Stepper with state management (built, visually unverified)
-- [x] Advanced number input (built, visually unverified)
-- [x] Password strength and visibility controls (built, visually unverified)
-- [x] Search box with suggestions and recent searches (built, visually unverified)
-- [x] Multi-select and tag input (built, visually unverified)
-- [x] Notification centre (built, visually unverified)
-- [x] Activity feed (built, visually unverified)
-- [x] Filter bar (built, visually unverified)
-- [x] Command bar (built, visually unverified)
-- [x] Bulk-action toolbar (built, visually unverified)
+- [x] Tree View (verified)
+- [x] Resizable Panels / Layout Splitter (verified)
+- [x] Scroll Area and styled scrollbar (verified)
+- [x] Hover Card (verified)
+- [x] Carousel (verified)
+- [x] Stepper with state management (verified)
+- [x] Advanced number input (verified)
+- [x] Password strength and visibility controls (verified)
+- [x] Search box with suggestions and recent searches (verified)
+- [x] Multi-select and tag input (verified)
+- [x] Notification centre (verified)
+- [x] Activity feed (verified)
+- [x] Filter bar (verified)
+- [x] Command bar (verified)
+- [x] Bulk-action toolbar (verified)
 
 ## Priority 3 - media and AI-product patterns
 
-- [x] Chat bubbles and message threads (built, visually unverified)
-- [x] Prompt composer (built, visually unverified)
-- [x] Message scroller (built, visually unverified)
-- [x] Attachment previews (built, visually unverified)
-- [x] Generation queue (built, visually unverified)
-- [x] Model selector (built, visually unverified)
-- [x] Parameter inspector (built, visually unverified)
-- [x] Before/after comparison (built, visually unverified)
-- [x] Image lightbox (built, visually unverified)
-- [x] Media carousel (built, visually unverified)
-- [x] Upload dropzone with queue (built, visually unverified)
-- [x] Batch progress monitor (built, visually unverified)
+- [x] Chat bubbles and message threads (verified)
+- [x] Prompt composer (verified)
+- [x] Message scroller (verified)
+- [x] Attachment previews (verified)
+- [x] Generation queue (verified)
+- [x] Model selector (verified)
+- [x] Parameter inspector (verified)
+- [x] Before/after comparison (verified)
+- [x] Image lightbox (verified)
+- [x] Media carousel (verified)
+- [x] Upload dropzone with queue (verified)
+- [x] Batch progress monitor (verified)
 
 ## Small primitives
 
-- [x] Aspect-ratio container (built, visually unverified)
-- [x] Container and responsive columns (built, visually unverified)
-- [x] Styled links (built, visually unverified)
-- [x] Blockquote (built, visually unverified)
-- [x] Code block and copy button as a shipped component (built, visually unverified)
-- [x] Icon catalog page (built, visually unverified)
-- [x] Accessible visually-hidden utility (built, visually unverified)
-- [x] RTL / direction support (built, visually unverified)
-- [x] Loading overlay (built, visually unverified)
-- [x] Status indicator (built, visually unverified)
-- [x] Tags / chips (built, visually unverified)
-- [x] Tooltip provider and delay rules (built, visually unverified)
+- [x] Aspect-ratio container (verified)
+- [x] Container and responsive columns (verified)
+- [x] Styled links (verified)
+- [x] Blockquote (verified)
+- [x] Code block and copy button as a shipped component (verified)
+- [x] Icon catalog page (verified)
+- [x] Accessible visually-hidden utility (verified)
+- [x] RTL / direction support (verified)
+- [x] Loading overlay (verified)
+- [x] Status indicator (verified)
+- [x] Tags / chips (verified)
+- [x] Tooltip provider and delay rules (verified)
 
 ## Release blockers
 
-- [x] Promote non-preview components from `preview` to `stable` in registry.json per ruling 1 (built, visually unverified)
-- [x] Promote catalog-only example variants into canonical registry files (built, visually unverified)
-- [x] CI running test, typecheck and build on push (built, visually unverified)
-- [x] Changesets or equivalent versioning (built, visually unverified)
-- [x] Packages publishable to npm (built, visually unverified)
-- [x] Playwright or equivalent browser regression coverage (built, visually unverified)
+- [x] Promote non-preview components from `preview` to `stable` in registry.json per ruling 1 (verified)
+- [x] Promote catalog-only example variants into canonical registry files (verified)
+- [x] CI running test, typecheck and build on push (verified)
+- [x] Changesets or equivalent versioning (verified)
+- [x] Packages publishable to npm (verified)
+- [x] Playwright or equivalent browser regression coverage (verified)
 
 ## Known defects
 
-- [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, visually unverified)
-- [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, visually unverified)
+- [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, verified)
+- [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, verified)
+
+## Browser regression coverage
+
+A manual browser audit at 2560x1440 on 2026-09-19 checked all 95 routes and drove the
+interactive components by hand. No defects were found. These assertions now need to be
+encoded as Playwright specs so they hold permanently rather than depending on a repeat
+manual pass.
+
+- [ ] Overlay positioning specs: dropdown, context menu, menubar, hover card, popover, tooltip, date picker. Assert the panel is anchored to its trigger (not at the viewport origin), sits within the viewport, flips near an edge, and carries no unexpected scrollbars.
+- [ ] Dialog family specs: dialog, alert dialog, drawer, command palette. Assert focus moves inside on open, Escape closes, scroll lock is taken and released, focus returns to the trigger, and stacked dialogs release the lock correctly.
+- [ ] Keyboard navigation specs: tabs, menubar, tree view, calendar, combobox, carousel, stepper. Assert a single tab stop where roving focus applies, arrow and Home/End behaviour, and that only visible items are reachable.
+- [ ] Form component specs: input OTP paste across cells, number input, password visibility, multi-select, file upload validation, date picker typed input and invalid state.
+- [ ] Data table specs: sort alternates ascending and descending with aria-sort tracking, pagination hides rows, selection survives paging.
+- [ ] Site-wide route sweep spec: every route renders, has one h1, produces no console errors, and causes no horizontal page scroll at 2560 wide and at mobile width.
