@@ -452,7 +452,9 @@
   .nyx-notification-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--nyx-space-3); }
   .nyx-notification-title-row time { color: var(--nyx-label); font-size: var(--nyx-type-meta); white-space: nowrap; }
   .nyx-notification-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--nyx-space-2); }
-  .nyx-notification-actions a, .nyx-activity-feed a { color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); text-underline-offset: 0.2em; }
+  .nyx-notification-actions > :is(a, button) { display: inline-flex; block-size: 2.25rem; align-items: center; justify-content: center; padding: 0.4375rem 0.75rem; border: var(--nyx-border) solid var(--nyx-line-strong); border-radius: var(--nyx-radius-control); background: transparent; color: var(--nyx-muted); font: inherit; font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-nav); line-height: 1.4; text-decoration: none; text-transform: uppercase; }
+  .nyx-notification-actions > :is(a, button):is(:hover, :focus-visible) { border-color: var(--nyx-accent-line); outline: 0; background: var(--nyx-accent-soft); color: var(--nyx-accent); }
+  .nyx-activity-feed a { color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); text-underline-offset: 0.2em; }
   .nyx-notification-empty { margin: 0; padding: var(--nyx-space-6); color: var(--nyx-label); text-align: center; }
   .nyx-notification-empty[hidden] { display: none; }
 

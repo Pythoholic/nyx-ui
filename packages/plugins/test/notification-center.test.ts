@@ -47,11 +47,14 @@ describe("NyxNotificationCenter", () => {
     expect(center.element.dataset.state).toBe("unread");
     expect(center.element.querySelector("[data-nyx-notification-count]")?.textContent).toBe("1 unread");
     expect(betaToggle.getAttribute("aria-pressed")).toBe("true");
-    expect(betaToggle.getAttribute("aria-label")).toBe("Read notification");
+    expect(betaToggle.getAttribute("aria-label")).toBe("Mark notification unread");
+    expect(betaToggle.textContent).toBe("Mark unread");
 
     center.value = ["beta"];
     expect(alpha.dataset.state).toBe("read");
     expect(center.notifications[1]?.dataset.state).toBe("unread");
+    expect(betaToggle.getAttribute("aria-label")).toBe("Mark notification read");
+    expect(betaToggle.textContent).toBe("Mark read");
     expect(center.value).toEqual(["beta"]);
   });
 

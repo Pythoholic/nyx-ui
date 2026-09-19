@@ -134,8 +134,8 @@ export class NyxNotificationCenter {
       const toggle = notification.querySelector<HTMLButtonElement>("[data-nyx-notification-read]");
       if (toggle) {
         toggle.setAttribute("aria-pressed", String(read));
-        toggle.setAttribute("aria-label", "Read notification");
-        toggle.textContent = "Read";
+        toggle.setAttribute("aria-label", read ? "Mark notification unread" : "Mark notification read");
+        toggle.textContent = read ? "Mark unread" : "Mark read";
       }
     });
     if (this.count) this.count.textContent = `${unread.length} unread`;
