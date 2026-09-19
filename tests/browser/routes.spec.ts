@@ -39,6 +39,10 @@ for (const viewport of [
         routeDefects.push(`${path}:h1-count`);
         routeDefectDetails.push(`${path} rendered ${h1Count} h1 elements`);
       }
+      if (path.startsWith("/components/") && await page.locator(".docs-prose-section").count() === 0) {
+        routeDefects.push(`${path}:missing-adoption-guidance`);
+        routeDefectDetails.push(`${path} has no adoption, accessibility, state, or boundary guidance`);
+      }
       const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       if (pageOverflow > 1) {
         routeDefects.push(`${path}:horizontal-overflow`);
