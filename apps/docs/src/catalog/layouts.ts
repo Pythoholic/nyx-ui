@@ -16,7 +16,7 @@ export const layoutPages = [
     title: "Application Shell",
     description: "The application shell composes stable workspace navigation with an adaptable content region.",
     searchTerms: "layout application shell dashboard sidebar topbar workspace",
-    body: card("Application shell", selectMarkup(layoutsMarkup, ["[data-nyx-example='application-shell']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Stable regions, application-owned routing</h2><p>Use the shell for persistent workspace navigation, a topbar, and one primary content region. Mark the active destination with <code>aria-current="page"</code> and keep page content under the main landmark. This static layout does not provide responsive drawer behavior or routing; use Sidebar when the navigation must collapse.</p></section>${card("Application shell", selectMarkup(layoutsMarkup, ["[data-nyx-example='application-shell']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.layouts.sidebar,
@@ -84,6 +84,6 @@ export const layoutPages = [
     title: "Split Workspace",
     description: "Split workspaces keep configuration and live output visible as two coordinated but independently structured regions.",
     searchTerms: "layout split workspace configuration preview live result",
-    body: card("Split workspace", selectMarkup(layoutsMarkup, ["[data-nyx-example='split-workspace']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use when both regions must stay visible</h2><p>The split keeps controls and their output side by side, then stacks them at the shared responsive breakpoint without changing document order. It is a fixed layout, not a draggable splitter; choose Resizable Panels when users need to allocate space themselves. The application owns preview generation and loading or error states.</p></section>${card("Split workspace", selectMarkup(layoutsMarkup, ["[data-nyx-example='split-workspace']"]), "Registry source")}`,
   }),
 ];

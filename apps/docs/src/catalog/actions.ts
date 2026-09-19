@@ -13,7 +13,7 @@ export const actionPages = [
     title: "Button",
     description: "Buttons share stable geometry and clear priority across variants, sizes, icon-only controls, disabled state, and loading state.",
     searchTerms: "button action primary secondary quiet destructive icon group loading disabled sizes",
-    body: `<div class="docs-grid">
+    body: `<section class="docs-prose-section"><h2>Choose semantics before emphasis</h2><p>Use a button for an in-place action and an anchor for navigation. Primary, quiet, and destructive treatments express priority but do not change behavior. Loading and disabled examples are authored states; the application owns async work, duplicate-submission prevention, and restoring an actionable label.</p></section><div class="docs-grid">
       ${card("Canonical button", selectMarkup(buttonMarkup, ["[data-nyx-example='button-primary']"]), "Registry source")}
       ${card("Variants", selectMarkup(buttonMarkup, ["[data-nyx-example='button-variants']"]), "Registry source")}
       ${card("Sizes and states", selectMarkup(buttonMarkup, ["[data-nyx-example='button-sizes-states']"]), "Registry source")}
@@ -27,7 +27,7 @@ export const actionPages = [
     title: "Toggle and Toggle Group",
     description: "Pressed buttons express independent choices; native radio controls remain the baseline for exclusive selection.",
     searchTerms: "toggle pressed radio segmented group button selection",
-    body: card("Toggle patterns", togglesMarkup, "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Independent and exclusive choices differ</h2><p>Use <code>aria-pressed</code> buttons when each choice can be toggled independently. Use the native radio group for exactly one choice from a set. The examples do not manage application preferences or persistence; keep the pressed state or checked value synchronized with the state your application accepts.</p></section>${card("Toggle patterns", togglesMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.actions.commandBar,

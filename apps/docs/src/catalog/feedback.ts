@@ -16,7 +16,7 @@ export const feedbackPages = [
     title: "Badges",
     description,
     searchTerms: "badge status active success warning danger failed",
-    body: card("Badges", selectMarkup(feedbackMarkup, ["[data-nyx-example='badges']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use for compact, non-interactive metadata</h2><p>Badges label state or category beside primary content. Their text carries the meaning; tone must not be the only distinction. Use a button or link when the label performs an action, and use Status Indicator when the state needs a dot-and-label treatment.</p></section>${card("Badges", selectMarkup(feedbackMarkup, ["[data-nyx-example='badges']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.alerts,
@@ -25,7 +25,7 @@ export const feedbackPages = [
     title: "Alerts",
     description,
     searchTerms: "alert notice message success danger validation status",
-    body: card("Alerts", selectMarkup(feedbackMarkup, ["[data-nyx-example='alerts']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use for information that must remain in context</h2><p>The canonical alerts are static content blocks with a title and message. Add <code>role="alert"</code> only when an urgent message is inserted after load; content already present does not need a live-region role. The application owns dismissal, recovery actions, and field-level error association.</p></section>${card("Alerts", selectMarkup(feedbackMarkup, ["[data-nyx-example='alerts']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.progress,
@@ -34,7 +34,7 @@ export const feedbackPages = [
     title: "Progress",
     description: "Progress communicates determinate and indeterminate work with a native progressbar contract.",
     searchTerms: "progress bar loading processing determinate indeterminate",
-    body: card("Progress", selectMarkup(feedbackMarkup, ["[data-nyx-example='progress']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Reflect work the application actually knows</h2><p>Use a native <code>progress</code> element with a numeric value for determinate work and omit the value when completion cannot be estimated. Keep a visible text label nearby. Nyx styles the state; the application supplies truthful progress and decides when work can be canceled or retried.</p></section>${card("Progress", selectMarkup(feedbackMarkup, ["[data-nyx-example='progress']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.stepper,
@@ -82,7 +82,7 @@ export const feedbackPages = [
     description: "Transient notifications enter a live region, announce useful status, and clean up timers and controls when destroyed.",
     searchTerms: "toast notification live region dismiss transient status",
     plugins: ["toast"],
-    body: card("Toast", selectMarkup(feedbackMarkup, ["[data-nyx-example='toast']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Reserve for brief, non-blocking updates</h2><p>Toasts announce transient status from a live region and may be dismissed. Do not place required decisions, form errors, or the only copy of a result in a toast because it disappears. The application decides what event creates a toast; the controller manages its timer, pause, dismissal, and cleanup.</p></section>${card("Toast", selectMarkup(feedbackMarkup, ["[data-nyx-example='toast']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.emptyState,
@@ -91,7 +91,7 @@ export const feedbackPages = [
     title: "Empty State",
     description: "Empty states explain what is absent and provide a clear next action where one exists.",
     searchTerms: "empty state no records action create",
-    body: card("Empty state", selectMarkup(feedbackMarkup, ["[data-nyx-example='empty-state']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Explain absence before offering action</h2><p>Use an empty state when a region has no items to render, not while data is loading or a request has failed. Name what is absent and offer one relevant next step when the user can change it. The example is static; applications own permission checks and the create workflow.</p></section>${card("Empty state", selectMarkup(feedbackMarkup, ["[data-nyx-example='empty-state']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.errorState,
@@ -100,6 +100,6 @@ export const feedbackPages = [
     title: "Error State",
     description: "Recoverable error states pair a plain-language explanation with the safest next action.",
     searchTerms: "error state failed unavailable retry recoverable",
-    body: card("Error state", selectMarkup(feedbackMarkup, ["[data-nyx-example='error-state']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Offer recovery only when it is safe</h2><p>Use this region-level state when content could not be loaded or processed. State what failed without exposing internal details, preserve any user input that can be recovered, and show Retry only for an operation that can be repeated safely. The application owns error logging and the retry request.</p></section>${card("Error state", selectMarkup(feedbackMarkup, ["[data-nyx-example='error-state']"]), "Registry source")}`,
   }),
 ];

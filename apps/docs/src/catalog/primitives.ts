@@ -19,7 +19,7 @@ export const primitivePages = [
     title: "Static Primitives",
     description: "Avatar, card, list, item, separator, and keyboard patterns form one cohesive semantic vocabulary with no runtime controller.",
     searchTerms: "avatar group initials card panel item list separator divider keyboard kbd chord static",
-    body: card("Avatar, card, separator, and keys", staticPrimitivesMarkup, "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Small patterns keep their native meaning</h2><p>Cards group related content but do not need an ARIA role by default. Separators are decorative unless they divide operable regions. Avatars require useful alternative text when the image identifies a person, while keyboard hints describe an available shortcut and must not imply that the shortcut has been registered.</p></section>${card("Avatar, card, separator, and keys", staticPrimitivesMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.primitives.aspectRatio,

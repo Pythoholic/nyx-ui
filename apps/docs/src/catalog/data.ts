@@ -14,7 +14,7 @@ export const dataPages = [
     title: "Metrics, Records, and Activity",
     description: "Operational data stays scannable through tabular numbers, strong row boundaries, explicit status, accessible tables, and expandable detail.",
     searchTerms: "data stat card description list table jobs workflow timeline log code record expandable",
-    body: card("Metrics, records, and activity", dataDisplayMarkup, "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Choose the structure that matches the question</h2><p>Metrics summarize a small set of headline values, description lists pair terms with facts, tables support comparison across repeated fields, and disclosure reveals optional detail. Preserve native headings, lists, tables, and <code>details</code> elements when adapting the examples. Sorting, live updates, and data retrieval are outside this static group.</p></section>${card("Metrics, records, and activity", dataDisplayMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.dataDisplay.activityFeed,

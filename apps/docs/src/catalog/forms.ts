@@ -21,7 +21,7 @@ export const formPages = [
     title: "Text Fields",
     description,
     searchTerms: "forms input textarea search validation disabled label hint error",
-    body: card("Text fields", selectMarkup(formsMarkup, ["[data-nyx-example='text-fields']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Start with the native input type</h2><p>Choose the input type and <code>autocomplete</code> token that match the data, keep every control associated with a visible label, and connect hints or errors with <code>aria-describedby</code>. The examples show disabled and invalid presentation; the application owns validation rules, submitted values, and server-error mapping.</p></section>${card("Text fields", selectMarkup(formsMarkup, ["[data-nyx-example='text-fields']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.forms.selection,
@@ -30,7 +30,7 @@ export const formPages = [
     title: "Selection Controls",
     description,
     searchTerms: "select checkbox radio switch number segmented choice forms",
-    body: card("Selection", selectMarkup(formsMarkup, ["[data-nyx-example='selection-controls']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Match the control to the choice</h2><p>Checkboxes allow independent choices, radios select one value from a named group, and a native select fits a compact option list. Preserve fieldset and legend grouping where the shared question matters. The browser owns keyboard and form behavior; the application owns available options and validation.</p></section>${card("Selection", selectMarkup(formsMarkup, ["[data-nyx-example='selection-controls']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.forms.numberInput,
@@ -80,7 +80,7 @@ export const formPages = [
     description: "An editable ARIA combobox filters listbox options, tracks an active descendant, and synchronizes selection to a form value.",
     searchTerms: "combobox autocomplete listbox filter search option active descendant form",
     plugins: ["combobox"],
-    body: card("Combobox", selectMarkup(comboboxMarkup, ["label[for='nyx-location-query']", "#nyx-location-combobox"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use for text entry with suggestions</h2><p>The editable value may differ from the active suggestion, so decide whether free text is accepted before integration. Nyx manages popup state, filtering, active-descendant focus, selection, and dismissal. The application supplies the option set and handles the committed value; use Searchable Select when a value must come from the list.</p></section>${card("Combobox", selectMarkup(comboboxMarkup, ["label[for='nyx-location-query']", "#nyx-location-combobox"]), "Registry source")}`,
   }),
   page({
     path: paths.components.forms.searchableSelect,
@@ -109,7 +109,7 @@ export const formPages = [
     title: "Range, Date, and Time",
     description: "Range, date, and time inputs use the Nyx control surface while retaining native picker behavior, validation, and mobile keyboards.",
     searchTerms: "range slider date time native input form strength",
-    body: card("Range, date, and time", selectMarkup(formsMarkup, ["[data-nyx-example='range-date-time']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Keep platform behavior for simple values</h2><p>The range, date, and time controls remain native inputs with Nyx surface styling. Their labels carry meaning that visual position alone cannot. Use application code to display a range value when immediate feedback is needed, and validate cross-field rules such as an end time after a start time at the form level.</p></section>${card("Range, date, and time", selectMarkup(formsMarkup, ["[data-nyx-example='range-date-time']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.forms.calendar,

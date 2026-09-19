@@ -54,7 +54,7 @@ export const mediaPages = [
     title: "Media Gallery",
     description: "Media cards combine an accessible preview, production metadata, status, and concise actions.",
     searchTerms: "media preview gallery card image status actions library",
-    body: card("Media card", selectMarkup(mediaMarkup, ["[data-nyx-example='media-card']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use when preview and metadata belong together</h2><p>The image needs alternative text appropriate to its purpose, while status and production facts remain visible text. Keep actions native and name them for the specific asset when multiple cards appear together. Loading, selection, and media transport are not part of this static card.</p></section>${card("Media card", selectMarkup(mediaMarkup, ["[data-nyx-example='media-card']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.media.rating,
@@ -63,7 +63,7 @@ export const mediaPages = [
     title: "Rating",
     description: "Rating uses native radio inputs and individually named choices beneath the star presentation.",
     searchTerms: "media rating stars radio score choice",
-    body: card("Rating", selectMarkup(mediaMarkup, ["[data-nyx-example='rating']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Use for one value from an ordered scale</h2><p>The stars are presentation over a native radio group, so preserve the fieldset, legend, and individually named choices. Explain what the endpoints mean when the scale is not obvious. Submission, persistence, and whether a rating may be changed remain application decisions.</p></section>${card("Rating", selectMarkup(mediaMarkup, ["[data-nyx-example='rating']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.media.protectedMedia,
@@ -72,7 +72,7 @@ export const mediaPages = [
     title: "Protected Media",
     description: "Protected previews explain why content is concealed and require an explicit reveal action.",
     searchTerms: "media protected sensitive reveal preview access lock",
-    body: card("Protected media", selectMarkup(mediaMarkup, ["[data-nyx-example='protected-media']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Concealment is not authorization</h2><p>This pattern warns before revealing visually sensitive material. The application must still enforce access on the media request; hidden markup and CSS do not protect a source URL. Keep the reason visible, use a named native reveal button, and decide whether consent lasts for one item or the session.</p></section>${card("Protected media", selectMarkup(mediaMarkup, ["[data-nyx-example='protected-media']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.media.batchPlan,
@@ -81,6 +81,6 @@ export const mediaPages = [
     title: "Batch Plan",
     description: "Batch plans combine selection, production constraints, and progress in a reusable action surface.",
     searchTerms: "media batch plan selected outputs variations progress production",
-    body: card("Batch plan", selectMarkup(mediaMarkup, ["[data-nyx-example='batch-plan']"]), "Registry source"),
+    body: `<section class="docs-prose-section"><h2>Review parameters before costly work</h2><p>Use the plan as a confirmation surface when selected inputs, output count, and constraints should be visible together. The progress element describes current work but does not run it. The application validates combinations, calculates totals, starts processing, and handles cancellation or partial failure.</p></section>${card("Batch plan", selectMarkup(mediaMarkup, ["[data-nyx-example='batch-plan']"]), "Registry source")}`,
   }),
 ];
