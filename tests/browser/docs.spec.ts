@@ -172,6 +172,24 @@ test("registry guidance explains adoption, dependencies, ownership, and update r
   await expect(page.locator(".docs-registry-ownership")).toContainText("does not overwrite copied files or silently merge upstream changes");
 });
 
+test("AI integration renders its pilot contract from the registry", async ({ page }) => {
+  await expectPage(page, "/guides/ai-integration", "AI Integration");
+  await expect(page.locator(".docs-ai-flow > li")).toHaveCount(3);
+  await expect(page.locator(".docs-ai-contract")).toContainText('"name": "tooltip"');
+  await expect(page.locator(".docs-ai-contract")).toContainText('"function": "initTooltips"');
+  await expect(page.locator(".docs-ai-contract-notes")).toContainText("components/tooltip.html");
+  await expect(page.locator(".docs-ai-boundary")).toContainText("A CLI or MCP adapter is not implemented yet");
+
+  const exchangeCards = page.locator(".docs-ai-example > .docs-code");
+  const requestBox = await exchangeCards.nth(0).boundingBox();
+  const decisionBox = await exchangeCards.nth(1).boundingBox();
+  expect(requestBox?.height).toBeLessThan(decisionBox?.height ?? 0);
+  const horizontalOverflow = await exchangeCards.locator("pre").evaluateAll((elements) =>
+    elements.map((element) => element.scrollWidth - element.clientWidth),
+  );
+  expect(horizontalOverflow.every((overflow) => overflow <= 1)).toBe(true);
+});
+
 test("motion examples show their resting state and can be replayed independently", async ({ page }) => {
   await expectPage(page, "/foundations/motion", "Motion Language");
   await expect(page.locator(".docs-motion-example")).toHaveCount(6);

@@ -7,6 +7,7 @@ export const paths = {
     theming: "/guides/theming",
     accessibility: "/guides/accessibility",
     registry: "/guides/registry",
+    aiIntegration: "/guides/ai-integration",
     react: "/guides/react",
   },
   foundations: {

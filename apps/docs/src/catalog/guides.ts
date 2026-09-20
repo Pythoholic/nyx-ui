@@ -1,3 +1,4 @@
+import registrySource from "../../../../registry/registry.json?raw";
 import { paths } from "../routes.js";
 import { codeBlock, page } from "./shared.js";
 import { adoptionPage } from "./adoption.js";
@@ -51,6 +52,37 @@ cp registry/components/dialog.html src/components/account-dialog.html
 
 # Keep shared presentation and optional behavior as dependencies
 pnpm add @nyx-ui/core @nyx-ui/plugins`;
+interface AiRegistryItem {
+  name: string;
+  type: string;
+  status: string;
+  description?: string;
+  useWhen?: string[];
+  avoidWhen?: string[];
+  files: string[];
+  requires: string[];
+  initializer?: { import: string; function: string; selector: string };
+  accessibility?: { requirements: string[] };
+  related?: string[];
+}
+
+const aiRegistry = JSON.parse(registrySource) as { items: AiRegistryItem[] };
+const tooltipAiContract = aiRegistry.items.find((item) => item.name === "tooltip");
+if (!tooltipAiContract) throw new Error("The AI integration guide requires the tooltip registry contract.");
+const tooltipAiContractSource = JSON.stringify(tooltipAiContract, null, 2);
+const aiPrompt = `Add concise help to the icon-only deployment settings control using Nyx.
+Use the correct component, preserve keyboard access, and include cleanup.`;
+const aiResult = `Selected: tooltip
+Reason: the request is brief, descriptive, and non-interactive.
+
+Copy: registry/components/tooltip.html
+Install: @nyx-ui/core and @nyx-ui/plugins/tooltip
+Initialize: initTooltips(root)
+
+Guardrails:
+- Keep the trigger as a native focusable control.
+- Do not put links or buttons inside the tooltip.
+- Retain controller instances and destroy them before replacing root.`;
 const tokenSetup = `@import "@nyx-ui/core";
 
 :root {
@@ -228,6 +260,55 @@ export const guidePages = [
       <section class="docs-registry-ownership" aria-labelledby="registry-ownership"><header><span class="nyx-eyebrow">Ownership boundary</span><h2 id="registry-ownership">Copying transfers control, not upstream synchronization</h2></header><div><p>Nyx maintains the canonical registry version, shared tokens, CSS, controller APIs, and documentation. After copying, your repository owns its local markup and every modification made to it.</p><p>Updates are deliberate: review upstream source and release notes, compare them with your local version, and port relevant fixes. Nyx does not overwrite copied files or silently merge upstream changes into application code.</p></div></section>
 
       <aside class="docs-registry-decision" aria-label="When to use the registry model"><div><strong>Use the registry model when</strong><p>Your team wants direct control over semantics, composition, and product-specific markup.</p></div><div><strong>Consider another model when</strong><p>Your organization requires centrally upgraded, opaque components with no local source ownership or review burden.</p></div></aside>
+    </div>`,
+  }),
+  page({
+    path: paths.guides.aiIntegration,
+    categoryLabel: "Integration",
+    title: "AI Integration",
+    navigationLabel: "AI Integration",
+    description: "Give coding agents a structured component contract so selection, installation, composition, and verification come from Nyx instead of guesswork.",
+    searchTerms: "ai integration agent codex claude mcp registry metadata prompt component selection machine readable",
+    body: `<div class="docs-ai-guide">
+      <section class="docs-overview-lead" aria-labelledby="ai-contract-model">
+        <div><span class="nyx-eyebrow">Working pilot</span><h2 id="ai-contract-model">One registry contract, usable by every agent</h2></div>
+        <div class="docs-overview-copy"><p>This page reads the Tooltip entry directly from <code>registry/registry.json</code>. The same structured record can later feed a Nyx CLI, Codex instructions, Claude Code, or an MCP server without maintaining separate component advice for each tool.</p><p>The pilot deliberately covers one component first. It proves the information model before Nyx expands it across the catalog.</p></div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-flow-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Agent flow</span><h2 id="ai-flow-heading">From intent to verified implementation</h2></header>
+        <ol class="docs-ai-flow">
+          <li><span>01</span><div><strong>Understand the request</strong><p>The agent identifies that the requested help is brief, descriptive, and non-interactive.</p></div></li>
+          <li><span>02</span><div><strong>Select from contracts</strong><p><code>useWhen</code> supports Tooltip while <code>avoidWhen</code> rules out visible help, Hover Card, or another interactive surface.</p></div></li>
+          <li><span>03</span><div><strong>Compose without guessing</strong><p>The record names canonical markup, packages, initializer, selector, accessibility requirements, and nearby alternatives.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-pilot-contract">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Source of truth</span><h2 id="ai-pilot-contract">The live Tooltip contract</h2><p>This JSON is generated from the actual registry entry at page load. Editing that entry changes this view and the data an integration would receive.</p></header>
+        <div class="docs-ai-contract">
+          ${codeBlock(tooltipAiContractSource, "js", "registry/registry.json · tooltip")}
+          <div class="docs-ai-contract-notes">
+            <div><span>Decision</span><strong>${tooltipAiContract.description}</strong></div>
+            <div><span>Canonical source</span><strong>${tooltipAiContract.files.join(", ")}</strong></div>
+            <div><span>Runtime</span><strong>${tooltipAiContract.initializer?.function} from ${tooltipAiContract.initializer?.import}</strong></div>
+            <div><span>Alternatives</span><strong>${tooltipAiContract.related?.join(" · ")}</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-example-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Example exchange</span><h2 id="ai-example-heading">What an agent can produce from the contract</h2><p>This is deterministic guidance derived from declared metadata. It does not depend on an agent remembering Nyx APIs from training data.</p></header>
+        <div class="docs-ai-example">
+          ${codeBlock(aiPrompt, "shell", "Developer request")}
+          ${codeBlock(aiResult, "shell", "Agent decision")}
+        </div>
+      </section>
+
+      <aside class="docs-ai-boundary" aria-labelledby="ai-boundary-heading">
+        <div><span class="nyx-eyebrow">Current boundary</span><h2 id="ai-boundary-heading">The contract works; agent transport comes next</h2></div>
+        <p>Nyx now has one genuinely machine-readable component contract and a page consuming it. A CLI or MCP adapter is not implemented yet. The next decision is whether this schema selects components reliably enough to expand across the registry.</p>
+      </aside>
     </div>`,
   }),
   page({
