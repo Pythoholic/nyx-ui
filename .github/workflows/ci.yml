@@ -35,7 +35,9 @@ jobs:
       - name: Install browser runtime
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Test unit and browser coverage
+      # test:ci shares the local test entry point, which prepares plugin exports
+      # before starting either browser-test server.
+      - name: Prepare dependencies and test unit and browser coverage
         run: pnpm test:ci
 
       - name: Typecheck

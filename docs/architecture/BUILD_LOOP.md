@@ -18,6 +18,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Public release review remediation
 
+- [x] Cold test startup: browser tests prepare plugin exports through the shared incremental build before either server starts; CI uses the same test entry point. With plugin output absent and server reuse disabled, 203 unit and 80 browser tests passed in 99.925s; servers became available in 0.911s and 0.900s. Typecheck and build passed. Recursive deletion was policy-blocked, so the old output was moved to ignored review storage before verification.
 - [x] Canonical progress, ordered rating and filtered numeric pagination. Regression assertions failed on the original source (0 fill ratio, 1 radio, visible page 2); all 63 browser tests, unit tests, typecheck and build pass.
 - [x] Focus succession and notification contracts across destructive controls. Queue and notification regressions failed before fixes; isolated early-dismiss mutation failed. 202 unit and 69 browser tests, typecheck and build pass.
 - [x] Scoped theme, utility accent, initialization examples and font installation contracts. Four browser assertions failed before fixes; isolated hardcoded utility mutation failed. 202 unit and 73 browser tests, typecheck and build pass.
