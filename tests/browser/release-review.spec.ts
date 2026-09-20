@@ -1,5 +1,58 @@
 import { expect, test } from "@playwright/test";
 
+test("nested themes restore solar and scope component accents", async ({ page }) => {
+  await page.goto('/guides/theming');
+  const colors = await page.evaluate(() => {
+    const outer = document.createElement('section');
+    outer.dataset.nyxTheme = 'plasma';
+    outer.innerHTML = '<button class="nyx-button" data-variant="primary">Outer</button><section data-nyx-theme="solar"><button class="nyx-button" data-variant="primary">Inner</button></section>';
+    document.body.append(outer);
+    return Array.from(outer.querySelectorAll('button'), element => getComputedStyle(element).backgroundColor);
+  });
+  expect(colors).toEqual(['rgb(139, 124, 246)', 'rgb(245, 217, 10)']);
+});
+
+test("accent utilities and components follow each theme together", async ({ page }) => {
+  await page.goto('/guides/theming');
+  for (const theme of ['solar','signal','flux','plasma']) {
+    const colors = await page.evaluate(theme => {
+      document.documentElement.dataset.nyxTheme = theme;
+      const outer = document.createElement('section');
+      outer.dataset.nyxTheme = theme;
+      outer.innerHTML = '<span class="text-nyx-accent">Accent</span><button class="nyx-button" data-variant="primary">Action</button>';
+      document.body.append(outer);
+      const result = [getComputedStyle(outer.firstElementChild!).color, getComputedStyle(outer.lastElementChild!).backgroundColor];
+      outer.remove();
+      return result;
+    }, theme);
+    expect(colors[0]).toBe(colors[1]);
+  }
+});
+
+test("initialization alternatives are separate copyable lifecycles", async ({ page }) => {
+  await page.goto('/components/forms/number-input');
+  const section = page.locator('.docs-reference-section', {has:page.getByRole('heading',{name:'JavaScript initialization'})});
+  const sources = section.locator('[data-nyx-code-source]');
+  await expect(sources).toHaveCount(2);
+  const [batch, single] = await sources.allTextContents();
+  expect(batch).toContain('initNumberInputs(root)');
+  expect(batch).not.toContain('new NyxNumberInput');
+  expect(single).toContain('new NyxNumberInput');
+  expect(single).not.toContain('initNumberInputs');
+  for (const source of [batch,single]) {
+    expect(source).toContain('return () =>');
+    expect(source).toContain('.destroy()');
+  }
+});
+
+test("installation includes font loading weights and fallback behavior", async ({ page }) => {
+  await page.goto('/guides/installation');
+  const section = page.locator('.docs-prose-section', {has:page.getByRole('heading',{name:'Load the font'})});
+  await expect(section).toContainText('400, 500, 600, and 700');
+  await expect(section).toContainText('fallback');
+  await expect(section.locator('[data-nyx-code-source]')).toContainText('family=JetBrains+Mono');
+});
+
 test("regenerated tags and filters return focus to their editable control", async ({ page }) => {
   for (const [path, remove, destination] of [
     ['/components/forms/multi-select', '[data-nyx-multi-select-remove]', '[data-nyx-multi-select] input:not([type="hidden"])'],

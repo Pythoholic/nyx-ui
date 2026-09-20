@@ -10,6 +10,9 @@ const tailwindSetup = `@import "tailwindcss";
 @source "../src/**/*.{html,js,ts,jsx,tsx}";
 @source "../node_modules/@nyx-ui/core/src/**/*.css";
 @import "@nyx-ui/core";`;
+const fontSetup = `<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />`;
 const behaviorSetup = `import { initDialogs } from "@nyx-ui/plugins/dialog";
 
 const root = document.querySelector("#account-settings");
@@ -81,6 +84,7 @@ export const guidePages = [
     body: `<div class="docs-prose">
       ${prose("Packages", `<p><code>@nyx-ui/core</code> supplies the token layers, themes, foundations, and component CSS. <code>@nyx-ui/plugins</code> supplies optional DOM behavior through per-component ESM subpaths.</p>${codeBlock(installCommand, "shell", "Shell")}`)}
       ${prose("Tailwind CSS 4 setup", `<p>Import the compiler, register your application and Nyx source locations, then import the Nyx stylesheet. Keep the <code>@source</code> entries accurate for every place copied markup can live so its classes are detected.</p>${codeBlock(tailwindSetup, "css", "CSS")}`)}
+      ${prose("Load the font", `<p>Nyx declares JetBrains Mono but does not bundle font files. Load weights 400, 500, 600, and 700 in your document head, or self-host licensed font files with matching <code>@font-face</code> rules and <code>font-display: swap</code>. While loading, or if the request fails, the stack uses Cascadia Code, then the system monospace fallback. Layout stays usable; glyph shapes and text wrapping may differ.</p>${codeBlock(fontSetup, "html", "Document head")}`)}
       ${prose("Without a build step", `<p>Nyx does not currently publish a supported browser-CDN bundle or precompiled stylesheet. The source package and its theme integration require a CSS build. Plain HTML is the component contract, but a no-build distribution is not promised in version 0.1.</p>`)}
     </div>`,
   }),
@@ -106,8 +110,8 @@ export const guidePages = [
     description: "Choose an accent theme at the root, then override stable semantic tokens in consumer CSS when the product needs a distinct expression.",
     searchTerms: "theming customization tokens solar signal flux plasma data nyx theme css override",
     body: `<div class="docs-prose">
-      ${prose("Token layers", `<p>Nyx exposes compiler-facing theme variables such as <code>--color-nyx-panel</code> and runtime semantic variables such as <code>--nyx-panel</code>. Components consume the semantic layer, so theme switching does not require regenerated markup.</p>`)}
-      ${prose("Accent themes", `<p>Set <code>data-nyx-theme</code> on the document root or a containing subtree. The built-in values are <code>solar</code>, <code>signal</code>, <code>flux</code>, and <code>plasma</code>. Semantic success, warning, danger, and information colors retain their meaning across accents.</p>${codeBlock(themeSetup, "html", "HTML")}`)}
+      ${prose("Token layers", `<p>Nyx exposes compiler-facing theme variables such as <code>--color-nyx-panel</code> and runtime semantic variables such as <code>--nyx-panel</code>. Components consume the semantic layer. Accent utilities such as <code>text-nyx-accent</code> resolve <code>--nyx-accent</code> on the element, so both follow the nearest theme scope without recompilation.</p>`)}
+      ${prose("Accent themes", `<p>Set <code>data-nyx-theme</code> on the document root or a containing subtree. The built-in values are <code>solar</code>, <code>signal</code>, <code>flux</code>, and <code>plasma</code>. Semantic success, warning, danger, and information colors retain their meaning across accents.</p>${codeBlock(themeSetup, "html", "HTML")}<section data-nyx-theme="plasma" class="nyx-panel nyx-panel-body"><span class="text-nyx-accent">Scoped plasma accent</span><button class="nyx-button" data-variant="primary" type="button">Plasma action</button><section data-nyx-theme="solar"><span class="text-nyx-accent">Nested solar accent</span></section></section>`)}
       ${prose("Consumer overrides", `<p>Load Nyx first, then override semantic variables in your own stylesheet. Prefer changing a small, named token set over targeting internal component selectors.</p>${codeBlock(tokenSetup, "css", "CSS")}`)}
     </div>`,
   }),

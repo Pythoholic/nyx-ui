@@ -12,7 +12,6 @@
   --color-nyx-muted: #a8b4b8;
   --color-nyx-label: #7f8d93;
   --color-nyx-disabled: #536068;
-  --color-nyx-accent: #f5d90a;
   --color-nyx-signal: #00e08a;
   --color-nyx-warning: #ffb02e;
   --color-nyx-danger: #ff4d5d;
@@ -45,8 +44,7 @@
   --ease-nyx-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-:root,
-:root[data-nyx-theme="solar"] {
+:root {
   color-scheme: dark;
   --nyx-void: #05080b;
   --nyx-radial: #0a1014;
@@ -151,7 +149,20 @@
   --nyx-z-toast: 700;
 }
 
-:root[data-nyx-theme="signal"] {
+/* Inline resolution keeps utilities tied to the element's nearest theme scope. */
+@theme inline {
+  --color-nyx-accent: var(--nyx-accent);
+}
+
+[data-nyx-theme="solar"] {
+  --nyx-accent: #f5d90a;
+  --nyx-accent-hi: #ffe93f;
+  --nyx-accent-ink: #05080b;
+  --nyx-accent-soft: rgb(245 217 10 / 10%);
+  --nyx-accent-line: rgb(245 217 10 / 48%);
+}
+
+[data-nyx-theme="signal"] {
   --nyx-accent: #00e08a;
   --nyx-accent-hi: #4dffb6;
   --nyx-accent-ink: #04120c;
@@ -159,7 +170,7 @@
   --nyx-accent-line: rgb(0 224 138 / 48%);
 }
 
-:root[data-nyx-theme="flux"] {
+[data-nyx-theme="flux"] {
   --nyx-accent: #35c6f4;
   --nyx-accent-hi: #6fdcff;
   --nyx-accent-ink: #03121a;
@@ -167,7 +178,7 @@
   --nyx-accent-line: rgb(53 198 244 / 48%);
 }
 
-:root[data-nyx-theme="plasma"] {
+[data-nyx-theme="plasma"] {
   --nyx-accent: #8b7cf6;
   --nyx-accent-hi: #a99cff;
   --nyx-accent-ink: #0a0718;
