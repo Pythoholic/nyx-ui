@@ -42,7 +42,7 @@ body { overflow-x: clip; }
   .docs-main { --docs-content-measure: 80rem; display: flex; inline-size: min(100%, 88rem); min-block-size: 100%; min-inline-size: 0; flex-direction: column; margin-inline: auto; padding: clamp(1.5rem, 4vw, 4rem); }
   .docs-main:focus { outline: 0; }
   .docs-page-header { display: grid; gap: var(--nyx-space-4); margin-block-end: 1.5rem; padding-block-end: 1.5rem; border-bottom: var(--nyx-border) solid var(--nyx-line); }
-  .docs-title { max-inline-size: 22ch; margin: 0; overflow-wrap: anywhere; font-size: clamp(2.5rem, 5vw, var(--nyx-type-display)); font-weight: var(--nyx-weight-bold); letter-spacing: var(--nyx-track-display); line-height: 1.04; text-transform: uppercase; }
+  .docs-title { max-inline-size: 100%; margin: 0; overflow-wrap: anywhere; font-size: clamp(2.5rem, 5vw, var(--nyx-type-display)); font-weight: var(--nyx-weight-bold); letter-spacing: var(--nyx-track-display); line-height: 1.04; text-transform: uppercase; }
   .docs-intro { margin: 0; overflow-wrap: anywhere; color: var(--nyx-muted); font-size: var(--nyx-type-body); line-height: 1.7; }
   .docs-readout { display: grid; gap: 0.75rem; padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
   .docs-readout-row { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-4); color: var(--nyx-label); font-size: var(--nyx-type-meta); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -86,9 +86,9 @@ body { overflow-x: clip; }
   .docs-reference { display: grid; gap: var(--nyx-space-8); margin-block-start: var(--nyx-space-10); padding-block-start: var(--nyx-space-8); border-top: var(--nyx-border) solid var(--nyx-line-strong); }
   .docs-reference-section { min-inline-size: 0; }
   .docs-reference-section > h2, .docs-prose-section > h2 { margin: 0 0 var(--nyx-space-3); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
-  .docs-reference-section > p, .docs-prose-section > p, .docs-prose-section > ol { margin: 0 0 var(--nyx-space-4); color: var(--nyx-muted); }
-  /* Copy tracks the shared column at 60%, with a half-measure floor, then collapses to full width on narrow screens. */
-  .docs-intro, .docs-reference-section > p, .docs-prose-section > p, .docs-prose-section > ol { inline-size: min(100%, max(calc(var(--docs-content-measure) / 2), 60%)); }
+  .docs-reference-section > p, .docs-reference-section > :is(ol, ul), .docs-prose-section > p, .docs-prose-section > :is(ol, ul) { margin: 0 0 var(--nyx-space-4); color: var(--nyx-muted); }
+  /* Copy grows with the viewport within the shared content measure; cap monospace lines at 108 characters. */
+  .docs-intro, .docs-reference-section > p, .docs-reference-section > :is(ol, ul), .docs-prose-section > p, .docs-prose-section > :is(ol, ul) { inline-size: min(100%, var(--docs-content-measure), clamp(72ch, calc(60ch + 16vw), 108ch)); }
   .docs-reference-section > .docs-code { border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
   .docs-table-wrap { max-inline-size: 100%; overflow-x: auto; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); }
   .docs-reference-table { inline-size: 100%; min-inline-size: 42rem; margin: 0; }

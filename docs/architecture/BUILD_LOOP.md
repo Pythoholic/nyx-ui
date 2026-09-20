@@ -105,6 +105,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 
 ## Known defects
 
+- [x] Documentation copy plateaued at 768px and ordinary titles wrapped at 22ch. Copy now grows through a shared 72-108ch viewport-responsive rule bounded by the existing content measure; titles use the header width. Verified five routes at 390/1280/1920/2560, zero left-edge drift or overflow, and the longest catalog titles. The updated growth assertion failed on the original CSS (768px at both wide widths). 203 unit tests, 98 browser tests, typecheck and build pass. Local measurements and captures: `review/text-measure/REPORT.md`.
 - [x] Calendar: an empty hidden input overrides `data-nyx-calendar-value`, so canonical standalone demos lose their declared initial selection. (fixed, verified)
 - [x] Date Picker: `data-state` is not synchronized on open/close, and invalid typed input is not mirrored through `aria-invalid` / `data-invalid`. (fixed, verified)
 - [x] Application Shell: the docs route renders both the page title and the embedded shell title as `h1`, so the document contains two level-one headings. (fixed, verified)

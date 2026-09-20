@@ -12,6 +12,7 @@ test("documentation content shares a responsive measure", async ({ page }) => {
   const measure = async (width: number) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/guides/installation");
+    await page.evaluate(() => document.fonts.ready);
     return page.locator(".docs-section").evaluate((section) => {
       const box = (selector: string) => {
         const element = document.querySelector<HTMLElement>(selector);
@@ -47,7 +48,10 @@ test("documentation content shares a responsive measure", async ({ page }) => {
   expect(wide.sectionWidth, "the content column responds between desktop widths").toBeGreaterThan(medium.sectionWidth);
   expect(ultrawide.sectionWidth, "the content column has one deliberate wide-screen cap").toBeCloseTo(wide.sectionWidth, 0);
   expect(wide.proseWidth, "long-form copy grows with the content column").toBeGreaterThan(medium.proseWidth);
+  expect(ultrawide.proseWidth, "long-form copy continues growing after frames reach their cap").toBeGreaterThan(wide.proseWidth + 32);
+  expect(ultrawide.introWidth, "intro copy continues growing on wide screens").toBeGreaterThan(wide.introWidth + 32);
   expect(wide.proseWidth, "long-form copy retains a readable line length").toBeLessThan(wide.frameWidth);
+  expect(ultrawide.proseWidth, "ultrawide copy retains breathing room beside frames").toBeLessThan(ultrawide.frameWidth * 0.85);
   expect(mobile.introWidth, "narrow copy fills the available content column").toBeCloseTo(mobile.sectionWidth, 0);
 
   await page.setViewportSize({ width: 1920, height: 1000 });
@@ -65,6 +69,47 @@ test("documentation content shares a responsive measure", async ({ page }) => {
     }, frameSelector);
     expect(Math.abs(edges.frameLeft - edges.sectionLeft), `${path} frame left edge`).toBeLessThanOrEqual(1);
     expect(Math.abs(edges.frameRight - edges.sectionRight), `${path} frame right edge`).toBeLessThanOrEqual(1);
+  }
+});
+
+test("documentation copy grows consistently across guides and components", async ({ page }) => {
+  for (const path of ["/guides/behavior", "/guides/installation", "/components/actions/button", "/components/forms/text-fields", "/components/overlays/dropdown-menu"]) {
+    let previousWidth = 0;
+    for (const width of [390, 1280, 1920, 2560]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      const metrics = await page.locator(".docs-section").evaluate(section => {
+        const sectionBox = section.getBoundingClientRect();
+        const copy = Array.from(section.querySelectorAll(".docs-intro, .docs-prose-section > :is(p, ol, ul), .docs-reference-section > :is(p, ol, ul)"));
+        const intro = copy[0].getBoundingClientRect();
+        return {
+          width: intro.width,
+          available: sectionBox.width,
+          widths: copy.map(element => element.getBoundingClientRect().width),
+          edges: copy.map(element => element.getBoundingClientRect().x - sectionBox.x),
+          overflow: document.documentElement.scrollWidth - innerWidth,
+        };
+      });
+      expect(metrics.width, `${path} copy grows at ${width}px`).toBeGreaterThan(previousWidth + 32);
+      for (const copyWidth of metrics.widths) expect(copyWidth, `${path} uses one copy rule`).toBeCloseTo(metrics.width, 0);
+      for (const edge of metrics.edges) expect(Math.abs(edge), `${path} copy shares the frame origin`).toBeLessThanOrEqual(1);
+      expect(metrics.overflow).toBeLessThanOrEqual(1);
+      if (width === 390) expect(metrics.width).toBeCloseTo(metrics.available, 0);
+      previousWidth = metrics.width;
+    }
+  }
+});
+
+test("long documentation titles use the available header width", async ({ page }) => {
+  for (const width of [1920, 2560]) {
+    await page.setViewportSize({ width, height: 1000 });
+    for (const path of ["/guides/behavior", "/components/forms/password-input", "/components/primitives/container-responsive-columns", "/components/ai/chat-thread"]) {
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      const lines = await page.locator(".docs-title").evaluate(title => title.getBoundingClientRect().height / parseFloat(getComputedStyle(title).lineHeight));
+      expect(lines, `${path} fits on one line at ${width}px`).toBeCloseTo(1, 1);
+    }
   }
 });
 
