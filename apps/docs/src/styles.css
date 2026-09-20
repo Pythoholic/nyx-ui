@@ -88,7 +88,7 @@ body { overflow-x: clip; }
   .docs-reference-section > h2, .docs-prose-section > h2 { margin: 0 0 var(--nyx-space-3); font-size: var(--nyx-type-panel); letter-spacing: var(--nyx-track-panel); text-transform: uppercase; }
   .docs-reference-section > p, .docs-reference-section > :is(ol, ul), .docs-prose-section > p, .docs-prose-section > :is(ol, ul) { margin: 0 0 var(--nyx-space-4); color: var(--nyx-muted); }
   /* Copy grows with the viewport within the shared content measure; cap monospace lines at 108 characters. */
-  .docs-intro, .docs-reference-section > p, .docs-reference-section > :is(ol, ul), .docs-prose-section > p, .docs-prose-section > :is(ol, ul) { inline-size: min(100%, var(--docs-content-measure), clamp(72ch, calc(60ch + 16vw), 108ch)); }
+  .docs-intro, .docs-reference-section > p, .docs-reference-section > :is(ol, ul), .docs-prose-section > p, .docs-prose-section > :is(ol, ul) { inline-size: min(100%, var(--docs-content-measure)); }
   .docs-reference-section > .docs-code { border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); overflow: hidden; }
   .docs-table-wrap { max-inline-size: 100%; overflow-x: auto; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); }
   .docs-reference-table { inline-size: 100%; min-inline-size: 42rem; margin: 0; }

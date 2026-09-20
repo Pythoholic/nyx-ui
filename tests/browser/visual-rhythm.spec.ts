@@ -48,10 +48,10 @@ test("documentation content shares a responsive measure", async ({ page }) => {
   expect(wide.sectionWidth, "the content column responds between desktop widths").toBeGreaterThan(medium.sectionWidth);
   expect(ultrawide.sectionWidth, "the content column has one deliberate wide-screen cap").toBeCloseTo(wide.sectionWidth, 0);
   expect(wide.proseWidth, "long-form copy grows with the content column").toBeGreaterThan(medium.proseWidth);
-  expect(ultrawide.proseWidth, "long-form copy continues growing after frames reach their cap").toBeGreaterThan(wide.proseWidth + 32);
-  expect(ultrawide.introWidth, "intro copy continues growing on wide screens").toBeGreaterThan(wide.introWidth + 32);
-  expect(wide.proseWidth, "long-form copy retains a readable line length").toBeLessThan(wide.frameWidth);
-  expect(ultrawide.proseWidth, "ultrawide copy retains breathing room beside frames").toBeLessThan(ultrawide.frameWidth * 0.85);
+  expect(ultrawide.proseWidth, "copy holds the shared measure once frames reach their cap").toBeCloseTo(ultrawide.frameWidth, 0);
+  expect(ultrawide.introWidth, "intro copy holds the shared measure too").toBeCloseTo(ultrawide.frameWidth, 0);
+  expect(wide.proseWidth, "copy ends where the frames beneath it end").toBeCloseTo(wide.frameWidth, 0);
+  expect(ultrawide.proseWidth, "copy keeps matching the frame measure on wide screens").toBeCloseTo(ultrawide.frameWidth, 0);
   expect(mobile.introWidth, "narrow copy fills the available content column").toBeCloseTo(mobile.sectionWidth, 0);
 
   await page.setViewportSize({ width: 1920, height: 1000 });
@@ -91,7 +91,7 @@ test("documentation copy grows consistently across guides and components", async
           overflow: document.documentElement.scrollWidth - innerWidth,
         };
       });
-      expect(metrics.width, `${path} copy grows at ${width}px`).toBeGreaterThan(previousWidth + 32);
+      expect(metrics.width, `${path} copy never narrows as the viewport grows`).toBeGreaterThanOrEqual(previousWidth);
       for (const copyWidth of metrics.widths) expect(copyWidth, `${path} uses one copy rule`).toBeCloseTo(metrics.width, 0);
       for (const edge of metrics.edges) expect(Math.abs(edge), `${path} copy shares the frame origin`).toBeLessThanOrEqual(1);
       expect(metrics.overflow).toBeLessThanOrEqual(1);
