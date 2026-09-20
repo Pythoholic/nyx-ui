@@ -12,10 +12,10 @@
   --color-nyx-muted: #a8b4b8;
   --color-nyx-label: #7f8d93;
   --color-nyx-disabled: #536068;
-  --color-nyx-signal: #00e08a;
+  --color-nyx-signal: #9cdb4a;
   --color-nyx-warning: #ffb02e;
   --color-nyx-danger: #ff4d5d;
-  --color-nyx-info: #35c6f4;
+  --color-nyx-info: #6da8ff;
   --color-nyx-alt: #8b7cf6;
   --text-nyx-display: clamp(2rem, 4vw, 3.375rem);
   --text-nyx-display--line-height: 1.04;
@@ -63,16 +63,20 @@
   --nyx-accent-ink: #05080b;
   --nyx-accent-soft: rgb(245 217 10 / 10%);
   --nyx-accent-line: rgb(245 217 10 / 48%);
-  --nyx-signal: #00e08a;
-  --nyx-signal-soft: rgb(0 224 138 / 9%);
-  --nyx-signal-line: rgb(0 224 138 / 42%);
+  /* Semantic colours stay independent of every theme's action accent. */
+  --nyx-signal: #9cdb4a;
+  --nyx-signal-soft: rgb(156 219 74 / 9%);
+  --nyx-signal-line: rgb(156 219 74 / 42%);
   --nyx-warning: #ffb02e;
   --nyx-warning-soft: rgb(255 176 46 / 9%);
   --nyx-warning-line: rgb(255 176 46 / 42%);
   --nyx-danger: #ff4d5d;
   --nyx-danger-soft: rgb(255 77 93 / 10%);
   --nyx-danger-line: rgb(255 77 93 / 48%);
-  --nyx-info: #35c6f4;
+  --nyx-info: #6da8ff;
+  /* Categorical data uses its own palette, independent of status and theme. */
+  --nyx-chart-primary: #eab875;
+  --nyx-chart-secondary: #7aa8ff;
   --nyx-alt: #8b7cf6;
   --nyx-overlay: rgb(2 4 6 / 82%);
   --nyx-void-glass: rgb(5 8 11 / 94%);
