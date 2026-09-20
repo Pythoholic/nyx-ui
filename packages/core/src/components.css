@@ -390,7 +390,7 @@
   .nyx-toast-title { color: var(--nyx-ink); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); }
   .nyx-toast-description { margin: 0.25rem 0 0; color: var(--nyx-muted); font-size: var(--nyx-type-label); }
   .nyx-progress { overflow: hidden; block-size: 0.625rem; border-radius: var(--nyx-radius-round); background: var(--nyx-line); }
-  .nyx-progress-bar { block-size: 100%; inline-size: var(--nyx-progress, 0%); border-radius: inherit; background: var(--nyx-accent); transition: inline-size var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  .nyx-progress-bar { display: block; block-size: 100%; inline-size: var(--nyx-progress, 0%); border-radius: inherit; background: var(--nyx-accent); transition: inline-size var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
   .nyx-progress[data-indeterminate="true"] .nyx-progress-bar { inline-size: 45%; animation: nyx-progress var(--nyx-duration-progress) var(--nyx-ease-standard) infinite; }
   .nyx-progress[data-indeterminate="true"]:dir(rtl) .nyx-progress-bar { animation-name: nyx-progress-rtl; }
   .nyx-steps { display: grid; grid-template-columns: repeat(var(--nyx-step-count, 4), 1fr); gap: var(--nyx-space-2); margin: 0; padding: 0; list-style: none; }
@@ -590,8 +590,10 @@
   .nyx-media-body { display: grid; gap: var(--nyx-space-3); padding: var(--nyx-space-4); }
   .nyx-rating { display: flex; gap: 0.25rem; border: 0; padding: 0; }
   .nyx-rating input { position: absolute; opacity: 0; }
-  .nyx-rating label { color: var(--nyx-line-strong); font-size: var(--nyx-type-data); cursor: pointer; }
-  .nyx-rating input:checked ~ label, .nyx-rating label:has(~ input:checked) { color: var(--nyx-accent); }
+  .nyx-rating label { display: grid; place-items: center; min-inline-size: 2.75rem; min-block-size: 2.75rem; color: var(--nyx-muted); font-size: var(--nyx-type-data); cursor: pointer; border-radius: var(--nyx-radius-control); }
+  .nyx-rating input:checked + label, .nyx-rating label:has(~ input:checked) { color: var(--nyx-accent); }
+  .nyx-rating input:checked + label svg, .nyx-rating label:has(~ input:checked) svg { fill: currentColor; }
+  .nyx-rating input:focus-visible + label { outline: 2px solid var(--nyx-accent); outline-offset: 2px; }
   .nyx-sensitive { display: grid; min-height: 12rem; place-items: center; padding: var(--nyx-space-6); border: var(--nyx-border) solid var(--nyx-line); background: repeating-linear-gradient(135deg, var(--nyx-panel), var(--nyx-panel) 0.75rem, var(--nyx-panel-raised) 0.75rem, var(--nyx-panel-raised) 1.5rem); text-align: center; }
   .nyx-batch-tile { display: grid; gap: var(--nyx-space-3); padding: var(--nyx-space-4); }
   .nyx-batch-tile[data-selected="true"] { border-color: var(--nyx-accent-line); background: var(--nyx-accent-soft); }

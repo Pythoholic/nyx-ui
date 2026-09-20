@@ -208,6 +208,7 @@ export class NyxDataTable {
   private apply(): void {
     const filtered = this.filteredRows();
     const pageCount = this.pageCount(filtered.length);
+    const hasResults = (this.controlled ? this.totalRows ?? filtered.length : filtered.length) > 0;
     this.tableState.page = Math.min(this.tableState.page, pageCount);
     if (!this.controlled) {
       const sorted = this.sortedRows(filtered);
@@ -230,9 +231,15 @@ export class NyxDataTable {
       const action = button.dataset.nyxDataTablePage;
       if (action === "previous") button.disabled = this.tableState.page <= 1;
       else if (action === "next") button.disabled = this.tableState.page >= pageCount;
-      else if (Number(action)) button.setAttribute("aria-current", Number(action) === this.tableState.page ? "page" : "false");
+      else if (Number(action)) {
+        const available = hasResults && Number(action) <= pageCount;
+        if (!available && button === button.ownerDocument.activeElement) this.filterInput?.focus();
+        button.hidden = !available;
+        button.disabled = !available;
+        button.setAttribute("aria-current", available && Number(action) === this.tableState.page ? "page" : "false");
+      }
     });
-    if (this.pageStatus) this.pageStatus.textContent = `Page ${this.tableState.page} of ${pageCount}`;
+    if (this.pageStatus) this.pageStatus.textContent = hasResults ? `Page ${this.tableState.page} of ${pageCount}` : "No results";
     const empty = this.element.querySelector<HTMLElement>("[data-nyx-data-table-empty]");
     if (empty) empty.hidden = this.controlled ? this.rows.length > 0 : filtered.length > 0;
     this.syncSelection();
