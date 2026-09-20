@@ -513,10 +513,12 @@
   .nyx-activity-meta .nyx-badge::after { content: none; }
   .nyx-activity-quote { gap: 0; margin-block: var(--nyx-space-2) var(--nyx-space-1); padding: var(--nyx-space-3) var(--nyx-space-4); border-radius: 0 var(--nyx-radius-control) var(--nyx-radius-control) 0; background: var(--nyx-panel-raised); font-size: var(--nyx-type-body); line-height: 1.55; }
   .nyx-activity-date { grid-column: 1 / -1; margin-block-end: var(--nyx-space-4); color: var(--nyx-label); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-bold); letter-spacing: var(--nyx-track-label); text-transform: uppercase; }
-  .nyx-activity-files { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block: var(--nyx-space-2); }
+  .nyx-activity-item .nyx-activity-files { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-block: var(--nyx-space-2); padding: 0; }
   .nyx-activity-files .nyx-file-item { grid-template-columns: 3rem minmax(0, 1fr); background: var(--nyx-panel-raised); }
   .nyx-activity-files .nyx-attachment-thumbnail { inline-size: 3rem; aspect-ratio: 1; }
-  .nyx-activity-media { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-block: var(--nyx-space-2); padding: 0; }
+  /* Payload containers are shared components that carry their own padding; inside a feed entry
+     they must align with the sentence above them, so the inset is removed here. */
+  .nyx-activity-item .nyx-activity-media { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-block: var(--nyx-space-2); padding: 0; }
   .nyx-activity-media .nyx-attachment-preview { display: block; padding: 0; overflow: hidden; }
   .nyx-activity-media .nyx-attachment-thumbnail { aspect-ratio: 16 / 10; }
   .nyx-activity-media .nyx-attachment-thumbnail span { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

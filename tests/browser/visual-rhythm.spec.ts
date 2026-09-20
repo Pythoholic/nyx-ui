@@ -678,3 +678,29 @@ test("activity feed status semantics remain distinct across accent themes", asyn
     expect(colors.success, `${theme} semantic status differs from accent`).not.toBe(colors.accent);
   }
 });
+
+test("activity feed payloads align with the sentence above them", async ({ page }) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({ width, height: 1400 });
+    await page.goto("/components/data-display/activity-feed");
+    await page.evaluate(() => document.fonts.ready);
+    const edges = await page.locator(".nyx-activity-feed").evaluate((feed) => {
+      const left = (selector: string) => {
+        const element = feed.querySelector<HTMLElement>(selector);
+        if (!element) throw new Error(`Activity feed payload did not render: ${selector}`);
+        return Math.round(element.getBoundingClientRect().left);
+      };
+      return {
+        heading: left(".nyx-activity-heading p"),
+        fileCard: left(".nyx-activity-files > *"),
+        mediaCard: left(".nyx-activity-media > *"),
+        meta: left(".nyx-activity-meta"),
+      };
+    });
+    const values = Object.values(edges);
+    expect(
+      Math.max(...values) - Math.min(...values),
+      `payloads share the sentence's left edge at ${width}px: ${JSON.stringify(edges)}`,
+    ).toBeLessThanOrEqual(1);
+  }
+});
