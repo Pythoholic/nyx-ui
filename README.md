@@ -6,6 +6,7 @@ The project separates styling, behavior, and markup so adopters can take only th
 
 - `@nyx-ui/core` provides tokens, themes, foundations, motion, and component CSS.
 - `@nyx-ui/plugins` provides optional framework-agnostic controllers through per-component ESM subpaths.
+- `@nyx-ui/mcp` exposes the registry to compatible AI coding tools through a read-only MCP server.
 - `registry/` provides canonical, editable HTML for every catalog component and layout.
 - `apps/docs` renders those same registry files as the live documentation catalog.
 
@@ -74,6 +75,7 @@ React applications use the same registry markup and initialize the relevant subt
 - Read [Framework research and architecture direction](./docs/architecture/FRAMEWORK_RESEARCH.md) for the package and registry model.
 - Read [Build loop](./docs/architecture/BUILD_LOOP.md) for the lifecycle and completeness contract applied to components.
 - Use `registry/registry.json` to inspect component maturity, canonical files, and runtime requirements.
+- Read [AI integration](./docs/architecture/AI_INTEGRATION.md) to connect Codex or Claude Code to the local registry MCP server.
 - Use the Accessibility, Behavior, Registry, Theming, and React guides in the documentation application before integrating interactive components.
 
 ## Browser and accessibility contract

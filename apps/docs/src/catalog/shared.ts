@@ -43,7 +43,7 @@ export type PluginName =
   | "tabs"
   | "toast";
 
-export type CodeLanguage = "css" | "html" | "js" | "shell";
+export type CodeLanguage = "css" | "html" | "js" | "json" | "shell" | "toml";
 
 export interface ReferenceRow {
   name: string;
