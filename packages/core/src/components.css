@@ -494,7 +494,9 @@
   .nyx-activity-header > div { display: grid; gap: var(--nyx-space-2); }
   .nyx-activity-list { display: grid; inline-size: 100%; gap: 0; padding: var(--nyx-space-3) var(--nyx-space-5) var(--nyx-space-4); }
   .nyx-activity-list[hidden] { display: none; }
-  .nyx-activity-list > .nyx-activity-item { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); align-items: start; column-gap: var(--nyx-space-4); padding: var(--nyx-space-4) 0 var(--nyx-space-5); }
+  /* The connector runs down the middle of the avatar column, so the content column needs more
+     clearance than a normal gap: bordered payloads would otherwise sit against the line. */
+  .nyx-activity-list > .nyx-activity-item { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); align-items: start; column-gap: var(--nyx-space-6); padding: var(--nyx-space-4) 0 var(--nyx-space-5); }
   .nyx-activity-item + .nyx-activity-item { border-block-start: 0; }
   .nyx-activity-item::before { display: none; }
   .nyx-activity-list > .nyx-activity-item:not(:last-child)::after { inset-block: calc(var(--nyx-space-4) + 2.75rem) calc(var(--nyx-space-5) * -1); inset-inline-start: 1.34375rem; inline-size: var(--nyx-border); background: var(--nyx-line-strong); }

@@ -690,17 +690,27 @@ test("activity feed payloads align with the sentence above them", async ({ page 
         if (!element) throw new Error(`Activity feed payload did not render: ${selector}`);
         return Math.round(element.getBoundingClientRect().left);
       };
+      const avatar = feed.querySelector<HTMLElement>(".nyx-avatar");
+      if (!avatar) throw new Error("Activity feed avatar did not render");
+      const avatarBox = avatar.getBoundingClientRect();
       return {
         heading: left(".nyx-activity-heading p"),
         fileCard: left(".nyx-activity-files > *"),
         mediaCard: left(".nyx-activity-media > *"),
         meta: left(".nyx-activity-meta"),
+        connector: Math.round(avatarBox.left + avatarBox.width / 2),
       };
     });
-    const values = Object.values(edges);
+    const values = [edges.heading, edges.fileCard, edges.mediaCard, edges.meta];
     expect(
       Math.max(...values) - Math.min(...values),
       `payloads share the sentence's left edge at ${width}px: ${JSON.stringify(edges)}`,
     ).toBeLessThanOrEqual(1);
+    // The connector runs down the middle of the avatar column, so bordered payloads must clear
+    // it rather than sitting against the line.
+    expect(
+      Math.min(...values) - edges.connector,
+      `payloads clear the timeline connector at ${width}px: ${JSON.stringify(edges)}`,
+    ).toBeGreaterThanOrEqual(44);
   }
 });
