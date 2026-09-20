@@ -17,5 +17,6 @@ for (const name of ["core", "plugins"]) {
   manifest.dependencies[`@nyx-ui/${name}`] = `^${version}`;
 }
 manifest.name = "render-workspace";
+manifest.scripts.dev = "vite --host 127.0.0.1 --port 5174 --strictPort";
 writeFileSync(packagePath, JSON.stringify(manifest, null, 2) + "\n");
 console.log(`Created ${destination}. Run pnpm install, then pnpm dev there.`);

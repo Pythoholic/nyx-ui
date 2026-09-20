@@ -24,15 +24,10 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: [{
+  webServer: {
     command: `pnpm --filter @nyx-ui/docs dev --host 127.0.0.1 --port ${port} --strictPort`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-  }, {
-    command: "pnpm --filter @nyx-ui/workspace-example dev --strictPort",
-    url: "http://127.0.0.1:5175",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  }],
+  },
 });

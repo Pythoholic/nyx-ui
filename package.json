@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs dev --host 127.0.0.1",
+    "dev": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs dev --host 127.0.0.1 --port 5174 --strictPort",
     "build": "pnpm --filter @nyx-ui/plugins build && pnpm --filter @nyx-ui/docs build && pnpm --filter @nyx-ui/workspace-example build",
     "test": "pnpm test:unit && pnpm test:browser",
     "test:ci": "pnpm test",

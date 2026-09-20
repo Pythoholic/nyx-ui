@@ -6,11 +6,12 @@ From the repository root:
 
 ```sh
 pnpm install
-pnpm --filter @nyx-ui/plugins build
-pnpm --filter @nyx-ui/workspace-example dev
+pnpm dev
 ```
 
-Open `http://127.0.0.1:5175`. Increase Scenes once: it moves from 2 to 3. Queue a batch. Enable the failure option to exercise retry, and remove settled jobs to return to the empty state.
+Open `http://127.0.0.1:5174/guides/render-workspace`. Increase Scenes once: it moves from 2 to 3. Queue a batch. Enable the failure option to exercise retry, and remove settled jobs to return to the empty state.
+
+`pnpm packages:check` installs the packed packages into a temporary consumer outside the repository, verifies runtime and declaration export resolution, and builds this example there. It does not start another server.
 
 For an independent project, run `node scripts/copy-workspace-example.mjs ../my-workspace` from the repository root, then run `pnpm install` and `pnpm dev` in that folder after the Nyx packages are published. The copier changes local workspace references to the current package versions; it never overwrites an existing directory.
 
