@@ -305,7 +305,7 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Arrow keys", description: "Adjusts the focused range, number, or select control through native behavior." },
         { name: "Space", description: "Toggles the focused native checkbox." },
       ],
-      accessibility: "The inspector is a native form made from labelled select, range, number, and checkbox controls. Constraint validity is mirrored through aria-invalid, outputs supplement rather than replace labels, and reset remains a standard button. Applications own parameter meaning and generation requests.",
+      accessibility: "The inspector is a native form made from labelled select, range, number, and checkbox controls. Errors become visible after editing a field or attempting submission; reset restores pristine validation. Outputs supplement labels. Applications own parameter meaning and generation requests.",
     },
   },
   "before-after": {
@@ -1609,10 +1609,7 @@ function componentReference(page: DocPage): string {
       value: Array.from(observed).join(" | "),
       description: name.startsWith("data-nyx-") ? "Nyx enhancement or styling hook used by the example." : "Semantic styling or state hook used by the example.",
     }));
-    if (!attributes.length) attributes.push({ name: "None", value: "static", description: "This component does not require data attributes." });
-    const noMethods = [{ name: "None", value: "static", description: "This component has no JavaScript controller or public methods." }];
-    const noEvents = [{ name: "None", value: "not applicable", description: "This component emits no custom events; native element events remain available." }];
-    return `<div class="docs-reference">${table("Data attributes", ["Attribute", "Values shown", "Purpose"], attributes)}${table("Public methods", ["Member", "Returns", "Purpose"], noMethods)}${table("Events", ["Event", "Cancelable", "When it fires"], noEvents)}<section class="docs-reference-section"><h2>Keyboard interaction</h2><div class="docs-table-wrap nyx-scrollable-overlay"><table class="nyx-table docs-reference-table"><thead><tr><th scope="col">Key</th><th scope="col">Behavior</th></tr></thead><tbody><tr><th scope="row"><code>Native controls</code></th><td>Nyx adds no keyboard handler. Links, buttons, form controls, details, and other native elements keep their platform behavior.</td></tr></tbody></table></div></section><section class="docs-reference-section"><h2>Accessibility</h2><p>There is no JavaScript-managed ARIA state. Preserve the semantic elements, accessible names, labels, descriptions, and relationships shown in the source when adapting it.</p></section></div>`;
+    return `<div class="docs-reference">${table("Data attributes", ["Attribute", "Values shown", "Purpose"], attributes)}<p>Uses native element behavior. Preserve the labels and semantic relationships shown above; see the shared <a class="nyx-link" href="/guides/accessibility">accessibility and ownership guidance</a>.</p></div>`;
   }
   const reference = pluginApis[plugin].reference;
   return `<div class="docs-reference">${initialization(plugin)}${table("Data attributes", ["Attribute", "Value", "Purpose"], reference.attributes)}${table("Options", ["Option", "Type", "Purpose"], reference.options ?? [])}${table("Public methods", ["Member", "Returns", "Purpose"], reference.methods)}${table("Events", ["Event", "Cancelable", "When it fires"], reference.events)}${table("Keyboard interaction", ["Key", "Behavior"], reference.keyboard)}<section class="docs-reference-section"><h2>Accessibility</h2><p>${reference.accessibility}</p></section></div>`;

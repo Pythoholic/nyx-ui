@@ -4,10 +4,10 @@ import { card, page } from "./shared.js";
 
 const typeRows = [
   { name: "Display / 700 / 32–54 / −.015em", token: "--nyx-type-display", value: "32–54px", sample: "Admin sign in", weight: "700", transform: "uppercase", tracking: "-.015em", lineHeight: "1.04" },
-  { name: "Panel title / 600 / 15 / .12em", token: "--nyx-type-panel", value: "15px", sample: "Net gamma exposure by strike", weight: "600", transform: "uppercase", tracking: ".12em", lineHeight: "1.35" },
+  { name: "Panel title / 600 / 17 / .12em", token: "--nyx-type-panel", value: "17px", sample: "Net gamma exposure by strike", weight: "600", transform: "uppercase", tracking: ".12em", lineHeight: "1.35" },
   { name: "Nav / tab / 600 / 13 / .10em", token: "--nyx-type-nav", value: "13px", sample: "GEX   DEX   VEX", weight: "600", transform: "uppercase", tracking: ".10em", lineHeight: "1.4" },
   { name: "Body / 400 / 15 / 1.7", token: "--nyx-type-body", value: "15px", sample: "Sign in to access the workspace.", weight: "400", transform: "none", tracking: "0", lineHeight: "1.7" },
-  { name: "Label / 400 / 11 / .10–.12em", token: "--nyx-type-label", value: "11px", sample: "GEX REGIME · PASSWORD · MAX PAIN", weight: "400", transform: "uppercase", tracking: ".12em", lineHeight: "1.4" },
+  { name: "Label / 400 / 12 / .02em", token: "--nyx-type-label", value: "12px", sample: "Email address / Password / Batch size", weight: "400", transform: "none", tracking: ".02em", lineHeight: "1.4" },
   { name: "Data / 600–700 / 16–30 / tabular", token: "--nyx-type-data", value: "16–30px", sample: "$711.09  +0.84%", weight: "700", transform: "none", tracking: "0", lineHeight: "1.15" },
 ];
 

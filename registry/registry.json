@@ -4,6 +4,13 @@
   "description": "Installable source components for Nyx UI.",
   "items": [
     {
+      "name": "render-workspace",
+      "type": "example",
+      "status": "stable",
+      "files": ["examples/render-workspace/screen.html", "examples/render-workspace/app.ts", "examples/render-workspace/entry.ts", "examples/render-workspace/index.html", "examples/render-workspace/style.css", "examples/render-workspace/app.css", "examples/render-workspace/package.json", "examples/render-workspace/tsconfig.json", "examples/render-workspace/vite.config.ts", "examples/render-workspace/README.md"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins"]
+    },
+    {
       "name": "button",
       "type": "component",
       "status": "stable",

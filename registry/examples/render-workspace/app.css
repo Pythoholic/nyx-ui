@@ -1,0 +1,11 @@
+.workspace { padding: clamp(1rem, 3vw, 2rem); background: var(--nyx-void); }
+.workspace-host { max-inline-size: 82rem; margin: 2rem auto; padding-inline: 1rem; }
+.workspace-host > h1 { margin: 0 0 1rem; font-size: var(--nyx-type-section); }
+.workspace-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: 1rem; }
+.workspace-header h2 { margin: 0.5rem 0; font-size: var(--nyx-type-section); }
+.workspace-header p { max-inline-size: 52ch; color: var(--nyx-muted); }
+.workspace-columns { display: grid; grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.5fr); gap: 1rem; }
+.workspace-columns h3 { margin: 0; font-size: var(--nyx-type-panel); }
+.workspace .nyx-generation-item { grid-template-columns: minmax(0, 1fr) auto; }
+.workspace .nyx-generation-actions { grid-column: 1 / -1; }
+@media (max-width: 75rem) { .workspace-columns { grid-template-columns: 1fr; } }

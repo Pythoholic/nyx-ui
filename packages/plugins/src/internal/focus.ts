@@ -5,7 +5,7 @@ export function focusElement(element: HTMLElement): void {
 }
 
 /** Only repair focus when the disappearing subtree currently owns it. */
-export function moveFocusBeforeRemoval(element: HTMLElement, scope: HTMLElement, selector = "button, a[href], input, select, textarea, [tabindex]"): void {
+export function moveFocusBeforeRemoval(element: HTMLElement, scope: HTMLElement, selector = "button, a[href], input, select, textarea, [tabindex]", fallback = scope): void {
   const active = element.ownerDocument.activeElement;
   if (!active || !element.contains(active)) return;
   const candidates = Array.from(scope.querySelectorAll<HTMLElement>(selector)).filter(candidate =>
@@ -13,7 +13,7 @@ export function moveFocusBeforeRemoval(element: HTMLElement, scope: HTMLElement,
     !candidate.closest('[hidden], [inert], [data-nyx-motion="removing"], [data-state="closing"]'),
   );
   const next = candidates.find(candidate => Boolean(element.compareDocumentPosition(candidate) & Node.DOCUMENT_POSITION_FOLLOWING));
-  focusElement(next ?? candidates.at(-1) ?? scope);
+  focusElement(next ?? candidates.at(-1) ?? fallback);
 }
 
 export function moveFocusTo(element: HTMLElement, destination: HTMLElement): void {

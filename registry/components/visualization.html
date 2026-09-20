@@ -1,3 +1,9 @@
+<section class="nyx-stack" data-nyx-example="operational-charts">
+<section class="nyx-panel nyx-metric-row" data-nyx-example="sparkline" aria-label="Hourly render throughput">
+  <div><span class="nyx-label">Completed renders</span><p><strong>51 jobs / hour</strong></p><span class="nyx-field-hint">18:00 UTC &middot; up from 18 at noon</span></div>
+  <svg class="nyx-chart" viewBox="0 0 160 48" aria-hidden="true"><path class="nyx-chart-series" d="M2 39 28 32 54 24 80 29 106 10 132 16 158 2" /></svg>
+</section>
+
 <figure class="nyx-chart-figure" data-nyx-example="line-chart">
   <figcaption><strong>Completed render jobs</strong><p class="nyx-panel-description">18 September &middot; 12:00&ndash;18:00 UTC &middot; Jobs per hour</p></figcaption>
   <svg class="nyx-chart" viewBox="0 0 600 250" role="img" aria-labelledby="nyx-chart-title nyx-chart-description">
@@ -13,9 +19,7 @@
   </tbody></table></div></details>
 </figure>
 
-<section class="nyx-panel nyx-metric-row" data-nyx-example="sparkline" aria-label="Hourly render throughput">
-  <div><span class="nyx-label">Completed renders</span><p><strong>51 jobs / hour</strong></p><span class="nyx-field-hint">18:00 UTC &middot; up from 18 at noon</span></div>
-  <svg class="nyx-chart" viewBox="0 0 160 48" aria-hidden="true"><path class="nyx-chart-series" d="M2 39 28 32 54 24 80 29 106 10 132 16 158 2" /></svg>
+<section class="nyx-empty" data-nyx-example="chart-empty"><strong>No render jobs in this period</strong><p>Choose a period with completed jobs to compare throughput. Missing data is not a zero value.</p></section>
 </section>
 
 <figure class="nyx-chart-figure" data-nyx-example="bar-chart">
@@ -31,5 +35,3 @@
   <div class="nyx-chart-legend"><span class="nyx-chart-key">Completed</span><span class="nyx-chart-key" style="--series-color: var(--nyx-info)">Queued</span></div>
   <p>Frankfurt has the highest completed volume (165 jobs) and the largest queue (115 jobs).</p>
 </figure>
-
-<section class="nyx-empty" data-nyx-example="chart-empty"><strong>No render jobs in this period</strong><p>Choose a period with completed jobs to compare throughput. Missing data is not a zero value.</p></section>

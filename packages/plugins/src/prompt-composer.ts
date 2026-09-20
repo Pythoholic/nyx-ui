@@ -100,7 +100,7 @@ export class NyxPromptComposer {
 
   private get isValid(): boolean {
     const withinLength = this.input.maxLength < 0 || this.value.length <= this.input.maxLength;
-    return this.value.trim().length > 0 && withinLength && this.input.checkValidity();
+    return this.value.trim().length > 0 && withinLength && this.input.validity.valid;
   }
 
   private commit(nextValue: string, reason: NyxPromptComposerChangeReason, previousValue = this.acceptedValue): boolean {

@@ -11,7 +11,7 @@ async function sidebarRoutes(page: Page): Promise<string[]> {
   const routes = await navigation.locator("a[data-docs-path]").evaluateAll((links) =>
     Array.from(new Set(links.map((link) => (link as HTMLAnchorElement).dataset.docsPath).filter(Boolean))) as string[],
   );
-  expect(routes, "the sidebar continues to enumerate the audited route set").toHaveLength(97);
+  expect(routes, "the sidebar includes the executable example and consolidates two chart fragments").toHaveLength(96);
   return routes;
 }
 

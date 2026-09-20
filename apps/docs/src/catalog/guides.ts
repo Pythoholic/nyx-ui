@@ -1,5 +1,6 @@
 import { paths } from "../routes.js";
 import { codeBlock, page } from "./shared.js";
+import { adoptionPage } from "./adoption.js";
 
 function prose(title: string, body: string): string {
   return `<section class="docs-prose-section"><h2>${title}</h2>${body}</section>`;
@@ -74,6 +75,7 @@ export function AccountDialog() {
 }`;
 
 export const guidePages = [
+  adoptionPage,
   page({
     path: paths.guides.installation,
     categoryLabel: "Getting started",
@@ -82,6 +84,7 @@ export const guidePages = [
     description: "Install the CSS foundation, add behavior only where it is needed, and make component source visible to the compiler.",
     searchTerms: "install package getting started css plugins tailwind source build step",
     body: `<div class="docs-prose">
+      ${prose("Start with a working screen", `<p><a class="nyx-link" href="/guides/render-workspace">Run the render workspace</a> for a complete installation, font, theme, event, and cleanup example.</p>`)}
       ${prose("Packages", `<p><code>@nyx-ui/core</code> supplies the token layers, themes, foundations, and component CSS. <code>@nyx-ui/plugins</code> supplies optional DOM behavior through per-component ESM subpaths.</p>${codeBlock(installCommand, "shell", "Shell")}`)}
       ${prose("Tailwind CSS 4 setup", `<p>Import the compiler, register your application and Nyx source locations, then import the Nyx stylesheet. Keep the <code>@source</code> entries accurate for every place copied markup can live so its classes are detected.</p>${codeBlock(tailwindSetup, "css", "CSS")}`)}
       ${prose("Load the font", `<p>Nyx declares JetBrains Mono but does not bundle font files. Load weights 400, 500, 600, and 700 in your document head, or self-host licensed font files with matching <code>@font-face</code> rules and <code>font-display: swap</code>. While loading, or if the request fails, the stack uses Cascadia Code, then the system monospace fallback. Layout stays usable; glyph shapes and text wrapping may differ.</p>${codeBlock(fontSetup, "html", "Document head")}`)}

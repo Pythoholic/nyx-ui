@@ -1,6 +1,7 @@
 export const paths = {
   overview: "/",
   guides: {
+    renderWorkspace: "/guides/render-workspace",
     installation: "/guides/installation",
     behavior: "/guides/behavior",
     theming: "/guides/theming",
@@ -133,6 +134,11 @@ function collectPaths(value: unknown): string[] {
 }
 
 export const routePaths = collectPaths(paths);
+
+export const consolidatedRoutes: Record<string, string> = {
+  [paths.components.visualization.sparklines]: paths.components.visualization.lineChart,
+  [paths.components.visualization.accessibleSummary]: paths.components.visualization.lineChart,
+};
 
 export const legacyHashRedirects: Record<string, string> = {
   overview: paths.overview,

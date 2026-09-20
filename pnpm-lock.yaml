@@ -55,6 +55,28 @@ importers:
         specifier: 5.0.1
         version: 5.0.1(jsdom@30.1.0)(vite@8.3.0(jiti@2.7.0)(yaml@2.9.1))
 
+  registry/examples/render-workspace:
+    dependencies:
+      '@nyx-ui/core':
+        specifier: workspace:*
+        version: link:../../../packages/core
+      '@nyx-ui/plugins':
+        specifier: workspace:*
+        version: link:../../../packages/plugins
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: 4.3.3
+        version: 4.3.3(vite@8.3.0(jiti@2.7.0)(yaml@2.9.1))
+      tailwindcss:
+        specifier: 4.3.3
+        version: 4.3.3
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+      vite:
+        specifier: 8.3.0
+        version: 8.3.0(jiti@2.7.0)(yaml@2.9.1)
+
 packages:
 
   '@asamuzakjp/css-color@7.0.0':

@@ -1,0 +1,44 @@
+<section class="workspace nyx-stack" data-render-workspace data-nyx-theme="signal" aria-label="Render workspace">
+  <header class="workspace-header">
+    <div><span class="nyx-eyebrow">Studio / Mission studies</span><h2>Render workspace</h2><p>Rehearse a batch locally. This sample produces queue states, not image files.</p></div>
+    <label class="nyx-field"><span class="nyx-label">Workspace accent</span><select class="nyx-select" data-workspace-theme><option value="signal">Signal</option><option value="solar">Solar</option><option value="flux">Flux</option><option value="plasma">Plasma</option></select></label>
+  </header>
+  <div class="workspace-columns">
+    <form class="nyx-panel nyx-panel-body" data-workspace-form>
+      <h3>Batch settings</h3>
+      <label class="nyx-label" for="workspace-scenes">Scenes</label>
+      <div class="nyx-number-input" data-nyx-number-input>
+        <button class="nyx-button" data-nyx-number-input-decrement type="button" aria-label="Decrease scenes">&minus;</button>
+        <input class="nyx-input" id="workspace-scenes" name="scenes" data-nyx-number-input-control type="number" min="1" max="4" step="1" value="2" required />
+        <button class="nyx-button" data-nyx-number-input-increment type="button" aria-label="Increase scenes">+</button>
+      </div>
+      <label class="nyx-label" for="workspace-variations">Variations per scene</label>
+      <div class="nyx-number-input" data-nyx-number-input>
+        <button class="nyx-button" data-nyx-number-input-decrement type="button" aria-label="Decrease variations">&minus;</button>
+        <input class="nyx-input" id="workspace-variations" name="variations" data-nyx-number-input-control type="number" min="1" max="3" step="1" value="1" required />
+        <button class="nyx-button" data-nyx-number-input-increment type="button" aria-label="Increase variations">+</button>
+      </div>
+      <output data-workspace-plan aria-live="polite">2 jobs planned</output>
+      <label class="nyx-check"><input type="checkbox" data-workspace-failure /> <span>Rehearse a recoverable failure</span></label>
+      <button class="nyx-button" data-variant="primary" type="submit">Queue batch</button>
+      <p class="nyx-field-hint">Try canceling a job, retrying a failure, or removing a completed result.</p>
+    </form>
+    <section class="nyx-generation-queue" data-nyx-generation-queue aria-labelledby="workspace-queue-title">
+      <header class="nyx-generation-header"><h3 id="workspace-queue-title">Batch queue</h3><output data-nyx-generation-count aria-live="polite">0 active / 0 total</output></header>
+      <ol class="nyx-generation-list" data-workspace-jobs></ol>
+      <p class="nyx-generation-empty" data-nyx-generation-empty>No jobs yet. Choose batch settings, then queue a batch.</p>
+    </section>
+  </div>
+  <output class="nyx-panel nyx-panel-body" data-workspace-log aria-live="polite">Ready to queue a batch.</output>
+  <template data-workspace-job>
+    <li class="nyx-generation-item" data-nyx-generation-item data-state="queued" data-progress="0">
+      <div class="nyx-generation-body"><strong data-workspace-job-name></strong><span>Mission concept study</span><progress data-nyx-generation-progress max="100" value="0"></progress></div>
+      <output class="nyx-generation-status" data-nyx-generation-status>queued</output>
+      <div class="nyx-generation-actions">
+        <button class="nyx-button" data-size="small" data-nyx-generation-action="cancel" type="button">Cancel</button>
+        <button class="nyx-button" data-size="small" data-nyx-generation-action="retry" type="button" hidden>Retry</button>
+        <button class="nyx-button" data-size="small" data-nyx-generation-action="remove" type="button" hidden>Remove</button>
+      </div>
+    </li>
+  </template>
+</section>

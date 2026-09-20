@@ -50,8 +50,10 @@ import {
 } from "./catalog/index.js";
 import { renderPage, type PluginName } from "./catalog/shared.js";
 import { icon } from "./icons.js";
-import { legacyHashRedirects } from "./routes.js";
+import { consolidatedRoutes, legacyHashRedirects } from "./routes.js";
 import "./styles.css";
+import "../../../registry/examples/render-workspace/app.css";
+import { mountWorkspace } from "../../../registry/examples/render-workspace/app.js";
 
 interface Destroyable {
   destroy(): void;
@@ -94,8 +96,8 @@ function categoryMarkup(category: (typeof componentCategories)[number]): string 
 
 const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
   <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}</div></div>
-  <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.slice(0, 5).map((page) => pageLink(page)).join("")}</div></div>
-  <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.slice(5).map((page) => pageLink(page)).join("")}</div></div>
+  <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Getting started").map((page) => pageLink(page)).join("")}</div></div>
+  <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Integration").map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Foundations</span><div class="docs-nav">${foundationPages.map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Components</span><div class="docs-nav-categories">${componentCategories.map(categoryMarkup).join("")}</div></div>
 </nav>`;
@@ -249,6 +251,9 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
 function initializePage(page: DocPage): () => void {
   const abortController = new AbortController();
   const destroyables: Destroyable[] = [];
+  main.querySelectorAll<HTMLElement>("[data-render-workspace]").forEach(root => {
+    destroyables.push({ destroy: mountWorkspace(root) });
+  });
   let toast: NyxToast | undefined;
   addDestroyables(destroyables, initTabs(main));
   addDestroyables(destroyables, initCodeBlocks(main));
@@ -290,7 +295,10 @@ function notFoundMarkup(): string {
 function render(pathname = window.location.pathname): void {
   destroyCurrentPage?.();
   destroyCurrentPage = undefined;
-  const page = pageByPath.get(normalizePath(pathname));
+  const path = normalizePath(pathname);
+  const canonical = consolidatedRoutes[path] ?? path;
+  if (canonical !== path) history.replaceState(null, "", hrefFor(canonical));
+  const page = pageByPath.get(canonical);
   main.innerHTML = page
     ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.1.0 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-stealth">Source repository</a></footer>`
     : notFoundMarkup();

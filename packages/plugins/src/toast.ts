@@ -34,6 +34,7 @@ declare global {
 }
 
 interface ToastRecord {
+  readonly returnFocus: HTMLElement | null;
   readonly close: HTMLButtonElement;
   readonly handleClose: () => void;
   readonly options: NyxToastOptions;
@@ -79,7 +80,9 @@ export class NyxToast {
     const close = toast.querySelector<HTMLButtonElement>("button");
     if (!close) throw new Error("NyxToast could not create its close control.");
     const handleClose = (): void => this.dismiss(toast, "close-control");
-    const record: ToastRecord = { close, handleClose, options };
+    const active = this.region.ownerDocument.activeElement;
+    const returnFocus = active instanceof HTMLElement && active !== this.region.ownerDocument.body ? active : null;
+    const record: ToastRecord = { close, handleClose, options, returnFocus };
     close.addEventListener("click", handleClose);
     this.records.set(toast, record);
     this.region.append(toast);
@@ -122,7 +125,9 @@ export class NyxToast {
     }
 
     if (record.timer !== undefined) window.clearTimeout(record.timer);
-    moveFocusBeforeRemoval(toast, this.region);
+    const fallback = record.returnFocus?.isConnected && !record.returnFocus.closest('[hidden], [inert], [data-state="closing"]')
+      ? record.returnFocus : this.region;
+    moveFocusBeforeRemoval(toast, this.region, "button", fallback);
     toast.dataset.state = "closing";
     const remove = (): void => this.removeToast(toast, detail);
     record.handleAnimationEnd = remove;

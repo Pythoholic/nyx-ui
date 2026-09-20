@@ -1,5 +1,14 @@
 import { expect, test } from "@playwright/test";
 
+test("last toast dismissal returns to its initiating control", async ({page}) => {
+  await page.goto('/components/feedback/toast');
+  const trigger = page.getByRole('button',{name:'Send notification'});
+  await trigger.click();
+  await page.getByRole('button',{name:'Dismiss notification'}).focus();
+  await page.keyboard.press('Enter');
+  await expect(trigger).toBeFocused();
+});
+
 test("examples arrive before guidance and auth prioritizes its task column", async ({ page }) => {
   for (const width of [1280,1920,2560]) {
     await page.setViewportSize({width,height:720});
@@ -28,12 +37,16 @@ test("media contains real images and the sparkline stays inside a metric row", a
     await carousel.getByRole('button',{name:'Next',exact:true}).click();
   }
   await page.goto('/components/visualization/sparklines');
+  await expect(page).toHaveURL(/\/components\/visualization\/line-chart$/);
   await expect(page.locator('[data-example-preview]')).toContainText('51 jobs / hour');
   expect((await page.locator('.nyx-metric-row svg').boundingBox())!.width).toBeLessThanOrEqual(160);
   await page.goto('/components/visualization/line-chart');
   await page.getByText('Exact hourly values',{exact:true}).click();
   await expect(page.locator('[data-example-preview] table tbody tr')).toHaveCount(7);
   await expect(page.locator('[data-example-preview]')).toContainText('232 jobs');
+  await page.goto('/components/visualization/accessible-summary');
+  await expect(page).toHaveURL(/\/components\/visualization\/line-chart$/);
+  await expect(page.locator('[data-example-preview]')).toContainText('No render jobs in this period');
 });
 
 test("registration shares pristine edited submitted and reset validation timing", async ({ page }) => {
@@ -94,6 +107,25 @@ test("initialization alternatives are separate copyable lifecycles", async ({ pa
     expect(source).toContain('return () =>');
     expect(source).toContain('.destroy()');
   }
+  const results = await page.evaluate(async sources => {
+    const moduleUrl = performance.getEntriesByType('resource').map(entry => entry.name).find(name => /plugins_number-input|\/number-input\.js/.test(name));
+    if (!moduleUrl) throw new Error('Number input module was not loaded');
+    const api = await import(moduleUrl);
+    return sources.map((source,index) => {
+      const root = document.querySelector('[data-example-preview]')!.cloneNode(true) as HTMLElement;
+      const mount = new Function('api', source.replace(/import \{([^}]+)\} from [^;]+;/, 'const {$1} = api;').replace('export function','function') + '\nreturn mount;')(api);
+      const cleanup = mount(index === 0 ? root : root.querySelector('[data-nyx-number-input]'));
+      const input = root.querySelector<HTMLInputElement>('[data-nyx-number-input-control]')!;
+      const increment = root.querySelector<HTMLButtonElement>('[data-nyx-number-input-increment]')!;
+      const before = input.valueAsNumber;
+      increment.click();
+      const after = input.valueAsNumber;
+      cleanup();
+      increment.click();
+      return {delta:after-before, afterCleanup:input.valueAsNumber-after};
+    });
+  }, [batch,single]);
+  expect(results).toEqual([{delta:0.5,afterCleanup:0},{delta:0.5,afterCleanup:0}]);
 });
 
 test("installation includes font loading weights and fallback behavior", async ({ page }) => {
