@@ -136,6 +136,10 @@
       "types": "./dist/notification-center.d.ts",
       "default": "./dist/notification-center.js"
     },
+    "./activity-feed": {
+      "types": "./dist/activity-feed.d.ts",
+      "default": "./dist/activity-feed.js"
+    },
     "./filter-bar": {
       "types": "./dist/filter-bar.d.ts",
       "default": "./dist/filter-bar.js"

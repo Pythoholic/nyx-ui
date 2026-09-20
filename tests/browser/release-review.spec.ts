@@ -9,6 +9,28 @@ test("last toast dismissal returns to its initiating control", async ({page}) =>
   await expect(trigger).toBeFocused();
 });
 
+test("toast frames follow the active accent theme", async ({ page }) => {
+  await page.goto("/components/feedback/toast");
+  const send = page.getByRole("button", { name: "Send notification" });
+
+  for (const theme of ["Solar", "Signal", "Flux", "Plasma"]) {
+    await page.getByRole("button", { name: theme, exact: true }).click();
+    await send.click();
+    const toast = page.locator(".nyx-toast").last();
+    const colors = await toast.evaluate(element => {
+      const probe = document.createElement("span");
+      probe.style.border = "1px solid var(--nyx-accent-line)";
+      element.append(probe);
+      const accentLine = getComputedStyle(probe).borderColor;
+      probe.remove();
+      return { accentLine, border: getComputedStyle(element).borderColor };
+    });
+    expect(colors.border, `${theme} toast border`).toBe(colors.accentLine);
+    await toast.getByRole("button", { name: /Dismiss/ }).click();
+    await expect(toast).toHaveCount(0);
+  }
+});
+
 test("examples arrive before guidance and auth prioritizes its task column", async ({ page }) => {
   for (const width of [1280,1920,2560]) {
     await page.setViewportSize({width,height:720});
@@ -231,6 +253,45 @@ test("progress renders its declared value and animates pending work", async ({ p
   expect((await pending.boundingBox())!.width).toBeGreaterThan(0);
   const first = await pending.evaluate(element => getComputedStyle(element).transform);
   await expect.poll(() => pending.evaluate(element => getComputedStyle(element).transform)).not.toBe(first);
+});
+
+test("generation progress spans the row, inherits the accent, and animates running work", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto("/components/ai/generation-queue");
+  const item = page.locator("[data-example-preview] .nyx-generation-item[data-state='running']");
+  const body = item.locator(".nyx-generation-body");
+  const progress = item.locator(":scope > progress");
+  const geometry = await item.evaluate(element => {
+    const bodyBox = element.querySelector(".nyx-generation-body")!.getBoundingClientRect();
+    const progressElement = element.querySelector("progress")!;
+    const progressBox = progressElement.getBoundingClientRect();
+    const itemBox = element.getBoundingClientRect();
+    const styles = getComputedStyle(element);
+    const accentProbe = document.createElement("span");
+    accentProbe.style.backgroundColor = "var(--nyx-accent)";
+    element.append(accentProbe);
+    const accentColor = getComputedStyle(accentProbe).backgroundColor;
+    accentProbe.remove();
+    return {
+      leftDelta: progressBox.left - bodyBox.left,
+      rightInset: itemBox.right - progressBox.right,
+      itemPadding: parseFloat(styles.paddingRight),
+      itemBorder: parseFloat(styles.borderRightWidth),
+      accentColor,
+      progressAccent: getComputedStyle(progressElement).accentColor,
+      animation: getComputedStyle(element, "::after").animationName,
+      waveWidth: parseFloat(getComputedStyle(element, "::after").width),
+      progressWidth: progressBox.width,
+    };
+  });
+
+  expect(Math.abs(geometry.leftDelta)).toBeLessThan(0.1);
+  expect(geometry.rightInset).toBeCloseTo(geometry.itemPadding + geometry.itemBorder, 1);
+  expect(geometry.progressAccent).toBe(geometry.accentColor);
+  expect(geometry.animation).toBe("nyx-progress-wave");
+  expect(geometry.waveWidth / geometry.progressWidth).toBeCloseTo(0.68, 2);
+  await expect(body).toContainText("Orbital station concept");
+  await expect(progress).toHaveAttribute("value", "68");
 });
 
 test("rating offers an ordered native scale with a focused selected choice", async ({ page }) => {

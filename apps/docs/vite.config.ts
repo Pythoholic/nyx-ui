@@ -25,6 +25,7 @@ function staticRouteFallbacks(): Plugin {
 }
 
 export default defineConfig({
+  publicDir: "../../registry",
   resolve: { dedupe: ["@nyx-ui/core", "@nyx-ui/plugins"] },
   plugins: [tailwindcss(), staticRouteFallbacks()],
   build: {

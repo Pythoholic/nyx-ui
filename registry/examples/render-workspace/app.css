@@ -4,6 +4,8 @@
 .workspace-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: 1rem; }
 .workspace-header h2 { margin: 0.5rem 0; font-size: var(--nyx-type-section); }
 .workspace-header p { max-inline-size: 52ch; color: var(--nyx-muted); }
+.workspace-theme { min-inline-size: 12rem; padding: 0.75rem; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+.workspace-theme .nyx-select { min-height: 2.875rem; font-weight: var(--nyx-weight-semibold); }
 .workspace-columns { display: grid; grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.5fr); gap: 1rem; }
 .workspace-columns h3 { margin: 0; font-size: var(--nyx-type-panel); }
 .workspace .nyx-generation-item { grid-template-columns: minmax(0, 1fr) auto; }

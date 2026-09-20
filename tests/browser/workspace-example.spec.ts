@@ -50,3 +50,34 @@ test('route cleanup stops detached work and reentry initializes each control onc
   await page.getByRole('button',{name:'Increase scenes',exact:true}).click();
   await expect(page.getByRole('spinbutton',{name:'Scenes',exact:true})).toHaveValue('3');
 });
+
+test('workspace number controls align and the accent selector uses the Nyx control surface', async ({page}) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({width, height: 1100});
+    await page.goto('/guides/render-workspace');
+    const root = page.locator('[data-render-workspace]');
+    const metrics = await root.evaluate(element => {
+      const decrement = element.querySelector<HTMLElement>('[aria-label="Decrease scenes"]')!;
+      const input = element.querySelector<HTMLElement>('#workspace-scenes')!;
+      const increment = element.querySelector<HTMLElement>('[aria-label="Increase scenes"]')!;
+      const select = element.querySelector<HTMLElement>('[data-workspace-theme]')!;
+      const selectStyles = getComputedStyle(select);
+      return {
+        heights: [decrement, input, increment].map(control => control.getBoundingClientRect().height),
+        seams: [
+          input.getBoundingClientRect().left - decrement.getBoundingClientRect().right,
+          increment.getBoundingClientRect().left - input.getBoundingClientRect().right,
+        ],
+        selectHeight: select.getBoundingClientRect().height,
+        selectBackground: selectStyles.backgroundImage,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+
+    expect(Math.max(...metrics.heights) - Math.min(...metrics.heights), `number control alignment at ${width}px`).toBeLessThanOrEqual(0.1);
+    expect(metrics.seams.every(seam => seam <= 0 && seam >= -2), `number control seams at ${width}px`).toBe(true);
+    expect(metrics.selectHeight, `accent selector height at ${width}px`).toBeGreaterThanOrEqual(44);
+    expect(metrics.selectBackground, `accent selector indicator at ${width}px`).not.toBe('none');
+    expect(metrics.overflow, `workspace overflow at ${width}px`).toBeLessThanOrEqual(1);
+  }
+});

@@ -46,6 +46,30 @@ test("dialog moves focus, owns scroll lock, and restores its trigger", async ({ 
   });
 });
 
+test("modal scroll locking preserves the page geometry", async ({ page }) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/components/overlays/dialog");
+    const content = page.locator(".docs-section");
+    const before = await content.boundingBox();
+    expect(before).not.toBeNull();
+
+    await page.getByRole("button", { name: "Open dialog", exact: true }).click();
+    const during = await content.boundingBox();
+    expect(during).not.toBeNull();
+    if (!before || !during) continue;
+    expect(Math.abs(during.x - before.x), `content x-position while locked at ${width}px`).toBeLessThanOrEqual(0.1);
+    expect(Math.abs(during.width - before.width), `content width while locked at ${width}px`).toBeLessThanOrEqual(0.1);
+
+    await page.keyboard.press("Escape");
+    const after = await content.boundingBox();
+    expect(after).not.toBeNull();
+    if (!after) continue;
+    expect(Math.abs(after.x - before.x), `content x-position after unlock at ${width}px`).toBeLessThanOrEqual(0.1);
+    expect(Math.abs(after.width - before.width), `content width after unlock at ${width}px`).toBeLessThanOrEqual(0.1);
+  }
+});
+
 test("drawer moves focus, closes on real Escape, and restores its trigger", async ({ page }) => {
   await expectDismissibleDialog({
     page,

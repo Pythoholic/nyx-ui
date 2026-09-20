@@ -18,11 +18,15 @@ export interface NyxOverlayPositionOptions {
   placement?: NyxOverlayPlacement;
 }
 
+export interface NyxOverlayPositionCleanupOptions {
+  preservePlacement?: boolean;
+}
+
 export function positionOverlay(
   reference: NyxOverlayReference,
   overlay: HTMLElement,
   options: NyxOverlayPositionOptions = {},
-): () => void {
+): (options?: NyxOverlayPositionCleanupOptions) => void {
   const padding = 8;
   let active = true;
   overlay.removeAttribute("data-nyx-positioned");
@@ -68,9 +72,10 @@ export function positionOverlay(
     update,
   );
 
-  return () => {
+  return (cleanupOptions = {}) => {
     active = false;
     stopAutoUpdate();
+    if (cleanupOptions.preservePlacement) return;
     overlay.removeAttribute("data-nyx-positioned");
     overlay.style.removeProperty("--nyx-overlay-x");
     overlay.style.removeProperty("--nyx-overlay-y");

@@ -12,6 +12,7 @@
 @keyframes nyx-shimmer-rtl { from { background-position: -200% 0; } to { background-position: 200% 0; } }
 @keyframes nyx-progress { 0% { transform: translateX(-100%); } 55% { transform: translateX(70%); } 100% { transform: translateX(210%); } }
 @keyframes nyx-progress-rtl { 0% { transform: translateX(100%); } 55% { transform: translateX(-70%); } 100% { transform: translateX(-210%); } }
+@keyframes nyx-progress-wave { from { background-position: 180% 0; } to { background-position: -120% 0; } }
 
 @layer utilities {
   .nyx-motion-fade { animation: nyx-fade-in var(--nyx-duration-normal) var(--nyx-ease-enter); }

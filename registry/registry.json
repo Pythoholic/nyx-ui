@@ -273,8 +273,8 @@
       "name": "activity-feed",
       "type": "component",
       "status": "stable",
-      "files": ["components/activity-feed.html"],
-      "requires": ["@nyx-ui/core"]
+      "files": ["components/activity-feed.html", "assets/activity-avatar-akira.svg"],
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/activity-feed"]
     },
     {
       "name": "filter-bar",

@@ -17,16 +17,16 @@
         <strong data-nyx-sidebar-label id="nyx-workspace-navigation-title">Nyx workspace</strong>
         <button aria-label="Close navigation" class="nyx-button nyx-icon-button" data-nyx-dialog-close data-nyx-sidebar-close data-size="small" data-variant="quiet" type="button">×</button>
       </header>
-      <nav class="nyx-sidebar-nav" aria-label="Workspace">
-        <a aria-current="page" aria-label="Overview" href="#overview">
+      <nav class="nyx-sidebar-nav" aria-label="Workspace" data-nyx-shell-navigation>
+        <a aria-controls="nyx-sidebar-overview" aria-current="page" aria-label="Overview" data-title="Operational overview" href="#nyx-sidebar-overview">
           <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" /></svg>
           <span data-nyx-sidebar-label>Overview</span>
         </a>
-        <a aria-label="Records" href="#records">
+        <a aria-controls="nyx-sidebar-records" aria-label="Records" data-title="Records" href="#nyx-sidebar-records">
           <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8" /></svg>
           <span data-nyx-sidebar-label>Records</span>
         </a>
-        <a aria-label="Settings" href="#settings">
+        <a aria-controls="nyx-sidebar-settings" aria-label="Settings" data-title="Settings" href="#nyx-sidebar-settings">
           <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" /></svg>
           <span data-nyx-sidebar-label>Settings</span>
         </a>
@@ -38,9 +38,9 @@
       <button aria-label="Toggle workspace navigation" class="nyx-button nyx-icon-button" data-nyx-sidebar-toggle type="button">
         <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
       </button>
-      <strong>Operational overview</strong>
+      <strong data-nyx-shell-title>Operational overview</strong>
     </header>
-    <div class="nyx-app-main">
+    <div class="nyx-app-main" data-nyx-shell-panel id="nyx-sidebar-overview">
       <p class="nyx-eyebrow">Workspace</p>
       <h2>System status</h2>
       <p>Navigation remains available as an icon rail when collapsed.</p>
@@ -48,6 +48,18 @@
         <button class="nyx-button" data-variant="primary" type="button">Create record</button>
         <button class="nyx-button" type="button">View activity</button>
       </div>
+    </div>
+    <div class="nyx-app-main" data-nyx-shell-panel id="nyx-sidebar-records" hidden>
+      <p class="nyx-eyebrow">Records</p>
+      <h2>Deployment records</h2>
+      <p>Review recent releases and open an individual record for operational details.</p>
+      <div class="nyx-app-actions"><button class="nyx-button" data-variant="primary" type="button">Create record</button><button class="nyx-button" type="button">Export records</button></div>
+    </div>
+    <div class="nyx-app-main" data-nyx-shell-panel id="nyx-sidebar-settings" hidden>
+      <p class="nyx-eyebrow">Settings</p>
+      <h2>Workspace settings</h2>
+      <p>Manage regional defaults, notification preferences, and access policies.</p>
+      <div class="nyx-app-actions"><button class="nyx-button" data-variant="primary" type="button">Save settings</button></div>
     </div>
   </main>
 </div>

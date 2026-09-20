@@ -1,5 +1,5 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
-import { positionOverlay, type NyxOverlayPlacement } from "./internal/positioning.js";
+import { positionOverlay, type NyxOverlayPlacement, type NyxOverlayPositionCleanupOptions } from "./internal/positioning.js";
 
 export type NyxTooltipOpenReason = "api" | "focus" | "pointer";
 export type NyxTooltipCloseReason =
@@ -79,7 +79,7 @@ export class NyxTooltip {
   private openTimer: number | undefined;
   private readonly placement: NyxOverlayPlacement;
   private readonly pointerTriggers = new Set<HTMLElement>();
-  private positionCleanup: (() => void) | undefined;
+  private positionCleanup: ((options?: NyxOverlayPositionCleanupOptions) => void) | undefined;
   private readonly provider: HTMLElement;
   private readonly providerState: ProviderState;
   private readonly skipDelay: number;
@@ -143,6 +143,7 @@ export class NyxTooltip {
     this.element.hidden = false;
     try { this.element.showPopover?.(); } catch { /* The hidden fallback remains visible. */ }
     this.syncState();
+    this.positionCleanup?.();
     this.positionCleanup = positionOverlay(trigger, this.element, { placement: this.placement });
     this.element.ownerDocument.addEventListener("keydown", this.handleKeyDown, true);
     dispatchNyxEvent(this.element, "nyx:tooltip:open", detail);
@@ -155,8 +156,9 @@ export class NyxTooltip {
     const detail: NyxTooltipEventDetail = { reason, tooltip: this, trigger: this.activeTrigger };
     if (!dispatchNyxEvent(this.element, "nyx:tooltip:before-close", detail, reason !== "destroy")) return false;
 
-    this.positionCleanup?.();
-    this.positionCleanup = undefined;
+    // Retain the final anchor coordinates while the native popover exit is
+    // visible. Reopening or destroying performs the complete style reset.
+    this.positionCleanup?.({ preservePlacement: true });
     this.element.ownerDocument.removeEventListener("keydown", this.handleKeyDown, true);
     const nativePopover = typeof this.element.hidePopover === "function";
     try { this.element.hidePopover?.(); } catch { /* The hidden fallback closes it. */ }
@@ -175,6 +177,8 @@ export class NyxTooltip {
     this.destroyed = true;
     this.clearTimers();
     this.close("destroy");
+    this.positionCleanup?.();
+    this.positionCleanup = undefined;
     this.triggers.forEach((trigger) => {
       trigger.removeEventListener("pointerenter", this.handlePointerEnter);
       trigger.removeEventListener("pointerleave", this.handlePointerLeave);

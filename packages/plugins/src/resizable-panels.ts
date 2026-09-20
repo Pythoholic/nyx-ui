@@ -77,9 +77,6 @@ export class NyxResizablePanels {
     handle.tabIndex = handle.tabIndex >= 0 ? handle.tabIndex : 0;
     handle.addEventListener("keydown", this.handleKeydown);
     handle.addEventListener("pointerdown", this.handlePointerDown);
-    handle.addEventListener("pointermove", this.handlePointerMove);
-    handle.addEventListener("pointerup", this.handlePointerEnd);
-    handle.addEventListener("pointercancel", this.handlePointerEnd);
     handle.addEventListener("lostpointercapture", this.handleLostPointerCapture);
     this.sync();
     element.setAttribute("data-nyx-resizable-ready", "");
@@ -149,9 +146,6 @@ export class NyxResizablePanels {
     this.finishPointer();
     this.handle.removeEventListener("keydown", this.handleKeydown);
     this.handle.removeEventListener("pointerdown", this.handlePointerDown);
-    this.handle.removeEventListener("pointermove", this.handlePointerMove);
-    this.handle.removeEventListener("pointerup", this.handlePointerEnd);
-    this.handle.removeEventListener("pointercancel", this.handlePointerEnd);
     this.handle.removeEventListener("lostpointercapture", this.handleLostPointerCapture);
     this.element.removeAttribute("data-nyx-resizable-ready");
     if (instances.get(this.element) === this) instances.delete(this.element);
@@ -197,6 +191,10 @@ export class NyxResizablePanels {
 
   private finishPointer(): void {
     if (this.pointerId === undefined) return;
+    const document = this.element.ownerDocument;
+    document.removeEventListener("pointermove", this.handlePointerMove);
+    document.removeEventListener("pointerup", this.handlePointerEnd);
+    document.removeEventListener("pointercancel", this.handlePointerEnd);
     try {
       if (this.handle.hasPointerCapture?.(this.pointerId)) this.handle.releasePointerCapture(this.pointerId);
     } catch { /* Capture may already be released. */ }
@@ -233,6 +231,9 @@ export class NyxResizablePanels {
     this.sizeStart = this.collapsedState ? 0 : this.sizeState;
     this.element.setAttribute("data-nyx-resizing", "");
     this.element.ownerDocument.documentElement.classList.add("nyx-resizing");
+    this.element.ownerDocument.addEventListener("pointermove", this.handlePointerMove);
+    this.element.ownerDocument.addEventListener("pointerup", this.handlePointerEnd);
+    this.element.ownerDocument.addEventListener("pointercancel", this.handlePointerEnd);
     try { this.handle.setPointerCapture?.(event.pointerId); } catch { /* Pointer capture is best effort. */ }
   };
 

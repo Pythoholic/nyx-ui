@@ -21,9 +21,10 @@ export const dataPages = [
     categoryId: "data-display",
     categoryLabel: "Data Display",
     title: "Activity Feed",
-    description: "A semantic chronological feed combines actors, actions, linked objects, timestamps, status, and optional quoted context.",
-    searchTerms: "activity feed timeline audit history actor events chronological updates comments",
-    body: `<section class="docs-prose-section"><h2>Readable chronology</h2><p>The ordered list is the source of sequence. Native <code>time</code>, links, and blockquotes retain their meaning without a JavaScript timeline role, while <code>aria-current</code> identifies the newest relevant event.</p></section>${card("Workspace activity", activityFeedMarkup, "Registry source")}`,
+    description: "A semantic chronological feed combines human and system actors, payload previews, explicit dates, inline status, and collapsible history.",
+    searchTerms: "activity feed timeline audit history actor events chronological updates attachments status system avatar collapse dates",
+    plugins: ["activity-feed"],
+    body: `<section class="docs-prose-section"><h2>Readable chronology</h2><p>Ordered lists preserve sequence while native <code>time</code>, links, and blockquotes retain their meaning. Every timestamp includes a full visible date as well as a machine-readable value. Human events may use the shared avatar with either an image or initials; system events use a decorative icon only when the sentence already names the event.</p><p>The registry example composes the shared file, attachment, tag, badge, and avatar primitives. It demonstrates one compact media row and two file cards; richer galleries, file actions, loading, pagination, and event retrieval remain application concerns. Older authored entries are hidden behind a native button and become focusable only after expansion.</p></section>${card("Workspace activity", activityFeedMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.dataDisplay.filterBar,

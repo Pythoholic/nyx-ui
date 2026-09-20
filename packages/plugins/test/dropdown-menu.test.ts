@@ -157,6 +157,11 @@ describe("NyxDropdownMenu", () => {
 
     menu.close();
     expect(floating.cleanup).toHaveBeenCalled();
+    expect(element.hasAttribute("data-nyx-positioned")).toBe(true);
+    expect(element.style.getPropertyValue("--nyx-overlay-x")).toBe("112px");
+    expect(element.style.getPropertyValue("--nyx-overlay-y")).toBe("248px");
+
+    menu.destroy();
     expect(element.hasAttribute("data-nyx-positioned")).toBe(false);
     expect(element.style.getPropertyValue("--nyx-overlay-x")).toBe("");
     expect(element.style.getPropertyValue("--nyx-overlay-y")).toBe("");

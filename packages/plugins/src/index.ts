@@ -274,6 +274,14 @@ export {
 } from "./notification-center.js";
 
 export {
+  NyxActivityFeed,
+  initActivityFeeds,
+  type NyxActivityFeedEventDetail,
+  type NyxActivityFeedEventMap,
+  type NyxActivityFeedReason,
+} from "./activity-feed.js";
+
+export {
   NyxFilterBar,
   initFilterBars,
   type NyxFilterBarEventDetail,

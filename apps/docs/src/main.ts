@@ -35,6 +35,7 @@ import { initTreeViews } from "@nyx-ui/plugins/tree-view";
 import { initSidebars } from "@nyx-ui/plugins/sidebar";
 import { initSteppers } from "@nyx-ui/plugins/stepper";
 import { initNotificationCenters } from "@nyx-ui/plugins/notification-center";
+import { initActivityFeeds } from "@nyx-ui/plugins/activity-feed";
 import { initFilterBars } from "@nyx-ui/plugins/filter-bar";
 import { initCommandBars } from "@nyx-ui/plugins/command-bar";
 import { initBulkActionToolbars } from "@nyx-ui/plugins/bulk-action-toolbar";
@@ -234,6 +235,7 @@ function initializePlugin(plugin: PluginName, root: ParentNode, destroyables: De
     case "sidebar": addDestroyables(destroyables, initSidebars(root)); break;
     case "stepper": addDestroyables(destroyables, initSteppers(root)); break;
     case "notification-center": addDestroyables(destroyables, initNotificationCenters(root)); break;
+    case "activity-feed": addDestroyables(destroyables, initActivityFeeds(root)); break;
     case "filter-bar": addDestroyables(destroyables, initFilterBars(root)); break;
     case "command-bar": addDestroyables(destroyables, initCommandBars(root)); break;
     case "bulk-action-toolbar": addDestroyables(destroyables, initBulkActionToolbars(root)); break;
@@ -267,15 +269,83 @@ function initializePage(page: DocPage): () => void {
     }, { signal: abortController.signal });
   });
 
+  main.querySelectorAll<HTMLElement>("[data-nyx-sensitive]").forEach((sensitive) => {
+    const concealment = sensitive.querySelector<HTMLElement>("[data-nyx-sensitive-concealment]");
+    const content = sensitive.querySelector<HTMLElement>("[data-nyx-sensitive-content]");
+    const reveal = sensitive.querySelector<HTMLButtonElement>("[data-nyx-sensitive-reveal]");
+    const conceal = sensitive.querySelector<HTMLButtonElement>("[data-nyx-sensitive-conceal]");
+    const setRevealed = (revealed: boolean): void => {
+      sensitive.dataset.state = revealed ? "revealed" : "concealed";
+      concealment?.toggleAttribute("hidden", revealed);
+      content?.toggleAttribute("hidden", !revealed);
+      reveal?.setAttribute("aria-expanded", String(revealed));
+      if (revealed) conceal?.focus();
+      else reveal?.focus();
+    };
+    reveal?.addEventListener("click", () => setRevealed(true), { signal: abortController.signal });
+    conceal?.addEventListener("click", () => setRevealed(false), { signal: abortController.signal });
+  });
+
+  main.querySelectorAll<HTMLElement>("[data-nyx-example='application-shell'], [data-nyx-sidebar]").forEach((shell) => {
+    const buttons = [...shell.querySelectorAll<HTMLElement>("[data-nyx-shell-navigation] :is(a, button)[aria-controls]")];
+    const panels = [...shell.querySelectorAll<HTMLElement>("[data-nyx-shell-panel]")];
+    const title = shell.querySelector<HTMLElement>("[data-nyx-shell-title]");
+    buttons.forEach((button) => button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const panelId = button.getAttribute("aria-controls");
+      buttons.forEach((candidate) => {
+        if (candidate === button) candidate.setAttribute("aria-current", "page");
+        else candidate.removeAttribute("aria-current");
+      });
+      panels.forEach((panel) => panel.toggleAttribute("hidden", panel.id !== panelId));
+      if (title) title.textContent = button.dataset.title ?? button.textContent?.trim() ?? "Workspace";
+      if (shell.dataset.nyxSidebarMode === "mobile") shell.querySelector<HTMLElement>("[data-nyx-sidebar-toggle]")?.click();
+    }, { signal: abortController.signal }));
+  });
+
+  main.querySelectorAll<HTMLFormElement>("[data-nyx-batch-plan]").forEach((form) => {
+    const name = form.querySelector<HTMLElement>("[data-nyx-batch-plan-name]");
+    const summary = form.querySelector<HTMLElement>("[data-nyx-batch-plan-summary]");
+    const submit = form.querySelector<HTMLButtonElement>("button[type='submit']");
+    const syncPlan = (): void => {
+      const selected = form.querySelector<HTMLInputElement>("input[name='batch-plan']:checked");
+      if (!selected) return;
+      if (name) name.textContent = `${selected.value} plan`;
+      if (summary) summary.textContent = `${selected.dataset.outputs} outputs · approximately ${selected.dataset.duration} minutes`;
+      if (submit) submit.textContent = `Start ${selected.value.toLocaleLowerCase()} batch`;
+    };
+    form.addEventListener("change", syncPlan, { signal: abortController.signal });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const selected = form.querySelector<HTMLInputElement>("input[name='batch-plan']:checked");
+      if (!selected || !submit) return;
+      submit.textContent = `${selected.value} batch queued`;
+      submit.disabled = true;
+    }, { signal: abortController.signal });
+    syncPlan();
+  });
+
   const rangeInput = main.querySelector<HTMLInputElement>("[data-range-input]");
   const rangeOutput = main.querySelector<HTMLOutputElement>("[data-range-output]");
   rangeInput?.addEventListener("input", () => {
     if (rangeOutput) rangeOutput.value = rangeInput.value;
   }, { signal: abortController.signal });
 
-  main.querySelector("[data-motion-replay]")?.addEventListener("click", () => {
-    const stage = main.querySelector<HTMLElement>("[data-motion-stage]");
-    if (stage) stage.replaceWith(stage.cloneNode(true));
+  main.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target.closest<HTMLButtonElement>("[data-motion-replay], [data-motion-replay-all]") : null;
+    if (!target) return;
+    const replay = (element: HTMLElement): void => {
+      const replacement = element.cloneNode(true) as HTMLElement;
+      if (replacement.classList.contains("docs-motion-exit")) replacement.dataset.motionPlaying = "true";
+      element.replaceWith(replacement);
+    };
+    if (target.hasAttribute("data-motion-replay-all")) {
+      main.querySelectorAll<HTMLElement>("[data-motion-stage] [id^='motion-']").forEach(replay);
+      return;
+    }
+    const id = target.dataset.motionTarget;
+    const element = id ? main.querySelector<HTMLElement>(`#${id}`) : null;
+    if (element) replay(element);
   }, { signal: abortController.signal });
 
   main.querySelector("[data-toast-demo]")?.addEventListener("click", () => {

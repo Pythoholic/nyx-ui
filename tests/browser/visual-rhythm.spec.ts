@@ -122,6 +122,73 @@ test("buttons keep one declared height when their contents differ", async ({ pag
   expect(heights[0], "small buttons use the declared 2.25rem height").toBe(36);
 });
 
+test("buttons and fields in compound form controls share a level continuous edge", async ({ page }) => {
+  for (const path of ["/components/forms/text-fields", "/components/forms/date-picker"]) {
+    for (const width of [1280, 1920, 2560]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      const groups = page.locator("[data-example-preview] :is(.nyx-input-group, .nyx-date-picker-control)");
+      await expect(groups).toHaveCount(1);
+      const geometry = await groups.first().evaluate(group => {
+        const controls = Array.from(group.children) as HTMLElement[];
+        const boxes = controls.map(control => control.getBoundingClientRect());
+        return {
+          heights: boxes.map(box => box.height),
+          seams: boxes.slice(1).map((box, index) => box.left - boxes[index].right),
+        };
+      });
+
+      expect(Math.max(...geometry.heights) - Math.min(...geometry.heights), `${path} control levels at ${width}px`).toBeLessThanOrEqual(0.1);
+      expect(geometry.seams.every(seam => seam <= 0 && seam >= -2), `${path} control seams at ${width}px`).toBe(true);
+    }
+  }
+});
+
+test("component documentation uses one major-section rhythm", async ({ page }) => {
+  for (const path of [
+    "/components/overlays/hover-card",
+    "/components/overlays/dropdown-menu",
+    "/components/forms/number-input",
+  ]) {
+    await page.goto(path);
+    const gaps = await page.locator(".docs-section").evaluate(section => {
+      const blocks = Array.from(section.children).filter(element => element.matches(
+        ".docs-component-card, .docs-grid, .docs-prose-section, .docs-reference",
+      ));
+      return blocks.slice(1).map((block, index) => {
+        const previous = blocks[index].getBoundingClientRect();
+        const current = block.getBoundingClientRect();
+        return current.top - previous.bottom;
+      });
+    });
+    expect(gaps.every(gap => gap >= 47), `${path} major sections retain a 3rem interval`).toBe(true);
+    const adjacentCode = page.locator(".docs-reference-section > .docs-code + .docs-code");
+    if (await adjacentCode.count()) {
+      const gap = await adjacentCode.first().evaluate(element => {
+        const previous = element.previousElementSibling!.getBoundingClientRect();
+        return element.getBoundingClientRect().top - previous.bottom;
+      });
+      expect(gap, `${path} adjacent code examples remain separated`).toBeGreaterThanOrEqual(15);
+    }
+  }
+});
+
+test("mixed data-display regions keep a consistent internal rhythm", async ({ page }) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/components/data-display/metrics-records-activity");
+    const gaps = await page.locator("[data-example-preview] .nyx-data-display-stack").evaluate(stack => {
+      const regions = Array.from(stack.children);
+      return regions.slice(1).map((region, index) => {
+        const previous = regions[index].getBoundingClientRect();
+        return region.getBoundingClientRect().top - previous.bottom;
+      });
+    });
+    expect(gaps.length).toBe(5);
+    expect(gaps.every(gap => Math.abs(gap - 24) <= 0.1), `data-display gaps at ${width}px`).toBe(true);
+  }
+});
+
 test("the documented accent is present in the first response and hydrated controls", async ({ page, request }) => {
   const response = await request.get("/");
   expect(await response.text()).toContain('data-nyx-theme="signal"');
@@ -333,7 +400,7 @@ test("native date and time controls use the Nyx surface without changing semanti
   expect(surfaces[0].appearance).toBe("none");
   expect(surfaces[0].backgroundImage).not.toBe("none");
   expect(surfaces[1].backgroundImage).not.toBe("none");
-  expect(surfaces[0].height).toBe(47);
+  expect(surfaces[0].height).toBe(46);
 
   await date.focus();
   await expect(date).not.toHaveCSS("box-shadow", "none");
@@ -354,12 +421,12 @@ test("application shell reuses sidebar navigation and separates content regions"
   await page.goto("/components/layouts/application-shell");
   const demo = example(page, "Application shell");
   const nav = demo.getByRole("navigation", { name: "Workspace" });
-  const links = nav.getByRole("link");
+  const links = nav.getByRole("button");
 
   await expect(links).toHaveCount(3);
   await expect(links.first()).toHaveAttribute("aria-current", "page");
   const metrics = await demo.evaluate((root) => {
-    const link = root.querySelector<HTMLElement>(".nyx-sidebar-nav a");
+    const link = root.querySelector<HTMLElement>(".nyx-sidebar-nav button");
     const topbar = root.querySelector<HTMLElement>(".nyx-app-content > .nyx-topbar");
     const main = root.querySelector<HTMLElement>(".nyx-app-main");
     if (!link || !topbar || !main) throw new Error("Application shell regions did not render.");
@@ -377,6 +444,11 @@ test("application shell reuses sidebar navigation and separates content regions"
   expect(metrics.linkHeight).toBeGreaterThanOrEqual(44);
   expect(metrics.topbarBorder).toBeGreaterThan(0);
   expect(metrics.regionGap).toBe(0);
+
+  await links.nth(1).click();
+  await expect(links.nth(1)).toHaveAttribute("aria-current", "page");
+  await expect(demo.getByRole("heading", { name: "Recent deployments" })).toBeVisible();
+  await expect(demo.getByRole("heading", { name: "Operational overview" })).toBeHidden();
 });
 
 test("sidebar stays inside its shell and makes rail changes legible", async ({ page }) => {
@@ -397,6 +469,16 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await expect(shell.getByRole("button", { name: "Create record" })).toBeVisible();
   await expect(shell.getByRole("button", { name: "View activity" })).toBeVisible();
 
+  await panel.getByRole("link", { name: "Records" }).click();
+  await expect(panel.getByRole("link", { name: "Records" })).toHaveAttribute("aria-current", "page");
+  await expect(shell.getByRole("heading", { name: "Deployment records" })).toBeVisible();
+  await expect(shell.locator("[data-nyx-shell-title]")).toHaveText("Records");
+
+  await panel.getByRole("link", { name: "Settings" }).click();
+  await expect(panel.getByRole("link", { name: "Settings" })).toHaveAttribute("aria-current", "page");
+  await expect(shell.getByRole("heading", { name: "Workspace settings" })).toBeVisible();
+  await expect(shell.getByRole("heading", { name: "Deployment records" })).toBeHidden();
+
   const transition = await shell.evaluate((root) => ({
     grid: getComputedStyle(root).transitionProperty,
     label: getComputedStyle(root.querySelector<HTMLElement>("[data-nyx-sidebar-label]")!).transitionProperty,
@@ -407,6 +489,26 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await toggle.click();
   await expect(shell).toHaveAttribute("data-state", "collapsed");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+});
+
+test("sidebar destinations switch content at each desktop review width", async ({ page }) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({ width, height: width === 2560 ? 1440 : 1080 });
+    await page.goto("/components/layouts/sidebar");
+    const demo = example(page, "Sidebar");
+    const shell = demo.locator("[data-nyx-sidebar]");
+
+    for (const destination of [
+      { link: "Records", heading: "Deployment records" },
+      { link: "Settings", heading: "Workspace settings" },
+      { link: "Overview", heading: "System status" },
+    ]) {
+      const link = shell.getByRole("link", { name: destination.link });
+      await link.click();
+      await expect(link, `${destination.link} selected at ${width}px`).toHaveAttribute("aria-current", "page");
+      await expect(shell.getByRole("heading", { name: destination.heading }), `${destination.link} panel at ${width}px`).toBeVisible();
+    }
+  }
 });
 
 test("resizable separators expose a visible responsive grip", async ({ page }) => {
@@ -431,4 +533,148 @@ test("resizable separators expose a visible responsive grip", async ({ page }) =
   }));
   expect(focused.background).not.toBe("rgba(0, 0, 0, 0)");
   expect(focused.gripColor).not.toBe("rgb(52, 65, 74)");
+
+  const regionHandle = demo.getByRole("separator", { name: "Resize deployment regions" });
+  const before = Number(await regionHandle.getAttribute("aria-valuenow"));
+  const box = await regionHandle.boundingBox();
+  expect(box).not.toBeNull();
+  if (!box) return;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 + 60, { steps: 4 });
+  await page.mouse.up();
+  expect(Number(await regionHandle.getAttribute("aria-valuenow"))).toBeGreaterThan(before);
+
+  await regionHandle.focus();
+  const pointerValue = Number(await regionHandle.getAttribute("aria-valuenow"));
+  await page.keyboard.press("ArrowUp");
+  expect(Number(await regionHandle.getAttribute("aria-valuenow"))).toBeLessThan(pointerValue);
+});
+
+test("activity feed keeps avatars, copy, and the timeline on shared columns", async ({ page }) => {
+  for (const width of [1280, 1920, 2560]) {
+    await page.setViewportSize({ width, height: width === 2560 ? 1440 : 1080 });
+    await page.goto("/components/data-display/activity-feed");
+    await page.evaluate(() => document.fonts.ready);
+
+    const demo = example(page, "Workspace activity");
+    const metrics = await demo.locator(".nyx-activity-feed").evaluate((feed) => {
+      const boxes = (selector: string) => [...feed.querySelectorAll<HTMLElement>(selector)].map((element) => element.getBoundingClientRect());
+      const items = boxes(".nyx-activity-list:not([hidden]) .nyx-activity-item");
+      const avatars = boxes(".nyx-activity-list:not([hidden]) .nyx-activity-item > .nyx-avatar");
+      const bodies = boxes(".nyx-activity-list:not([hidden]) .nyx-activity-body");
+      const firstItem = feed.querySelector<HTMLElement>(".nyx-activity-item");
+      const firstAvatar = feed.querySelector<HTMLElement>(".nyx-activity-item > .nyx-avatar");
+      const sentence = feed.querySelector<HTMLElement>(".nyx-activity-heading p");
+      const inlineLink = sentence?.querySelector<HTMLElement>("a");
+      if (!firstItem || !firstAvatar || !sentence || !inlineLink) throw new Error("Activity feed structure did not render.");
+      const itemBox = firstItem.getBoundingClientRect();
+      const avatarBox = firstAvatar.getBoundingClientRect();
+      return {
+        itemLefts: items.map(({ left }) => left),
+        avatarLefts: avatars.map(({ left }) => left),
+        bodyLefts: bodies.map(({ left }) => left),
+        avatarSizes: avatars.map(({ width, height }) => ({ width, height })),
+        railCenter: itemBox.left + parseFloat(getComputedStyle(firstItem, "::after").insetInlineStart),
+        avatarCenter: avatarBox.left + avatarBox.width / 2,
+        sentenceFontSize: getComputedStyle(sentence).fontSize,
+        linkFontSize: getComputedStyle(inlineLink).fontSize,
+        overflow: feed.scrollWidth - feed.clientWidth,
+        feedWidth: feed.getBoundingClientRect().width,
+        listWidth: feed.querySelector<HTMLElement>(".nyx-activity-list")?.getBoundingClientRect().width ?? 0,
+      };
+    });
+
+    expect(new Set(metrics.itemLefts).size, `${width}px row starts`).toBe(1);
+    expect(new Set(metrics.avatarLefts).size, `${width}px avatar column`).toBe(1);
+    expect(new Set(metrics.bodyLefts).size, `${width}px content column`).toBe(1);
+    for (const avatar of metrics.avatarSizes) expect(avatar.width, `${width}px avatar shape`).toBe(avatar.height);
+    expect(Math.abs(metrics.railCenter - metrics.avatarCenter), `${width}px timeline alignment`).toBeLessThanOrEqual(1);
+    expect(metrics.linkFontSize, `${width}px inline-link typography`).toBe(metrics.sentenceFontSize);
+    expect(metrics.overflow, `${width}px activity feed overflow`).toBeLessThanOrEqual(0);
+    expect(metrics.listWidth / metrics.feedWidth, `${width}px feed uses its card width`).toBeGreaterThan(0.99);
+  }
+});
+
+test("activity feed composes compact file cards with exposed filenames", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const demo = example(page, "Workspace activity");
+  const feed = demo.locator("[data-nyx-activity-feed]");
+
+  await expect(feed.locator(".nyx-activity-files .nyx-file-item")).toHaveCount(2);
+  await expect(feed.locator(".nyx-file-details strong")).toHaveText(["release-notes.pdf", "audit-sample.csv"]);
+});
+
+test("activity feed composes media thumbnails with an overflow count", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  await expect(feed.locator(".nyx-activity-media .nyx-attachment-preview")).toHaveCount(3);
+  await expect(feed.locator(".nyx-activity-overflow")).toContainText("+3");
+});
+
+test("activity feed renders status transitions inline", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  await expect(feed.locator(".nyx-activity-heading .nyx-tag")).toHaveText("Completed");
+});
+
+test("activity feed distinguishes system actors from people", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  await expect(feed.locator(".nyx-activity-icon")).toHaveCount(2);
+  await expect(feed.getByText("Deployment pipeline completed checks", { exact: false })).toBeVisible();
+});
+
+test("activity feed uses shared real and fallback avatars with complete timestamps", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  const photoAvatar = feed.locator("object.nyx-avatar");
+  await expect(photoAvatar).toHaveAttribute("aria-label", "Akira K.");
+  await expect(photoAvatar).toHaveAttribute("data", "/assets/activity-avatar-akira.svg");
+  await expect(photoAvatar.locator("span")).toHaveText("AK");
+  expect((await page.request.get("/assets/activity-avatar-akira.svg")).ok()).toBe(true);
+  await expect(feed.locator("span.nyx-avatar").filter({ hasText: "SM" })).toHaveCount(1);
+  await expect(feed.locator("time:not([datetime])")).toHaveCount(0);
+  await expect(feed.getByText("Today", { exact: true })).toBeVisible();
+});
+
+test("activity feed reveals dated history and moves focus into it", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  const toggle = feed.locator("[data-nyx-activity-toggle]");
+  const history = feed.locator("[data-nyx-activity-history]");
+  await expect(history).toBeHidden();
+  await toggle.focus();
+  await page.keyboard.press("Enter");
+  await expect(feed).toHaveAttribute("data-state", "expanded");
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(history).toBeVisible();
+  await expect(feed.getByText("May 04", { exact: true })).toBeVisible();
+  await expect(history.locator("a").first()).toBeFocused();
+  await toggle.click();
+  await expect(history).toBeHidden();
+  await expect(feed).toHaveAttribute("data-state", "collapsed");
+});
+
+test("activity feed status semantics remain distinct across accent themes", async ({ page }) => {
+  await page.goto("/components/data-display/activity-feed");
+  const feed = example(page, "Workspace activity").locator("[data-nyx-activity-feed]");
+  for (const theme of ["solar", "signal", "flux", "plasma"]) {
+    await page.locator("html").evaluate((root, value) => { root.dataset.nyxTheme = value; }, theme);
+    const colors = await feed.evaluate((element) => {
+      const tag = element.querySelector<HTMLElement>(".nyx-tag[data-tone='success']")!;
+      const badge = element.querySelector<HTMLElement>(".nyx-badge[data-tone='success']")!;
+      const probe = document.createElement("span");
+      probe.style.color = "var(--nyx-signal)";
+      element.append(probe);
+      const success = getComputedStyle(probe).color;
+      probe.style.color = "var(--nyx-accent)";
+      const accent = getComputedStyle(probe).color;
+      probe.remove();
+      return { tag: getComputedStyle(tag).color, badge: getComputedStyle(badge).color, success, accent };
+    });
+    expect(colors.tag, `${theme} inline status`).toBe(colors.success);
+    expect(colors.badge, `${theme} pipeline status`).toBe(colors.success);
+    expect(colors.success, `${theme} semantic status differs from accent`).not.toBe(colors.accent);
+  }
 });

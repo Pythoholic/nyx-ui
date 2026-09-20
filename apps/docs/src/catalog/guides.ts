@@ -39,6 +39,18 @@ root.addEventListener("nyx:dialog:close", (event) => {
   persistCloseReason(event.detail.reason);
 });`;
 const themeSetup = `<html data-nyx-theme="signal">`;
+const registryEntry = `{
+  "name": "dialog",
+  "type": "component",
+  "status": "stable",
+  "files": ["components/dialog.html"],
+  "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+}`;
+const registryAdoption = `# Copy the canonical structure into application source
+cp registry/components/dialog.html src/components/account-dialog.html
+
+# Keep shared presentation and optional behavior as dependencies
+pnpm add @nyx-ui/core @nyx-ui/plugins`;
 const tokenSetup = `@import "@nyx-ui/core";
 
 :root {
@@ -123,13 +135,70 @@ export const guidePages = [
     categoryLabel: "Getting started",
     title: "Accessibility",
     navigationLabel: "Accessibility",
-    description: "Nyx provides semantic source and interaction contracts; consumers retain responsibility for content, composition, and application-level validation.",
-    searchTerms: "accessibility aria keyboard browser baseline 2024 consumer responsibility",
-    body: `<div class="docs-prose">
-      ${prose("Project stance", `<p>Accessibility is part of component behavior: native elements, visible focus, keyboard operation, focus return, labels, descriptions, live regions, and state synchronization are designed together. Every interactive component page documents its keyboard and ARIA contract.</p>`)}
-      ${prose("Browser floor", `<p>Nyx targets the Baseline 2024 browser floor. Native dialog, the Popover API, <code>inert</code>, <code>:has()</code>, and internationalization APIs are required. Nyx does not ship polyfills or legacy fallback branches for these capabilities.</p>`)}
-      ${prose("What Nyx guarantees", `<p>Unmodified registry examples provide the documented semantics, focus behavior, keyboard behavior, ARIA state management, and reduced-motion treatment implemented by the corresponding CSS and controller.</p>`)}
-      ${prose("Consumer responsibility", `<p>You must preserve accessible names and relationships when editing markup, provide meaningful content and alternative text, manage validation and application state, test completed compositions with keyboards and assistive technology, and avoid introducing contrast or focus regressions through token overrides.</p>`)}
+    description: "Nyx treats accessibility as an interaction contract shared by its markup, CSS, controllers, and the application that composes them.",
+    searchTerms: "accessibility aria keyboard focus screen reader testing browser baseline 2024 consumer responsibility reduced motion",
+    body: `<div class="docs-accessibility">
+      <section class="docs-overview-lead" aria-labelledby="accessibility-approach">
+        <div><span class="nyx-eyebrow">Approach</span><h2 id="accessibility-approach">Accessibility is part of component behavior</h2></div>
+        <div class="docs-overview-copy">
+          <p>Semantics, keyboard operation, visible focus, focus restoration, accessible names, live-region updates, and state synchronization are designed as one contract. They are not optional annotations added after a component is complete.</p>
+          <p>Each interactive component page documents the relevant keyboard behavior, public state, and ARIA relationships. The registry source is the reference implementation that adopters begin from.</p>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="accessibility-ownership">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Ownership</span><h2 id="accessibility-ownership">What Nyx provides—and what the application must provide</h2></header>
+        <div class="docs-accessibility-columns">
+          <article class="docs-accessibility-card">
+            <h3>Provided by Nyx</h3>
+            <ul>
+              <li>Semantic, copyable HTML with explicit labels and relationships.</li>
+              <li>Keyboard behavior and focus management for custom interactions.</li>
+              <li>ARIA state synchronization where native HTML is not sufficient.</li>
+              <li>Visible focus treatment, semantic color tokens, and reduced-motion CSS.</li>
+              <li>Documented events so application state can accept or prevent transitions.</li>
+            </ul>
+          </article>
+          <article class="docs-accessibility-card">
+            <h3>Owned by the application</h3>
+            <ul>
+              <li>Meaningful labels, instructions, alternative text, and error messages.</li>
+              <li>Correct heading structure and landmarks in the completed screen.</li>
+              <li>Validation timing, server errors, authorization, and business rules.</li>
+              <li>Focus order and announcements across composed or dynamically replaced regions.</li>
+              <li>Verification after markup, tokens, content, or controller behavior is adapted.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="accessibility-verification">
+        <header class="docs-overview-section-head">
+          <span class="nyx-eyebrow">Verification</span>
+          <h2 id="accessibility-verification">Test the completed workflow, not only the component</h2>
+          <p>Automated checks are useful, but they cannot confirm that focus movement, announcements, reading order, and task completion make sense in context.</p>
+        </header>
+        <ol class="docs-accessibility-checklist">
+          <li><span>01</span><div><strong>Keyboard</strong><p>Complete the primary and error-recovery paths without a pointer. Confirm focus remains visible and never disappears after state changes.</p></div></li>
+          <li><span>02</span><div><strong>Screen reader</strong><p>Verify names, roles, descriptions, live updates, table relationships, dialog context, and the order in which changed content is announced.</p></div></li>
+          <li><span>03</span><div><strong>Zoom and reflow</strong><p>Check the final screen at 200% zoom and narrow widths. Controls, error messages, and actions must remain available without two-dimensional page scrolling.</p></div></li>
+          <li><span>04</span><div><strong>Color and motion</strong><p>Recheck contrast after theme overrides, preserve non-color state indicators, and exercise the workflow with reduced motion enabled.</p></div></li>
+          <li><span>05</span><div><strong>Application states</strong><p>Cover loading, empty, error, validation, permission, success, cancellation, and destructive flows with realistic content.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="docs-accessibility-boundary" aria-labelledby="accessibility-browser-floor">
+        <div>
+          <span class="nyx-eyebrow">Compatibility boundary</span>
+          <h2 id="accessibility-browser-floor">Modern browser primitives are required</h2>
+        </div>
+        <p>Nyx targets the Baseline 2024 browser floor and relies on native <code>dialog</code>, the Popover API, <code>inert</code>, <code>:has()</code>, and internationalization APIs. It does not include polyfills or legacy fallback branches. Confirm the browser and assistive-technology combinations required by your product before adoption.</p>
+      </section>
+
+      <aside class="docs-accessibility-note" aria-label="Accessibility conformance statement">
+        <strong>No component library can make an application conformant by itself.</strong>
+        <p>Nyx provides a tested starting contract. Conformance depends on the content, composition, workflows, target platforms, and changes made by the adopting team.</p>
+      </aside>
     </div>`,
   }),
   page({
@@ -137,11 +206,28 @@ export const guidePages = [
     categoryLabel: "Getting started",
     title: "Registry and Open Code",
     navigationLabel: "Registry",
-    description: "Component markup is source you take into your project, review, and edit; it is not an opaque runtime renderer.",
-    searchTerms: "registry open code copy markup source own edit component html",
-    body: `<div class="docs-prose">
-      ${prose("Source ownership", `<p>Each component entry in <code>registry/registry.json</code> points to canonical HTML and lists its package requirements. The same raw file renders the documentation example and supplies the displayed source, preventing a second documentation-only copy from drifting.</p>`)}
-      ${prose("Taking a component", `<ol><li>Open the component page and copy the relevant HTML example.</li><li>Place it in a source file registered with <code>@source</code>.</li><li>Install <code>@nyx-ui/core</code> and, for interactive components, only the documented plugin subpath.</li><li>Edit the owned markup while preserving the documented semantic and ARIA relationships.</li></ol>`)}
+    description: "The registry is Nyx’s source distribution: inspect canonical HTML, copy it into your application, and retain ownership of the markup while shared CSS and optional controllers remain package dependencies.",
+    searchTerms: "registry open code copy markup source ownership update compare maintain component html dependencies workflow",
+    body: `<div class="docs-registry-guide">
+      <section class="docs-overview-lead" aria-labelledby="registry-model">
+        <div><span class="nyx-eyebrow">Distribution model</span><h2 id="registry-model">Source you can inspect, adapt, and maintain</h2></div>
+        <div class="docs-overview-copy"><p>Nyx does not render components through an opaque package-owned wrapper. The registry contains canonical HTML compositions that become part of your application source. This keeps semantics, content structure, and application-specific changes visible in code review.</p><p>Copying markup does not remove all dependencies. <code>@nyx-ui/core</code> continues to provide tokens and component styles. Interactive patterns also import the documented <code>@nyx-ui/plugins/*</code> controller. Your application owns content, business logic, data, and the adapted HTML.</p></div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="registry-entry">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Manifest</span><h2 id="registry-entry">Every entry declares what to copy and what to install</h2><p><code>registry/registry.json</code> is the inventory. An entry names the canonical files, maturity, and package requirements; the component page renders that same source and documents its interaction contract.</p></header>
+        <div class="docs-registry-manifest">${codeBlock(registryEntry, "js", "registry/registry.json")}<dl class="docs-registry-definitions"><div><dt>Name and type</dt><dd>Identify the component, component group, reference, or complete example.</dd></div><div><dt>Status</dt><dd>Communicates the entry’s current release maturity.</dd></div><div><dt>Files</dt><dd>Lists the canonical source to copy or inspect.</dd></div><div><dt>Requires</dt><dd>Lists shared CSS and any behavior subpath that remains a dependency.</dd></div></dl></div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="registry-workflow">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Adoption workflow</span><h2 id="registry-workflow">From catalog example to product-owned component</h2></header>
+        <ol class="docs-registry-steps"><li><span>01</span><div><strong>Evaluate the live behavior</strong><p>Use the preview with keyboard and pointer input. Read its guidance, accessibility contract, events, methods, and ownership boundaries.</p></div></li><li><span>02</span><div><strong>Copy canonical markup</strong><p>Copy the displayed HTML or the file named by the manifest into a source location included by your Tailwind <code>@source</code> configuration.</p></div></li><li><span>03</span><div><strong>Install only required packages</strong><p>Keep Core for presentation. Add the documented plugin subpath only when the component has controller-managed behavior.</p></div></li><li><span>04</span><div><strong>Adapt within the contract</strong><p>Change content and composition while preserving native semantics, accessible names, ID relationships, state hooks, and the documented controller lifecycle.</p></div></li><li><span>05</span><div><strong>Connect application concerns</strong><p>Add data, validation, authorization, persistence, transport, analytics, and error handling through native or Nyx events.</p></div></li><li><span>06</span><div><strong>Verify the completed workflow</strong><p>Test realistic success, empty, loading, failure, and destructive states with keyboard, assistive technology, zoom, and reduced motion.</p></div></li></ol>
+        ${codeBlock(registryAdoption, "shell", "Illustrative copy workflow")}
+      </section>
+
+      <section class="docs-registry-ownership" aria-labelledby="registry-ownership"><header><span class="nyx-eyebrow">Ownership boundary</span><h2 id="registry-ownership">Copying transfers control, not upstream synchronization</h2></header><div><p>Nyx maintains the canonical registry version, shared tokens, CSS, controller APIs, and documentation. After copying, your repository owns its local markup and every modification made to it.</p><p>Updates are deliberate: review upstream source and release notes, compare them with your local version, and port relevant fixes. Nyx does not overwrite copied files or silently merge upstream changes into application code.</p></div></section>
+
+      <aside class="docs-registry-decision" aria-label="When to use the registry model"><div><strong>Use the registry model when</strong><p>Your team wants direct control over semantics, composition, and product-specific markup.</p></div><div><strong>Consider another model when</strong><p>Your organization requires centrally upgraded, opaque components with no local source ownership or review burden.</p></div></aside>
     </div>`,
   }),
   page({

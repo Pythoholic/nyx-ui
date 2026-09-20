@@ -104,7 +104,7 @@ test("tabbed examples copy canonical source and survive client-side page cleanup
 });
 
 test("the command palette supports keyboard-only navigation", async ({ page }) => {
-  await expectPage(page, "/", "Foundations, components, motion, and application patterns.");
+  await expectPage(page, "/", "Interface foundations for operational software");
 
   await page.keyboard.press("Control+k");
   const palette = page.locator("#docs-command-palette");
@@ -162,4 +162,43 @@ test("the three-page voice sample gives adoption guidance at different component
     await expect(guidance.getByRole("heading", { name: sample.heading })).toBeVisible();
     await expect(guidance).toContainText(sample.phrase);
   }
+});
+
+test("registry guidance explains adoption, dependencies, ownership, and update responsibility", async ({ page }) => {
+  await expectPage(page, "/guides/registry", "Registry and Open Code");
+  await expect(page.getByRole("heading", { name: "Source you can inspect, adapt, and maintain" })).toBeVisible();
+  await expect(page.locator(".docs-registry-steps > li")).toHaveCount(6);
+  await expect(page.locator(".docs-registry-manifest")).toContainText("Requires");
+  await expect(page.locator(".docs-registry-ownership")).toContainText("does not overwrite copied files or silently merge upstream changes");
+});
+
+test("motion examples show their resting state and can be replayed independently", async ({ page }) => {
+  await expectPage(page, "/foundations/motion", "Motion Language");
+  await expect(page.locator(".docs-motion-example")).toHaveCount(6);
+  const panel = page.locator("#motion-spatial");
+  await page.getByRole("button", { name: "Replay", exact: true }).nth(1).click();
+  await expect(panel).toHaveCSS("animation-name", "docs-panel-arrival");
+  const panelJourney = await panel.evaluate(element => {
+    const animation = element.getAnimations()[0];
+    if (!animation) throw new Error("Panel arrival animation is missing.");
+    animation.pause();
+    animation.currentTime = 0;
+    const start = new DOMMatrixReadOnly(getComputedStyle(element).transform).m41;
+    animation.currentTime = 280;
+    const end = new DOMMatrixReadOnly(getComputedStyle(element).transform).m41;
+    return { start, end };
+  });
+  expect(panelJourney.start).toBeGreaterThan(8);
+  expect(panelJourney.start).toBeLessThan(20);
+  expect(Math.abs(panelJourney.end)).toBeLessThan(0.1);
+  const exit = page.locator("#motion-exit");
+  await expect(exit).toBeVisible();
+  await expect(exit).not.toHaveAttribute("data-motion-playing", "true");
+
+  await page.getByRole("button", { name: "Replay", exact: true }).nth(3).click();
+  await expect(page.locator("#motion-exit")).toHaveAttribute("data-motion-playing", "true");
+  await expect(page.locator("#motion-exit")).toHaveCSS("animation-name", "nyx-slide-out");
+
+  await page.getByRole("button", { name: /Replay all examples/ }).click();
+  await expect(page.locator(".docs-motion-example [id^='motion-']")).toHaveCount(6);
 });

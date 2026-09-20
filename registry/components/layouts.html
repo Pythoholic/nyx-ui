@@ -1,17 +1,27 @@
 <div class="nyx-app-shell" data-nyx-example="application-shell">
   <aside class="nyx-app-sidebar" aria-label="Workspace navigation">
-    <nav class="nyx-sidebar-nav" aria-label="Workspace">
-      <a href="#overview" aria-current="page">Overview</a>
-      <a href="#records">Records</a>
-      <a href="#settings">Settings</a>
+    <nav class="nyx-sidebar-nav" aria-label="Workspace" data-nyx-shell-navigation>
+      <button aria-controls="nyx-shell-overview" aria-current="page" type="button">Overview</button>
+      <button aria-controls="nyx-shell-records" type="button">Records</button>
+      <button aria-controls="nyx-shell-settings" type="button">Settings</button>
     </nav>
   </aside>
   <main class="nyx-app-content">
     <header class="nyx-topbar"><strong>Nyx workspace</strong><button class="nyx-button" type="button">Account</button></header>
-    <div class="nyx-app-main">
+    <div class="nyx-app-main" id="nyx-shell-overview" data-nyx-shell-panel>
       <p class="nyx-eyebrow">Workspace</p>
       <h2>Operational overview</h2>
-      <p>Compose application screens from shared Nyx foundations and components.</p>
+      <p>Three services are healthy. The release queue has two items awaiting review.</p>
+    </div>
+    <div class="nyx-app-main" id="nyx-shell-records" data-nyx-shell-panel hidden>
+      <p class="nyx-eyebrow">Records</p>
+      <h2>Recent deployments</h2>
+      <p>Review deployment history, ownership, and the current release state.</p>
+    </div>
+    <div class="nyx-app-main" id="nyx-shell-settings" data-nyx-shell-panel hidden>
+      <p class="nyx-eyebrow">Settings</p>
+      <h2>Workspace preferences</h2>
+      <p>Configure notifications, regional defaults, and release permissions.</p>
     </div>
   </main>
 </div>

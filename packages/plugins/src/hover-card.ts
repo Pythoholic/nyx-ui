@@ -1,6 +1,6 @@
 import { NyxOverlayDismissal, type NyxOverlayDismissReason } from "./internal/dismissal.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
-import { positionOverlay, type NyxOverlayPlacement } from "./internal/positioning.js";
+import { positionOverlay, type NyxOverlayPlacement, type NyxOverlayPositionCleanupOptions } from "./internal/positioning.js";
 
 export type NyxHoverCardCloseReason =
   | "api"
@@ -54,7 +54,7 @@ export class NyxHoverCard {
   private openTimer: number | undefined;
   private readonly openDelay: number;
   private readonly placement: NyxOverlayPlacement;
-  private positionCleanup: (() => void) | undefined;
+  private positionCleanup: ((options?: NyxOverlayPositionCleanupOptions) => void) | undefined;
   private readonly triggers: HTMLElement[];
   private readonly view: Window;
 
@@ -111,6 +111,7 @@ export class NyxHoverCard {
     this.openState = true;
     this.syncState();
     this.dismissal.activate();
+    this.positionCleanup?.();
     this.positionCleanup = positionOverlay(trigger, this.element, { placement: this.placement });
     dispatchNyxEvent(this.element, "nyx:hover-card:open", detail);
   }
@@ -120,8 +121,9 @@ export class NyxHoverCard {
     if (!this.openState) return;
     const detail: NyxHoverCardEventDetail = { card: this, reason };
     if (!dispatchNyxEvent(this.element, "nyx:hover-card:before-close", detail, reason !== "destroy")) return;
-    this.positionCleanup?.();
-    this.positionCleanup = undefined;
+    // Preserve the anchored coordinates until the popover exit is no longer
+    // visible. A later open or destroy performs the complete reset.
+    this.positionCleanup?.({ preservePlacement: true });
     this.dismissal.deactivate();
     const nativePopover = typeof this.element.hidePopover === "function";
     try { this.element.hidePopover?.(); } catch { /* Hidden fallback closes it. */ }
@@ -135,6 +137,8 @@ export class NyxHoverCard {
   destroy(): void {
     this.clearTimers();
     this.close("destroy");
+    this.positionCleanup?.();
+    this.positionCleanup = undefined;
     this.dismissal.destroy();
     this.element.removeEventListener("pointerenter", this.handleCardPointerEnter);
     this.element.removeEventListener("pointerleave", this.handleCardPointerLeave);

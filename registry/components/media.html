@@ -27,25 +27,37 @@
   <label for="nyx-rating-5" aria-label="5 stars"><svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z" /></svg></label>
 </fieldset>
 
-<div class="nyx-sensitive" data-nyx-example="protected-media">
-  <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
-  <div>
-    <strong>Protected preview</strong>
-    <p class="nyx-panel-description">Confirm access before revealing this asset.</p>
+<div class="nyx-sensitive" data-nyx-example="protected-media" data-nyx-sensitive data-state="concealed">
+  <div class="nyx-sensitive-concealment" data-nyx-sensitive-concealment>
+    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+    <div>
+      <strong>Protected preview</strong>
+      <p class="nyx-panel-description">Confirm access before revealing this asset.</p>
+    </div>
+    <button class="nyx-button" data-nyx-sensitive-reveal type="button" aria-expanded="false">Reveal preview</button>
   </div>
-  <button class="nyx-button" type="button">Reveal preview</button>
+  <figure class="nyx-sensitive-content" data-nyx-sensitive-content hidden>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 420'%3E%3Crect width='960' height='420' fill='%23050b14'/%3E%3Cpath d='M0 340 210 190l150 85 190-190 410 255v80H0z' fill='%23212b32'/%3E%3Ccircle cx='760' cy='100' r='72' fill='%23255775'/%3E%3Cpath d='m390 270 180-80 135 55-190 62z' fill='%23dce7ed'/%3E%3Ccircle cx='710' cy='242' r='9' fill='%2300d998'/%3E%3C/svg%3E" alt="Survey vessel approaching a protected lunar facility" width="960" height="420" />
+    <figcaption><span>Authorized mission preview</span><button class="nyx-button" data-nyx-sensitive-conceal type="button">Conceal preview</button></figcaption>
+  </figure>
 </div>
 
-<section class="nyx-batch-plan" data-nyx-example="batch-plan" aria-label="Batch plans">
-  <article class="nyx-panel nyx-batch-tile" data-selected="true">
-    <header class="nyx-batch-header"><strong>Balanced plan</strong><span class="nyx-badge">Selected</span></header>
-    <p class="nyx-panel-description">12 outputs &middot; two variations &middot; high fidelity</p>
-    <div class="nyx-progress" aria-label="Balanced plan progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72" role="progressbar">
-      <div class="nyx-progress-bar" style="--nyx-progress: 72%"></div>
-    </div>
-  </article>
-  <article class="nyx-panel nyx-batch-tile">
-    <strong>Rapid plan</strong>
-    <p class="nyx-panel-description">6 outputs &middot; one variation &middot; preview quality</p>
-  </article>
-</section>
+<form class="nyx-batch-plan" data-nyx-example="batch-plan" data-nyx-batch-plan>
+  <fieldset class="nyx-batch-options">
+    <legend class="sr-only">Choose a production plan</legend>
+    <label class="nyx-panel nyx-batch-tile">
+      <input checked class="sr-only" data-outputs="12" data-duration="18" name="batch-plan" type="radio" value="Balanced" />
+      <span class="nyx-batch-header"><strong>Balanced plan</strong><span class="nyx-badge">Recommended</span></span>
+      <span class="nyx-panel-description">12 outputs &middot; two variations &middot; high fidelity</span>
+    </label>
+    <label class="nyx-panel nyx-batch-tile">
+      <input class="sr-only" data-outputs="6" data-duration="6" name="batch-plan" type="radio" value="Rapid" />
+      <span class="nyx-batch-header"><strong>Rapid plan</strong><span class="nyx-badge">Fastest</span></span>
+      <span class="nyx-panel-description">6 outputs &middot; one variation &middot; preview quality</span>
+    </label>
+  </fieldset>
+  <div class="nyx-batch-summary" aria-live="polite">
+    <span><strong data-nyx-batch-plan-name>Balanced plan</strong><small data-nyx-batch-plan-summary>12 outputs · approximately 18 minutes</small></span>
+    <button class="nyx-button" data-variant="primary" type="submit">Start balanced batch</button>
+  </div>
+</form>

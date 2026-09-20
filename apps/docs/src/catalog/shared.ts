@@ -25,6 +25,7 @@ export type PluginName =
   | "resizable-panels"
   | "stepper"
   | "notification-center"
+  | "activity-feed"
   | "filter-bar"
   | "command-bar"
   | "bulk-action-toolbar"
@@ -1389,6 +1390,34 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Enter / Space", description: "Activates the focused native button; Enter follows a focused link." },
       ],
       accessibility: "Notifications remain a semantic labelled section containing a list. A polite output announces unread-count changes, read buttons name the next action (Mark notification read or Mark notification unread) without aria-pressed. Dismissal moves focus only when the removed item owns it: next dismiss button, previous dismiss button, then the labelled collection. The dismiss event fires after the exit animation removes the node and collection state synchronizes.",
+    },
+  },
+  "activity-feed": {
+    className: "NyxActivityFeed",
+    initName: "initActivityFeeds",
+    selector: "[data-nyx-activity-feed]",
+    reference: {
+      attributes: [
+        { name: "data-nyx-activity-feed", value: "presence", description: "Marks the feed disclosure ownership boundary." },
+        { name: "data-nyx-activity-history", value: "presence", description: "Marks the authored older-history region." },
+        { name: "data-nyx-activity-toggle", value: "presence", description: "Marks the native disclosure button." },
+        { name: "data-collapsed-label", value: "string", description: "Provides the button label restored on collapse." },
+        { name: "data-state", value: "collapsed | expanded", description: "Reflects older-history visibility on the root." },
+      ],
+      methods: [
+        { name: "expanded", value: "boolean", description: "Gets or sets older-history visibility." },
+        { name: "setExpanded(expanded, reason?)", value: "boolean", description: "Requests a disclosure transition and reports whether it changed." },
+        { name: "destroy()", value: "void", description: "Removes listeners and releases the cached instance without changing authored history." },
+      ],
+      events: [
+        { name: "nyx:activity-feed:before-change", value: "cancelable", description: "Fires before older history is shown or hidden." },
+        { name: "nyx:activity-feed:change", value: "not cancelable", description: "Fires after hidden, aria-expanded, and data-state synchronize." },
+      ],
+      keyboard: [
+        { name: "Tab / Shift+Tab", description: "Moves through visible links and the native disclosure button." },
+        { name: "Enter / Space", description: "Toggles older history from the focused button; expansion focuses its first interactive item." },
+      ],
+      accessibility: "Chronology remains in ordered lists grouped by labelled day. The native button controls the hidden history through aria-controls and aria-expanded. Hidden entries leave the tab order; expanding moves focus to the first revealed interactive item. Full visible dates supplement relative labels, and system icons are decorative because their sentences carry the event meaning.",
     },
   },
   "filter-bar": {

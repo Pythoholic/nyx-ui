@@ -1,33 +1,39 @@
-<section class="nyx-activity-feed" aria-labelledby="nyx-activity-feed-title">
-  <header class="nyx-activity-header">
-    <div>
-      <span class="nyx-eyebrow">// Workspace activity</span>
-      <h2 id="nyx-activity-feed-title">Recent changes</h2>
-    </div>
-    <a class="nyx-link" href="#activity-history">View history</a>
-  </header>
-  <ol class="nyx-timeline nyx-activity-list">
+<section class="nyx-activity-feed" data-nyx-activity-feed data-state="collapsed" aria-labelledby="nyx-activity-feed-title">
+  <header class="nyx-activity-header"><div><span class="nyx-eyebrow">// Workspace activity</span><h2 id="nyx-activity-feed-title">Recent changes</h2></div><a class="nyx-link" href="#activity-history">View history</a></header>
+  <ol class="nyx-timeline nyx-activity-list" aria-label="Today">
     <li class="nyx-timeline-item nyx-activity-item" data-state="current" aria-current="true">
-      <span class="nyx-activity-avatar" aria-hidden="true">AK</span>
-      <div class="nyx-activity-body">
-        <p><strong>Akira K.</strong> approved <a class="nyx-link" href="#release-024">release 024</a>.</p>
-        <div class="nyx-activity-meta"><time datetime="2026-09-18T14:42:00+09:00">10 minutes ago</time><span class="nyx-badge" data-tone="success">Approved</span></div>
+      <span class="nyx-activity-date">Today</span><object class="nyx-avatar" data="/assets/activity-avatar-akira.svg" type="image/svg+xml" role="img" aria-label="Akira K."><span aria-hidden="true">AK</span></object>
+      <div class="nyx-activity-body"><div class="nyx-activity-heading"><p><strong>Akira K.</strong> added 2 files to <a class="nyx-link" href="#release-024">release 024</a>.</p></div>
+        <ul class="nyx-file-queue nyx-activity-files" aria-label="Files added">
+          <li class="nyx-file-item"><span class="nyx-attachment-thumbnail" data-kind="document" aria-hidden="true"><span>PDF</span></span><span class="nyx-file-details"><strong>release-notes.pdf</strong><span>842 KB</span></span></li>
+          <li class="nyx-file-item"><span class="nyx-attachment-thumbnail" data-kind="data" aria-hidden="true"><span>CSV</span></span><span class="nyx-file-details"><strong>audit-sample.csv</strong><span>96 KB</span></span></li>
+        </ul>
+        <div class="nyx-activity-meta"><time datetime="2026-09-20T14:42:00+09:00">Sep 20, 2026 at 2:42 PM <span aria-hidden="true">· 10 minutes ago</span></time><span class="nyx-activity-kind">Files</span></div>
       </div>
     </li>
     <li class="nyx-timeline-item nyx-activity-item" data-state="complete">
-      <span class="nyx-activity-avatar" aria-hidden="true">SM</span>
-      <div class="nyx-activity-body">
-        <p><strong>Sora M.</strong> assigned incident <a class="nyx-link" href="#incident-184">INC-184</a> to Platform.</p>
-        <div class="nyx-activity-meta"><time datetime="2026-09-18T13:58:00+09:00">54 minutes ago</time><span>Assignment</span></div>
+      <span class="nyx-avatar" aria-hidden="true">SM</span>
+      <div class="nyx-activity-body"><div class="nyx-activity-heading"><p><strong>Sora M.</strong> attached 5 images to <a class="nyx-link" href="#campaign-review">campaign review</a>.</p></div>
+        <ul class="nyx-attachment-list nyx-activity-media" aria-label="Image attachments">
+          <li class="nyx-attachment-preview"><span class="nyx-attachment-thumbnail" data-kind="image"><span>Lobby concept</span></span></li>
+          <li class="nyx-attachment-preview"><span class="nyx-attachment-thumbnail" data-kind="image"><span>Night crop</span></span></li>
+          <li class="nyx-attachment-preview"><span class="nyx-attachment-thumbnail nyx-activity-overflow" data-kind="image"><span aria-hidden="true">+3</span><span class="sr-only">3 more images</span></span></li>
+        </ul>
+        <div class="nyx-activity-meta"><time datetime="2026-09-20T13:58:00+09:00">Sep 20, 2026 at 1:58 PM <span aria-hidden="true">· 54 minutes ago</span></time><span class="nyx-activity-kind">Media</span></div>
       </div>
     </li>
     <li class="nyx-timeline-item nyx-activity-item" data-state="complete">
-      <span class="nyx-activity-avatar" aria-hidden="true">YN</span>
-      <div class="nyx-activity-body">
-        <p><strong>Yui N.</strong> added a note to the deployment runbook.</p>
-        <blockquote class="nyx-blockquote nyx-activity-quote">Keep the Tokyo canary at ten percent until the latency window closes.</blockquote>
-        <div class="nyx-activity-meta"><time datetime="2026-09-18T12:21:00+09:00">2 hours ago</time><span>Comment</span></div>
-      </div>
+      <span class="nyx-avatar" aria-hidden="true">YN</span>
+      <div class="nyx-activity-body"><div class="nyx-activity-heading"><p><strong>Yui N.</strong> marked <a class="nyx-link" href="#pr-6">PR-6</a> as <span class="nyx-tag" data-tone="success">Completed</span>.</p></div><div class="nyx-activity-meta"><time datetime="2026-09-20T12:21:00+09:00">Sep 20, 2026 at 12:21 PM <span aria-hidden="true">· 2 hours ago</span></time><span class="nyx-activity-kind">Status</span></div></div>
+    </li>
+    <li class="nyx-timeline-item nyx-activity-item" data-state="complete">
+      <span class="nyx-avatar nyx-activity-icon" aria-hidden="true"><svg class="nyx-icon" viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" /></svg></span>
+      <div class="nyx-activity-body"><div class="nyx-activity-heading"><p>Deployment pipeline completed checks for <a class="nyx-link" href="#release-024">release 024</a> with no failures.</p></div><div class="nyx-activity-meta"><time datetime="2026-09-20T11:06:00+09:00">Sep 20, 2026 at 11:06 AM <span aria-hidden="true">· 3 hours ago</span></time><span class="nyx-badge" data-tone="success">Passed</span></div></div>
     </li>
   </ol>
+  <ol class="nyx-timeline nyx-activity-list nyx-activity-history" id="nyx-activity-history" data-nyx-activity-history aria-label="May 4" start="5" hidden>
+    <li class="nyx-timeline-item nyx-activity-item" data-state="complete"><span class="nyx-activity-date">May 04</span><span class="nyx-avatar" aria-hidden="true">AK</span><div class="nyx-activity-body"><div class="nyx-activity-heading"><p><strong>Akira K.</strong> added a note to the <a class="nyx-link" href="#deployment-runbook">deployment runbook</a>.</p></div><blockquote class="nyx-blockquote nyx-activity-quote">Keep the Tokyo canary at ten percent until the latency window closes.</blockquote><div class="nyx-activity-meta"><time datetime="2026-05-04T16:30:00+09:00">May 4, 2026 at 4:30 PM</time><span class="nyx-activity-kind">Comment</span></div></div></li>
+    <li class="nyx-timeline-item nyx-activity-item" data-state="complete"><span class="nyx-avatar nyx-activity-icon" aria-hidden="true"><svg class="nyx-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg></span><div class="nyx-activity-body"><div class="nyx-activity-heading"><p>Retention policy archived 12 completed tasks.</p></div><div class="nyx-activity-meta"><time datetime="2026-05-04T09:15:00+09:00">May 4, 2026 at 9:15 AM</time><span class="nyx-activity-kind">Automation</span></div></div></li>
+  </ol>
+  <div class="nyx-activity-disclosure"><button class="nyx-button" data-nyx-activity-toggle data-collapsed-label="Show 2 older events" data-variant="quiet" type="button" aria-expanded="false" aria-controls="nyx-activity-history">Show 2 older events</button></div>
 </section>

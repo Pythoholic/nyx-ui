@@ -80,6 +80,38 @@ test("dropdown positioning follows its trigger relationship", async ({ page }) =
   expect(Math.abs(panelBox.x - triggerBox.x), "dropdown and trigger left edges align").toBeLessThanOrEqual(2);
 });
 
+test("outside dismissal keeps dropdown coordinates through its exit transition", async ({ page }) => {
+  await page.goto("/components/overlays/dropdown-menu");
+  const demo = example(page, "Dropdown menu");
+  const trigger = demo.getByRole("button", { name: /Open menu/ });
+  const panel = demo.locator("#nyx-action-menu");
+
+  await trigger.click();
+  await expect(panel).toHaveAttribute("data-nyx-positioned", "");
+  const openPosition = await panel.evaluate(element => ({
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }));
+
+  await page.locator(".docs-title").click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await expect(panel).not.toBeVisible();
+  const closedPosition = await panel.evaluate(element => ({
+    positioned: element.hasAttribute("data-nyx-positioned"),
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }));
+  expect(closedPosition.positioned).toBe(true);
+  expect(Math.abs(parseFloat(closedPosition.x) - parseFloat(openPosition.x))).toBeLessThanOrEqual(2);
+  expect(Math.abs(parseFloat(closedPosition.y) - parseFloat(openPosition.y))).toBeLessThanOrEqual(2);
+  expect(parseFloat(closedPosition.x)).toBeGreaterThan(1);
+  expect(parseFloat(closedPosition.y)).toBeGreaterThan(1);
+
+  await trigger.click();
+  await expectOverlayWithinViewport(page, panel);
+  await expectAnchored(trigger, panel);
+});
+
 test("menu content has an intrinsic width cap independent of available space", async ({ page }) => {
   await page.goto("/components/overlays/dropdown-menu");
   const demo = example(page, "Dropdown menu");
@@ -154,9 +186,29 @@ test("hover card opens from a real hover and remains anchored", async ({ page })
   const trigger = demo.getByRole("link", { name: "Mira Chen" });
   const panel = demo.locator("[data-nyx-hover-card]");
 
+  await expect(trigger).toHaveCSS("text-decoration-line", "underline");
+  await expect(trigger.locator(".nyx-hover-card-cue .nyx-icon")).toHaveCount(1);
+
   await trigger.hover();
   await expectOverlayWithinViewport(page, panel);
   await expectAnchored(trigger, panel);
+
+  const openPosition = await panel.evaluate(element => ({
+    x: parseFloat(element.style.getPropertyValue("--nyx-overlay-x")),
+    y: parseFloat(element.style.getPropertyValue("--nyx-overlay-y")),
+  }));
+  await page.locator(".docs-title").hover();
+  await expect(panel).not.toBeVisible();
+  const closedPosition = await panel.evaluate(element => ({
+    positioned: element.hasAttribute("data-nyx-positioned"),
+    x: parseFloat(element.style.getPropertyValue("--nyx-overlay-x")),
+    y: parseFloat(element.style.getPropertyValue("--nyx-overlay-y")),
+  }));
+  expect(closedPosition.positioned).toBe(true);
+  expect(Math.abs(closedPosition.x - openPosition.x)).toBeLessThanOrEqual(2);
+  expect(Math.abs(closedPosition.y - openPosition.y)).toBeLessThanOrEqual(2);
+  expect(closedPosition.x).toBeGreaterThan(1);
+  expect(closedPosition.y).toBeGreaterThan(1);
 });
 
 test("combobox popover stays anchored and bounded", async ({ page }) => {
@@ -174,11 +226,28 @@ test("tooltip opens from a real hover and stays anchored", async ({ page }) => {
   await page.goto("/components/overlays/tooltip");
   const demo = example(page, "Tooltip provider");
   const trigger = demo.getByRole("button", { name: "Settings" });
-  const panel = demo.getByRole("tooltip", { name: "Manage workspace settings" });
+  const panel = demo.locator("[role='tooltip']", { hasText: "Manage workspace settings" });
 
   await trigger.hover();
   await expectOverlayWithinViewport(page, panel);
   await expectAnchored(trigger, panel);
+
+  const openPosition = await panel.evaluate(element => ({
+    x: parseFloat(element.style.getPropertyValue("--nyx-overlay-x")),
+    y: parseFloat(element.style.getPropertyValue("--nyx-overlay-y")),
+  }));
+  await page.locator(".docs-title").hover();
+  await expect(panel).not.toBeVisible();
+  const closedPosition = await panel.evaluate(element => ({
+    positioned: element.hasAttribute("data-nyx-positioned"),
+    x: parseFloat(element.style.getPropertyValue("--nyx-overlay-x")),
+    y: parseFloat(element.style.getPropertyValue("--nyx-overlay-y")),
+  }));
+  expect(closedPosition.positioned).toBe(true);
+  expect(Math.abs(closedPosition.x - openPosition.x)).toBeLessThanOrEqual(2);
+  expect(Math.abs(closedPosition.y - openPosition.y)).toBeLessThanOrEqual(2);
+  expect(closedPosition.x).toBeGreaterThan(1);
+  expect(closedPosition.y).toBeGreaterThan(1);
 });
 
 test("date picker panel stays anchored and bounded", async ({ page }) => {

@@ -141,6 +141,7 @@ export class NyxGenerationQueue {
     const entry = this.read(item);
     const active = entry.state === "queued" || entry.state === "running";
     item.setAttribute("aria-busy", String(active));
+    item.style.setProperty("--nyx-generation-progress", `${entry.progress}%`);
     const progress = item.querySelector<HTMLProgressElement>("[data-nyx-generation-progress]");
     if (progress) {
       progress.max = 100;

@@ -3,6 +3,7 @@ import { getTextDirection, inlineBackwardArrow, inlineForwardArrow } from "./int
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import {
   positionOverlay,
+  type NyxOverlayPositionCleanupOptions,
   type NyxOverlayPlacement,
   type NyxOverlayReference,
 } from "./internal/positioning.js";
@@ -77,7 +78,7 @@ export class NyxDropdownMenu {
   private readonly items: HTMLElement[];
   private openState: boolean;
   private placement: NyxOverlayPlacement;
-  private positionCleanup: (() => void) | undefined;
+  private positionCleanup: ((options?: NyxOverlayPositionCleanupOptions) => void) | undefined;
   private reference: NyxOverlayReference | undefined;
   private readonly root: ParentNode;
   private parentInstance: NyxDropdownMenu | null = null;
@@ -429,8 +430,9 @@ export class NyxDropdownMenu {
 
   private finalizeClose(detail: NyxDropdownMenuEventDetail): void {
     this.openState = false;
-    this.positionCleanup?.();
-    this.positionCleanup = undefined;
+    // Keep the final anchored coordinates while the discrete popover exit runs.
+    // The next open or destroy performs the full placement reset.
+    this.positionCleanup?.({ preservePlacement: true });
     this.dismissal.deactivate();
     this.syncState();
     if (!this.usesNativePopover) this.element.hidden = true;
