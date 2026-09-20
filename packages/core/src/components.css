@@ -489,10 +489,10 @@
   .nyx-notification-empty { margin: 0; padding: var(--nyx-space-6); color: var(--nyx-label); text-align: center; }
   .nyx-notification-empty[hidden] { display: none; }
 
-  .nyx-activity-feed { inline-size: 100%; overflow: hidden; border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel); }
+  .nyx-activity-feed { inline-size: 100%; }
   .nyx-activity-header { display: flex; align-items: center; justify-content: space-between; gap: var(--nyx-space-5); padding: var(--nyx-space-5); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
   .nyx-activity-header > div { display: grid; gap: var(--nyx-space-2); }
-  .nyx-activity-list { display: grid; inline-size: 100%; gap: 0; padding: var(--nyx-space-3) var(--nyx-space-5) var(--nyx-space-4); }
+  .nyx-timeline.nyx-activity-list { display: grid; inline-size: 100%; gap: 0; padding: var(--nyx-space-3) clamp(var(--nyx-space-6), 3vw, var(--nyx-space-12)) var(--nyx-space-4); }
   .nyx-activity-list[hidden] { display: none; }
   /* The connector runs down the middle of the avatar column, so the content column needs more
      clearance than a normal gap: bordered payloads would otherwise sit against the line. */
@@ -861,7 +861,7 @@
 
 @media (max-width: 48rem) {
   .nyx-activity-files { grid-template-columns: 1fr; }
-  .nyx-activity-list { padding-inline: var(--nyx-space-4); }
+  .nyx-timeline.nyx-activity-list { padding-inline: var(--nyx-space-4); }
   .nyx-form-grid { grid-template-columns: 1fr; }
   .nyx-form-span { grid-column: auto; }
   .nyx-image-lightbox-grid { grid-template-columns: 1fr; }

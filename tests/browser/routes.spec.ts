@@ -1,5 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
+// Each viewport deliberately audits every documentation route in one browser context so console
+// failures can be attributed to the active path. The 96 full navigations exceed Playwright's
+// generic 30-second test timeout on the single-worker CI runner.
+test.describe.configure({ timeout: 120_000 });
+
 interface ConsoleFailure {
   path: string;
   text: string;

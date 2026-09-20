@@ -570,6 +570,8 @@ test("activity feed keeps avatars, copy, and the timeline on shared columns", as
       if (!firstItem || !firstAvatar || !sentence || !inlineLink) throw new Error("Activity feed structure did not render.");
       const itemBox = firstItem.getBoundingClientRect();
       const avatarBox = firstAvatar.getBoundingClientRect();
+      const list = feed.querySelector<HTMLElement>(".nyx-activity-list")!;
+      const listStyle = getComputedStyle(list);
       return {
         itemLefts: items.map(({ left }) => left),
         avatarLefts: avatars.map(({ left }) => left),
@@ -581,7 +583,9 @@ test("activity feed keeps avatars, copy, and the timeline on shared columns", as
         linkFontSize: getComputedStyle(inlineLink).fontSize,
         overflow: feed.scrollWidth - feed.clientWidth,
         feedWidth: feed.getBoundingClientRect().width,
-        listWidth: feed.querySelector<HTMLElement>(".nyx-activity-list")?.getBoundingClientRect().width ?? 0,
+        listWidth: list.getBoundingClientRect().width,
+        listPaddingStart: parseFloat(listStyle.paddingInlineStart),
+        listPaddingEnd: parseFloat(listStyle.paddingInlineEnd),
       };
     });
 
@@ -593,6 +597,8 @@ test("activity feed keeps avatars, copy, and the timeline on shared columns", as
     expect(metrics.linkFontSize, `${width}px inline-link typography`).toBe(metrics.sentenceFontSize);
     expect(metrics.overflow, `${width}px activity feed overflow`).toBeLessThanOrEqual(0);
     expect(metrics.listWidth / metrics.feedWidth, `${width}px feed uses its card width`).toBeGreaterThan(0.99);
+    expect(metrics.listPaddingStart, `${width}px activity feed has a substantial leading gutter`).toBeGreaterThanOrEqual(32);
+    expect(metrics.listPaddingEnd, `${width}px activity feed gutters remain balanced`).toBeCloseTo(metrics.listPaddingStart, 1);
   }
 });
 
@@ -601,6 +607,14 @@ test("activity feed composes compact file cards with exposed filenames", async (
   const demo = example(page, "Workspace activity");
   const feed = demo.locator("[data-nyx-activity-feed]");
 
+  await expect(feed).toHaveAttribute("aria-label", "Workspace activity");
+  await expect(feed.locator(".nyx-activity-header")).toHaveCount(0);
+  const surface = await feed.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { borderWidth: style.borderWidth, backgroundColor: style.backgroundColor };
+  });
+  expect(surface.borderWidth).toBe("0px");
+  expect(surface.backgroundColor).toBe("rgba(0, 0, 0, 0)");
   await expect(feed.locator(".nyx-activity-files .nyx-file-item")).toHaveCount(2);
   await expect(feed.locator(".nyx-file-details strong")).toHaveText(["release-notes.pdf", "audit-sample.csv"]);
 });
