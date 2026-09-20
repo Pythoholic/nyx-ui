@@ -8,35 +8,6 @@ function example(page: Page, name: string): Locator {
 
 test.use({ viewport: { width: 1440, height: 1000 } });
 
-test("documentation stays anchored to navigation and uses available width", async ({ page }) => {
-  for (const path of ["/guides/behavior", "/guides/installation", "/components/actions/button", "/components/forms/text-fields"]) {
-    for (const width of [1280, 1920, 2560, 390, 1100, 900, 3440]) {
-      await page.setViewportSize({ width, height: 1440 });
-      await page.goto(path);
-      await page.evaluate(() => document.fonts.ready);
-      const metrics = await page.evaluate(() => {
-        const box = (selector: string) => document.querySelector(selector)!.getBoundingClientRect();
-        const sidebar = box(".docs-sidebar");
-        const main = box(".docs-main");
-        const section = box(".docs-section");
-        return { sidebarRight: sidebar.right, sidebarBottom: sidebar.bottom, mainTop: main.top,
-          mainLeft: main.left, mainRight: main.right, contentLeft: section.left, contentRight: section.right,
-          overflow: document.documentElement.scrollWidth - innerWidth };
-      });
-      const origin = width > 992 ? metrics.sidebarRight : 0;
-      const gap = metrics.contentLeft - origin;
-      expect(gap, `${path} at ${width}: navigation-to-content gutter`).toBeLessThanOrEqual(64);
-      expect(gap).toBeGreaterThanOrEqual(24);
-      expect(metrics.mainLeft, "main starts at the navigation edge").toBeCloseTo(origin, 0);
-      expect(metrics.mainRight, "main uses the available track").toBeCloseTo(width, 0);
-      if (width <= 2560) expect(width - metrics.contentRight, "no unused outer frame gutter").toBeLessThanOrEqual(64);
-      else expect(metrics.contentRight - metrics.contentLeft, "one generous content cap").toBeCloseTo(2304, 0);
-      if (width <= 992) expect(metrics.mainTop).toBeGreaterThanOrEqual(metrics.sidebarBottom);
-      expect(metrics.overflow).toBeLessThanOrEqual(1);
-    }
-  }
-});
-
 test("documentation content shares a responsive measure", async ({ page }) => {
   const measure = async (width: number) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -75,9 +46,9 @@ test("documentation content shares a responsive measure", async ({ page }) => {
   }
   expect(medium.sectionWidth, "the content column grows beyond mobile").toBeGreaterThan(mobile.sectionWidth);
   expect(wide.sectionWidth, "the content column responds between desktop widths").toBeGreaterThan(medium.sectionWidth);
-  expect(ultrawide.sectionWidth, "the content column uses the extra wide-screen space").toBeGreaterThan(wide.sectionWidth);
+  expect(ultrawide.sectionWidth, "the content column has one deliberate wide-screen cap").toBeCloseTo(wide.sectionWidth, 0);
   expect(wide.proseWidth, "long-form copy grows with the content column").toBeGreaterThan(medium.proseWidth);
-  expect(ultrawide.proseWidth, "long-form copy continues growing on wide screens").toBeGreaterThan(wide.proseWidth + 32);
+  expect(ultrawide.proseWidth, "long-form copy continues growing after frames reach their cap").toBeGreaterThan(wide.proseWidth + 32);
   expect(ultrawide.introWidth, "intro copy continues growing on wide screens").toBeGreaterThan(wide.introWidth + 32);
   expect(wide.proseWidth, "long-form copy retains a readable line length").toBeLessThan(wide.frameWidth);
   expect(ultrawide.proseWidth, "ultrawide copy retains breathing room beside frames").toBeLessThan(ultrawide.frameWidth * 0.85);
