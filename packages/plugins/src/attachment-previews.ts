@@ -1,3 +1,4 @@
+import { moveFocusBeforeRemoval } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxAttachmentPreviewsReason = "api" | "clear" | "control";
@@ -156,6 +157,7 @@ export class NyxAttachmentPreviews {
 
   private setAttachmentState(attachment: HTMLElement, active: boolean, preserveAuthoredHidden: boolean): void {
     attachment.dataset.state = active ? "active" : "removed";
+    if (!active) moveFocusBeforeRemoval(attachment, this.element, "[data-nyx-attachment-remove]");
     if (!preserveAuthoredHidden || !active) attachment.hidden = !active;
     attachment.setAttribute("aria-hidden", String(!active));
   }

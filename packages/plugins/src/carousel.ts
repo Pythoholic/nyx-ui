@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxCarouselChangeReason = "api" | "indicator" | "next" | "previous";
@@ -125,6 +126,7 @@ export class NyxCarousel {
   private sync(): void {
     this.element.dataset.state = "active";
     this.element.dataset.nyxCarouselIndex = String(this.activeIndex);
+    this.slides[this.activeIndex]!.hidden = false;
     this.slides.forEach((slide, index) => {
       const active = index === this.activeIndex;
       if (!slide.id) slide.id = `nyx-carousel-slide-${++generatedId}`;
@@ -135,6 +137,7 @@ export class NyxCarousel {
       }
       slide.setAttribute("aria-hidden", String(!active));
       slide.dataset.state = active ? "active" : "inactive";
+      if (!active) moveFocusTo(slide, this.slides[this.activeIndex]!);
       slide.hidden = !active;
     });
     this.indicators.forEach((indicator, fallbackIndex) => {
@@ -151,10 +154,12 @@ export class NyxCarousel {
     const atStart = this.activeIndex === 0;
     const atEnd = this.activeIndex === this.slides.length - 1;
     this.previousButtons.forEach((button) => {
+      if (!this.loop && atStart) moveFocusTo(button, this.slides[this.activeIndex]!);
       button.disabled = !this.loop && atStart;
       button.setAttribute("aria-disabled", String(button.disabled));
     });
     this.nextButtons.forEach((button) => {
+      if (!this.loop && atEnd) moveFocusTo(button, this.slides[this.activeIndex]!);
       button.disabled = !this.loop && atEnd;
       button.setAttribute("aria-disabled", String(button.disabled));
     });

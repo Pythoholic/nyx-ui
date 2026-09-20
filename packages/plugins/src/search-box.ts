@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { NyxOverlayDismissal, type NyxOverlayDismissReason } from "./internal/dismissal.js";
 import { positionOverlay, type NyxOverlayPlacement } from "./internal/positioning.js";
@@ -182,7 +183,10 @@ export class NyxSearchBox {
   }
 
   private syncClearButton(): void {
-    if (this.clearButton) this.clearButton.hidden = !this.input.value;
+    if (this.clearButton) {
+      if (!this.input.value) moveFocusTo(this.clearButton, this.input);
+      this.clearButton.hidden = !this.input.value;
+    }
   }
 
   private readonly handleClearClick = (): void => { this.clear(); };

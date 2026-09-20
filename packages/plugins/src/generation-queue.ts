@@ -1,5 +1,6 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { animateRemoval } from "./internal/motion.js";
+import { moveFocusBeforeRemoval, moveFocusTo } from "./internal/focus.js";
 
 export type NyxGenerationState = "queued" | "running" | "complete" | "failed" | "canceled";
 export type NyxGenerationQueueReason = "api" | "control";
@@ -99,6 +100,7 @@ export class NyxGenerationQueue {
       reason,
     };
     if (!dispatchNyxEvent(this.element, "nyx:generation-queue:before-remove", detail, true)) return false;
+    moveFocusBeforeRemoval(item, this.element, "[data-nyx-generation-action]");
     animateRemoval(item);
     this.syncQueue();
     dispatchNyxEvent(this.element, "nyx:generation-queue:remove", detail);
@@ -145,11 +147,18 @@ export class NyxGenerationQueue {
       progress.value = entry.progress;
       progress.setAttribute("aria-valuetext", `${entry.progress}% ${entry.state}`);
     }
-    item.querySelectorAll<HTMLButtonElement>("[data-nyx-generation-action]").forEach((button) => {
+    const buttons = Array.from(item.querySelectorAll<HTMLButtonElement>("[data-nyx-generation-action]"));
+    const shouldHide = (button: HTMLButtonElement): boolean => {
       const action = button.dataset.nyxGenerationAction;
-      button.hidden = (action === "cancel" && !active)
+      return (action === "cancel" && !active)
         || (action === "retry" && entry.state !== "failed")
         || (action === "remove" && active);
+    };
+    // Expose the successor before the focused action disappears.
+    buttons.filter(button => !shouldHide(button)).forEach(button => { button.hidden = false; });
+    buttons.filter(shouldHide).forEach(button => {
+      moveFocusTo(button, buttons.find(candidate => !shouldHide(candidate) && !candidate.disabled) ?? item);
+      button.hidden = true;
     });
     const status = item.querySelector<HTMLOutputElement>("[data-nyx-generation-status]");
     if (status) status.value = entry.state === "running" ? `${entry.progress}% running` : entry.state;

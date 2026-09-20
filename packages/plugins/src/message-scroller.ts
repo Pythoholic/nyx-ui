@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxMessageScrollerReason = "api" | "content" | "control" | "scroll";
@@ -142,6 +143,7 @@ export class NyxMessageScroller {
     this.element.dataset.unread = String(this.unreadCount);
     this.viewport.setAttribute("aria-busy", "false");
     if (this.jumpButton) {
+      if (this.followingState) moveFocusTo(this.jumpButton, this.viewport);
       this.jumpButton.hidden = this.followingState;
       this.jumpButton.textContent = this.unreadCount > 0
         ? `${this.unreadCount} new ${this.unreadCount === 1 ? "message" : "messages"}`

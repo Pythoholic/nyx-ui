@@ -46,7 +46,7 @@ describe("NyxNotificationCenter", () => {
     expect(center.value).toEqual(["alpha"]);
     expect(center.element.dataset.state).toBe("unread");
     expect(center.element.querySelector("[data-nyx-notification-count]")?.textContent).toBe("1 unread");
-    expect(betaToggle.getAttribute("aria-pressed")).toBe("true");
+    expect(betaToggle.hasAttribute("aria-pressed")).toBe(false);
     expect(betaToggle.getAttribute("aria-label")).toBe("Mark notification unread");
     expect(betaToggle.textContent).toBe("Mark unread");
 
@@ -93,5 +93,28 @@ describe("NyxNotificationCenter", () => {
     expect(center.element.querySelectorAll("[data-nyx-motion='removing']")).toHaveLength(0);
     expect(center.element.dataset.state).toBe("empty");
     expect((center.element.querySelector("[data-nyx-notification-empty]") as HTMLElement).hidden).toBe(false);
+  });
+
+  it("waits for exit before dismissal and does not move unrelated focus", async () => {
+    initialized = initNotificationCenters();
+    const center = initialized[0]!;
+    const item = center.notifications[0]!;
+    let finish!: () => void;
+    item.getAnimations = () => [{ finished: new Promise<void>(resolve => { finish = resolve; }) }] as Animation[];
+    const other = center.element.querySelector<HTMLButtonElement>("[data-nyx-notification-mark-all]")!;
+    const outside = document.createElement("button");
+    document.body.append(outside);
+    outside.focus();
+    const dismissed = vi.fn(() => expect(item.isConnected).toBe(false));
+    center.element.addEventListener("nyx:notification-center:dismiss", dismissed);
+    center.dismiss(item);
+    expect(document.activeElement).toBe(outside);
+    expect(item.isConnected).toBe(true);
+    expect(other.disabled).toBe(true);
+    expect(dismissed).not.toHaveBeenCalled();
+    finish();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(dismissed).toHaveBeenCalledOnce();
   });
 });

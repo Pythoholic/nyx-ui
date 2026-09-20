@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxFileUploadState = "complete" | "error" | "queued" | "uploading";
@@ -248,6 +249,7 @@ export class NyxFileUpload {
 
   private sync(): void {
     this.element.dataset.state = this.items.some((item) => item.state === "uploading") ? "uploading" : this.items.length ? "ready" : "empty";
+    if (this.startButton && !this.items.some(item => item.state === "queued" || item.state === "error")) moveFocusTo(this.startButton, this.input);
     this.startButton?.toggleAttribute("disabled", !this.transport || !this.items.some((item) => item.state === "queued" || item.state === "error"));
     const document = this.element.ownerDocument;
     const nodes = this.items.map((item) => {
@@ -292,6 +294,7 @@ export class NyxFileUpload {
       row.append(details, remove);
       return row;
     });
+    moveFocusTo(this.queueElement, this.input);
     this.queueElement.replaceChildren(...nodes);
   }
 

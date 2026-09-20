@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { NyxOverlayDismissal, type NyxOverlayDismissReason } from "./internal/dismissal.js";
 import { positionOverlay, type NyxOverlayPlacement } from "./internal/positioning.js";
@@ -230,6 +231,7 @@ export class NyxMultiSelect {
     descriptions.add(this.tags.id);
     this.input.setAttribute("aria-describedby", Array.from(descriptions).join(" "));
     const ownerDocument = this.element.ownerDocument;
+    moveFocusTo(this.tags, this.input);
     this.tags.replaceChildren(...selected.map((option) => {
       const value = this.optionValue(option);
       const tag = ownerDocument.createElement("span");

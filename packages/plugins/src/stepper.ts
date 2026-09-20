@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { horizontalArrowDelta } from "./internal/direction.js";
 
@@ -147,13 +148,16 @@ export class NyxStepper {
       panel.setAttribute("aria-labelledby", trigger.id);
       panel.setAttribute("aria-hidden", String(index !== this.activeIndex));
       panel.dataset.state = index === this.activeIndex ? "active" : "inactive";
+      if (index !== this.activeIndex) moveFocusTo(panel, this.triggers[this.activeIndex]!);
       panel.hidden = index !== this.activeIndex;
     });
     this.previousButtons.forEach((button) => {
+      if (this.activeIndex === 0) moveFocusTo(button, this.triggers[this.activeIndex]!);
       button.disabled = this.activeIndex === 0;
       button.setAttribute("aria-disabled", String(button.disabled));
     });
     this.nextButtons.forEach((button) => {
+      if (complete) moveFocusTo(button, this.triggers[this.activeIndex]!);
       button.disabled = complete;
       button.setAttribute("aria-disabled", String(button.disabled));
     });

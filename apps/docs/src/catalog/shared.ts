@@ -1388,7 +1388,7 @@ const pluginApis: Record<PluginName, PluginApi> = {
         { name: "Tab / Shift+Tab", description: "Moves through notification links and native action buttons." },
         { name: "Enter / Space", description: "Activates the focused native button; Enter follows a focused link." },
       ],
-      accessibility: "Notifications remain a semantic labelled section containing a list. A polite output announces unread-count changes, read toggles expose aria-pressed with stable accessible names, disabled bulk state is synchronized, and removal never steals focus programmatically.",
+      accessibility: "Notifications remain a semantic labelled section containing a list. A polite output announces unread-count changes, read buttons name the next action (Mark notification read or Mark notification unread) without aria-pressed. Dismissal moves focus only when the removed item owns it: next dismiss button, previous dismiss button, then the labelled collection. The dismiss event fires after the exit animation removes the node and collection state synchronizes.",
     },
   },
   "filter-bar": {

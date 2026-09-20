@@ -7,11 +7,11 @@ function finishAnimations(element: HTMLElement, finish: () => void): void {
   void Promise.allSettled(animations.map((animation) => animation.finished)).then(finish);
 }
 
-export function animateRemoval(element: HTMLElement): void {
+export function animateRemoval(element: HTMLElement, onRemoved: () => void = () => {}): void {
   element.dataset.nyxMotion = "removing";
   element.setAttribute("aria-hidden", "true");
   element.inert = true;
-  finishAnimations(element, () => element.remove());
+  finishAnimations(element, () => { element.remove(); onRemoved(); });
 }
 
 export function animateReorder(element: HTMLElement): void {

@@ -1,5 +1,6 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { animateRemoval } from "./internal/motion.js";
+import { moveFocusBeforeRemoval, moveFocusTo } from "./internal/focus.js";
 
 export type NyxNotificationCenterReason = "api" | "control" | "mark-all";
 
@@ -106,9 +107,12 @@ export class NyxNotificationCenter {
     const read = notification.dataset.state === "read";
     const detail: NyxNotificationCenterEventDetail = { id, notification, notificationCenter: this, read, reason };
     if (!dispatchNyxEvent(this.element, "nyx:notification-center:before-dismiss", detail, true)) return false;
-    animateRemoval(notification);
+    moveFocusBeforeRemoval(notification, this.element, "[data-nyx-notification-dismiss]");
+    animateRemoval(notification, () => {
+      this.sync();
+      dispatchNyxEvent(this.element, "nyx:notification-center:dismiss", detail);
+    });
     this.sync();
-    dispatchNyxEvent(this.element, "nyx:notification-center:dismiss", detail);
     return true;
   }
 
@@ -134,13 +138,14 @@ export class NyxNotificationCenter {
       const read = notification.dataset.state === "read";
       const toggle = notification.querySelector<HTMLButtonElement>("[data-nyx-notification-read]");
       if (toggle) {
-        toggle.setAttribute("aria-pressed", String(read));
+        toggle.removeAttribute("aria-pressed");
         toggle.setAttribute("aria-label", read ? "Mark notification unread" : "Mark notification read");
         toggle.textContent = read ? "Mark unread" : "Mark read";
       }
     });
     if (this.count) this.count.textContent = `${unread.length} unread`;
     if (this.markAllButton) {
+      if (unread.length === 0) moveFocusTo(this.markAllButton, notifications[0]?.querySelector<HTMLElement>("[data-nyx-notification-read]") ?? this.element);
       this.markAllButton.disabled = unread.length === 0;
       this.markAllButton.setAttribute("aria-disabled", String(this.markAllButton.disabled));
     }

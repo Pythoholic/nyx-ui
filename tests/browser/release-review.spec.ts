@@ -1,5 +1,90 @@
 import { expect, test } from "@playwright/test";
 
+test("regenerated tags and filters return focus to their editable control", async ({ page }) => {
+  for (const [path, remove, destination] of [
+    ['/components/forms/multi-select', '[data-nyx-multi-select-remove]', '[data-nyx-multi-select] input:not([type="hidden"])'],
+    ['/components/data-display/filter-bar', '[data-nyx-filter-remove]', '[data-nyx-filter-bar] input[type="search"]'],
+  ]) {
+    await page.goto(path);
+    await page.locator(`[role="tabpanel"] ${remove}`).first().focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator(`[role="tabpanel"] ${destination}`)).toBeFocused();
+  }
+});
+
+test("attachment removal retains focus through the last item", async ({ page }) => {
+  await page.goto('/components/ai/attachment-previews');
+  const collection = page.locator('[role="tabpanel"] [data-nyx-attachment-previews]');
+  while (await collection.getByRole('button', {name:/Remove/}).count()) {
+    await collection.getByRole('button', {name:/Remove/}).first().focus();
+    await page.keyboard.press('Enter');
+    expect(await collection.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  }
+  await expect(collection).toBeFocused();
+});
+
+test("notification dismissal event observes a disconnected node", async ({ page }) => {
+  await page.goto('/components/feedback/notification-centre');
+  const center = page.locator('[role="tabpanel"] [data-nyx-notification-center]');
+  await center.evaluate(element => element.addEventListener('nyx:notification-center:dismiss', event => {
+    element.setAttribute('data-event-connected', String((event as CustomEvent).detail.notification.isConnected));
+  }));
+  await center.locator('[data-nyx-notification-dismiss]').first().click();
+  await expect(center).toHaveAttribute('data-event-connected','false');
+});
+
+test("queue actions preserve focus through cancel retry removal and empty state", async ({ page }) => {
+  await page.goto("/components/ai/generation-queue");
+  const queue = page.locator('[role="tabpanel"] [data-nyx-generation-queue]');
+  const first = queue.locator('[data-nyx-generation-item]').first();
+  await first.getByRole('button', {name:'Cancel', exact:true}).focus();
+  await page.keyboard.press('Enter');
+  await expect(first.getByRole('button', {name:'Remove', exact:true})).toBeFocused();
+  const failed = queue.locator('[data-nyx-generation-id="concept-03"]');
+  await failed.getByRole('button', {name:'Retry', exact:true}).focus();
+  await page.keyboard.press('Enter');
+  await expect(failed.getByRole('button', {name:'Cancel', exact:true})).toBeFocused();
+  await first.getByRole('button', {name:'Remove', exact:true}).focus();
+  await page.keyboard.press('Enter');
+  await expect(queue.locator('[data-nyx-generation-id="concept-05"] [data-nyx-generation-action="cancel"]')).toBeFocused();
+  while (await queue.locator('[data-nyx-generation-item]:not([data-nyx-motion="removing"])').count()) {
+    const item = queue.locator('[data-nyx-generation-item]:not([data-nyx-motion="removing"])').first();
+    const cancel = item.getByRole('button', {name:'Cancel', exact:true});
+    if (await cancel.isVisible()) await cancel.click();
+    await item.getByRole('button', {name:'Remove', exact:true}).focus();
+    await page.keyboard.press('Enter');
+  }
+  await expect(queue).toBeFocused();
+  await expect(queue.locator('[data-nyx-generation-empty]')).toBeVisible();
+});
+
+test("notification dismissal preserves position and emits after DOM removal", async ({ page }) => {
+  await page.goto('/components/feedback/notification-centre');
+  const center = page.locator('[role="tabpanel"] [data-nyx-notification-center]');
+  await center.evaluate(element => element.addEventListener('nyx:notification-center:dismiss', event => {
+    element.setAttribute('data-dismiss-connected', String((event as CustomEvent).detail.notification.isConnected));
+  }));
+  await center.locator('[data-nyx-notification-dismiss]').first().focus();
+  await page.keyboard.press('Enter');
+  await expect(center.locator('[data-nyx-notification-id="policy-update"] [data-nyx-notification-dismiss]')).toBeFocused();
+  await expect(center).toHaveAttribute('data-dismiss-connected','false');
+  for (let i = 0; i < 2; i++) {
+    await center.locator('[data-nyx-notification]:not([data-nyx-motion="removing"]) [data-nyx-notification-dismiss]').first().focus();
+    await page.keyboard.press('Enter');
+  }
+  await expect(center).toBeFocused();
+  await expect(center.locator('[data-nyx-notification-empty]')).toBeVisible();
+});
+
+test("notification read actions name the next action without toggle semantics", async ({ page }) => {
+  await page.goto('/components/feedback/notification-centre');
+  const button = page.locator('[role="tabpanel"] [data-nyx-notification-read]').first();
+  await expect(button).toHaveAccessibleName('Mark notification read');
+  await expect(button).not.toHaveAttribute('aria-pressed');
+  await button.click();
+  await expect(button).toHaveAccessibleName('Mark notification unread');
+});
+
 test("progress renders its declared value and animates pending work", async ({ page }) => {
   await page.goto("/components/feedback/progress");
   const bar = page.locator('[role="tabpanel"] .nyx-progress[aria-valuenow="68"]');

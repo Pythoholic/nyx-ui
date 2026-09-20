@@ -1,3 +1,4 @@
+import { moveFocusBeforeRemoval } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxToastTone = "neutral" | "success" | "warning" | "danger";
@@ -121,6 +122,7 @@ export class NyxToast {
     }
 
     if (record.timer !== undefined) window.clearTimeout(record.timer);
+    moveFocusBeforeRemoval(toast, this.region);
     toast.dataset.state = "closing";
     const remove = (): void => this.removeToast(toast, detail);
     record.handleAnimationEnd = remove;

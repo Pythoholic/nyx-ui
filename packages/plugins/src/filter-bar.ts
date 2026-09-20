@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxFilterBarReason = "api" | "change" | "clear" | "remove";
@@ -151,6 +152,7 @@ export class NyxFilterBar {
     this.element.dataset.state = entries.length ? "active" : "inactive";
     if (this.count) this.count.textContent = `${entries.length} active ${entries.length === 1 ? "filter" : "filters"}`;
     if (this.clearButton) {
+      if (!entries.length) moveFocusTo(this.clearButton, this.controls[0] ?? this.element);
       this.clearButton.disabled = entries.length === 0;
       this.clearButton.setAttribute("aria-disabled", String(this.clearButton.disabled));
     }
@@ -174,6 +176,7 @@ export class NyxFilterBar {
       chip.append(text, remove);
       return chip;
     });
+    moveFocusTo(this.active, this.controls[0] ?? this.element);
     this.active.replaceChildren(...chips);
   }
 

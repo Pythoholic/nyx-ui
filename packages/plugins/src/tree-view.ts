@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { inlineBackwardArrow, inlineForwardArrow } from "./internal/direction.js";
 
@@ -78,6 +79,7 @@ export class NyxTreeView {
     if (!dispatchNyxEvent(this.element, "nyx:tree:before-collapse", detail, true)) return false;
     item.setAttribute("aria-expanded", "false");
     item.dataset.state = "collapsed";
+    moveFocusTo(group, item);
     group.hidden = true;
     this.syncRovingFocus(item);
     dispatchNyxEvent(this.element, "nyx:tree:collapse", detail);

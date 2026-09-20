@@ -19,7 +19,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 ## Public release review remediation
 
 - [x] Canonical progress, ordered rating and filtered numeric pagination. Regression assertions failed on the original source (0 fill ratio, 1 radio, visible page 2); all 63 browser tests, unit tests, typecheck and build pass.
-- [ ] Focus succession and notification contracts across destructive controls.
+- [x] Focus succession and notification contracts across destructive controls. Queue and notification regressions failed before fixes; isolated early-dismiss mutation failed. 202 unit and 69 browser tests, typecheck and build pass.
 - [ ] Scoped theme, utility accent, initialization examples and font installation contracts.
 - [ ] Validation timing, authentication composition, documentation density and meaningful media/chart examples; visually assess typography.
 - [ ] Executable adoption screen and documentation consolidation; final browser audit.

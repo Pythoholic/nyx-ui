@@ -1,3 +1,4 @@
+import { moveFocusTo } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { isDisabledItem, NyxRovingFocus } from "./internal/roving-focus.js";
 
@@ -203,7 +204,10 @@ export class NyxBulkActionToolbar {
     const active = this.committed.length > 0;
     this.element.dataset.state = active ? "active" : "inactive";
     this.toolbar.dataset.state = active ? "active" : "inactive";
-    if (!this.element.hasAttribute("data-nyx-bulk-persistent")) this.toolbar.hidden = !active;
+    if (!this.element.hasAttribute("data-nyx-bulk-persistent")) {
+      if (!active) moveFocusTo(this.toolbar, this.selectAll ?? this.selections[0] ?? this.element);
+      this.toolbar.hidden = !active;
+    }
     if (this.count) this.count.textContent = `${this.committed.length} selected`;
     if (this.selectAll) {
       const total = this.selections.length;
