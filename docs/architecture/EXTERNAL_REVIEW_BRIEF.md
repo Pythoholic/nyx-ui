@@ -4,6 +4,9 @@ You are being asked for a senior frontend/UI-UX peer review of a design system c
 want an outside opinion because the people who built it — one human and two AI coding agents —
 have been too close to it to see it whole.
 
+You are running with access to the repository and can start and drive the application yourself.
+See "How to review" below for how to run it and what to read.
+
 Please be direct. We are not looking for validation. A blunt list of what is wrong is worth far
 more to us than a balanced summary, and "this is not good enough to ship" is an acceptable
 conclusion if that is what you find.
@@ -173,13 +176,42 @@ We assert roles and ARIA attributes. We believe that is the floor, not the ceili
 
 ## How to review
 
-Please work from the running application and the screenshots, not only the source. Every defect
-listed earlier passed source-level review and was obvious on screen.
+You are running inside the repository, so you have the source and can drive the application
+yourself. Use both. Every defect listed earlier passed source-level review and was obvious on
+screen, so source reading alone will not surface this class of problem.
 
-Suggested materials to request or use, if available to you: the live documentation site, full-page
-screenshots at 2560px, 1280px and 390px widths, `packages/core/src/tokens.css` and
-`components.css`, and a representative sample of registry markup and component documentation
-pages.
+**Start the application:**
+
+```shell
+pnpm install          # if node_modules is absent
+pnpm dev -- --port 5174 --strictPort
+```
+
+This serves the documentation catalog at `http://127.0.0.1:5174/`. If the port is already in use,
+something is already serving it — check before assuming it is broken. If the server is not
+running when you try to reach it, start it rather than reporting the site as unreachable; that is
+not a finding. Note that running the test suite may stop a server you started, so re-check it
+after any test run.
+
+**Drive the real interface.** Do not answer the keyboard, focus and motion questions by reading
+markup. Open the pages, tab through them, trigger the state changes and watch what happens. The
+accessibility and motion sections exist precisely because attribute-level inspection already
+passes while the experience does not.
+
+**Worth reading directly:**
+- `packages/core/src/tokens.css` — the token system
+- `packages/core/src/components.css` — all component styling, 842 lines
+- `packages/core/src/motion.css` — keyframes and motion utilities
+- `registry/components/*.html` — the 66 canonical component sources
+- `apps/docs/src/catalog/*.ts` — documentation page content and prose
+- `tests/browser/*.spec.ts` — what we currently assert, and therefore what we are blind to
+
+**Look at it at several widths.** 2560, 1920, 1280 and 390 at minimum. Several of our defects
+only appeared at one width, and one — body text frozen at 612px while frames grew to 1280px — got
+worse as the viewport got larger.
+
+**Do not fix anything.** This is a review. Report findings; do not edit files, and do not commit.
+We want your assessment, not a patch.
 
 ## How to report findings
 
