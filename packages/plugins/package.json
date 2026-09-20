@@ -196,7 +196,7 @@
   "files": ["dist"],
   "scripts": {
     "build": "tsc -b tsconfig.json",
-    "test": "vitest run --environment jsdom",
+    "test": "vitest run --environment jsdom --pool=vmThreads",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prepack": "pnpm build"
   },
