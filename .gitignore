@@ -11,3 +11,29 @@ test-results/
 
 # Autonomous build loop logs
 .ralph-logs/
+
+# Review evidence: regenerable capture and audit artifacts.
+# The findings documents and the screenshots they cite are tracked;
+# bulk route sweeps and audit dumps are not - they are regenerable.
+review/screenshots/*
+review/*.json
+review/*.log
+
+# Screenshots cited as evidence by the findings documents:
+!review/screenshots/1280--components--feedback--progress.png
+!review/screenshots/1280--components--layouts--registration.png
+!review/screenshots/1280--components--layouts--welcome-back.png
+!review/screenshots/1280--components--media--media-carousel.png
+!review/screenshots/1280--components--media--rating.png
+!review/screenshots/1280--components--visualization--sparklines.png
+!review/screenshots/final-1280-overlays-hover-card.png
+!review/screenshots/final-1280-overlays-tooltip.png
+!review/screenshots/final-type-1280-layouts-registration.png
+!review/screenshots/release-independent-consumer.png
+!review/screenshots/table-filter-page-2.png
+!review/screenshots/theme-preview-flux.png
+!review/screenshots/theme-preview-plasma.png
+!review/screenshots/theme-preview-signal.png
+!review/screenshots/theme-preview-solar.png
+!review/screenshots/trial-type-1280-layouts-registration.png
+.playwright-mcp/
