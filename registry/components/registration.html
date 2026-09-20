@@ -4,7 +4,7 @@
       <span class="nyx-eyebrow">Create account</span>
       <h2 class="nyx-panel-title" id="nyx-registration-message">Set up a workspace identity</h2>
       <p>Your name identifies authored changes. Your email becomes the account recovery address.</p>
-      <p class="nyx-auth-note">This layout collects account details only. Provisioning, verification, and consent storage remain application responsibilities.</p>
+      <p class="nyx-auth-note">Keep your team's work, shared assets, and review history in one place.</p>
     </div>
   </section>
   <form class="nyx-auth-form" action="#" method="post">
@@ -15,20 +15,20 @@
     </header>
     <label class="nyx-field" for="nyx-registration-name">
       <span class="nyx-label">Full name</span>
-      <input autocomplete="name" class="nyx-input" id="nyx-registration-name" name="name" required type="text" />
-      <span class="nyx-field-error">Enter your name.</span>
+      <input autocomplete="name" class="nyx-input" id="nyx-registration-name" name="name" aria-describedby="nyx-registration-name-error" required type="text" />
+      <span class="nyx-field-error" id="nyx-registration-name-error">Enter your name.</span>
     </label>
     <label class="nyx-field" for="nyx-registration-email">
       <span class="nyx-label">Email address</span>
-      <input autocomplete="email" class="nyx-input" id="nyx-registration-email" name="email" required type="email" />
-      <span class="nyx-field-error">Enter a valid email address.</span>
+      <input autocomplete="email" class="nyx-input" id="nyx-registration-email" name="email" aria-describedby="nyx-registration-email-error" required type="email" />
+      <span class="nyx-field-error" id="nyx-registration-email-error">Enter a valid email address.</span>
     </label>
     <div class="nyx-field">
       <label for="nyx-registration-password"><span class="nyx-label">Password</span></label>
       <span class="nyx-field-hint" id="nyx-registration-password-hint">Use at least 12 characters. Strength is guidance, not a security guarantee.</span>
       <div class="nyx-password" data-nyx-password data-nyx-password-min-length="12" data-state="empty" data-visibility="hidden">
         <div class="nyx-password-control">
-          <input aria-describedby="nyx-registration-password-hint nyx-registration-password-status" autocomplete="new-password" class="nyx-input" data-nyx-password-control id="nyx-registration-password" minlength="12" name="password" required type="password" />
+          <input aria-describedby="nyx-registration-password-hint nyx-registration-password-status nyx-registration-password-error" autocomplete="new-password" class="nyx-input" data-nyx-password-control id="nyx-registration-password" minlength="12" name="password" required type="password" />
           <button aria-controls="nyx-registration-password" aria-label="Show password" aria-pressed="false" class="nyx-button nyx-password-toggle" data-nyx-password-toggle type="button"><span data-nyx-password-toggle-label>Show</span></button>
         </div>
         <div class="nyx-password-feedback">
@@ -36,7 +36,7 @@
           <span aria-live="polite" class="nyx-password-status" data-nyx-password-status id="nyx-registration-password-status">Enter a password</span>
         </div>
       </div>
-      <span class="nyx-field-error">Use at least 12 characters.</span>
+      <span class="nyx-field-error" id="nyx-registration-password-error">Use at least 12 characters.</span>
     </div>
     <label class="nyx-check nyx-auth-consent"><input name="terms" required type="checkbox" /> <span>I agree to the workspace terms and privacy notice.</span></label>
     <button class="nyx-button" data-variant="primary" type="submit">Create account</button>

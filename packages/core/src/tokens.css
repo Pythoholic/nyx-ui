@@ -21,13 +21,13 @@
   --text-nyx-display--line-height: 1.04;
   --text-nyx-section: clamp(1.25rem, 2.4vw, 1.75rem);
   --text-nyx-section--line-height: 1.15;
-  --text-nyx-panel: 0.9375rem;
+  --text-nyx-panel: 1.0625rem;
   --text-nyx-panel--line-height: 1.35;
   --text-nyx-nav: 0.8125rem;
   --text-nyx-nav--line-height: 1.4;
   --text-nyx-body: 0.9375rem;
   --text-nyx-body--line-height: 1.7;
-  --text-nyx-label: 0.6875rem;
+  --text-nyx-label: 0.75rem;
   --text-nyx-label--line-height: 1.4;
   --text-nyx-meta: 0.75rem;
   --text-nyx-meta--line-height: 1.5;
@@ -80,12 +80,13 @@
   --nyx-media-shade: rgb(0 0 0 / 55%);
   --nyx-type-display: clamp(2rem, 4vw, 3.375rem);
   --nyx-type-section: clamp(1.25rem, 2.4vw, 1.75rem);
-  --nyx-type-panel: 0.9375rem;
+  --nyx-type-panel: 1.0625rem;
   --nyx-type-nav: 0.8125rem;
   --nyx-type-body: 0.9375rem;
-  --nyx-type-label: 0.6875rem;
+  --nyx-type-label: 0.75rem;
   --nyx-type-meta: 0.75rem;
   --nyx-type-data: clamp(1rem, 2.4vw, 1.875rem);
+  /* Compatibility aliases: retained for consumers; use the role tokens above in new code. */
   --nyx-type-display-xl: var(--nyx-type-display);
   --nyx-type-heading-1: var(--nyx-type-section);
   --nyx-type-heading-2: var(--nyx-type-section);

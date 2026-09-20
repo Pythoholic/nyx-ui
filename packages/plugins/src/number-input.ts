@@ -1,3 +1,4 @@
+import { acquireValidation } from "./internal/validation.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxNumberInputChangeReason = "api" | "decrement" | "increment" | "input" | "keyboard";
@@ -42,6 +43,8 @@ export class NyxNumberInput {
 
   private acceptedRawValue: string;
 
+  private readonly validation: ReturnType<typeof acquireValidation>;
+
   constructor(element: HTMLElement) {
     this.element = element;
     const input = element.querySelector<HTMLInputElement>("[data-nyx-number-input-control]");
@@ -51,6 +54,8 @@ export class NyxNumberInput {
       throw new Error("NyxNumberInput requires a number input and increment/decrement buttons.");
     }
     this.input = input;
+    this.validation = acquireValidation(input);
+    input.form?.addEventListener("reset", this.handleFormReset);
     this.decrementButton = decrementButton;
     this.incrementButton = incrementButton;
     this.output = element.querySelector<HTMLOutputElement>("[data-nyx-number-input-output]");
@@ -86,6 +91,8 @@ export class NyxNumberInput {
   }
 
   destroy(): void {
+    this.validation.destroy();
+    this.input.form?.removeEventListener("reset", this.handleFormReset);
     this.element.removeEventListener("click", this.handleClick);
     this.input.removeEventListener("input", this.handleInput);
     this.input.removeEventListener("keydown", this.handleKeydown);
@@ -146,9 +153,9 @@ export class NyxNumberInput {
   private sync(): void {
     const value = this.value;
     const empty = this.input.value === "";
-    const valid = this.input.checkValidity();
+    const valid = this.input.validity.valid;
     this.element.dataset.state = empty ? "empty" : valid ? "valid" : "invalid";
-    this.input.setAttribute("aria-invalid", String(!valid));
+    this.validation.sync();
     const min = finiteAttribute(this.input, "min");
     const max = finiteAttribute(this.input, "max");
     const unavailable = this.input.disabled || this.input.readOnly;
@@ -172,6 +179,14 @@ export class NyxNumberInput {
     if (!target || target.closest(selector) !== this.element) return;
     if (target === this.decrementButton) this.decrement();
     else if (target === this.incrementButton) this.increment();
+  };
+
+  private readonly handleFormReset = (event: Event): void => {
+    queueMicrotask(() => {
+      if (event.defaultPrevented) return;
+      this.acceptedRawValue = this.input.value;
+      this.sync();
+    });
   };
 
   private readonly handleInput = (): void => {

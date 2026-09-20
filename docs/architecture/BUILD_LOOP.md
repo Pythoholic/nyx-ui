@@ -21,7 +21,7 @@ Durable backlog for the autonomous build loop. Each iteration reads this file, p
 - [x] Canonical progress, ordered rating and filtered numeric pagination. Regression assertions failed on the original source (0 fill ratio, 1 radio, visible page 2); all 63 browser tests, unit tests, typecheck and build pass.
 - [x] Focus succession and notification contracts across destructive controls. Queue and notification regressions failed before fixes; isolated early-dismiss mutation failed. 202 unit and 69 browser tests, typecheck and build pass.
 - [x] Scoped theme, utility accent, initialization examples and font installation contracts. Four browser assertions failed before fixes; isolated hardcoded utility mutation failed. 202 unit and 73 browser tests, typecheck and build pass.
-- [ ] Validation timing, authentication composition, documentation density and meaningful media/chart examples; visually assess typography.
+- [x] Validation timing, authentication composition, documentation density and meaningful media/chart examples. Compared 18/16/14/13px typography with 17/15/13/12px and retained the latter (panel/body/navigation/label); preserved prose measure and public aliases. 203 unit and 76 browser tests, typecheck and build pass.
 - [ ] Executable adoption screen and documentation consolidation; final browser audit.
 
 - [x] Dropdown Menu

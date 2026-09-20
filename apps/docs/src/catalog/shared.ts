@@ -1620,7 +1620,14 @@ function componentReference(page: DocPage): string {
 
 export function renderPage(page: DocPage): string {
   const reference = page.categoryId ? componentReference(page) : "";
-  return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header"><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${page.body}${reference}</section>`;
+  const template = document.createElement("template");
+  template.innerHTML = page.body;
+  if (page.categoryId) {
+    // Keep introductory usage guidance after the live task, preserving its content.
+    const guidance = Array.from(template.content.children).filter(element => element.matches(".docs-prose-section"));
+    guidance.forEach(element => template.content.append(element));
+  }
+  return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header"><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${template.innerHTML}${reference}</section>`;
 }
 
 export function card(title: string, body: string, _badge = "Ready", source = body): string {

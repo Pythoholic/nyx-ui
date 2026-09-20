@@ -1,5 +1,56 @@
 import { expect, test } from "@playwright/test";
 
+test("examples arrive before guidance and auth prioritizes its task column", async ({ page }) => {
+  for (const width of [1280,1920,2560]) {
+    await page.setViewportSize({width,height:720});
+    await page.goto('/components/media/rating');
+    const demo = page.locator('[data-example-preview]');
+    expect((await demo.boundingBox())!.height).toBeLessThan(130);
+    expect((await demo.boundingBox())!.y).toBeLessThan(500);
+    await page.goto('/components/layouts/registration');
+    const form = page.locator('.nyx-auth-form');
+    const art = page.locator('.nyx-auth-art');
+    expect((await form.locator('.nyx-auth-heading h2').boundingBox())!.height).toBeLessThan(80);
+    if (width===1280) await expect(art).toBeHidden();
+    else {
+      await expect(art).toBeVisible();
+      expect((await form.boundingBox())!.width).toBeGreaterThan((await art.boundingBox())!.width);
+    }
+  }
+});
+
+test("media contains real images and the sparkline stays inside a metric row", async ({ page }) => {
+  await page.goto('/components/media/media-carousel');
+  const carousel = page.locator('[data-example-preview] [data-nyx-carousel]');
+  for (let i=0;i<3;i++) {
+    const image = carousel.locator('[data-nyx-carousel-slide]:not([hidden]) img');
+    expect(await image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await carousel.getByRole('button',{name:'Next',exact:true}).click();
+  }
+  await page.goto('/components/visualization/sparklines');
+  await expect(page.locator('[data-example-preview]')).toContainText('51 jobs / hour');
+  expect((await page.locator('.nyx-metric-row svg').boundingBox())!.width).toBeLessThanOrEqual(160);
+  await page.goto('/components/visualization/line-chart');
+  await page.getByText('Exact hourly values',{exact:true}).click();
+  await expect(page.locator('[data-example-preview] table tbody tr')).toHaveCount(7);
+  await expect(page.locator('[data-example-preview]')).toContainText('232 jobs');
+});
+
+test("registration shares pristine edited submitted and reset validation timing", async ({ page }) => {
+  await page.goto('/components/layouts/registration');
+  const form = page.locator('[role="tabpanel"] .nyx-auth-form');
+  const fields = form.locator('input');
+  for (const field of await fields.all()) await expect(field).toHaveAttribute('aria-invalid','false');
+  const password = form.locator('[data-nyx-password-control]');
+  await password.fill('short');
+  await expect(password).toHaveAttribute('aria-invalid','true');
+  await expect(form.locator('input[type="email"]')).toHaveAttribute('aria-invalid','false');
+  await form.getByRole('button',{name:'Create account',exact:true}).click();
+  for (const field of await fields.all()) await expect(field).toHaveAttribute('aria-invalid','true');
+  await form.evaluate(element => (element as HTMLFormElement).reset());
+  for (const field of await fields.all()) await expect(field).toHaveAttribute('aria-invalid','false');
+});
+
 test("nested themes restore solar and scope component accents", async ({ page }) => {
   await page.goto('/guides/theming');
   const colors = await page.evaluate(() => {

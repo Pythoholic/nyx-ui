@@ -1,3 +1,4 @@
+import { acquireValidation } from "./internal/validation.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxParameterValue = string | number | boolean;
@@ -37,8 +38,11 @@ export class NyxParameterInspector {
   readonly defaults: NyxParameterInspectorValue;
   private acceptedValue: NyxParameterInspectorValue;
 
+  private readonly validation: ReturnType<typeof acquireValidation>;
+
   constructor(element: HTMLFormElement) {
     this.element = element;
+    this.validation = acquireValidation(element);
     this.acceptedValue = this.read();
     this.defaults = { ...this.acceptedValue };
     element.addEventListener("input", this.handleInput);
@@ -89,6 +93,7 @@ export class NyxParameterInspector {
     const detail = { parameterInspector: this, previousValue, reason, value: { ...this.defaults } };
     if (!dispatchNyxEvent(this.element, "nyx:parameter-inspector:before-reset", detail, true)) return false;
     this.write(this.defaults);
+    this.validation.reset();
     this.acceptedValue = this.read();
     this.sync();
     detail.value = this.value;
@@ -97,6 +102,7 @@ export class NyxParameterInspector {
   }
 
   destroy(): void {
+    this.validation.destroy();
     this.element.removeEventListener("input", this.handleInput);
     this.element.removeEventListener("change", this.handleInput);
     this.element.removeEventListener("reset", this.handleReset);
@@ -123,13 +129,12 @@ export class NyxParameterInspector {
   }
 
   private sync(): void {
-    const invalid = this.controls.some((control) => !control.checkValidity());
+    this.validation.sync();
+    const invalid = this.controls.some((control) => control.getAttribute("aria-invalid") === "true");
     const modified = !valuesEqual(this.value, this.defaults);
     this.element.dataset.state = invalid ? "invalid" : modified ? "modified" : "pristine";
     this.element.toggleAttribute("data-invalid", invalid);
     this.controls.forEach((control) => {
-      const controlInvalid = !control.checkValidity();
-      control.setAttribute("aria-invalid", String(controlInvalid));
       const output = Array.from(this.element.querySelectorAll<HTMLOutputElement>("[data-nyx-parameter-output]"))
         .find((candidate) => candidate.dataset.nyxParameterOutput === control.name);
       if (output) output.value = String(this.readControl(control));

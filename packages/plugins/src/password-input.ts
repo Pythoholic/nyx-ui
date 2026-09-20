@@ -1,3 +1,4 @@
+import { acquireValidation } from "./internal/validation.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxPasswordChangeReason = "api" | "input";
@@ -60,6 +61,8 @@ export class NyxPasswordInput {
 
   private acceptedValue: string;
 
+  private readonly validation: ReturnType<typeof acquireValidation>;
+
   constructor(element: HTMLElement) {
     this.element = element;
     const input = element.querySelector<HTMLInputElement>("[data-nyx-password-control]");
@@ -70,6 +73,8 @@ export class NyxPasswordInput {
       throw new Error("NyxPasswordInput requires a password input, toggle button, meter, and status.");
     }
     this.input = input;
+    this.validation = acquireValidation(input);
+    input.form?.addEventListener("reset", this.handleFormReset);
     this.toggleButton = toggleButton;
     this.meter = meter;
     this.status = status;
@@ -142,6 +147,8 @@ export class NyxPasswordInput {
   }
 
   destroy(): void {
+    this.validation.destroy();
+    this.input.form?.removeEventListener("reset", this.handleFormReset);
     this.toggleButton.removeEventListener("click", this.handleToggle);
     this.input.removeEventListener("input", this.handleInput);
     if (this.visible) {
@@ -192,7 +199,7 @@ export class NyxPasswordInput {
     this.meter.value = this.score;
     this.meter.setAttribute("aria-valuetext", strength === "empty" ? "No password entered" : `${strength} password strength`);
     this.status.textContent = strength === "empty" ? "Enter a password" : `Strength: ${strength}`;
-    this.input.setAttribute("aria-invalid", String(!this.input.checkValidity()));
+    this.validation.sync();
   }
 
   private syncVisibility(): void {
@@ -205,6 +212,14 @@ export class NyxPasswordInput {
     const labelElement = this.toggleButton.querySelector<HTMLElement>("[data-nyx-password-toggle-label]");
     if (labelElement) labelElement.textContent = visible ? "Hide" : "Show";
   }
+
+  private readonly handleFormReset = (event: Event): void => {
+    queueMicrotask(() => {
+      if (event.defaultPrevented) return;
+      this.acceptedValue = this.input.value;
+      this.syncStrength();
+    });
+  };
 
   private readonly handleInput = (): void => {
     this.commit(this.input.value, "input");

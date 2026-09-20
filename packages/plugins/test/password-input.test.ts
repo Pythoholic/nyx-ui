@@ -34,7 +34,7 @@ describe("NyxPasswordInput", () => {
     initialized = initPasswordInputs();
     const password = initialized[0]!;
     expect(password.element.dataset.state).toBe("empty");
-    expect(password.input.getAttribute("aria-invalid")).toBe("true");
+    expect(password.input.getAttribute("aria-invalid")).toBe("false");
     password.value = "Longer-Passphrase-42";
     expect(password.score).toBe(4);
     expect(password.strength).toBe("strong");
