@@ -302,6 +302,8 @@ test("progress catalog renders declared values, alternate geometry, and pending 
   await expect(preview.getByText("Upload progress", { exact: true })).toBeVisible();
   await expect(preview.getByText("68%", { exact: true }).first()).toBeVisible();
   await expect(preview.locator(".nyx-progress-radial")).toHaveCount(2);
+  const radialWidths = await preview.locator(".nyx-progress-radial").evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width));
+  expect(radialWidths[1]).toBeGreaterThan(radialWidths[0]);
   await expect(preview.locator(".nyx-progress-gauge")).toHaveCount(1);
   await expect(preview.locator(".nyx-progress-vertical")).toHaveCount(4);
 

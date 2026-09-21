@@ -61,3 +61,23 @@ test('Nyx sidebar and dialog retain keyboard containment and focus return on mob
   await expect(page.locator('#admin-dialog')).not.toBeVisible();
   await expect(page.getByRole('button', { name: 'Create order', exact: true })).toBeFocused();
 });
+
+test('dashboard visualizations retain useful proportions at desktop and mobile widths', async ({ page }) => {
+  for (const width of [2048, 1440, 390]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('/admin/');
+    const layout = await page.evaluate(() => {
+      const chart = document.querySelector<SVGElement>('.admin-chart svg')!.getBoundingClientRect();
+      const chartPanel = document.querySelector<HTMLElement>('.admin-chart')!.closest<HTMLElement>('.admin-panel')!.getBoundingClientRect();
+      const ring = document.querySelector<HTMLElement>('.admin-ring')!.getBoundingClientRect();
+      const health = document.querySelector<HTMLElement>('.admin-health-body')!.getBoundingClientRect();
+      return { chartRatio: chart.width / chart.height, chartFill: chart.height / chartPanel.height, ringWidth: ring.width, healthWidth: health.width };
+    });
+    expect(layout.chartRatio, `chart ratio at ${width}px`).toBeCloseTo(960 / 280, 1);
+    expect(layout.chartFill, `chart panel use at ${width}px`).toBeGreaterThan(width < 650 ? .25 : .5);
+    expect(layout.ringWidth, `ring size at ${width}px`).toBeGreaterThanOrEqual(width < 650 ? 170 : 175);
+    expect(layout.ringWidth, `ring containment at ${width}px`).toBeLessThan(layout.healthWidth);
+  }
+  await expect(page.locator('.admin-chart title')).toHaveCount(0);
+  await expect(page.locator('.admin-chart desc')).toContainText('Apr $1,420');
+});

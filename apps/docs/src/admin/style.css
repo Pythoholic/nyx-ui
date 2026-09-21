@@ -53,11 +53,14 @@ main > .admin-panel { margin-bottom: 22px; }
 .admin-columns { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(270px, 1fr); gap: 22px; margin-bottom: 22px; }
 .admin-columns.equal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .admin-inline-label { display: flex; align-items: center; gap: 8px; font-size: var(--nyx-type-meta); color: var(--nyx-label); }
+.admin-chart { margin: 0; }
 .admin-chart svg { width: 100%; height: auto; overflow: visible; }
 .admin-chart-note { display: flex; justify-content: space-between; gap: 10px; font-size: var(--nyx-type-meta); color: var(--nyx-label); margin-top: 12px; }
 .admin-chart-note i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--nyx-accent); margin-right: 6px; }
 .admin-legend { display: grid; gap: 9px; }
 .admin-legend > div { display: flex; align-items: center; justify-content: space-between; font-size: var(--nyx-type-meta); }
+.admin-health-panel { display: flex; flex-direction: column; }
+.admin-health-body { display: grid; flex: 1; grid-template-columns: minmax(11rem, 1fr) minmax(10rem, .9fr); align-items: center; gap: var(--nyx-space-6); }
 .admin-table-scroll { overflow-x: auto; }
 .numeric { text-align: right; font-variant-numeric: tabular-nums; }
 .admin-person { display: flex; align-items: center; gap: 10px; }
@@ -164,7 +167,6 @@ main > .admin-panel { margin-bottom: 22px; }
 .admin-search-results small { margin-left: auto; color: var(--nyx-label); font-size: var(--nyx-type-meta); }
 .admin-search-results svg { width: 14px; }
 #admin-toasts { inset-block-start: auto; inset-block-end: 24px; z-index: 60; }
-@media (min-width: 1650px) { .admin-chart { max-height: 340px; } .admin-chart svg { max-height: 340px; } }
 @media (max-width: 1200px) { .admin-sidebar { width: 210px; } .admin-shell { margin-left: 210px; } main { padding: 28px 22px; } .admin-topbar { padding-inline: 22px; } .admin-columns { grid-template-columns: minmax(0, 1.7fr) minmax(240px, 1fr); gap: 16px; } .admin-kpis { gap: 12px; } .admin-kpi footer svg { display: none; } .admin-heading-actions { flex-wrap: wrap; justify-content: end; } .admin-board { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-page-heading { align-items: start; } .admin-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 950px) {   .admin-shell { margin-left: 0; } .admin-topbar > [data-nyx-sidebar-toggle] { display: inline-flex; } .admin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-search-button > span { display: none; } }
 @media (max-width: 650px) { main { padding: 24px 16px; } .admin-topbar { padding: 12px 16px; gap: 6px; } .admin-breadcrumb { font-size: var(--nyx-type-meta); } .admin-breadcrumb > span { padding: 0 5px; } .admin-top-actions { gap: 6px; } .admin-search-button kbd { display: none; } .admin-search-button { padding: 6px; } .admin-page-heading { flex-direction: column; gap: 16px; } .admin-heading-actions { justify-content: start; } .admin-columns, .admin-columns.equal { grid-template-columns: minmax(0, 1fr); } .admin-kpi footer { font-size: var(--nyx-type-meta); } .admin-product-grid, .admin-board { grid-template-columns: minmax(0, 1fr); } .admin-product, .admin-campaign { padding: 0; } .admin-board-column { min-height: 150px; } .admin-inbox { grid-template-columns: 1fr; padding: 0; } .admin-message-list { border-right: 0; border-bottom: 1px solid var(--nyx-line); } .admin-message-body { padding: 20px; } .admin-footer { padding: 20px 16px; flex-direction: column; font-size: var(--nyx-type-meta); } .admin-pagination { align-items: start; flex-direction: column; } .admin-chart-note { font-size: var(--nyx-type-meta); } }
@@ -209,6 +211,7 @@ main > .admin-panel { margin-bottom: 22px; }
 @media (max-width: 1200px) {
  .admin-columns { grid-template-columns: minmax(0, 1fr); }
  .admin-columns.equal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ .admin-health-body { grid-template-columns: minmax(0, 1fr) minmax(10rem, .75fr); }
 }
 @media (max-width: 950px) {
  .admin-shell { margin-left: 0; }
@@ -226,6 +229,8 @@ main > .admin-panel { margin-bottom: 22px; }
  .admin-product footer, .admin-product-meta { flex-wrap: wrap; gap: var(--nyx-space-3); }
  .admin-toolbar label { width: 100%; }
  .admin-inline-label { flex-wrap: wrap; }
+ .admin-health-body { grid-template-columns: minmax(0, 1fr); }
+ .admin-chart .nyx-chart text { font-size: 2.25rem; }
 }
 /* NyxSidebar owns open/close, focus trapping, Escape and scroll locking. */
 .admin-navigation { position: fixed; inset: 0 auto 0 0; width: 17rem; height: 100dvh; max-height: 100dvh; z-index: 40; overflow-y: auto; }
