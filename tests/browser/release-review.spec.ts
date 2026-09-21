@@ -31,6 +31,16 @@ test("toast frames follow the active accent theme", async ({ page }) => {
   }
 });
 
+test("pagination navigation preserves the selected documentation theme", async ({ page }) => {
+  await page.goto("/components/navigation/pagination");
+  await page.getByRole("button", { name: "Plasma", exact: true }).click();
+  await page.locator("[data-example-preview]").getByRole("link", { name: "Next page" }).click();
+
+  await expect(page).toHaveURL(/\/components\/navigation\/pagination\?page=3$/);
+  await expect(page.locator("html")).toHaveAttribute("data-nyx-theme", "plasma");
+  await expect(page.getByRole("button", { name: "Plasma", exact: true })).toHaveAttribute("aria-pressed", "true");
+});
+
 test("examples arrive before guidance and auth prioritizes its task column", async ({ page }) => {
   for (const width of [1280,1920,2560]) {
     await page.setViewportSize({width,height:720});

@@ -180,6 +180,29 @@ test("menubar panel anchors to its active trigger", async ({ page }) => {
   await expectAnchored(trigger, panel);
 });
 
+test("navigation disclosure stays anchored through outside dismissal", async ({ page }) => {
+  await page.goto("/components/navigation/navigation-menu");
+  const demo = example(page, "Product navigation");
+  const trigger = demo.getByRole("button", { name: /Products/ });
+  const panel = demo.locator("[data-nyx-navigation-menu-content]");
+
+  await trigger.click();
+  await expectOverlayWithinViewport(page, panel);
+  await expectAnchored(trigger, panel);
+  const openPosition = await panel.evaluate((element) => ({
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }));
+
+  await page.locator(".docs-title").click();
+  await expect(panel).not.toBeVisible();
+  await expect(panel).toHaveAttribute("data-nyx-positioned", "");
+  expect(await panel.evaluate((element) => ({
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }))).toEqual(openPosition);
+});
+
 test("hover card opens from a real hover and remains anchored", async ({ page }) => {
   await page.goto("/components/overlays/hover-card");
   const demo = example(page, "Operator hover card");

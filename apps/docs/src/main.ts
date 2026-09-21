@@ -60,6 +60,28 @@ interface Destroyable {
   destroy(): void;
 }
 
+const docsThemes = ["solar", "signal", "flux", "plasma"] as const;
+type DocsTheme = (typeof docsThemes)[number];
+const themeStorageKey = "nyx-docs-theme";
+
+function isDocsTheme(value: string | null | undefined): value is DocsTheme {
+  return docsThemes.includes(value as DocsTheme);
+}
+
+function storedTheme(): DocsTheme | undefined {
+  try {
+    const value = localStorage.getItem(themeStorageKey);
+    return isDocsTheme(value) ? value : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const initialTheme = storedTheme() ?? (isDocsTheme(document.documentElement.dataset.nyxTheme)
+  ? document.documentElement.dataset.nyxTheme
+  : "signal");
+document.documentElement.dataset.nyxTheme = initialTheme;
+
 const app = document.querySelector<HTMLDivElement>("#app");
 if (!app) throw new Error("Nyx documentation root was not found.");
 
@@ -119,7 +141,7 @@ app.innerHTML = `<div class="docs-shell">
   <header class="docs-topbar">
     <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.1.0</span></span></a>
     <button class="docs-search-trigger" data-nyx-dialog-trigger="docs-command-palette" type="button">${icon("search")}<span>Search documentation</span><span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span></button>
-    <div class="docs-theme-list" aria-label="Accent theme" role="group"><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="solar" aria-pressed="false">Solar</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="signal" aria-pressed="true">Signal</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="flux" aria-pressed="false">Flux</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="plasma" aria-pressed="false">Plasma</button></div>
+    <div class="docs-theme-list" aria-label="Accent theme" role="group">${docsThemes.map((theme) => `<button class="nyx-button docs-theme-button" data-size="small" data-theme-value="${theme}" aria-pressed="${String(theme === initialTheme)}">${theme[0]?.toUpperCase()}${theme.slice(1)}</button>`).join("")}</div>
   </header>
   <div class="docs-layout">
     <aside class="docs-sidebar nyx-scrollable-overlay">${sidebarMarkup}</aside>
@@ -156,8 +178,9 @@ sidebar.querySelectorAll<HTMLButtonElement>(".docs-nav-parent").forEach((button)
 app.querySelectorAll<HTMLButtonElement>("[data-theme-value]").forEach((button) => {
   button.addEventListener("click", () => {
     const theme = button.dataset.themeValue;
-    if (!theme) return;
+    if (!isDocsTheme(theme)) return;
     document.documentElement.dataset.nyxTheme = theme;
+    try { localStorage.setItem(themeStorageKey, theme); } catch { /* Theme still applies for this page. */ }
     app.querySelectorAll<HTMLButtonElement>("[data-theme-value]").forEach((candidate) => {
       candidate.setAttribute("aria-pressed", String(candidate === button));
     });

@@ -41,6 +41,10 @@ test("the focusable visually-hidden utility is bounded and returns to natural fl
   await expectPage(page, "/components/primitives/visually-hidden", "Visually Hidden");
   const skipLink = page.locator("[data-example-preview] .nyx-visually-hidden-focusable");
 
+  await expect(page.getByRole("heading", { name: "Quarterly report for Tokyo operations", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Quarterly report for Tokyo operations, PDF", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Download quarterly report for Tokyo operations", exact: true })).toBeVisible();
+
   for (const direction of ["ltr", "rtl"] as const) {
     await page.locator("html").evaluate((element, dir) => { element.dir = dir; }, direction);
     const hiddenStyles = await skipLink.evaluate((element) => {

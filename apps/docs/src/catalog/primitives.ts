@@ -81,9 +81,9 @@ export const primitivePages = [
     categoryId: "primitives",
     categoryLabel: "Primitives",
     title: "Visually Hidden",
-    description: "A reusable utility keeps meaningful labels, context, and live status in the accessibility tree while removing them from visual layout.",
+    description: "Visually hidden text adds specific names and context for assistive technology without crowding an already understandable visual layout.",
     searchTerms: "visually hidden screen reader accessible name label live region skip link focusable utility",
-    body: `<section class="docs-prose-section"><h2>Hide presentation, not meaning</h2><p>Use <code>nyx-visually-hidden</code> for text that must remain available to assistive technology. Do not use it to conceal content that should be unavailable to everyone; use <code>hidden</code> instead. The companion <code>nyx-visually-hidden-focusable</code> utility reveals skip links and other focus targets while they have focus.</p></section>${card("Accessible labels and focus target", visuallyHiddenMarkup, "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Use it only when the visible UI needs extra context</h2><p>The preview compares what sighted users see with the fuller names announced by assistive technology. Hidden text can disambiguate a short format link, name an icon-only control, or extend a heading with essential context. Prefer visible wording whenever the interface has room for it.</p><p><code>nyx-visually-hidden-focusable</code> serves a different purpose: it keeps a skip link out of the resting layout but reveals it when keyboard focus reaches it. Use <code>hidden</code> instead when content should be unavailable to everyone.</p></section>${card("Visible UI and assistive output", visuallyHiddenMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.primitives.direction,
