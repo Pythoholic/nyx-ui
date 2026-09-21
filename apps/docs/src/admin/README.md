@@ -22,7 +22,26 @@ Images can be placed under `registry/assets/admin/`, which Vite serves as public
 
 ## Adoption
 
-The standalone entry is `apps/docs/admin/index.html`. Copy the `admin` source directory and supply Nyx Core and Nyx Plugins in your Vite application. Load Inter for body copy and JetBrains Mono for compact labels, or replace them with your licensed brand fonts. Replace fixture reads and local mutations with your API before production use. Enforce permissions and validate records on the server. Images and branding can be replaced without changing the application layout.
+The standalone entry is `apps/docs/admin/index.html`. Copy the `admin` source directory and supply Nyx Core and Nyx Plugins in your Vite application. Load JetBrains Mono; body copy, headings, controls, and data use Nyx's shared typography tokens. Replace fixture reads and local mutations with your API before production use. Enforce permissions and validate records on the server. Images and branding can be replaced without changing the application layout.
+
+## Component ownership
+
+The template composes the public components rather than reskinning them. Do not override `.nyx-button`, form controls, badges, avatars, or table typography in the application stylesheet.
+
+| Interface | Nyx source of truth |
+| --- | --- |
+| Body, page heading, labels | `--font-nyx`, `--nyx-type-*`, `--nyx-track-*`; Core base styles |
+| Cards and section headers | `nyx-panel`, `nyx-panel-header`, `nyx-panel-title`, `nyx-panel-description` |
+| Navigation and mobile drawer | `nyx-sidebar-nav`, `nyx-app-sidebar`, `NyxSidebar` / `NyxDialog` |
+| Actions and forms | `nyx-button`, `nyx-icon-button`, `nyx-field`, `nyx-input`, `nyx-select`, `nyx-textarea`, `nyx-choice` |
+| People, statuses, keyboard hints | `nyx-avatar`, `nyx-badge`, `nyx-kbd` |
+| Metrics and records | `nyx-stat`, `nyx-stat-value`, `nyx-table-wrap`, `nyx-table` |
+| Charts and progress | `nyx-chart`, `nyx-chart-series`, `nyx-progress`, `nyx-progress-radial` |
+| Links, dialogs, notifications | `nyx-link`, `nyx-dialog-*`, `NyxDialog`, `NyxToast` |
+
+Application code owns page composition, routing, fixture data, filtering, pagination, CSV export, calendar scheduling, and inbox/project layouts. The calendar is an application schedule composed with Nyx controls, not a replacement for the date-picker component. Image placeholders are intentionally application-specific.
+
+`tests/browser/admin-design-system.spec.ts` compares rendered primitives with unmodified Nyx controls in the docs across all four themes and verifies mobile drawer/dialog focus behavior. `admin.spec.ts` covers workflows, persistence, and responsive page bounds. These checks complement visual review; they do not claim backend readiness or exhaustive accessibility certification.
 
 ## Design references
 

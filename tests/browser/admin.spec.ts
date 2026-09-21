@@ -44,14 +44,16 @@ test('admin routes render, navigation responds, and the page stays bounded on mo
   page.on('pageerror', e => errors.push(e.message));
   await page.goto('/admin/');
   await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
-  for (const width of [1440, 390]) {
+  for (const width of [2560, 1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of ['overview', 'analytics', 'orders', 'customers', 'products', 'projects', 'inbox', 'calendar', 'team', 'billing', 'settings']) {
       await page.goto(`/admin/#${route}`);
       await expect(page.locator('main h1')).toBeVisible();
+      await expect(page.locator('main input:not([type=checkbox]):not(.nyx-input), main select:not(.nyx-select), main textarea:not(.nyx-textarea)')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${route} at ${width}`).toBe(true);
     }
   }
+  await page.setViewportSize({ width: 390, height: 900 });
   await page.getByRole('button', { name: 'Toggle navigation' }).click();
   await page.getByRole('navigation', { name: 'Admin navigation' }).getByRole('link', { name: 'Products' }).click();
   await expect(page.locator('main h1')).toHaveText('Products');
@@ -72,11 +74,11 @@ test('admin project, calendar and settings controls update actual demo state', a
   await expect(page.locator('.admin-event').filter({ hasText: 'Team demo review' })).toBeVisible();
   await page.goto('/admin/#settings');
   await page.getByLabel('Workspace name').fill('Demo Studio');
-  await page.getByRole('button', { name: 'Save changes' }).click();
+  await page.locator('#settings-form').getByRole('button', { name: 'Save changes' }).click();
   await page.reload();
   await expect(page.getByLabel('Workspace name')).toHaveValue('Demo Studio');
   await page.keyboard.press('Control+k');
   await page.getByRole('searchbox').fill('products');
-  await page.getByRole('dialog').getByRole('link', { name: /Products/ }).click();
+  await page.locator('#admin-dialog').getByRole('link', { name: /Products/ }).click();
   await expect(page.locator('main h1')).toHaveText('Products');
 });
