@@ -81,3 +81,37 @@ test('dashboard visualizations retain useful proportions at desktop and mobile w
   await expect(page.locator('.admin-chart title')).toHaveCount(0);
   await expect(page.locator('.admin-chart desc')).toContainText('Apr $1,420');
 });
+
+test('admin shell composes the published Nyx navigation, activity, action, and calendar patterns', async ({ page }) => {
+  await page.goto('/admin/');
+  await expect(page.locator('.admin-topbar.nyx-topbar .nyx-topbar-brand')).toBeVisible();
+  await expect(page.locator('#admin-sidebar .nyx-sidebar-header')).toHaveCount(1);
+  await expect(page.locator('#admin-sidebar .nyx-sidebar-nav [data-nyx-sidebar-label]')).toHaveCount(11);
+  await expect(page.locator('.admin-brand, .admin-workspace, .admin-sidebar-foot, .admin-profile')).toHaveCount(0);
+  await expect(page.locator('.admin-activity-panel .nyx-activity-feed .nyx-activity-item')).toHaveCount(3);
+  await expect(page.locator('.admin-schedule.nyx-timeline .nyx-timeline-item')).toHaveCount(3);
+  await expect(page.locator('main a.nyx-link, main button.nyx-link')).toHaveCount(0);
+  const actionLabels = await page.locator('main .nyx-button').allTextContents();
+  expect(actionLabels.every(label => !label.includes('→'))).toBe(true);
+
+  const topbarBefore = await page.locator('.admin-topbar').boundingBox();
+  const sidebarBefore = await page.locator('#admin-sidebar').boundingBox();
+  await page.getByRole('button', { name: 'Toggle navigation' }).click();
+  await expect(page.locator('#admin')).toHaveAttribute('data-nyx-sidebar-collapsed', 'true');
+  await expect.poll(async () => (await page.locator('#admin-sidebar').boundingBox())?.width).toBeLessThan(100);
+  const topbarAfter = await page.locator('.admin-topbar').boundingBox();
+  const sidebarAfter = await page.locator('#admin-sidebar').boundingBox();
+  expect(topbarBefore).not.toBeNull();
+  expect(topbarAfter).not.toBeNull();
+  expect(sidebarBefore).not.toBeNull();
+  expect(sidebarAfter).not.toBeNull();
+  expect(topbarAfter!.x).toBeCloseTo(topbarBefore!.x, 0);
+  expect(topbarAfter!.width).toBeCloseTo(topbarBefore!.width, 0);
+  expect(sidebarAfter!.width).toBeLessThan(sidebarBefore!.width);
+
+  await page.goto('/admin/#calendar');
+  await expect(page.locator('.admin-calendar-layout > .nyx-calendar')).toBeVisible();
+  await expect(page.locator('#admin-calendar-heading')).toHaveText('September 2026');
+  await page.getByRole('button', { name: 'Next month' }).click();
+  await expect(page.locator('#admin-calendar-heading')).toHaveText('October 2026');
+});

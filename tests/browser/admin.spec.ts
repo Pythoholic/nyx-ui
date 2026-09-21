@@ -49,7 +49,7 @@ test('admin routes render, navigation responds, and the page stays bounded on mo
     for (const route of ['overview', 'analytics', 'orders', 'customers', 'products', 'projects', 'inbox', 'calendar', 'team', 'billing', 'settings']) {
       await page.goto(`/admin/#${route}`);
       await expect(page.locator('main h1')).toBeVisible();
-      await expect(page.locator('main input:not([type=checkbox]):not(.nyx-input), main select:not(.nyx-select), main textarea:not(.nyx-textarea)')).toHaveCount(0);
+      await expect(page.locator('main input:not([type=checkbox]):not([type=hidden]):not(.nyx-input), main select:not(.nyx-select), main textarea:not(.nyx-textarea)')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${route} at ${width}`).toBe(true);
     }
   }
@@ -71,7 +71,11 @@ test('admin project, calendar and settings controls update actual demo state', a
   await page.getByRole('button', { name: 'Add event', exact: true }).click();
   await page.getByLabel('Event name', { exact: true }).fill('Team demo review');
   await page.getByRole('button', { name: 'Save changes' }).click();
-  await expect(page.locator('.admin-event').filter({ hasText: 'Team demo review' })).toBeVisible();
+  await expect(page.locator('.admin-calendar-events').getByText('Team demo review', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Next month' }).click();
+  await expect(page.locator('#admin-calendar-heading')).toHaveText('October 2026');
+  await page.getByRole('button', { name: 'Previous month' }).click();
+  await expect(page.locator('#admin-calendar-heading')).toHaveText('September 2026');
   await page.goto('/admin/#settings');
   await page.getByLabel('Workspace name').fill('Demo Studio');
   await page.locator('#settings-form').getByRole('button', { name: 'Save changes' }).click();

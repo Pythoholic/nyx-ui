@@ -32,14 +32,17 @@ The template composes the public components rather than reskinning them. Do not 
 | --- | --- |
 | Body, page heading, labels | `--font-nyx`, `--nyx-type-*`, `--nyx-track-*`; Core base styles |
 | Cards and section headers | `nyx-panel`, `nyx-panel-header`, `nyx-panel-title`, `nyx-panel-description` |
-| Navigation and mobile drawer | `nyx-sidebar-nav`, `nyx-app-sidebar`, `NyxSidebar` / `NyxDialog` |
+| Application shell and top bar | `nyx-app-shell`, `nyx-app-content`, `nyx-topbar`, `nyx-topbar-brand`, `nyx-topbar-actions` |
+| Navigation and mobile drawer | `nyx-sidebar-header`, `nyx-sidebar-nav`, `nyx-app-sidebar`, `NyxSidebar` / `NyxDialog` |
 | Actions and forms | `nyx-button`, `nyx-icon-button`, `nyx-field`, `nyx-input`, `nyx-select`, `nyx-textarea`, `nyx-choice` |
 | People, statuses, keyboard hints | `nyx-avatar`, `nyx-badge`, `nyx-kbd` |
 | Metrics and records | `nyx-stat`, `nyx-stat-value`, `nyx-table-wrap`, `nyx-table` |
 | Charts and progress | `nyx-chart`, `nyx-chart-series`, `nyx-progress`, `nyx-progress-radial` |
+| Activity and schedule | `nyx-activity-feed`, `nyx-activity-list`, `nyx-activity-item`, `nyx-timeline` |
+| Calendar | `nyx-calendar`, `nyx-calendar-grid`, `NyxCalendar` |
 | Links, dialogs, notifications | `nyx-link`, `nyx-dialog-*`, `NyxDialog`, `NyxToast` |
 
-Application code owns page composition, routing, fixture data, filtering, pagination, CSV export, calendar scheduling, and inbox/project layouts. The calendar is an application schedule composed with Nyx controls, not a replacement for the date-picker component. Image placeholders are intentionally application-specific.
+Application code owns page composition, routing, fixture data, filtering, pagination, CSV export, event data, and inbox/project layouts. Calendar navigation, selection, keyboard behavior, and month announcements come from the public Nyx calendar controller. Image placeholders are intentionally application-specific.
 
 `tests/browser/admin-design-system.spec.ts` compares rendered primitives with unmodified Nyx controls in the docs across all four themes and verifies mobile drawer/dialog focus behavior. `admin.spec.ts` covers workflows, persistence, and responsive page bounds. These checks complement visual review; they do not claim backend readiness or exhaustive accessibility certification.
 
