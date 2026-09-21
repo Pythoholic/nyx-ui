@@ -40,7 +40,7 @@ import { initFilterBars } from "@nyx-ui/plugins/filter-bar";
 import { initCommandBars } from "@nyx-ui/plugins/command-bar";
 import { initBulkActionToolbars } from "@nyx-ui/plugins/bulk-action-toolbar";
 import { initTabs } from "@nyx-ui/plugins/tabs";
-import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
+import { initToasts, type NyxToast, type NyxToastOptions } from "@nyx-ui/plugins/toast";
 import {
   componentCategories,
   foundationPages,
@@ -371,8 +371,55 @@ function initializePage(page: DocPage): () => void {
     if (element) replay(element);
   }, { signal: abortController.signal });
 
-  main.querySelector("[data-toast-demo]")?.addEventListener("click", () => {
-    toast?.notify({ title: "Release validated", description: "All component contracts passed.", tone: "success" });
+  const toastStatus = main.querySelector<HTMLOutputElement>("[data-toast-demo-status]");
+  const toastExamples: Record<string, NyxToastOptions> = {
+    neutral: {
+      title: "Settings saved",
+      description: "Workspace preferences are up to date.",
+    },
+    success: {
+      title: "Release validated",
+      description: "All component contracts passed.",
+      tone: "success",
+    },
+    warning: {
+      title: "Capacity approaching limit",
+      description: "Only 12% of the monthly allocation remains.",
+      tone: "warning",
+      duration: 0,
+    },
+    danger: {
+      title: "Deployment failed",
+      description: "Review the build log before trying again.",
+      tone: "danger",
+      duration: 0,
+    },
+    loading: {
+      title: "Preparing deployment",
+      description: "Validating the release bundle.",
+      progress: "indeterminate",
+    },
+    progress: {
+      title: "Uploading release bundle",
+      description: "68% complete · about 12 seconds remaining.",
+      progress: 68,
+      action: { label: "View upload", value: "view-upload" },
+      duration: 0,
+    },
+  };
+  main.querySelectorAll<HTMLButtonElement>("[data-toast-demo]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const options = toastExamples[button.dataset.toastDemo ?? "neutral"];
+      if (!toast || !options) return;
+      toast.notify(options);
+      if (toastStatus) toastStatus.value = `Created: ${options.title}.`;
+    }, { signal: abortController.signal });
+  });
+  toast?.region.addEventListener("nyx:toast:action", (event) => {
+    const toastEvent = event as CustomEvent<{ action?: { label: string } }>;
+    if (toastStatus && toastEvent.detail.action) {
+      toastStatus.value = `Action selected: ${toastEvent.detail.action.label}.`;
+    }
   }, { signal: abortController.signal });
 
   return () => {

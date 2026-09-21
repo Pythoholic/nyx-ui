@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("last toast dismissal returns to its initiating control", async ({page}) => {
   await page.goto('/components/feedback/toast');
-  const trigger = page.getByRole('button',{name:'Send notification'});
+  const trigger = page.getByRole('button',{name:/Neutral update/});
   await trigger.click();
   await page.getByRole('button',{name:'Dismiss notification'}).focus();
   await page.keyboard.press('Enter');
@@ -11,7 +11,7 @@ test("last toast dismissal returns to its initiating control", async ({page}) =>
 
 test("toast frames follow the active accent theme", async ({ page }) => {
   await page.goto("/components/feedback/toast");
-  const send = page.getByRole("button", { name: "Send notification" });
+  const send = page.getByRole("button", { name: /Neutral update/ });
 
   for (const theme of ["Solar", "Signal", "Flux", "Plasma"]) {
     await page.getByRole("button", { name: theme, exact: true }).click();
@@ -29,6 +29,22 @@ test("toast frames follow the active accent theme", async ({ page }) => {
     await toast.getByRole("button", { name: /Dismiss/ }).click();
     await expect(toast).toHaveCount(0);
   }
+});
+
+test("toast patterns expose semantic progress and optional actions", async ({ page }) => {
+  await page.goto("/components/feedback/toast");
+
+  await page.getByRole("button", { name: /Loading status/ }).click();
+  const loading = page.getByRole("progressbar", { name: "Preparing deployment progress" });
+  await expect(loading).not.toHaveAttribute("aria-valuenow");
+  await loading.locator("xpath=ancestor::*[contains(@class, 'nyx-toast')]").getByRole("button", { name: "Dismiss notification" }).click();
+
+  const trigger = page.getByRole("button", { name: /Progress with action/ });
+  await trigger.click();
+  await expect(page.getByRole("progressbar", { name: "Uploading release bundle progress" })).toHaveAttribute("aria-valuenow", "68");
+  await page.getByRole("button", { name: "View upload" }).click();
+  await expect(page.locator("[data-toast-demo-status]")).toContainText("Action selected: View upload");
+  await expect(trigger).toBeFocused();
 });
 
 test("pagination navigation preserves the selected documentation theme", async ({ page }) => {

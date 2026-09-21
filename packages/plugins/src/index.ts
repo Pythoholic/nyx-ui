@@ -392,9 +392,11 @@ export {
 export {
   NyxToast,
   initToasts,
+  type NyxToastAction,
   type NyxToastDismissReason,
   type NyxToastEventDetail,
   type NyxToastEventMap,
   type NyxToastOptions,
+  type NyxToastProgress,
   type NyxToastTone,
 } from "./toast.js";

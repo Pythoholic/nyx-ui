@@ -181,12 +181,23 @@
   </section>
 </div>
 
-<div data-nyx-example="toast">
-  <div class="nyx-stack">
-    <p class="nyx-panel-description">Notifications enter the live region and dismiss automatically.</p>
-    <button class="nyx-button" data-toast-demo type="button">Send notification</button>
+<div class="nyx-toast-demo" data-nyx-example="toast">
+  <header class="nyx-toast-demo-header">
+    <h3>Trigger a notification</h3>
+    <p>Each control creates a real managed toast. Try its action or dismiss it to verify focus return.</p>
+  </header>
+  <div class="nyx-toast-demo-controls" aria-label="Toast examples">
+    <button class="nyx-toast-demo-option" data-toast-demo="neutral" type="button"><strong>Neutral update</strong><span>Brief information with automatic dismissal.</span></button>
+    <button class="nyx-toast-demo-option" data-toast-demo="success" type="button"><strong>Success confirmation</strong><span>A completed result that needs no follow-up.</span></button>
+    <button class="nyx-toast-demo-option" data-toast-demo="warning" type="button"><strong>Warning notice</strong><span>A preventable risk that remains until dismissed.</span></button>
+    <button class="nyx-toast-demo-option" data-toast-demo="danger" type="button"><strong>Failure alert</strong><span>An urgent failure announced assertively.</span></button>
+    <button class="nyx-toast-demo-option" data-toast-demo="loading" type="button"><strong>Loading status</strong><span>Indeterminate work with restrained continuous motion.</span></button>
+    <button class="nyx-toast-demo-option" data-toast-demo="progress" type="button"><strong>Progress with action</strong><span>Determinate work with one optional follow-up.</span></button>
   </div>
-  <div class="nyx-toast-region" data-nyx-toast-region></div>
+  <section class="nyx-toast-demo-stage" aria-labelledby="toast-stage-title">
+    <div><strong id="toast-stage-title">Notification region</strong><output data-toast-demo-status>Choose a pattern to create a toast.</output></div>
+    <div class="nyx-toast-region" data-layout="inline" data-nyx-toast-region></div>
+  </section>
 </div>
 
 <div class="nyx-empty" data-nyx-example="empty-state">

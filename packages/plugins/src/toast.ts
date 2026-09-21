@@ -2,20 +2,30 @@ import { moveFocusBeforeRemoval } from "./internal/focus.js";
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 
 export type NyxToastTone = "neutral" | "success" | "warning" | "danger";
+export type NyxToastProgress = number | "indeterminate";
 export type NyxToastDismissReason =
+  | "action"
   | "api"
   | "close-control"
   | "destroy"
   | "timeout";
 
+export interface NyxToastAction {
+  label: string;
+  value?: string;
+}
+
 export interface NyxToastOptions {
   title: string;
+  action?: NyxToastAction;
   description?: string;
+  progress?: NyxToastProgress;
   tone?: NyxToastTone;
   duration?: number;
 }
 
 export interface NyxToastEventDetail {
+  action?: NyxToastAction;
   options: NyxToastOptions;
   reason?: NyxToastDismissReason;
   toast: HTMLElement;
@@ -23,6 +33,7 @@ export interface NyxToastEventDetail {
 }
 
 export interface NyxToastEventMap {
+  "nyx:toast:action": CustomEvent<NyxToastEventDetail>;
   "nyx:toast:before-dismiss": CustomEvent<NyxToastEventDetail>;
   "nyx:toast:before-notify": CustomEvent<NyxToastEventDetail>;
   "nyx:toast:dismiss": CustomEvent<NyxToastEventDetail>;
@@ -34,9 +45,11 @@ declare global {
 }
 
 interface ToastRecord {
+  readonly action?: HTMLButtonElement;
   readonly returnFocus: HTMLElement | null;
   readonly close: HTMLButtonElement;
   readonly handleClose: () => void;
+  readonly handleAction?: () => void;
   readonly options: NyxToastOptions;
   handleAnimationEnd?: () => void;
   removalTimer?: number;
@@ -77,13 +90,27 @@ export class NyxToast {
       return toast;
     }
 
-    const close = toast.querySelector<HTMLButtonElement>("button");
+    const close = toast.querySelector<HTMLButtonElement>("[data-nyx-toast-dismiss]");
     if (!close) throw new Error("NyxToast could not create its close control.");
     const handleClose = (): void => this.dismiss(toast, "close-control");
     const active = this.region.ownerDocument.activeElement;
     const returnFocus = active instanceof HTMLElement && active !== this.region.ownerDocument.body ? active : null;
-    const record: ToastRecord = { close, handleClose, options, returnFocus };
+    const action = toast.querySelector<HTMLButtonElement>("[data-nyx-toast-action]") ?? undefined;
+    const actionOptions = options.action;
+    const handleAction = action && actionOptions ? (): void => {
+      const detail: NyxToastEventDetail = { action: actionOptions, options, toast, toasts: this };
+      if (dispatchNyxEvent(this.region, "nyx:toast:action", detail, true)) this.dismiss(toast, "action");
+    } : undefined;
+    const record: ToastRecord = {
+      close,
+      handleClose,
+      options,
+      returnFocus,
+      ...(action ? { action } : {}),
+      ...(handleAction ? { handleAction } : {}),
+    };
     close.addEventListener("click", handleClose);
+    if (action && handleAction) action.addEventListener("click", handleAction);
     this.records.set(toast, record);
     this.region.append(toast);
     this.syncState();
@@ -144,6 +171,7 @@ export class NyxToast {
         window.clearTimeout(record.removalTimer);
       }
       record.close.removeEventListener("click", record.handleClose);
+      if (record.action && record.handleAction) record.action.removeEventListener("click", record.handleAction);
       if (record.handleAnimationEnd) {
         toast.removeEventListener("animationend", record.handleAnimationEnd);
       }
@@ -175,7 +203,21 @@ export class NyxToast {
     toast.dataset.state = "open";
     toast.setAttribute("role", tone === "danger" ? "alert" : "status");
 
+    const icon = this.region.ownerDocument.createElement("span");
+    icon.className = "nyx-toast-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.innerHTML = options.progress === "indeterminate"
+      ? `<span class="nyx-spinner"></span>`
+      : `<svg class="nyx-icon" viewBox="0 0 24 24">${tone === "success"
+        ? '<path d="m5 12 4 4L19 6" />'
+        : tone === "warning"
+          ? '<path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" />'
+          : tone === "danger"
+            ? '<circle cx="12" cy="12" r="9" /><path d="m9 9 6 6m0-6-6 6" />'
+            : '<circle cx="12" cy="12" r="9" /><path d="M12 11v5m0-8h.01" />'}</svg>`;
+
     const content = this.region.ownerDocument.createElement("div");
+    content.className = "nyx-toast-content";
     const title = this.region.ownerDocument.createElement("strong");
     title.className = "nyx-toast-title";
     title.textContent = options.title;
@@ -188,9 +230,19 @@ export class NyxToast {
       content.append(description);
     }
 
+    if (options.action) {
+      const action = this.region.ownerDocument.createElement("button");
+      action.className = "nyx-toast-action";
+      action.dataset.nyxToastAction = options.action.value ?? options.action.label;
+      action.type = "button";
+      action.textContent = options.action.label;
+      content.append(action);
+    }
+
     const close = this.region.ownerDocument.createElement("button");
     close.className = "nyx-button nyx-icon-button";
     close.dataset.size = "small";
+    close.dataset.nyxToastDismiss = "";
     close.dataset.variant = "quiet";
     close.type = "button";
     close.setAttribute("aria-label", "Dismiss notification");
@@ -198,7 +250,27 @@ export class NyxToast {
       <path d="M18 6 6 18M6 6l12 12" />
     </svg>`;
 
-    toast.append(content, close);
+    toast.append(icon, content, close);
+
+    if (options.progress !== undefined) {
+      const progress = this.region.ownerDocument.createElement("div");
+      const bar = this.region.ownerDocument.createElement("span");
+      progress.className = "nyx-progress nyx-toast-progress";
+      progress.setAttribute("aria-label", `${options.title} progress`);
+      progress.setAttribute("role", "progressbar");
+      bar.className = "nyx-progress-bar";
+      if (options.progress === "indeterminate") {
+        progress.dataset.indeterminate = "true";
+      } else {
+        const value = Math.min(100, Math.max(0, options.progress));
+        progress.setAttribute("aria-valuemin", "0");
+        progress.setAttribute("aria-valuemax", "100");
+        progress.setAttribute("aria-valuenow", String(value));
+        bar.style.setProperty("--nyx-progress", `${value}%`);
+      }
+      progress.append(bar);
+      toast.append(progress);
+    }
     return toast;
   }
 
@@ -212,6 +284,7 @@ export class NyxToast {
       window.clearTimeout(record.removalTimer);
     }
     record.close.removeEventListener("click", record.handleClose);
+    if (record.action && record.handleAction) record.action.removeEventListener("click", record.handleAction);
     if (record.handleAnimationEnd) {
       toast.removeEventListener("animationend", record.handleAnimationEnd);
     }

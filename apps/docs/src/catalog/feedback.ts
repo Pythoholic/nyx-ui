@@ -79,10 +79,10 @@ export const feedbackPages = [
     categoryId: "feedback",
     categoryLabel: "Feedback",
     title: "Toast",
-    description: "Transient notifications enter a live region, announce useful status, and clean up timers and controls when destroyed.",
-    searchTerms: "toast notification live region dismiss transient status",
+    description: "A complete toast baseline covers neutral updates, semantic outcomes, loading, progress, optional actions, dismissal, and focus return.",
+    searchTerms: "toast notification live region dismiss transient status success warning danger loading progress action",
     plugins: ["toast"],
-    body: `<section class="docs-prose-section"><h2>Reserve for brief, non-blocking updates</h2><p>Toasts announce transient status from a live region and may be dismissed. Do not place required decisions, form errors, or the only copy of a result in a toast because it disappears. The application decides what event creates a toast; the controller manages its timer, pause, dismissal, and cleanup.</p></section>${card("Toast", selectMarkup(feedbackMarkup, ["[data-nyx-example='toast']"]), "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Choose the pattern that matches the event</h2><p>Use neutral and success toasts for brief confirmation, warning and danger for named outcomes, and progress only when the application has meaningful work to report. An action may offer a convenient follow-up, but it must never be the only way to complete required work. The controller owns timing, focus return, actions, dismissal, and cleanup.</p></section>${card("Toast patterns", selectMarkup(feedbackMarkup, ["[data-nyx-example='toast']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.emptyState,
