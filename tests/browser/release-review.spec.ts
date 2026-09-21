@@ -34,12 +34,12 @@ test("toast frames follow the active accent theme", async ({ page }) => {
 test("toast patterns expose semantic progress and optional actions", async ({ page }) => {
   await page.goto("/components/feedback/toast");
 
-  await page.getByRole("button", { name: /Loading status/ }).click();
+  await page.getByRole("button", { name: "Show loading" }).click();
   const loading = page.getByRole("progressbar", { name: "Preparing deployment progress" });
   await expect(loading).not.toHaveAttribute("aria-valuenow");
   await loading.locator("xpath=ancestor::*[contains(@class, 'nyx-toast')]").getByRole("button", { name: "Dismiss notification" }).click();
 
-  await page.getByRole("button", { name: /Upload progress/ }).click();
+  await page.getByRole("button", { name: "Show upload progress" }).click();
   await expect(page.getByRole("progressbar", { name: "Uploading release bundle progress" })).toHaveAttribute("aria-valuenow", "68");
 
   const trigger = page.getByRole("button", { name: "Show actionable toast" });
@@ -47,6 +47,27 @@ test("toast patterns expose semantic progress and optional actions", async ({ pa
   await page.getByRole("button", { name: "View upload" }).click();
   await expect(trigger.locator("xpath=ancestor::*[contains(@class, 'nyx-toast-showcase')]").locator("[data-toast-demo-status]")).toContainText("Action selected: View upload");
   await expect(trigger).toBeFocused();
+});
+
+test("semantic toast triggers look and behave like tone buttons", async ({ page }) => {
+  await page.goto("/components/feedback/toast");
+
+  for (const [name, token] of [["Show success", "--nyx-signal"], ["Show warning", "--nyx-warning"], ["Show danger", "--nyx-danger"]]) {
+    const button = page.getByRole("button", { name, exact: true });
+    const appearance = await button.evaluate((element, semanticToken) => {
+      const probe = document.createElement("span");
+      probe.style.backgroundColor = `var(${semanticToken})`;
+      element.append(probe);
+      const tokenColor = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      const styles = getComputedStyle(element);
+      return { background: styles.backgroundColor, blockSize: element.getBoundingClientRect().height, tokenColor };
+    }, token);
+    expect(appearance.background).toBe(appearance.tokenColor);
+    expect(appearance.blockSize).toBeGreaterThanOrEqual(40);
+    await button.click();
+    await expect(button.locator("xpath=ancestor::*[contains(@class, 'nyx-toast-showcase')]").locator(".nyx-toast").last()).toBeVisible();
+  }
 });
 
 test("pagination navigation preserves the selected documentation theme", async ({ page }) => {

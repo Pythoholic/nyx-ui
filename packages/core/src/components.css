@@ -125,6 +125,12 @@
   .nyx-button[data-variant="primary"] { border-color: var(--nyx-accent); background: var(--nyx-accent); color: var(--nyx-accent-ink); }
   .nyx-button[data-variant="primary"] { font-weight: var(--nyx-weight-bold); }
   .nyx-button[data-variant="primary"]:hover:not(:disabled) { border-color: var(--nyx-accent-hi); background: var(--nyx-accent-hi); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="success"] { border-color: var(--nyx-signal); background: var(--nyx-signal); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="success"]:hover:not(:disabled) { border-color: color-mix(in srgb, var(--nyx-signal) 84%, white); background: color-mix(in srgb, var(--nyx-signal) 84%, white); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="warning"] { border-color: var(--nyx-warning); background: var(--nyx-warning); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="warning"]:hover:not(:disabled) { border-color: color-mix(in srgb, var(--nyx-warning) 84%, white); background: color-mix(in srgb, var(--nyx-warning) 84%, white); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="danger"] { border-color: var(--nyx-danger); background: var(--nyx-danger); color: var(--nyx-accent-ink); }
+  .nyx-button[data-tone="danger"]:hover:not(:disabled) { border-color: color-mix(in srgb, var(--nyx-danger) 84%, white); background: color-mix(in srgb, var(--nyx-danger) 84%, white); color: var(--nyx-accent-ink); }
   .nyx-button[data-variant="quiet"] { border-color: transparent; background: transparent; }
   .nyx-button[data-variant="danger"] { border-color: var(--nyx-danger-line); background: var(--nyx-danger-soft); color: var(--nyx-danger); }
   .nyx-button[data-size="small"] { block-size: 2.25rem; padding: 0.4375rem 0.75rem; font-size: var(--nyx-type-nav); letter-spacing: var(--nyx-track-nav); }
@@ -478,17 +484,9 @@
   .nyx-toast-demo-header > p { color: var(--nyx-muted); }
   .nyx-toast-demo-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nyx-space-3); }
   .nyx-toast-demo-controls-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .nyx-toast-demo-option { display: grid; min-inline-size: 0; align-content: start; gap: var(--nyx-space-1); padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); color: var(--nyx-muted); font: inherit; text-align: start; }
-  .nyx-toast-demo-option > strong { color: var(--nyx-ink); font-size: var(--nyx-type-nav); }
-  .nyx-toast-demo-option > span { font-size: var(--nyx-type-meta); line-height: 1.5; }
-  .nyx-toast-demo-option:is(:hover, :focus-visible) { border-color: var(--nyx-accent-line); outline: 0; background: var(--nyx-accent-soft); }
-  .nyx-toast-demo-option:is(:hover, :focus-visible) > strong { color: var(--nyx-accent); }
-  .nyx-toast-demo-option[data-tone="success"] { border-color: var(--nyx-signal-line); background: var(--nyx-signal-soft); }
-  .nyx-toast-demo-option[data-tone="success"] > strong { color: var(--nyx-signal); }
-  .nyx-toast-demo-option[data-tone="warning"] { border-color: var(--nyx-warning-line); background: var(--nyx-warning-soft); }
-  .nyx-toast-demo-option[data-tone="warning"] > strong { color: var(--nyx-warning); }
-  .nyx-toast-demo-option[data-tone="danger"] { border-color: var(--nyx-danger-line); background: var(--nyx-danger-soft); }
-  .nyx-toast-demo-option[data-tone="danger"] > strong { color: var(--nyx-danger); }
+  .nyx-toast-demo-choice { display: grid; min-inline-size: 0; justify-items: start; align-content: start; gap: var(--nyx-space-2); padding: var(--nyx-space-3); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); }
+  .nyx-toast-demo-choice > .nyx-button { min-inline-size: 9rem; }
+  .nyx-toast-demo-choice > span { color: var(--nyx-label); font-size: var(--nyx-type-meta); line-height: 1.5; }
   .nyx-toast-demo-stage { display: grid; min-block-size: 10rem; grid-template-columns: minmax(12rem, 0.55fr) minmax(18rem, 1.45fr); align-items: start; gap: var(--nyx-space-5); padding: var(--nyx-space-5); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-radial); }
   .nyx-toast-demo-command { display: grid; justify-items: start; gap: var(--nyx-space-2); }
   .nyx-toast-demo-command > span { color: var(--nyx-ink); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); }
