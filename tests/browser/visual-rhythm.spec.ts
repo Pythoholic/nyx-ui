@@ -553,6 +553,10 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await toggle.click();
   await expect(shell).toHaveAttribute("data-state", "collapsed");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  const collapsedLinkBox = await panel.getByRole("link", { name: "Settings" }).boundingBox();
+  expect(collapsedLinkBox).not.toBeNull();
+  expect(collapsedLinkBox!.width).toBeCloseTo(collapsedLinkBox!.height, 0);
+  expect(collapsedLinkBox!.width).toBeGreaterThanOrEqual(44);
 });
 
 test("sidebar destinations switch content at each desktop review width", async ({ page }) => {

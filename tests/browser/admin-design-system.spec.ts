@@ -108,6 +108,9 @@ test('admin shell composes the published Nyx navigation, activity, action, and c
   expect(topbarAfter!.x).toBeCloseTo(topbarBefore!.x, 0);
   expect(topbarAfter!.width).toBeCloseTo(topbarBefore!.width, 0);
   expect(sidebarAfter!.width).toBeLessThan(sidebarBefore!.width);
+  const collapsedNavItem = await page.locator('#admin-sidebar .nyx-sidebar-nav a').first().boundingBox();
+  expect(collapsedNavItem).not.toBeNull();
+  expect(collapsedNavItem!.width).toBeCloseTo(collapsedNavItem!.height, 0);
 
   await page.goto('/admin/#calendar');
   await expect(page.locator('.admin-calendar-layout > .nyx-calendar')).toBeVisible();
