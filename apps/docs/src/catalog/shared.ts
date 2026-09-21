@@ -826,7 +826,9 @@ const pluginApis: Record<PluginName, PluginApi> = {
     reference: {
       attributes: [
         { name: "data-nyx-combobox", value: "presence", description: "Marks the input, form value, and listbox owner." },
+        { name: "data-nyx-combobox-mode", value: "select", description: "Requires a listed option and restores the last committed selection when unmatched text is dismissed." },
         { name: "data-nyx-combobox-value", value: "presence", description: "Marks the hidden input synchronized for form submission." },
+        { name: "data-nyx-combobox-label", value: "string", description: "Sets the readable input text committed when an option is selected." },
         { name: "data-value", value: "string", description: "Sets the submitted value for an option." },
         { name: "data-nyx-search-text", value: "string", description: "Overrides the option text used for filtering." },
         { name: "data-nyx-combobox-placement", value: "placement", description: "Sets the preferred anchored popup placement." },

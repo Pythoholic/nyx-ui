@@ -56,6 +56,24 @@ test("password visibility toggle synchronizes its accessible and native state", 
   await expect(toggle).toHaveAttribute("aria-pressed", "false");
 });
 
+test("search box keeps a stable clear control while query state changes", async ({ page }) => {
+  await page.goto("/components/forms/search-box");
+  const demo = example(page, "Search box with recent searches");
+  const input = demo.getByRole("combobox", { name: "Search operational records" });
+  const clear = demo.getByRole("button", { name: "Clear search" });
+  const initialControl = await demo.locator(".nyx-search-control").boundingBox();
+
+  await expect(clear).toBeVisible();
+  await expect(clear).toBeDisabled();
+  await input.fill("failed deployments");
+  await expect(clear).toBeEnabled();
+  expect(await demo.locator(".nyx-search-control").boundingBox()).toEqual(initialControl);
+  await clear.click();
+  await expect(input).toHaveValue("");
+  await expect(clear).toBeDisabled();
+  await expect(input).toBeFocused();
+});
+
 test("multi-select adds and removes values while keeping tags and form values synchronized", async ({ page }) => {
   await page.goto("/components/forms/multi-select");
   const demo = example(page, "Multi-select and tag input");
@@ -74,6 +92,45 @@ test("multi-select adds and removes values while keeping tags and form values sy
   await expect(selected.getByRole("button", { name: /Remove Helix/ })).toHaveCount(0);
   await expect.poll(() => values.evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value)))
     .toEqual(["atlas"]);
+});
+
+test("combobox keeps custom text while selected suggestions add a stable value", async ({ page }) => {
+  await page.goto("/components/forms/combobox");
+  const demo = example(page, "Deployment location");
+  const input = demo.getByRole("combobox", { name: "Deployment location" });
+  const value = demo.locator("input[name='locationId']");
+
+  await expect(demo.locator("[aria-label='When to use this combobox']")).toBeVisible();
+  await input.fill("fran");
+  await expect(demo.getByRole("option", { name: /Frankfurt/ })).toBeVisible();
+  await input.press("Enter");
+  await expect(input).toHaveValue("Frankfurt");
+  await expect(value).toHaveValue("fra");
+
+  await input.fill("Private edge 07");
+  await expect(input).toHaveValue("Private edge 07");
+  await expect(value).toHaveValue("");
+  await expect(demo.getByText("No matching region. Keep typing to use a custom location.")).toBeVisible();
+});
+
+test("searchable select rejects unmatched text and submits a known option", async ({ page }) => {
+  await page.goto("/components/forms/searchable-select");
+  const demo = example(page, "Assign an owning team");
+  const input = demo.getByRole("combobox", { name: "Owning team" });
+  const value = demo.locator("input[name='team']");
+
+  await expect(demo.locator("[aria-label='Choosing the correct selection control']")).toBeVisible();
+  await expect(input).toHaveValue("Atlas");
+  await expect(value).toHaveValue("atlas");
+  await input.fill("Unknown team");
+  await input.press("Escape");
+  await expect(input).toHaveValue("Atlas");
+  await expect(value).toHaveValue("atlas");
+
+  await input.fill("night");
+  await input.press("Enter");
+  await expect(input).toHaveValue("Nightwatch");
+  await expect(value).toHaveValue("nightwatch");
 });
 
 test("file upload reports type and size validation through its accessible error state", async ({ page }) => {

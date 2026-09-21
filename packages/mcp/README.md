@@ -2,14 +2,13 @@
 
 Read-only Model Context Protocol server for the Nyx UI registry. It lets AI coding tools discover components, search usage guidance, inspect component contracts, and retrieve canonical source without guessing Nyx APIs.
 
-## Run locally
+## Run
 
 ```sh
-pnpm --filter @nyx-ui/mcp build
-node packages/mcp/dist/cli.js
+npx -y @nyx-ui/mcp
 ```
 
-The server communicates over standard input/output. Point a compatible MCP client at the `nyx-mcp` binary after publication, or at the built file while developing locally.
+The server communicates over standard input/output. Configure a compatible MCP client to run `npx` with the arguments `-y` and `@nyx-ui/mcp`.
 
 ## Tools
 
@@ -17,5 +16,3 @@ The server communicates over standard input/output. Point a compatible MCP clien
 - `search_components`
 - `get_component_contract`
 - `get_component_source`
-
-Set `NYX_REGISTRY_ROOT` to use a different registry directory containing `registry.json` and its referenced files.

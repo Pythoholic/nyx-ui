@@ -47,6 +47,8 @@ export class NyxCombobox {
   private readonly options: HTMLElement[];
   private readonly placement: NyxOverlayPlacement;
   private readonly results: NyxResultList;
+  private readonly selectOnly: boolean;
+  private committedOption: HTMLElement | null = null;
   private openState = false;
   private selectedOption: HTMLElement | null = null;
   private stopPositioning: (() => void) | undefined;
@@ -64,6 +66,7 @@ export class NyxCombobox {
     this.empty = listbox.querySelector<HTMLElement>("[data-nyx-combobox-empty]") ?? undefined;
     this.hiddenInput = element.querySelector<HTMLInputElement>("input[type='hidden'][data-nyx-combobox-value]") ?? undefined;
     this.placement = options.placement ?? (element.dataset.nyxComboboxPlacement as NyxOverlayPlacement | undefined) ?? "bottom-start";
+    this.selectOnly = element.dataset.nyxComboboxMode === "select";
     this.results = new NyxResultList({ input, listbox, options: this.options, ...(this.empty ? { empty: this.empty } : {}) });
     this.dismissal = new NyxOverlayDismissal({ element, onDismiss: this.handleDismiss });
 
@@ -74,6 +77,7 @@ export class NyxCombobox {
     listbox.hidden = true;
     this.options.forEach((option) => option.setAttribute("aria-selected", option.getAttribute("aria-selected") === "true" ? "true" : "false"));
     this.selectedOption = this.options.find((option) => option.getAttribute("aria-selected") === "true") ?? null;
+    this.committedOption = this.selectedOption;
     if (this.selectedOption) this.commit(this.selectedOption, false);
     else if (this.hiddenInput?.value) this.value = this.hiddenInput.value;
 
@@ -116,6 +120,7 @@ export class NyxCombobox {
     if (!this.openState) return;
     const cancelable = reason !== "destroy";
     if (!dispatchNyxEvent(this.element, "nyx:combobox:before-close", { combobox: this, reason }, cancelable)) return;
+    if (this.selectOnly && reason !== "destroy" && reason !== "select") this.restoreCommittedSelection();
     this.openState = false;
     this.stopPositioning?.();
     this.stopPositioning = undefined;
@@ -158,20 +163,34 @@ export class NyxCombobox {
 
   private commit(option: HTMLElement, updateInput: boolean): void {
     this.selectedOption = option;
+    this.committedOption = option;
     this.options.forEach((candidate) => candidate.setAttribute("aria-selected", String(candidate === option)));
     const value = option.dataset.value ?? resultText(option).trim();
     if (this.hiddenInput) this.hiddenInput.value = value;
     if (updateInput || !this.input.value) this.input.value = option.dataset.nyxComboboxLabel ?? resultText(option).trim();
   }
 
-  private clearSelection(): void {
+  private clearSelection(preserveCommitted = false): void {
     this.selectedOption = null;
+    if (!preserveCommitted) this.committedOption = null;
     this.options.forEach((option) => option.setAttribute("aria-selected", "false"));
     if (this.hiddenInput) this.hiddenInput.value = "";
   }
 
+  private restoreCommittedSelection(): void {
+    this.selectedOption = this.committedOption;
+    this.options.forEach((option) => option.setAttribute("aria-selected", String(option === this.committedOption)));
+    if (this.committedOption) {
+      this.input.value = this.committedOption.dataset.nyxComboboxLabel ?? resultText(this.committedOption).trim();
+      if (this.hiddenInput) this.hiddenInput.value = this.committedOption.dataset.value ?? resultText(this.committedOption).trim();
+    } else {
+      this.input.value = "";
+      if (this.hiddenInput) this.hiddenInput.value = "";
+    }
+  }
+
   private readonly handleInput = (): void => {
-    this.clearSelection();
+    this.clearSelection(this.selectOnly);
     if (!this.openState) this.open();
     this.filter();
   };

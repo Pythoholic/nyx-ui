@@ -94,7 +94,7 @@ test("calendar grid uses one date tab stop and moves by day, week, Home, and End
 
 test("combobox keeps DOM focus on its input while arrows and Home/End move the active option", async ({ page }) => {
   await page.goto("/components/forms/combobox");
-  const demo = example(page, "Combobox");
+  const demo = example(page, "Deployment location");
   const input = demo.getByRole("combobox", { name: "Deployment location" });
 
   await input.focus();
@@ -104,7 +104,7 @@ test("combobox keeps DOM focus on its input while arrows and Home/End move the a
   await page.keyboard.press("ArrowDown");
   await expect(input).toHaveAttribute("aria-activedescendant", /option-2$/);
   await page.keyboard.press("End");
-  await expect(input).toHaveAttribute("aria-activedescendant", /option-5$/);
+  await expect(input).toHaveAttribute("aria-activedescendant", /option-6$/);
   await page.keyboard.press("Home");
   await expect(input).toHaveAttribute("aria-activedescendant", /option-1$/);
 });

@@ -17,9 +17,9 @@ export const primitivePages = [
     categoryId: "primitives",
     categoryLabel: "Primitives",
     title: "Static Primitives",
-    description: "Avatar, card, list, item, separator, and keyboard patterns form one cohesive semantic vocabulary with no runtime controller.",
+    description: "See how panels, avatars, lists, items, separators, and keyboard hints compose a clear release handoff without a runtime controller.",
     searchTerms: "avatar group initials card panel item list separator divider keyboard kbd chord static",
-    body: `<section class="docs-prose-section"><h2>Small patterns keep their native meaning</h2><p>Cards group related content but do not need an ARIA role by default. Separators are decorative unless they divide operable regions. Avatars require useful alternative text when the image identifies a person, while keyboard hints describe an available shortcut and must not imply that the shortcut has been registered.</p></section>${card("Avatar, card, separator, and keys", staticPrimitivesMarkup, "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Read the example as an anatomy</h2><p>Each label in the preview names the primitive being demonstrated. The panel owns one release handoff, the avatar group identifies its reviewers, the separator divides related sections, the keyboard hint documents an available shortcut, and the list turns the remaining checks into scannable items.</p><p>These are static building blocks: links still navigate, images keep useful alternative text, and shortcut hints do not register keyboard behavior by themselves.</p></section>${card("Release handoff anatomy", staticPrimitivesMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.primitives.aspectRatio,
@@ -44,9 +44,9 @@ export const primitivePages = [
     categoryId: "primitives",
     categoryLabel: "Primitives",
     title: "Styled Links",
-    description: "Persistent underlines and clear focus treatment distinguish navigation from surrounding text without relying on color alone.",
+    description: "Compare inline, muted, and standalone links in context so navigation hierarchy stays clear without relying on color alone.",
     searchTerms: "styled links anchor underline navigation muted standalone focus visited",
-    body: `<section class="docs-prose-section"><h2>Links still navigate</h2><p>Use a native anchor with an <code>href</code> for navigation. Use a button for an action; styling a link must not blur that semantic distinction.</p></section>${card("Inline and standalone links", styledLinksMarkup, "Registry source")}`,
+    body: `<section class="docs-prose-section"><h2>Choose emphasis from context</h2><p>Use an inline link when navigation completes a sentence, a muted link for supporting material, and a standalone link when navigation is the clear next step. Every variant remains a native anchor with an <code>href</code>; use a button when the control changes application state instead.</p></section>${card("Link hierarchy in context", styledLinksMarkup, "Registry source")}`,
   }),
   page({
     path: paths.components.primitives.blockquote,

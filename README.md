@@ -75,7 +75,6 @@ React applications use the same registry markup and initialize the relevant subt
 - Read [Framework research and architecture direction](./docs/architecture/FRAMEWORK_RESEARCH.md) for the package and registry model.
 - Read [Build loop](./docs/architecture/BUILD_LOOP.md) for the lifecycle and completeness contract applied to components.
 - Use `registry/registry.json` to inspect component maturity, canonical files, and runtime requirements.
-- Read [AI integration](./docs/architecture/AI_INTEGRATION.md) to connect Codex or Claude Code to the local registry MCP server.
 - Use the Accessibility, Behavior, Registry, Theming, and React guides in the documentation application before integrating interactive components.
 
 ## Browser and accessibility contract

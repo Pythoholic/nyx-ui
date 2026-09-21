@@ -108,4 +108,24 @@ describe("NyxCombobox", () => {
     combobox.input.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
     expect(combobox.expanded).toBe(false);
   });
+
+  it("restores the last committed option when select-only text is dismissed", () => {
+    const root = document.querySelector<HTMLElement>("#combo");
+    const alpha = document.querySelector<HTMLElement>("#alpha");
+    if (!root || !alpha) throw new Error("Combobox fixture missing.");
+    root.dataset.nyxComboboxMode = "select";
+    alpha.setAttribute("aria-selected", "true");
+    initialized = initComboboxes();
+    const [combobox] = initialized;
+    if (!combobox) throw new Error("Combobox did not initialize.");
+
+    expect(combobox.input.value).toBe("Alpha");
+    expect(combobox.value).toBe("alpha");
+    combobox.input.value = "unlisted";
+    combobox.input.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(combobox.value).toBe("");
+    combobox.input.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
+    expect(combobox.input.value).toBe("Alpha");
+    expect(combobox.value).toBe("alpha");
+  });
 });

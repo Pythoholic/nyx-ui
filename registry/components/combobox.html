@@ -1,54 +1,88 @@
-<label class="nyx-field" for="nyx-location-query">
-  <span class="nyx-label">Deployment location</span>
-  <span class="nyx-field-hint">Type to filter available locations.</span>
-</label>
-<div class="nyx-combobox" data-nyx-combobox id="nyx-location-combobox">
-  <input
-    aria-label="Deployment location"
-    autocomplete="off"
-    class="nyx-input"
-    id="nyx-location-query"
-    placeholder="Search locations"
-    role="combobox"
-    type="text"
-  />
-  <input data-nyx-combobox-value name="location" type="hidden" />
-  <div
-    aria-label="Deployment locations"
-    class="nyx-listbox nyx-scrollable-overlay"
-    id="nyx-location-listbox"
-    popover="manual"
-    role="listbox"
-  >
-    <div class="nyx-option" data-value="ams" role="option">Amsterdam</div>
-    <div class="nyx-option" data-value="fra" role="option">Frankfurt</div>
-    <div class="nyx-option" data-value="lhr" role="option">London</div>
-    <div aria-disabled="true" class="nyx-option" data-value="nrt" role="option">Tokyo · Capacity reached</div>
-    <div class="nyx-option" data-value="iad" role="option">Washington, D.C.</div>
-    <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching location.</p>
+<form class="nyx-combobox-example" data-nyx-example="deployment-location">
+  <div class="nyx-stack">
+    <label class="nyx-field" for="nyx-location-query">
+      <span class="nyx-label">Deployment location</span>
+      <span class="nyx-field-hint" id="nyx-location-hint">Search known regions or enter a custom edge location.</span>
+    </label>
+    <div class="nyx-combobox" data-nyx-combobox id="nyx-location-combobox">
+      <input
+        aria-describedby="nyx-location-hint"
+        aria-label="Deployment location"
+        autocomplete="off"
+        class="nyx-input"
+        id="nyx-location-query"
+        name="locationLabel"
+        placeholder="Search city, code, or region"
+        role="combobox"
+        type="text"
+      />
+      <input data-nyx-combobox-value name="locationId" type="hidden" />
+      <div
+        aria-label="Deployment locations"
+        class="nyx-listbox nyx-scrollable-overlay"
+        id="nyx-location-listbox"
+        popover="manual"
+        role="listbox"
+      >
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Amsterdam" data-nyx-search-text="Amsterdam AMS Netherlands EU West" data-value="ams" role="option"><span><strong>Amsterdam</strong><small>EU West · Healthy</small></span><code>AMS</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Frankfurt" data-nyx-search-text="Frankfurt FRA Germany EU Central" data-value="fra" role="option"><span><strong>Frankfurt</strong><small>EU Central · Recommended</small></span><code>FRA</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="London" data-nyx-search-text="London LHR United Kingdom EU West" data-value="lhr" role="option"><span><strong>London</strong><small>EU West · Healthy</small></span><code>LHR</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Singapore" data-nyx-search-text="Singapore SIN Southeast Asia APAC" data-value="sin" role="option"><span><strong>Singapore</strong><small>Asia Pacific · Healthy</small></span><code>SIN</code></div>
+        <div aria-disabled="true" class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Tokyo" data-nyx-search-text="Tokyo NRT Japan Northeast Asia APAC" data-value="nrt" role="option"><span><strong>Tokyo</strong><small>Asia Pacific · Capacity reached</small></span><code>NRT</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Washington, D.C." data-nyx-search-text="Washington DC IAD United States US East" data-value="iad" role="option"><span><strong>Washington, D.C.</strong><small>US East · Healthy</small></span><code>IAD</code></div>
+        <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching region. Keep typing to use a custom location.</p>
+      </div>
+    </div>
+    <p class="nyx-combobox-note"><strong>Submission:</strong> typed text uses <code>locationLabel</code>; choosing a suggestion also writes its stable code to <code>locationId</code>.</p>
   </div>
-</div>
+  <aside class="nyx-combobox-context" aria-label="When to use this combobox">
+    <span class="nyx-eyebrow">Use it when</span>
+    <strong>People can enter text or reuse a known value</strong>
+    <ul>
+      <li>The option set is long enough to benefit from filtering.</li>
+      <li>Suggestions help, but they do not restrict valid input.</li>
+      <li>The application needs both a readable label and an optional stable ID.</li>
+    </ul>
+  </aside>
+</form>
 
-<label class="nyx-field" for="nyx-team-query">
-  <span class="nyx-label">Owning team</span>
-  <span class="nyx-field-hint">Use a searchable Select for a long choice set; prefer a native select for ordinary choices.</span>
-</label>
-<div class="nyx-combobox" data-nyx-combobox data-nyx-combobox-mode="select" id="nyx-team-select">
-  <input
-    aria-label="Owning team"
-    autocomplete="off"
-    class="nyx-input"
-    id="nyx-team-query"
-    placeholder="Choose a team"
-    role="combobox"
-    type="text"
-  />
-  <input data-nyx-combobox-value name="team" type="hidden" />
-  <div aria-label="Teams" class="nyx-listbox nyx-scrollable-overlay" id="nyx-team-listbox" popover="manual" role="listbox">
-    <div class="nyx-option" data-value="atlas" role="option">Atlas</div>
-    <div class="nyx-option" data-value="helix" role="option">Helix</div>
-    <div class="nyx-option" data-value="nightwatch" role="option">Nightwatch</div>
-    <div class="nyx-option" data-value="vector" role="option">Vector</div>
-    <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching team.</p>
+<form class="nyx-combobox-example" data-nyx-example="owning-team">
+  <div class="nyx-stack">
+    <label class="nyx-field" for="nyx-team-query">
+      <span class="nyx-label">Owning team</span>
+      <span class="nyx-field-hint" id="nyx-team-hint">Search the team directory. A listed team must be selected.</span>
+    </label>
+    <div class="nyx-combobox" data-nyx-combobox data-nyx-combobox-mode="select" id="nyx-team-select">
+      <input
+        aria-describedby="nyx-team-hint nyx-team-requirement"
+        aria-label="Owning team"
+        autocomplete="off"
+        class="nyx-input"
+        id="nyx-team-query"
+        placeholder="Search teams"
+        required
+        role="combobox"
+        type="text"
+      />
+      <input data-nyx-combobox-value name="team" type="hidden" />
+      <div aria-label="Teams" class="nyx-listbox nyx-scrollable-overlay" id="nyx-team-listbox" popover="manual" role="listbox">
+        <div aria-selected="true" class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Atlas" data-nyx-search-text="Atlas Platform infrastructure production" data-value="atlas" role="option"><span><strong>Atlas</strong><small>Platform infrastructure</small></span><code>12 services</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Helix" data-nyx-search-text="Helix Product delivery release" data-value="helix" role="option"><span><strong>Helix</strong><small>Product delivery</small></span><code>8 services</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Nightwatch" data-nyx-search-text="Nightwatch Security incident response" data-value="nightwatch" role="option"><span><strong>Nightwatch</strong><small>Security and incident response</small></span><code>On call</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Vector" data-nyx-search-text="Vector Data analytics platform" data-value="vector" role="option"><span><strong>Vector</strong><small>Data platform</small></span><code>6 services</code></div>
+        <div class="nyx-option nyx-combobox-option" data-nyx-combobox-label="Relay" data-nyx-search-text="Relay Customer operations support" data-value="relay" role="option"><span><strong>Relay</strong><small>Customer operations</small></span><code>24/7</code></div>
+        <p class="nyx-listbox-empty" data-nyx-combobox-empty hidden>No matching team. Choose another search term.</p>
+      </div>
+    </div>
+    <p class="nyx-combobox-note" id="nyx-team-requirement"><strong>Required selection:</strong> unmatched text is cleared when the popup closes; the form submits the selected team ID.</p>
   </div>
-</div>
+  <aside class="nyx-combobox-context" aria-label="Choosing the correct selection control">
+    <span class="nyx-eyebrow">Choose deliberately</span>
+    <strong>Use Searchable Select only for a long, fixed option set</strong>
+    <ul>
+      <li><strong>Native Select:</strong> a short list that does not need filtering.</li>
+      <li><strong>Searchable Select:</strong> many known values; one must be selected.</li>
+      <li><strong>Combobox:</strong> suggestions are useful, but custom text remains valid.</li>
+    </ul>
+  </aside>
+</form>
