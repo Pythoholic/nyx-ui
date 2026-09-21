@@ -403,6 +403,12 @@ function initializePage(page: DocPage): () => void {
       title: "Uploading release bundle",
       description: "68% complete · about 12 seconds remaining.",
       progress: 68,
+      duration: 0,
+    },
+    action: {
+      title: "Release bundle uploaded",
+      description: "The artifact is ready for review.",
+      tone: "success",
       action: { label: "View upload", value: "view-upload" },
       duration: 0,
     },
@@ -410,17 +416,24 @@ function initializePage(page: DocPage): () => void {
   main.querySelectorAll<HTMLButtonElement>("[data-toast-demo]").forEach((button) => {
     button.addEventListener("click", () => {
       const options = toastExamples[button.dataset.toastDemo ?? "neutral"];
-      if (!toast || !options) return;
-      toast.notify(options);
-      if (toastStatus) toastStatus.value = `Created: ${options.title}.`;
+      const showcase = button.closest<HTMLElement>(".nyx-toast-showcase");
+      const region = showcase?.querySelector<HTMLElement>("[data-nyx-toast-region]");
+      const targetToast = region ? initToasts(region)[0] : toast;
+      if (!targetToast || !options) return;
+      targetToast.notify(options);
+      const status = showcase?.querySelector<HTMLOutputElement>("[data-toast-demo-status]") ?? toastStatus;
+      if (status) status.value = `Created: ${options.title}.`;
     }, { signal: abortController.signal });
   });
-  toast?.region.addEventListener("nyx:toast:action", (event) => {
-    const toastEvent = event as CustomEvent<{ action?: { label: string } }>;
-    if (toastStatus && toastEvent.detail.action) {
-      toastStatus.value = `Action selected: ${toastEvent.detail.action.label}.`;
-    }
-  }, { signal: abortController.signal });
+  main.querySelectorAll<HTMLElement>("[data-nyx-toast-region]").forEach((region) => {
+    region.addEventListener("nyx:toast:action", (event) => {
+      const toastEvent = event as CustomEvent<{ action?: { label: string } }>;
+      const status = region.closest<HTMLElement>(".nyx-toast-showcase")?.querySelector<HTMLOutputElement>("[data-toast-demo-status]");
+      if (status && toastEvent.detail.action) {
+        status.value = `Action selected: ${toastEvent.detail.action.label}.`;
+      }
+    }, { signal: abortController.signal });
+  });
 
   return () => {
     abortController.abort();
