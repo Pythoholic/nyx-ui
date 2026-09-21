@@ -495,11 +495,14 @@
   .nyx-progress[data-size="large"] { block-size: 1.5rem; }
   .nyx-progress[data-shape="square"] { border-radius: 0; }
   .nyx-progress-bar { display: block; block-size: 100%; inline-size: var(--nyx-progress, 0%); overflow: hidden; border-radius: inherit; background: var(--nyx-progress-color, var(--nyx-accent)); transition: inline-size var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  .nyx-progress:not([data-indeterminate="true"]):not([data-layout="segmented"]):not(.nyx-progress-vertical) .nyx-progress-bar { animation: nyx-progress-fill calc(var(--nyx-duration-deliberate) * 3) var(--nyx-ease-enter) both; }
+  .nyx-progress:not([data-indeterminate="true"]):not([data-layout="segmented"]):not(.nyx-progress-vertical):dir(rtl) .nyx-progress-bar { animation-name: nyx-progress-fill-rtl; }
   .nyx-progress-bar > span { display: flex; block-size: 100%; align-items: center; justify-content: flex-end; padding-inline: var(--nyx-space-2); color: var(--nyx-accent-ink); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-bold); line-height: 1; }
   .nyx-progress[data-indeterminate="true"] .nyx-progress-bar { inline-size: 45%; animation: nyx-progress var(--nyx-duration-progress) var(--nyx-ease-standard) infinite; }
   .nyx-progress[data-indeterminate="true"]:dir(rtl) .nyx-progress-bar { animation-name: nyx-progress-rtl; }
   .nyx-progress[data-layout="segmented"] { display: flex; }
-  .nyx-progress-segment { display: block; block-size: 100%; inline-size: var(--nyx-progress); background: var(--nyx-accent); }
+  .nyx-progress-segment { display: block; block-size: 100%; inline-size: var(--nyx-progress); background: var(--nyx-accent); animation: nyx-progress-fill calc(var(--nyx-duration-deliberate) * 3) var(--nyx-ease-enter) both; }
+  .nyx-progress[data-layout="segmented"]:dir(rtl) .nyx-progress-segment { animation-name: nyx-progress-fill-rtl; }
   .nyx-progress-segment[data-tone="info"] { background: var(--nyx-info); }
   .nyx-progress-segment[data-tone="success"] { background: var(--nyx-signal); }
   .nyx-progress-segment[data-tone="warning"] { background: var(--nyx-warning); }
@@ -516,16 +519,20 @@
   .nyx-progress-vertical-group { display: flex; min-block-size: 11rem; align-items: end; justify-content: space-around; gap: var(--nyx-space-4); }
   .nyx-progress-vertical-item { display: grid; justify-items: center; gap: var(--nyx-space-2); color: var(--nyx-label); font-size: var(--nyx-type-meta); }
   .nyx-progress.nyx-progress-vertical { display: flex; inline-size: 0.75rem; block-size: 8rem; align-items: end; }
-  .nyx-progress.nyx-progress-vertical .nyx-progress-bar { inline-size: 100%; block-size: var(--nyx-progress, 0%); transition-property: block-size; }
+  .nyx-progress.nyx-progress-vertical .nyx-progress-bar { inline-size: 100%; block-size: var(--nyx-progress, 0%); animation: nyx-progress-fill-vertical calc(var(--nyx-duration-deliberate) * 3) var(--nyx-ease-enter) both; transition-property: block-size; }
   .nyx-progress-radial-group { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-around; gap: var(--nyx-space-5); }
-  .nyx-progress-radial, .nyx-progress-gauge { --nyx-progress-color: var(--nyx-accent); position: relative; display: grid; inline-size: 7rem; aspect-ratio: 1; place-items: center; }
+  .nyx-progress-radial, .nyx-progress-gauge { --nyx-progress-color: var(--nyx-accent); position: relative; display: grid; inline-size: 7rem; place-items: center; }
+  .nyx-progress-radial { block-size: 8.75rem; }
   .nyx-progress-radial > svg, .nyx-progress-gauge > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; overflow: visible; fill: none; }
   .nyx-progress-radial > svg { transform: rotate(-90deg); }
   .nyx-progress-ring-track, .nyx-progress-ring-value { fill: none; stroke: var(--nyx-line-strong); stroke-linecap: round; stroke-width: 8; }
-  .nyx-progress-ring-value { stroke: var(--nyx-progress-color); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--nyx-progress-value)); transition: stroke-dashoffset var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  .nyx-progress-ring-value { stroke: var(--nyx-progress-color); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--nyx-progress-value)); animation: nyx-progress-ring-fill calc(var(--nyx-duration-deliberate) * 3) var(--nyx-ease-enter) both; transition: stroke-dashoffset var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
   :is(.nyx-progress-radial, .nyx-progress-gauge) > span { position: relative; display: grid; justify-items: center; gap: var(--nyx-space-1); }
   :is(.nyx-progress-radial, .nyx-progress-gauge) > span > strong { color: var(--nyx-ink); font-size: var(--nyx-type-panel); }
   :is(.nyx-progress-radial, .nyx-progress-gauge) > span > small { color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+  .nyx-progress-radial > svg { block-size: 7rem; }
+  .nyx-progress-radial > span { position: absolute; inset: 0 0 auto; block-size: 7rem; align-content: center; }
+  .nyx-progress-radial > span > small { position: absolute; inset-block-start: 7.25rem; max-inline-size: 7rem; text-align: center; white-space: nowrap; }
   .nyx-progress-gauge { block-size: 5.5rem; aspect-ratio: auto; }
   .nyx-progress-gauge > span { align-self: end; translate: 0 -0.25rem; }
   .nyx-steps { display: grid; grid-template-columns: repeat(var(--nyx-step-count, 4), 1fr); gap: var(--nyx-space-2); margin: 0; padding: 0; list-style: none; }

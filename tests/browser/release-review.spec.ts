@@ -254,6 +254,7 @@ test("notification read actions name the next action without toggle semantics", 
 });
 
 test("progress catalog renders declared values, alternate geometry, and pending work", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1100 });
   await page.goto("/components/feedback/progress");
   const preview = page.locator("[data-docs-example]", { has: page.getByRole("heading", { name: "Progress patterns", exact: true }) }).getByRole("tabpanel", { name: "Preview", exact: true });
   const bar = preview.locator('.nyx-progress[aria-valuenow="68"]').first();
@@ -275,6 +276,28 @@ test("progress catalog renders declared values, alternate geometry, and pending 
   const vertical = preview.locator('.nyx-progress-vertical[aria-valuenow="92"]');
   const verticalRatio = await vertical.evaluate(element => element.firstElementChild!.getBoundingClientRect().height / element.getBoundingClientRect().height);
   expect(verticalRatio).toBeCloseTo(0.92, 2);
+
+  const motion = await preview.evaluate((element) => ({
+    linear: getComputedStyle(element.querySelector<HTMLElement>('.nyx-progress[aria-valuenow="68"] .nyx-progress-bar')!).animationName,
+    segmented: getComputedStyle(element.querySelector<HTMLElement>(".nyx-progress-segment")!).animationName,
+    vertical: getComputedStyle(element.querySelector<HTMLElement>(".nyx-progress-vertical .nyx-progress-bar")!).animationName,
+    radial: getComputedStyle(element.querySelector<SVGElement>(".nyx-progress-ring-value")!).animationName,
+  }));
+  expect(motion).toEqual({
+    linear: "nyx-progress-fill",
+    segmented: "nyx-progress-fill",
+    vertical: "nyx-progress-fill-vertical",
+    radial: "nyx-progress-ring-fill",
+  });
+
+  for (const radial of await preview.locator(".nyx-progress-radial").all()) {
+    const separation = await radial.evaluate((element) => {
+      const ring = element.querySelector("svg")!.getBoundingClientRect();
+      const label = element.querySelector("small")!.getBoundingClientRect();
+      return label.top - ring.bottom;
+    });
+    expect(separation, "radial label clears its ring").toBeGreaterThanOrEqual(2);
+  }
 
   const pendingTrack = preview.locator('[data-indeterminate]');
   await expect(pendingTrack).not.toHaveAttribute("aria-valuenow");
