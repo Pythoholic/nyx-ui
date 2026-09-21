@@ -5,34 +5,241 @@
   <span class="nyx-badge" data-tone="danger">Failed</span>
 </div>
 
-<div class="nyx-stack" data-nyx-example="alerts">
-  <div class="nyx-alert" data-tone="success" role="status">
-    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
-    <div><strong class="nyx-alert-title">Deployment complete</strong>The new version is active.</div>
-  </div>
-  <div class="nyx-alert" data-tone="danger">
-    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
-    <div><strong class="nyx-alert-title">Validation failed</strong>Correct two fields before continuing.</div>
-  </div>
+<div class="nyx-alert-catalog" data-nyx-example="alerts">
+  <section class="nyx-alert-group" aria-labelledby="alert-tones-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-tones-title">Status tones</h3>
+      <p>Match the tone to the meaning. The icon and copy keep color from carrying the message alone.</p>
+    </header>
+    <div class="nyx-alert-grid">
+      <div class="nyx-alert" data-tone="info">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5m0-8h.01" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">New audit window</strong><p>Logs remain available for the next 30 days.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="success">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Deployment complete</strong><p>The new version is active in all regions.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Capacity approaching limit</strong><p>Tokyo is using 82% of its reserved capacity.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="danger">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m9 9 6 6m0-6-6 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Validation failed</strong><p>Correct two fields before continuing.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-alert-group" aria-labelledby="alert-emphasis-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-emphasis-title">Choose the emphasis</h3>
+      <p>Use soft by default, outline for lower-priority context, and solid for a rare state that needs immediate attention.</p>
+    </header>
+    <div class="nyx-alert-grid" data-columns="3">
+      <div class="nyx-alert" data-tone="success">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Soft</strong><p>Routine confirmation.</p></div>
+      </div>
+      <div class="nyx-alert" data-emphasis="outline" data-tone="info">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5m0-8h.01" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Outline</strong><p>Persistent context.</p></div>
+      </div>
+      <div class="nyx-alert" data-emphasis="solid" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Solid</strong><p>Immediate attention.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-alert-group" aria-labelledby="alert-detail-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-detail-title">Supporting content and recovery</h3>
+      <p>Keep the explanation short, then give people the specific facts or next step they need.</p>
+    </header>
+    <div class="nyx-alert-grid">
+      <div class="nyx-alert" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content">
+          <strong class="nyx-alert-title">Maintenance starts at 02:00 UTC</strong>
+          <p>Two services will briefly enter read-only mode:</p>
+          <ul class="nyx-alert-list"><li>Deployment history</li><li>Audit exports</li></ul>
+        </div>
+      </div>
+      <div class="nyx-alert" data-tone="danger">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m9 9 6 6m0-6-6 6" /></svg>
+        <div class="nyx-alert-content">
+          <strong class="nyx-alert-title">Release blocked by two checks</strong>
+          <p>Resolve the required fields or review the recovery guidance before running the release again.</p>
+          <div class="nyx-alert-actions"><a class="nyx-link" href="/components/forms/text-fields">Review fields</a><a class="nyx-link" data-variant="muted" href="/guides/accessibility">Validation guidance</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div class="nyx-stack" data-nyx-example="progress">
-  <span>Upload progress: 68%</span>
-  <div class="nyx-progress" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68" role="progressbar">
-    <span class="nyx-progress-bar" style="--nyx-progress: 68%"></span>
-  </div>
-  <span>Processing: waiting for a completion estimate</span>
-  <div class="nyx-progress" data-indeterminate="true" aria-label="Processing" role="progressbar">
-    <span class="nyx-progress-bar"></span>
-  </div>
+<div class="nyx-progress-catalog" data-nyx-example="progress">
+  <section class="nyx-progress-group" aria-labelledby="progress-linear-title">
+    <header class="nyx-progress-group-header">
+      <h3 id="progress-linear-title">Determinate and pending work</h3>
+      <p>Use a value only when the application can calculate meaningful completion.</p>
+    </header>
+    <div class="nyx-progress-grid">
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Upload progress</span><strong>68%</strong></div>
+        <div class="nyx-progress" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68" role="progressbar">
+          <span class="nyx-progress-bar" style="--nyx-progress: 68%"></span>
+        </div>
+      </div>
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Processing</span><strong>Estimating</strong></div>
+        <div class="nyx-progress" data-indeterminate="true" aria-label="Processing; completion time is not yet known" role="progressbar">
+          <span class="nyx-progress-bar"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-progress-group" aria-labelledby="progress-size-title">
+    <header class="nyx-progress-group-header">
+      <h3 id="progress-size-title">Size and label placement</h3>
+      <p>Choose the smallest treatment that keeps the value legible in its surrounding layout.</p>
+    </header>
+    <div class="nyx-progress-size-list">
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Compact synchronization</span><strong>24%</strong></div>
+        <div class="nyx-progress" data-size="thin" aria-label="Compact synchronization" aria-valuemin="0" aria-valuemax="100" aria-valuenow="24" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 24%"></span></div>
+      </div>
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Standard import</span><strong>52%</strong></div>
+        <div class="nyx-progress" aria-label="Standard import" aria-valuemin="0" aria-valuemax="100" aria-valuenow="52" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 52%"></span></div>
+      </div>
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Large migration</span><strong>76%</strong></div>
+        <div class="nyx-progress" data-size="large" aria-label="Large migration" aria-valuemin="0" aria-valuemax="100" aria-valuenow="76" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 76%"><span>76%</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-progress-group" aria-labelledby="progress-tone-title">
+    <header class="nyx-progress-group-header">
+      <h3 id="progress-tone-title">Semantic states</h3>
+      <p>Use status color only when it communicates meaning, and repeat that meaning in visible text.</p>
+    </header>
+    <div class="nyx-progress-grid">
+      <div class="nyx-progress-block" data-tone="info"><div class="nyx-progress-meta"><span>Preparing archive</span><strong>32%</strong></div><div class="nyx-progress" aria-label="Preparing archive" aria-valuemin="0" aria-valuemax="100" aria-valuenow="32" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 32%"></span></div></div>
+      <div class="nyx-progress-block" data-tone="success"><div class="nyx-progress-meta"><span>Checks passed</span><strong>100%</strong></div><div class="nyx-progress" aria-label="Checks passed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 100%"></span></div></div>
+      <div class="nyx-progress-block" data-tone="warning"><div class="nyx-progress-meta"><span>Storage nearing limit</span><strong>84%</strong></div><div class="nyx-progress" aria-label="Storage nearing limit" aria-valuemin="0" aria-valuemax="100" aria-valuenow="84" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 84%"></span></div></div>
+      <div class="nyx-progress-block" data-tone="danger"><div class="nyx-progress-meta"><span>Import failed at record 61</span><strong>61%</strong></div><div class="nyx-progress" aria-label="Import failed at record 61" aria-valuemin="0" aria-valuemax="100" aria-valuenow="61" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 61%"></span></div></div>
+    </div>
+  </section>
+
+  <section class="nyx-progress-group" aria-labelledby="progress-composed-title">
+    <header class="nyx-progress-group-header">
+      <h3 id="progress-composed-title">Distribution and shape</h3>
+      <p>Segmented tracks compare parts of a whole; square tracks align with dense tables and technical readouts.</p>
+    </header>
+    <div class="nyx-progress-grid">
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Storage allocation</span><strong>100 GB</strong></div>
+        <div class="nyx-progress" data-layout="segmented" role="img" aria-label="Storage allocation: builds 55 gigabytes, media 30 gigabytes, free 15 gigabytes">
+          <span class="nyx-progress-segment" data-tone="info" style="--nyx-progress: 55%"></span><span class="nyx-progress-segment" data-tone="success" style="--nyx-progress: 30%"></span><span class="nyx-progress-segment" data-tone="muted" style="--nyx-progress: 15%"></span>
+        </div>
+        <div class="nyx-progress-legend" aria-hidden="true"><span data-tone="info">Builds 55 GB</span><span data-tone="success">Media 30 GB</span><span data-tone="muted">Free 15 GB</span></div>
+      </div>
+      <div class="nyx-progress-block">
+        <div class="nyx-progress-meta"><span>Release checklist</span><strong>7 of 10</strong></div>
+        <div class="nyx-progress" data-shape="square" aria-label="Release checklist" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 70%"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-progress-group" aria-labelledby="progress-direction-title">
+    <header class="nyx-progress-group-header">
+      <h3 id="progress-direction-title">Vertical, circular, and gauge</h3>
+      <p>Use alternate geometry only when the surrounding dashboard benefits from it; keep the numeric value visible.</p>
+    </header>
+    <div class="nyx-progress-geometry-grid">
+      <div class="nyx-progress-geometry-panel">
+        <strong class="nyx-progress-panel-title">Regional rollout</strong>
+        <div class="nyx-progress-vertical-group">
+          <div class="nyx-progress-vertical-item"><div class="nyx-progress nyx-progress-vertical" aria-label="Tokyo rollout" aria-valuemin="0" aria-valuemax="100" aria-valuenow="92" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 92%"></span></div><span>TYO</span></div>
+          <div class="nyx-progress-vertical-item"><div class="nyx-progress nyx-progress-vertical" aria-label="Singapore rollout" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 68%"></span></div><span>SIN</span></div>
+          <div class="nyx-progress-vertical-item"><div class="nyx-progress nyx-progress-vertical" aria-label="Frankfurt rollout" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 45%"></span></div><span>FRA</span></div>
+          <div class="nyx-progress-vertical-item"><div class="nyx-progress nyx-progress-vertical" aria-label="Virginia rollout" aria-valuemin="0" aria-valuemax="100" aria-valuenow="26" role="progressbar"><span class="nyx-progress-bar" style="--nyx-progress: 26%"></span></div><span>IAD</span></div>
+        </div>
+      </div>
+      <div class="nyx-progress-geometry-panel">
+        <strong class="nyx-progress-panel-title">Service objectives</strong>
+        <div class="nyx-progress-radial-group">
+          <div class="nyx-progress-radial" data-tone="info" role="progressbar" aria-label="Indexing" aria-valuemin="0" aria-valuemax="100" aria-valuenow="35" style="--nyx-progress-value: 35"><svg aria-hidden="true" viewBox="0 0 112 112"><circle class="nyx-progress-ring-track" cx="56" cy="56" r="46" pathLength="100"/><circle class="nyx-progress-ring-value" cx="56" cy="56" r="46" pathLength="100" transform="rotate(-90 56 56)"/></svg><span><strong>35%</strong><small>Indexing</small></span></div>
+          <div class="nyx-progress-radial" data-size="large" data-tone="success" role="progressbar" aria-label="Replication" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" style="--nyx-progress-value: 75"><svg aria-hidden="true" viewBox="0 0 112 112"><circle class="nyx-progress-ring-track" cx="56" cy="56" r="46" pathLength="100"/><circle class="nyx-progress-ring-value" cx="56" cy="56" r="46" pathLength="100" transform="rotate(-90 56 56)"/></svg><span><strong>75%</strong><small>Replication</small></span></div>
+          <div class="nyx-progress-gauge" data-tone="warning" role="progressbar" aria-label="Capacity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="82" style="--nyx-progress-value: 82"><svg aria-hidden="true" viewBox="0 0 100 70"><path class="nyx-progress-ring-track" d="M10 60 A40 40 0 0 1 90 60" pathLength="100"/><path class="nyx-progress-ring-value" d="M10 60 A40 40 0 0 1 90 60" pathLength="100"/></svg><span><strong>82%</strong><small>Capacity</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div data-nyx-example="toast">
-  <div class="nyx-stack">
-    <p class="nyx-panel-description">Notifications enter the live region and dismiss automatically.</p>
-    <button class="nyx-button" data-toast-demo type="button">Send notification</button>
-  </div>
-  <div class="nyx-toast-region" data-nyx-toast-region></div>
+<div class="nyx-toast-demo" data-nyx-example="toast">
+  <section class="nyx-toast-showcase" aria-labelledby="toast-basic-title">
+    <header class="nyx-toast-demo-header">
+      <h3 id="toast-basic-title">Default notification</h3>
+      <p>Use for brief, non-critical confirmation that can disappear automatically.</p>
+    </header>
+    <div class="nyx-toast-demo-stage">
+      <div class="nyx-toast-demo-command">
+        <button class="nyx-button" data-toast-demo="neutral" type="button">Show default toast</button>
+        <output data-toast-demo-status>Ready to preview.</output>
+      </div>
+      <div class="nyx-toast-region" data-layout="inline" data-nyx-toast-region></div>
+    </div>
+  </section>
+
+  <section class="nyx-toast-showcase" aria-labelledby="toast-tone-title">
+    <header class="nyx-toast-demo-header">
+      <h3 id="toast-tone-title">Semantic colour schemes</h3>
+      <p>Pair colour with an icon and explicit language so the outcome never depends on colour alone.</p>
+    </header>
+    <div class="nyx-toast-demo-controls" aria-label="Semantic toast examples">
+      <div class="nyx-toast-demo-choice"><button class="nyx-button" data-toast-demo="success" data-tone="success" type="button">Show success</button><span>Completed without further action.</span></div>
+      <div class="nyx-toast-demo-choice"><button class="nyx-button" data-toast-demo="warning" data-tone="warning" type="button">Show warning</button><span>A preventable risk needs attention.</span></div>
+      <div class="nyx-toast-demo-choice"><button class="nyx-button" data-toast-demo="danger" data-tone="danger" type="button">Show danger</button><span>An urgent operation has failed.</span></div>
+    </div>
+    <div class="nyx-toast-demo-stage">
+      <div class="nyx-toast-demo-command"><span>Selected outcome</span><output data-toast-demo-status>Choose a semantic scheme.</output></div>
+      <div class="nyx-toast-region" data-layout="inline" data-nyx-toast-region></div>
+    </div>
+  </section>
+
+  <section class="nyx-toast-showcase" aria-labelledby="toast-work-title">
+    <header class="nyx-toast-demo-header">
+      <h3 id="toast-work-title">Loading and progress</h3>
+      <p>Use indeterminate motion when completion is unknown and a numeric bar when real progress is available.</p>
+    </header>
+    <div class="nyx-toast-demo-controls nyx-toast-demo-controls-pair" aria-label="Progress toast examples">
+      <div class="nyx-toast-demo-choice"><button class="nyx-button" data-toast-demo="loading" type="button">Show loading</button><span>Unknown duration with restrained motion.</span></div>
+      <div class="nyx-toast-demo-choice"><button class="nyx-button" data-toast-demo="progress" type="button">Show upload progress</button><span>Known completion with visible percentage.</span></div>
+    </div>
+    <div class="nyx-toast-demo-stage">
+      <div class="nyx-toast-demo-command"><span>Work status</span><output data-toast-demo-status>Choose a progress pattern.</output></div>
+      <div class="nyx-toast-region" data-layout="inline" data-nyx-toast-region></div>
+    </div>
+  </section>
+
+  <section class="nyx-toast-showcase" aria-labelledby="toast-action-title">
+    <header class="nyx-toast-demo-header">
+      <h3 id="toast-action-title">Toast with an action</h3>
+      <p>Offer one optional follow-up. Required recovery must remain available in the application itself.</p>
+    </header>
+    <div class="nyx-toast-demo-stage">
+      <div class="nyx-toast-demo-command">
+        <button class="nyx-button" data-toast-demo="action" type="button">Show actionable toast</button>
+        <output data-toast-demo-status>Ready to preview.</output>
+      </div>
+      <div class="nyx-toast-region" data-layout="inline" data-nyx-toast-region></div>
+    </div>
+  </section>
 </div>
 
 <div class="nyx-empty" data-nyx-example="empty-state">

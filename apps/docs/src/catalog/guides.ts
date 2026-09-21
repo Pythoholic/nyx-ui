@@ -1,3 +1,4 @@
+import registrySource from "../../../../registry/registry.json?raw";
 import { paths } from "../routes.js";
 import { codeBlock, page } from "./shared.js";
 import { adoptionPage } from "./adoption.js";
@@ -51,6 +52,57 @@ cp registry/components/dialog.html src/components/account-dialog.html
 
 # Keep shared presentation and optional behavior as dependencies
 pnpm add @nyx-ui/core @nyx-ui/plugins`;
+interface AiRegistryItem {
+  name: string;
+  type: string;
+  status: string;
+  description?: string;
+  useWhen?: string[];
+  avoidWhen?: string[];
+  files: string[];
+  requires: string[];
+  initializer?: { import: string; function: string; selector: string };
+  accessibility?: { requirements: string[] };
+  related?: string[];
+}
+
+const aiRegistry = JSON.parse(registrySource) as { items: AiRegistryItem[] };
+const tooltipAiContract = aiRegistry.items.find((item) => item.name === "tooltip");
+if (!tooltipAiContract) throw new Error("The AI integration guide requires the tooltip registry contract.");
+const tooltipAiContractSource = JSON.stringify(tooltipAiContract, null, 2);
+const aiPrompt = `Add concise help to the icon-only deployment settings control using Nyx.
+Use the correct component, preserve keyboard access, and include cleanup.`;
+const aiResult = `Selected: tooltip
+Reason: the request is brief, descriptive, and non-interactive.
+
+Copy: registry/components/tooltip.html
+Install: @nyx-ui/core and @nyx-ui/plugins/tooltip
+Initialize: initTooltips(root)
+
+Guardrails:
+- Keep the trigger as a native focusable control.
+- Do not put links or buttons inside the tooltip.
+- Retain controller instances and destroy them before replacing root.`;
+const mcpRun = `npx -y @nyx-ui/mcp`;
+const skillInstall = `npx skills add Pythoholic/nyx-stealth --skill nyx-ui`;
+const codexMcpConfig = `[mcp_servers.nyx]
+command = "npx"
+args = ["-y", "@nyx-ui/mcp"]
+enabled_tools = [
+  "list_components",
+  "search_components",
+  "get_component_contract",
+  "get_component_source",
+]`;
+const claudeMcpConfig = `{
+  "mcpServers": {
+    "nyx": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@nyx-ui/mcp"]
+    }
+  }
+}`;
 const tokenSetup = `@import "@nyx-ui/core";
 
 :root {
@@ -228,6 +280,94 @@ export const guidePages = [
       <section class="docs-registry-ownership" aria-labelledby="registry-ownership"><header><span class="nyx-eyebrow">Ownership boundary</span><h2 id="registry-ownership">Copying transfers control, not upstream synchronization</h2></header><div><p>Nyx maintains the canonical registry version, shared tokens, CSS, controller APIs, and documentation. After copying, your repository owns its local markup and every modification made to it.</p><p>Updates are deliberate: review upstream source and release notes, compare them with your local version, and port relevant fixes. Nyx does not overwrite copied files or silently merge upstream changes into application code.</p></div></section>
 
       <aside class="docs-registry-decision" aria-label="When to use the registry model"><div><strong>Use the registry model when</strong><p>Your team wants direct control over semantics, composition, and product-specific markup.</p></div><div><strong>Consider another model when</strong><p>Your organization requires centrally upgraded, opaque components with no local source ownership or review burden.</p></div></aside>
+    </div>`,
+  }),
+  page({
+    path: paths.guides.aiIntegration,
+    categoryLabel: "Integration",
+    title: "AI Integration",
+    navigationLabel: "AI Integration",
+    description: "Give coding agents a structured component contract so selection, installation, composition, and verification come from Nyx instead of guesswork.",
+    searchTerms: "ai integration agent codex claude mcp registry metadata prompt component selection machine readable",
+    body: `<div class="docs-ai-guide">
+      <section class="docs-overview-lead" aria-labelledby="ai-contract-model">
+        <div><span class="nyx-eyebrow">Integration preview</span><h2 id="ai-contract-model">One registry contract, usable by every agent</h2></div>
+        <div class="docs-overview-copy"><p><code>@nyx-ui/mcp</code> exposes the same component registry used by this catalog to Codex, Claude Code, and other MCP clients.</p><p>Agents can discover components, compare usage guidance, inspect a contract, and retrieve canonical source instead of relying on remembered APIs.</p></div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-mcp-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">MCP server</span><h2 id="ai-mcp-heading">Connect an agent to the Nyx registry</h2><p>Once published, the package runs as a local stdio server. Add the command below to a compatible MCP client.</p></header>
+        <div class="docs-ai-mcp-build">${codeBlock(mcpRun, "shell", "Run the MCP server")}<div><strong>Read-only by design</strong><p>The server can return registry metadata and declared component source. It cannot edit a project or execute component code.</p></div></div>
+        <ul class="docs-ai-tools" aria-label="Nyx MCP tools">
+          <li><code>list_components</code><span>Browse registry items by type or status.</span></li>
+          <li><code>search_components</code><span>Find patterns from names and usage guidance.</span></li>
+          <li><code>get_component_contract</code><span>Read dependencies, initialization, accessibility, and alternatives.</span></li>
+          <li><code>get_component_source</code><span>Retrieve canonical files for one known registry item.</span></li>
+        </ul>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-skill-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Agent Skill</span><h2 id="ai-skill-heading">Give the agent the Nyx workflow, not just registry access</h2><p>MCP supplies current component data. The portable <code>nyx-ui</code> skill teaches an agent how to inspect the project, select from contracts, preserve lifecycle and accessibility requirements, compose layouts, and verify the completed result.</p></header>
+        <div class="docs-ai-skill">
+          ${codeBlock(skillInstall, "shell", "Install the Nyx skill")}
+          <div class="docs-ai-skill-points"><div><strong>Project aware</strong><p>Detects the package manager, framework, existing Nyx dependencies, stylesheet, and active theme before editing.</p></div><div><strong>MCP first</strong><p>Searches intent, reads the selected contract, and fetches canonical source instead of guessing component APIs.</p></div><div><strong>Portable</strong><p>Uses the open Agent Skills format so compatible coding agents can install the same maintained workflow.</p></div></div>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-connect-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Client setup</span><h2 id="ai-connect-heading">Use the same server from Codex or Claude Code</h2><p>Codex reads project-scoped MCP settings from <code>.codex/config.toml</code>. Claude Code reads <code>.mcp.json</code> from the project. Restart the client after adding its configuration.</p></header>
+        <div class="docs-ai-connect">
+          <article><div><span class="nyx-eyebrow">Codex</span><h3>Project config</h3><p>Add the server, restart Codex, then use <code>/mcp</code> to confirm the four Nyx tools are active.</p></div>${codeBlock(codexMcpConfig, "toml", ".codex/config.toml")}</article>
+          <article><div><span class="nyx-eyebrow">Claude Code</span><h3>Project config</h3><p>Add the server at project scope, restart Claude Code, then inspect the connection with its MCP commands.</p></div>${codeBlock(claudeMcpConfig, "json", ".mcp.json")}</article>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-agent-guides-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Agent setup guides</span><h2 id="ai-agent-guides-heading">Bring MCP data and the Nyx skill to your coding agent</h2><p>Codex and Claude Code have concrete local configuration examples above. The same stdio server and portable skill can be used by other clients that support MCP and the Agent Skills format; follow that client's server-registration flow rather than copying another client's config file.</p></header>
+        <div class="docs-ai-agents">
+          <article><span aria-hidden="true">CX</span><div><strong>Codex</strong><p>Use project-scoped MCP configuration and install the portable Nyx skill for the component workflow.</p></div><small>Documented above</small></article>
+          <article><span aria-hidden="true">CL</span><div><strong>Claude Code</strong><p>Connect the stdio server through <code>.mcp.json</code>, then install the same Nyx skill.</p></div><small>Documented above</small></article>
+          <article><span aria-hidden="true">CU</span><div><strong>Cursor</strong><p>Register the Nyx stdio command in Cursor and select Cursor when the skill installer asks for a target.</p></div><small>MCP + Agent Skills</small></article>
+          <article><span aria-hidden="true">VS</span><div><strong>VS Code / Copilot</strong><p>Add Nyx to the client's MCP server list and install the skill into the supported project scope.</p></div><small>MCP + Agent Skills</small></article>
+          <article><span aria-hidden="true">GM</span><div><strong>Gemini CLI</strong><p>Register the same server command, then choose Gemini when installing the portable skill.</p></div><small>MCP + Agent Skills</small></article>
+          <article><span aria-hidden="true">AI</span><div><strong>Other compatible agents</strong><p>Use the built server with any stdio MCP client; use the skill wherever the open Agent Skills format is supported.</p></div><small>Portable integration</small></article>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-flow-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Agent flow</span><h2 id="ai-flow-heading">From intent to verified implementation</h2></header>
+        <ol class="docs-ai-flow">
+          <li><span>01</span><div><strong>Understand the request</strong><p>The agent identifies that the requested help is brief, descriptive, and non-interactive.</p></div></li>
+          <li><span>02</span><div><strong>Select from contracts</strong><p><code>useWhen</code> supports Tooltip while <code>avoidWhen</code> rules out visible help, Hover Card, or another interactive surface.</p></div></li>
+          <li><span>03</span><div><strong>Compose without guessing</strong><p>The record names canonical markup, packages, initializer, selector, accessibility requirements, and nearby alternatives.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-pilot-contract">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Source of truth</span><h2 id="ai-pilot-contract">The live Tooltip contract</h2><p>This JSON is generated from the actual registry entry at page load. Editing that entry changes this view and the data an integration would receive.</p></header>
+        <div class="docs-ai-contract">
+          ${codeBlock(tooltipAiContractSource, "js", "registry/registry.json · tooltip")}
+          <div class="docs-ai-contract-notes">
+            <div><span>Decision</span><strong>${tooltipAiContract.description}</strong></div>
+            <div><span>Canonical source</span><strong>${tooltipAiContract.files.join(", ")}</strong></div>
+            <div><span>Runtime</span><strong>${tooltipAiContract.initializer?.function} from ${tooltipAiContract.initializer?.import}</strong></div>
+            <div><span>Alternatives</span><strong>${tooltipAiContract.related?.join(" · ")}</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="docs-overview-section" aria-labelledby="ai-example-heading">
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">Example exchange</span><h2 id="ai-example-heading">What an agent can produce from the contract</h2><p>This is deterministic guidance derived from declared metadata. It does not depend on an agent remembering Nyx APIs from training data.</p></header>
+        <div class="docs-ai-example">
+          ${codeBlock(aiPrompt, "shell", "Developer request")}
+          ${codeBlock(aiResult, "shell", "Agent decision")}
+        </div>
+      </section>
+
+      <aside class="docs-ai-boundary" aria-labelledby="ai-boundary-heading">
+        <div><span class="nyx-eyebrow">Availability</span><h2 id="ai-boundary-heading">Public package release required</h2></div>
+        <p>The configuration above becomes installable when <code>@nyx-ui/mcp</code> is published. Until then, treat the MCP connection as a preview; the repository-hosted Agent Skill remains available independently.</p>
+      </aside>
     </div>`,
   }),
   page({

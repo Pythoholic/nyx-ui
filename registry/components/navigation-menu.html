@@ -1,17 +1,28 @@
 <nav aria-label="Product" class="nyx-navigation-menu" data-nyx-navigation-menu>
-  <ul class="nyx-navigation-menu-list">
-    <li><a class="nyx-navigation-menu-link" href="#overview">Overview</a></li>
-    <li>
-      <button class="nyx-navigation-menu-trigger" data-nyx-navigation-menu-trigger="nyx-products-navigation" type="button">Products <span aria-hidden="true">⌄</span></button>
-    </li>
-    <li><a class="nyx-navigation-menu-link" href="#navigation">Changelog</a></li>
-  </ul>
+  <div class="nyx-navigation-menu-bar">
+    <a class="nyx-navigation-menu-brand" href="#overview">Nyx Platform</a>
+    <ul class="nyx-navigation-menu-list">
+      <li><a class="nyx-navigation-menu-link" href="#overview">Overview</a></li>
+      <li>
+        <button class="nyx-navigation-menu-trigger" data-nyx-navigation-menu-trigger="nyx-products-navigation" type="button">
+          Products
+          <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4" /></svg>
+        </button>
+      </li>
+      <li><a class="nyx-navigation-menu-link" href="#navigation">Changelog</a></li>
+    </ul>
+  </div>
   <div class="nyx-navigation-menu-panel" data-nyx-navigation-menu-content id="nyx-products-navigation">
+    <header class="nyx-navigation-menu-panel-header">
+      <span class="nyx-eyebrow">Products</span>
+      <strong>Choose a Nyx package</strong>
+      <small>Start with the layer that matches the work you are doing.</small>
+    </header>
     <ul class="nyx-navigation-menu-links">
-      <li><a class="nyx-navigation-menu-link" href="#navigation"><strong>Nyx Core</strong><small>Tokens and semantic component styles.</small></a></li>
-      <li><a class="nyx-navigation-menu-link" href="#navigation"><strong>Nyx Plugins</strong><small>Framework-free interactive behavior.</small></a></li>
-      <li><a class="nyx-navigation-menu-link" href="#navigation"><strong>Registry</strong><small>Copyable canonical markup.</small></a></li>
-      <li><a class="nyx-navigation-menu-link" href="#navigation"><strong>Examples</strong><small>Composed application patterns.</small></a></li>
+      <li><a class="nyx-navigation-menu-link" href="#navigation"><span class="nyx-navigation-menu-mark" aria-hidden="true">C</span><span><strong>Nyx Core</strong><small>Tokens and semantic component styles</small></span></a></li>
+      <li><a class="nyx-navigation-menu-link" href="#navigation"><span class="nyx-navigation-menu-mark" aria-hidden="true">P</span><span><strong>Nyx Plugins</strong><small>Framework-free interactive behavior</small></span></a></li>
+      <li><a class="nyx-navigation-menu-link" href="#navigation"><span class="nyx-navigation-menu-mark" aria-hidden="true">R</span><span><strong>Registry</strong><small>Copyable canonical markup</small></span></a></li>
+      <li><a class="nyx-navigation-menu-link" href="#navigation"><span class="nyx-navigation-menu-mark" aria-hidden="true">E</span><span><strong>Examples</strong><small>Composed application patterns</small></span></a></li>
     </ul>
   </div>
 </nav>

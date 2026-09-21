@@ -185,7 +185,7 @@ export class NyxSearchBox {
   private syncClearButton(): void {
     if (this.clearButton) {
       if (!this.input.value) moveFocusTo(this.clearButton, this.input);
-      this.clearButton.hidden = !this.input.value;
+      this.clearButton.disabled = !this.input.value;
     }
   }
 

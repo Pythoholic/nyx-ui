@@ -1,18 +1,22 @@
-<button class="nyx-button" data-nyx-toggle aria-pressed="false" type="button">
-  Pin inspector
-</button>
+<div class="nyx-stack">
+  <div class="nyx-cluster">
+    <button class="nyx-button" data-nyx-toggle aria-pressed="false" type="button">
+      Pin inspector
+    </button>
 
-<div class="nyx-button-group" role="group" aria-label="Text styles">
-  <button class="nyx-button" data-nyx-toggle aria-pressed="true" type="button">Bold</button>
-  <button class="nyx-button" data-nyx-toggle aria-pressed="false" type="button">Underline</button>
-</div>
-
-<fieldset class="nyx-segmented-fieldset">
-  <legend class="nyx-label">View mode</legend>
-  <div class="nyx-segmented">
-    <input id="nyx-view-grid" name="nyx-view" type="radio" checked />
-    <label for="nyx-view-grid">Grid</label>
-    <input id="nyx-view-list" name="nyx-view" type="radio" />
-    <label for="nyx-view-list">List</label>
+    <div class="nyx-button-group" role="group" aria-label="Text styles">
+      <button class="nyx-button" data-nyx-toggle aria-pressed="true" type="button">Bold</button>
+      <button class="nyx-button" data-nyx-toggle aria-pressed="false" type="button">Underline</button>
+    </div>
   </div>
-</fieldset>
+
+  <fieldset class="nyx-segmented-fieldset">
+    <legend class="nyx-label">View mode</legend>
+    <div class="nyx-segmented">
+      <input id="nyx-view-grid" name="nyx-view" type="radio" checked />
+      <label for="nyx-view-grid">Grid</label>
+      <input id="nyx-view-list" name="nyx-view" type="radio" />
+      <label for="nyx-view-list">List</label>
+    </div>
+  </fieldset>
+</div>

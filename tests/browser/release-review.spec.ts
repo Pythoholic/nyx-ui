@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("last toast dismissal returns to its initiating control", async ({page}) => {
   await page.goto('/components/feedback/toast');
-  const trigger = page.getByRole('button',{name:'Send notification'});
+  const trigger = page.getByRole('button',{name:'Show default toast'});
   await trigger.click();
   await page.getByRole('button',{name:'Dismiss notification'}).focus();
   await page.keyboard.press('Enter');
@@ -11,7 +11,7 @@ test("last toast dismissal returns to its initiating control", async ({page}) =>
 
 test("toast frames follow the active accent theme", async ({ page }) => {
   await page.goto("/components/feedback/toast");
-  const send = page.getByRole("button", { name: "Send notification" });
+  const send = page.getByRole("button", { name: "Show default toast" });
 
   for (const theme of ["Solar", "Signal", "Flux", "Plasma"]) {
     await page.getByRole("button", { name: theme, exact: true }).click();
@@ -29,6 +29,55 @@ test("toast frames follow the active accent theme", async ({ page }) => {
     await toast.getByRole("button", { name: /Dismiss/ }).click();
     await expect(toast).toHaveCount(0);
   }
+});
+
+test("toast patterns expose semantic progress and optional actions", async ({ page }) => {
+  await page.goto("/components/feedback/toast");
+
+  await page.getByRole("button", { name: "Show loading" }).click();
+  const loading = page.getByRole("progressbar", { name: "Preparing deployment progress" });
+  await expect(loading).not.toHaveAttribute("aria-valuenow");
+  await loading.locator("xpath=ancestor::*[contains(@class, 'nyx-toast')]").getByRole("button", { name: "Dismiss notification" }).click();
+
+  await page.getByRole("button", { name: "Show upload progress" }).click();
+  await expect(page.getByRole("progressbar", { name: "Uploading release bundle progress" })).toHaveAttribute("aria-valuenow", "68");
+
+  const trigger = page.getByRole("button", { name: "Show actionable toast" });
+  await trigger.click();
+  await page.getByRole("button", { name: "View upload" }).click();
+  await expect(trigger.locator("xpath=ancestor::*[contains(@class, 'nyx-toast-showcase')]").locator("[data-toast-demo-status]")).toContainText("Action selected: View upload");
+  await expect(trigger).toBeFocused();
+});
+
+test("semantic toast triggers look and behave like tone buttons", async ({ page }) => {
+  await page.goto("/components/feedback/toast");
+
+  for (const [name, token] of [["Show success", "--nyx-signal"], ["Show warning", "--nyx-warning"], ["Show danger", "--nyx-danger"]]) {
+    const button = page.getByRole("button", { name, exact: true });
+    const appearance = await button.evaluate((element, semanticToken) => {
+      const probe = document.createElement("span");
+      probe.style.backgroundColor = `var(${semanticToken})`;
+      element.append(probe);
+      const tokenColor = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      const styles = getComputedStyle(element);
+      return { background: styles.backgroundColor, blockSize: element.getBoundingClientRect().height, tokenColor };
+    }, token);
+    expect(appearance.background).toBe(appearance.tokenColor);
+    expect(appearance.blockSize).toBeGreaterThanOrEqual(40);
+    await button.click();
+    await expect(button.locator("xpath=ancestor::*[contains(@class, 'nyx-toast-showcase')]").locator(".nyx-toast").last()).toBeVisible();
+  }
+});
+
+test("pagination navigation preserves the selected documentation theme", async ({ page }) => {
+  await page.goto("/components/navigation/pagination");
+  await page.getByRole("button", { name: "Plasma", exact: true }).click();
+  await page.locator("[data-example-preview]").getByRole("link", { name: "Next page" }).click();
+
+  await expect(page).toHaveURL(/\/components\/navigation\/pagination\?page=3$/);
+  await expect(page.locator("html")).toHaveAttribute("data-nyx-theme", "plasma");
+  await expect(page.getByRole("button", { name: "Plasma", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("examples arrive before guidance and auth prioritizes its task column", async ({ page }) => {
@@ -243,13 +292,74 @@ test("notification read actions name the next action without toggle semantics", 
   await expect(button).toHaveAccessibleName('Mark notification unread');
 });
 
-test("progress renders its declared value and animates pending work", async ({ page }) => {
+test("progress catalog renders declared values, alternate geometry, and pending work", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1100 });
   await page.goto("/components/feedback/progress");
-  const bar = page.locator('[role="tabpanel"] .nyx-progress[aria-valuenow="68"]');
+  const preview = page.locator("[data-docs-example]", { has: page.getByRole("heading", { name: "Progress patterns", exact: true }) }).getByRole("tabpanel", { name: "Preview", exact: true });
+  const bar = preview.locator('.nyx-progress[aria-valuenow="68"]').first();
   const ratio = await bar.evaluate(element => element.firstElementChild!.getBoundingClientRect().width / element.getBoundingClientRect().width);
   expect(ratio).toBeCloseTo(0.68, 2);
-  await expect(page.getByText("Upload progress: 68%", { exact: true })).toBeVisible();
-  const pending = page.locator('[role="tabpanel"] [data-indeterminate] .nyx-progress-bar');
+  await expect(preview.getByText("Upload progress", { exact: true })).toBeVisible();
+  await expect(preview.getByText("68%", { exact: true }).first()).toBeVisible();
+  await expect(preview.locator(".nyx-progress-radial")).toHaveCount(2);
+  const radialWidths = await preview.locator(".nyx-progress-radial").evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width));
+  expect(radialWidths[1]).toBeGreaterThan(radialWidths[0]);
+  await expect(preview.locator(".nyx-progress-gauge")).toHaveCount(1);
+  await expect(preview.locator(".nyx-progress-vertical")).toHaveCount(4);
+
+  const segmented = await preview.locator('.nyx-progress[data-layout="segmented"]').evaluate(element => {
+    const track = element.getBoundingClientRect().width;
+    const segments = Array.from(element.children, child => child.getBoundingClientRect().width);
+    return segments.reduce((total, width) => total + width, 0) / track;
+  });
+  expect(segmented).toBeCloseTo(1, 2);
+
+  const vertical = preview.locator('.nyx-progress-vertical[aria-valuenow="92"]');
+  const verticalRatio = await vertical.evaluate(element => element.firstElementChild!.getBoundingClientRect().height / element.getBoundingClientRect().height);
+  expect(verticalRatio).toBeCloseTo(0.92, 2);
+
+  const motion = await preview.evaluate((element) => ({
+    linear: getComputedStyle(element.querySelector<HTMLElement>('.nyx-progress[aria-valuenow="68"] .nyx-progress-bar')!).animationName,
+    segmented: getComputedStyle(element.querySelector<HTMLElement>(".nyx-progress-segment")!).animationName,
+    vertical: getComputedStyle(element.querySelector<HTMLElement>(".nyx-progress-vertical .nyx-progress-bar")!).animationName,
+    radial: getComputedStyle(element.querySelector<SVGElement>(".nyx-progress-ring-value")!).animationName,
+  }));
+  expect(motion).toEqual({
+    linear: "nyx-progress-fill",
+    segmented: "nyx-progress-fill",
+    vertical: "nyx-progress-fill-vertical",
+    radial: "nyx-progress-ring-fill",
+  });
+
+  const ringRendering = await preview.locator(".nyx-progress-radial").first().evaluate((element) => {
+    const svg = element.querySelector("svg")!;
+    const value = element.querySelector<SVGCircleElement>(".nyx-progress-ring-value")!;
+    return {
+      svgTransform: getComputedStyle(svg).transform,
+      shapeRendering: getComputedStyle(svg).shapeRendering,
+      vectorEffect: getComputedStyle(value).vectorEffect,
+      valueTransform: value.getAttribute("transform"),
+    };
+  });
+  expect(ringRendering).toEqual({
+    svgTransform: "none",
+    shapeRendering: "geometricprecision",
+    vectorEffect: "non-scaling-stroke",
+    valueTransform: "rotate(-90 56 56)",
+  });
+
+  for (const radial of await preview.locator(".nyx-progress-radial").all()) {
+    const separation = await radial.evaluate((element) => {
+      const ring = element.querySelector("svg")!.getBoundingClientRect();
+      const label = element.querySelector("small")!.getBoundingClientRect();
+      return label.top - ring.bottom;
+    });
+    expect(separation, "radial label clears its ring").toBeGreaterThanOrEqual(2);
+  }
+
+  const pendingTrack = preview.locator('[data-indeterminate]');
+  await expect(pendingTrack).not.toHaveAttribute("aria-valuenow");
+  const pending = pendingTrack.locator(".nyx-progress-bar");
   expect((await pending.boundingBox())!.width).toBeGreaterThan(0);
   const first = await pending.evaluate(element => getComputedStyle(element).transform);
   await expect.poll(() => pending.evaluate(element => getComputedStyle(element).transform)).not.toBe(first);

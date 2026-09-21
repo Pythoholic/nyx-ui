@@ -54,6 +54,7 @@ describe("NyxSearchBox", () => {
   it("shows only recent searches for a blank query and filters suggestions for text", () => {
     initialized = initSearchBoxes();
     const searchBox = initialized[0]!;
+    expect(searchBox.clearButton?.disabled).toBe(true);
     searchBox.input.focus();
     expect(searchBox.expanded).toBe(true);
     expect(searchBox.element.dataset.state).toBe("open");
@@ -63,6 +64,7 @@ describe("NyxSearchBox", () => {
 
     searchBox.input.value = "deploy";
     searchBox.input.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(searchBox.clearButton?.disabled).toBe(false);
     expect(document.querySelector<HTMLElement>("#recent")?.hidden).toBe(true);
     expect(document.querySelector<HTMLElement>("#deploy")?.hidden).toBe(false);
     expect(searchBox.input.getAttribute("aria-activedescendant")).toBe("deploy");
@@ -93,5 +95,19 @@ describe("NyxSearchBox", () => {
     searchBox.element.addEventListener("nyx:search-box:before-clear", (event) => event.preventDefault());
     expect(searchBox.clear()).toBe(false);
     expect(searchBox.value).toBe("incident");
+  });
+
+  it("keeps the clear control present and disables it when the query is empty", () => {
+    initialized = initSearchBoxes();
+    const searchBox = initialized[0]!;
+    const clearButton = searchBox.clearButton!;
+
+    expect(clearButton.hidden).toBe(false);
+    expect(clearButton.disabled).toBe(true);
+    searchBox.value = "incident";
+    expect(clearButton.disabled).toBe(false);
+    expect(searchBox.clear()).toBe(true);
+    expect(clearButton.hidden).toBe(false);
+    expect(clearButton.disabled).toBe(true);
   });
 });

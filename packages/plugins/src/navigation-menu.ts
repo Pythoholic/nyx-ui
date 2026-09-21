@@ -30,7 +30,7 @@ declare global {
 }
 
 interface NavigationItem {
-  cleanup: (() => void) | undefined;
+  cleanup: ReturnType<typeof positionOverlay> | undefined;
   dismissal: NyxOverlayDismissal;
   inline: boolean;
   panel: HTMLElement;
@@ -108,7 +108,10 @@ export class NyxNavigationMenu {
     if (item.usesNativePopover) item.panel.showPopover();
     this.active = item;
     item.dismissal.activate();
-    if (!item.inline) item.cleanup = positionOverlay(item.trigger, item.panel);
+    if (!item.inline) {
+      item.cleanup?.();
+      item.cleanup = positionOverlay(item.trigger, item.panel);
+    }
     this.syncState();
     if (focusFirst) this.focusFirstLink(item);
     dispatchNyxEvent(this.element, "nyx:navigation-menu:open", detail);
@@ -127,8 +130,9 @@ export class NyxNavigationMenu {
       )
     ) return;
 
-    item.cleanup?.();
-    item.cleanup = undefined;
+    // Preserve the last anchored coordinates while the browser completes the
+    // discrete popover exit. A later open or destroy performs the full reset.
+    item.cleanup?.({ preservePlacement: true });
     item.dismissal.deactivate();
     if (item.usesNativePopover) item.panel.hidePopover();
     item.panel.hidden = true;
@@ -142,6 +146,7 @@ export class NyxNavigationMenu {
     this.close("destroy");
     this.items.forEach((item) => {
       item.cleanup?.();
+      item.cleanup = undefined;
       item.dismissal.destroy();
       item.trigger.removeEventListener("click", this.handleTriggerClick);
       item.trigger.removeEventListener("keydown", this.handleTriggerKeydown);

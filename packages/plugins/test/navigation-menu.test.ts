@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { initNavigationMenus, type NyxNavigationMenu } from "../src/navigation-menu.js";
 
-const floating = vi.hoisted(() => ({ autoUpdate: vi.fn(), computePosition: vi.fn() }));
+const floating = vi.hoisted(() => ({ autoUpdate: vi.fn(), cleanup: vi.fn(), computePosition: vi.fn() }));
 vi.mock("@floating-ui/dom", async () => ({
   ...(await vi.importActual<typeof import("@floating-ui/dom")>("@floating-ui/dom")),
   autoUpdate: floating.autoUpdate,
@@ -25,12 +25,13 @@ function render(): HTMLElement {
 describe("NyxNavigationMenu", () => {
   let initialized: NyxNavigationMenu[] = [];
   beforeEach(() => {
+    floating.cleanup.mockReset();
     Object.defineProperties(HTMLElement.prototype, {
       hidePopover: { configurable: true, value(): void {}, writable: true },
       showPopover: { configurable: true, value(): void {}, writable: true },
     });
     floating.computePosition.mockResolvedValue({ middlewareData: {}, placement: "bottom-start", strategy: "fixed", x: 10, y: 20 });
-    floating.autoUpdate.mockImplementation((_reference, _overlay, update) => { void update(); return vi.fn(); });
+    floating.autoUpdate.mockImplementation((_reference, _overlay, update) => { void update(); return floating.cleanup; });
   });
   afterEach(() => initialized.forEach((instance) => instance.destroy()));
 
@@ -78,5 +79,26 @@ describe("NyxNavigationMenu", () => {
     learn.click();
     expect(products.getAttribute("aria-expanded")).toBe("false");
     expect(learn.getAttribute("aria-expanded")).toBe("true");
+  });
+
+  it("keeps anchored coordinates after dismissal and clears them on destroy", async () => {
+    const root = render();
+    initialized = initNavigationMenus();
+    const navigation = initialized[0];
+    const products = root.querySelector<HTMLButtonElement>("#products");
+    const panel = root.querySelector<HTMLElement>("#product-panel");
+    if (!navigation || !products || !panel) throw new Error("Navigation menu was not initialized.");
+
+    products.click();
+    await vi.waitFor(() => expect(panel.hasAttribute("data-nyx-positioned")).toBe(true));
+    navigation.close("outside");
+    expect(floating.cleanup).toHaveBeenCalledOnce();
+    expect(panel.hasAttribute("data-nyx-positioned")).toBe(true);
+    expect(panel.style.getPropertyValue("--nyx-overlay-x")).toBe("10px");
+    expect(panel.style.getPropertyValue("--nyx-overlay-y")).toBe("20px");
+
+    navigation.destroy();
+    expect(panel.hasAttribute("data-nyx-positioned")).toBe(false);
+    initialized = [];
   });
 });

@@ -202,14 +202,42 @@ test("the documented accent is present in the first response and hydrated contro
 test("toggle labels retain space before their control row", async ({ page }) => {
   await page.goto("/components/actions/toggles");
   const demo = example(page, "Toggle patterns");
+  const precedingControls = demo.locator(".nyx-cluster");
   const legend = demo.getByText("View mode", { exact: true });
   const controls = demo.locator(".nyx-segmented");
-  const [legendBox, controlsBox] = await Promise.all([legend.boundingBox(), controls.boundingBox()]);
+  const [precedingBox, legendBox, controlsBox] = await Promise.all([
+    precedingControls.boundingBox(),
+    legend.boundingBox(),
+    controls.boundingBox(),
+  ]);
 
+  expect(precedingBox).not.toBeNull();
   expect(legendBox).not.toBeNull();
   expect(controlsBox).not.toBeNull();
-  if (!legendBox || !controlsBox) return;
+  if (!precedingBox || !legendBox || !controlsBox) return;
+  expect(legendBox.y - (precedingBox.y + precedingBox.height), "preceding-controls-to-legend spacing").toBeGreaterThanOrEqual(11);
   expect(controlsBox.y - (legendBox.y + legendBox.height), "legend-to-control spacing").toBeGreaterThanOrEqual(7);
+});
+
+test("password strength status sits below the full-width meter", async ({ page }) => {
+  await page.goto("/components/forms/password-input");
+  const demo = example(page, "Password strength and visibility");
+  const meter = demo.locator(".nyx-password-meter");
+  const status = demo.locator(".nyx-password-status");
+  const feedback = demo.locator(".nyx-password-feedback");
+  const [meterBox, statusBox, feedbackBox] = await Promise.all([
+    meter.boundingBox(),
+    status.boundingBox(),
+    feedback.boundingBox(),
+  ]);
+
+  expect(meterBox).not.toBeNull();
+  expect(statusBox).not.toBeNull();
+  expect(feedbackBox).not.toBeNull();
+  if (!meterBox || !statusBox || !feedbackBox) return;
+  expect(statusBox.y).toBeGreaterThanOrEqual(meterBox.y + meterBox.height);
+  expect(Math.abs(meterBox.width - feedbackBox.width), "meter fills feedback width").toBeLessThanOrEqual(1);
+  await expect(status).toHaveText("Enter a password");
 });
 
 test("bulk selection bands keep usable vertical rhythm", async ({ page }) => {
@@ -261,18 +289,54 @@ test("paired text fields keep aligned controls and reserve feedback space", asyn
 
 test("card separators do not compound container and component spacing", async ({ page }) => {
   await page.goto("/components/primitives/static-primitives");
-  const demo = example(page, "Avatar, card, separator, and keys");
-  const [avatars, separator] = await Promise.all([
-    demo.locator(".nyx-avatar-group").boundingBox(),
+  const demo = example(page, "Release handoff anatomy");
+  const [section, separator] = await Promise.all([
+    demo.locator(".nyx-primitives-section").boundingBox(),
     demo.locator(".nyx-panel-body > .nyx-separator").boundingBox(),
   ]);
 
-  expect(avatars).not.toBeNull();
+  expect(section).not.toBeNull();
   expect(separator).not.toBeNull();
-  if (!avatars || !separator) return;
-  const gap = separator.y - (avatars.y + avatars.height);
+  if (!section || !separator) return;
+  const gap = separator.y - (section.y + section.height);
   expect(gap, "the separator uses only the panel-body gap").toBeGreaterThanOrEqual(12);
   expect(gap, "the separator does not add a second margin").toBeLessThanOrEqual(20);
+});
+
+test("static primitive anatomy keeps its examples separated", async ({ page }) => {
+  await page.goto("/components/primitives/static-primitives");
+  const demo = example(page, "Release handoff anatomy");
+  const [panel, checklist] = await Promise.all([
+    demo.locator(".nyx-panel").boundingBox(),
+    demo.locator(".nyx-list-group").boundingBox(),
+  ]);
+
+  expect(panel).not.toBeNull();
+  expect(checklist).not.toBeNull();
+  if (!panel || !checklist) return;
+  const horizontalGap = checklist.x - (panel.x + panel.width);
+  const verticalGap = checklist.y - (panel.y + panel.height);
+  expect(Math.max(horizontalGap, verticalGap), "the panel and checklist have a visible gutter").toBeGreaterThanOrEqual(16);
+});
+
+test("styled link patterns keep a consistent internal rhythm", async ({ page }) => {
+  await page.goto("/components/primitives/styled-links");
+  const demo = example(page, "Link hierarchy in context");
+  const patterns = demo.locator(".nyx-link-pattern");
+
+  await expect(patterns).toHaveCount(3);
+  const metrics = await patterns.evaluateAll((elements) => elements.map((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      columnGap: parseFloat(styles.columnGap),
+      paddingInline: parseFloat(styles.paddingInlineStart),
+      rowGap: parseFloat(styles.rowGap),
+    };
+  }));
+  for (const metric of metrics) {
+    expect(metric.paddingInline).toBeGreaterThanOrEqual(20);
+    expect(metric.rowGap).toBeGreaterThanOrEqual(12);
+  }
 });
 
 test("notification rows keep internal breathing room", async ({ page }) => {
@@ -489,6 +553,19 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await toggle.click();
   await expect(shell).toHaveAttribute("data-state", "collapsed");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  const collapsedLink = panel.getByRole("link", { name: "Settings" });
+  await expect.poll(async () => {
+    const [linkBox, iconBox] = await Promise.all([collapsedLink.boundingBox(), collapsedLink.locator(".nyx-icon").boundingBox()]);
+    return linkBox && iconBox ? Math.abs((iconBox.x + iconBox.width / 2) - (linkBox.x + linkBox.width / 2)) : Number.POSITIVE_INFINITY;
+  }).toBeLessThan(0.5);
+  const collapsedLinkBox = await collapsedLink.boundingBox();
+  const collapsedIconBox = await collapsedLink.locator(".nyx-icon").boundingBox();
+  expect(collapsedLinkBox).not.toBeNull();
+  expect(collapsedIconBox).not.toBeNull();
+  expect(collapsedLinkBox!.width).toBeCloseTo(collapsedLinkBox!.height, 0);
+  expect(collapsedLinkBox!.width).toBeGreaterThanOrEqual(44);
+  expect(collapsedIconBox!.x + collapsedIconBox!.width / 2).toBeCloseTo(collapsedLinkBox!.x + collapsedLinkBox!.width / 2, 0);
+  expect(collapsedIconBox!.y + collapsedIconBox!.height / 2).toBeCloseTo(collapsedLinkBox!.y + collapsedLinkBox!.height / 2, 0);
 });
 
 test("sidebar destinations switch content at each desktop review width", async ({ page }) => {
@@ -690,6 +767,29 @@ test("activity feed status semantics remain distinct across accent themes", asyn
     expect(colors.tag, `${theme} inline status`).toBe(colors.success);
     expect(colors.badge, `${theme} pipeline status`).toBe(colors.success);
     expect(colors.success, `${theme} semantic status differs from accent`).not.toBe(colors.accent);
+  }
+});
+
+test("alert catalog covers tone, emphasis, supporting content, and recovery without overflow", async ({ page }) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 1200 });
+    await page.goto("/components/feedback/alerts");
+    await page.evaluate(() => document.fonts.ready);
+
+    const preview = example(page, "Alert patterns");
+    await expect(preview.locator(".nyx-alert")).toHaveCount(9);
+    await expect(preview.locator(".nyx-alert[data-tone='info']")).toHaveCount(2);
+    await expect(preview.locator(".nyx-alert[data-emphasis='outline']")).toHaveCount(1);
+    await expect(preview.locator(".nyx-alert[data-emphasis='solid']")).toHaveCount(1);
+    await expect(preview.locator(".nyx-alert-list li")).toHaveText(["Deployment history", "Audit exports"]);
+    await expect(preview.getByRole("link", { name: "Review fields" })).toHaveAttribute("href", "/components/forms/text-fields");
+
+    const layout = await preview.evaluate((element) => {
+      const columns = Array.from(element.querySelectorAll<HTMLElement>(".nyx-alert-grid"), grid => getComputedStyle(grid).gridTemplateColumns.split(" ").length);
+      return { columns, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+    });
+    expect(layout.overflow, `${width}px page overflow`).toBeLessThanOrEqual(1);
+    expect(layout.columns, `${width}px responsive alert columns`).toEqual(width <= 768 ? [1, 1, 1] : [2, 3, 2]);
   }
 });
 

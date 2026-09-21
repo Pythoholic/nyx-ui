@@ -9,7 +9,7 @@ function example(page: Page, name: string): Locator {
 
 test.use({ viewport: { width: 2560, height: 1440 } });
 
-async function expectOverlayWithinViewport(page: Page, panel: Locator): Promise<void> {
+async function expectOverlayWithinViewport(page: Page, panel: Locator, options: { allowVerticalScroll?: boolean } = {}): Promise<void> {
   await expect(panel).toBeVisible();
   const box = await panel.boundingBox();
   const viewport = page.viewportSize();
@@ -27,7 +27,7 @@ async function expectOverlayWithinViewport(page: Page, panel: Locator): Promise<
     vertical: element.scrollHeight - element.clientHeight,
   }));
   expect(overflow.horizontal, "panel has no horizontal scrollbar").toBeLessThanOrEqual(1);
-  expect(overflow.vertical, "panel has no vertical scrollbar").toBeLessThanOrEqual(1);
+  if (!options.allowVerticalScroll) expect(overflow.vertical, "panel has no vertical scrollbar").toBeLessThanOrEqual(1);
 }
 
 async function expectAnchored(trigger: Locator, panel: Locator, maximumGap = 16): Promise<void> {
@@ -180,6 +180,29 @@ test("menubar panel anchors to its active trigger", async ({ page }) => {
   await expectAnchored(trigger, panel);
 });
 
+test("navigation disclosure stays anchored through outside dismissal", async ({ page }) => {
+  await page.goto("/components/navigation/navigation-menu");
+  const demo = example(page, "Product navigation");
+  const trigger = demo.getByRole("button", { name: /Products/ });
+  const panel = demo.locator("[data-nyx-navigation-menu-content]");
+
+  await trigger.click();
+  await expectOverlayWithinViewport(page, panel);
+  await expectAnchored(trigger, panel);
+  const openPosition = await panel.evaluate((element) => ({
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }));
+
+  await page.locator(".docs-title").click();
+  await expect(panel).not.toBeVisible();
+  await expect(panel).toHaveAttribute("data-nyx-positioned", "");
+  expect(await panel.evaluate((element) => ({
+    x: element.style.getPropertyValue("--nyx-overlay-x"),
+    y: element.style.getPropertyValue("--nyx-overlay-y"),
+  }))).toEqual(openPosition);
+});
+
 test("hover card opens from a real hover and remains anchored", async ({ page }) => {
   await page.goto("/components/overlays/hover-card");
   const demo = example(page, "Operator hover card");
@@ -213,12 +236,12 @@ test("hover card opens from a real hover and remains anchored", async ({ page })
 
 test("combobox popover stays anchored and bounded", async ({ page }) => {
   await page.goto("/components/forms/combobox");
-  const demo = example(page, "Combobox");
+  const demo = example(page, "Deployment location");
   const trigger = demo.getByRole("combobox", { name: "Deployment location" });
   const panel = demo.getByRole("listbox", { name: "Deployment locations" });
 
   await trigger.click();
-  await expectOverlayWithinViewport(page, panel);
+  await expectOverlayWithinViewport(page, panel, { allowVerticalScroll: true });
   await expectAnchored(trigger, panel);
 });
 

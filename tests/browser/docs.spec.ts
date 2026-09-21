@@ -41,6 +41,10 @@ test("the focusable visually-hidden utility is bounded and returns to natural fl
   await expectPage(page, "/components/primitives/visually-hidden", "Visually Hidden");
   const skipLink = page.locator("[data-example-preview] .nyx-visually-hidden-focusable");
 
+  await expect(page.getByRole("heading", { name: "Quarterly report for Tokyo operations", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Quarterly report for Tokyo operations, PDF", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Download quarterly report for Tokyo operations", exact: true })).toBeVisible();
+
   for (const direction of ["ltr", "rtl"] as const) {
     await page.locator("html").evaluate((element, dir) => { element.dir = dir; }, direction);
     const hiddenStyles = await skipLink.evaluate((element) => {
@@ -170,6 +174,31 @@ test("registry guidance explains adoption, dependencies, ownership, and update r
   await expect(page.locator(".docs-registry-steps > li")).toHaveCount(6);
   await expect(page.locator(".docs-registry-manifest")).toContainText("Requires");
   await expect(page.locator(".docs-registry-ownership")).toContainText("does not overwrite copied files or silently merge upstream changes");
+});
+
+test("AI integration renders its pilot contract from the registry", async ({ page }) => {
+  await expectPage(page, "/guides/ai-integration", "AI Integration");
+  await expect(page.locator(".docs-ai-flow > li")).toHaveCount(3);
+  await expect(page.locator(".docs-ai-contract")).toContainText('"name": "tooltip"');
+  await expect(page.locator(".docs-ai-contract")).toContainText('"function": "initTooltips"');
+  await expect(page.locator(".docs-ai-contract-notes")).toContainText("components/tooltip.html");
+  await expect(page.locator(".docs-ai-tools > li")).toHaveCount(4);
+  await expect(page.locator(".docs-ai-skill")).toContainText("skills add Pythoholic/nyx-stealth");
+  await expect(page.locator(".docs-ai-agents > article")).toHaveCount(6);
+  await expect(page.locator(".docs-ai-agents")).toContainText("Claude Code");
+  await expect(page.locator(".docs-ai-connect")).toContainText(".codex/config.toml");
+  await expect(page.locator(".docs-ai-connect")).toContainText(".mcp.json");
+  await expect(page.locator(".docs-ai-connect")).toContainText("@nyx-ui/mcp");
+  await expect(page.locator(".docs-ai-boundary")).toContainText("Public package release required");
+
+  const exchangeCards = page.locator(".docs-ai-example > .docs-code");
+  const requestBox = await exchangeCards.nth(0).boundingBox();
+  const decisionBox = await exchangeCards.nth(1).boundingBox();
+  expect(requestBox?.height).toBeLessThan(decisionBox?.height ?? 0);
+  const horizontalOverflow = await exchangeCards.locator("pre").evaluateAll((elements) =>
+    elements.map((element) => element.scrollWidth - element.clientWidth),
+  );
+  expect(horizontalOverflow.every((overflow) => overflow <= 1)).toBe(true);
 });
 
 test("motion examples show their resting state and can be replayed independently", async ({ page }) => {

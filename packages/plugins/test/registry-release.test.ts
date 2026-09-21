@@ -17,6 +17,12 @@ interface RegistryItem {
   name: string;
   status: "preview" | "stable";
   files: string[];
+  description?: string;
+  useWhen?: string[];
+  avoidWhen?: string[];
+  initializer?: { import: string; function: string; selector: string };
+  accessibility?: { requirements: string[] };
+  related?: string[];
 }
 
 const repositoryRoot = resolve(process.cwd(), "../..");
@@ -42,6 +48,22 @@ describe("release registry contract", () => {
       const source = readFileSync(resolve(repositoryRoot, "registry", file), "utf8");
       expect(source, file).not.toMatch(/class=["'][^"']*\bdocs-/);
     }
+  });
+
+  it("provides a complete machine-readable pilot contract for tooltip", () => {
+    const registry = JSON.parse(readFileSync(resolve(repositoryRoot, "registry/registry.json"), "utf8")) as { items: RegistryItem[] };
+    const tooltip = registry.items.find((item) => item.name === "tooltip");
+
+    expect(tooltip?.description).toBeTruthy();
+    expect(tooltip?.useWhen).not.toHaveLength(0);
+    expect(tooltip?.avoidWhen).not.toHaveLength(0);
+    expect(tooltip?.initializer).toEqual({
+      import: "@nyx-ui/plugins/tooltip",
+      function: "initTooltips",
+      selector: "[data-nyx-tooltip]",
+    });
+    expect(tooltip?.accessibility?.requirements).not.toHaveLength(0);
+    expect(tooltip?.related).toContain("hover-card");
   });
 
   it("renders the same canonical markup shown in every component HTML tab", () => {

@@ -62,9 +62,11 @@ describe("small primitive registry markup", () => {
     const hidden = Array.from(component.querySelectorAll<HTMLElement>(".nyx-visually-hidden"));
     const focusable = component.querySelector<HTMLAnchorElement>("a.nyx-visually-hidden-focusable");
     expect(hidden.length).toBeGreaterThanOrEqual(3);
-    expect(component.querySelector("button .nyx-visually-hidden")?.textContent).toContain("Cancel transfer");
-    expect(component.querySelector("[role='status'][aria-live='polite']")).not.toBeNull();
-    expect(focusable?.getAttribute("href")).toBe("#nyx-visually-hidden-example-end");
+    expect(component.querySelector("h2 .nyx-visually-hidden")?.textContent).toContain("for Tokyo operations");
+    expect(component.querySelector("a.nyx-icon-button .nyx-visually-hidden")?.textContent).toContain("Download quarterly report");
+    expect(component.querySelector(".nyx-visually-hidden-format-link .nyx-visually-hidden")?.textContent).toContain("Quarterly report for Tokyo operations");
+    expect(focusable?.getAttribute("href")).toBe("#nyx-report-actions");
+    expect(component.querySelector("#nyx-report-actions[tabindex='-1']")).not.toBeNull();
   });
 
   it("declares localized RTL content and isolates bidirectional identifiers", () => {

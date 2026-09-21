@@ -43,7 +43,7 @@ export type PluginName =
   | "tabs"
   | "toast";
 
-export type CodeLanguage = "css" | "html" | "js" | "shell";
+export type CodeLanguage = "css" | "html" | "js" | "json" | "shell" | "toml";
 
 export interface ReferenceRow {
   name: string;
@@ -826,7 +826,9 @@ const pluginApis: Record<PluginName, PluginApi> = {
     reference: {
       attributes: [
         { name: "data-nyx-combobox", value: "presence", description: "Marks the input, form value, and listbox owner." },
+        { name: "data-nyx-combobox-mode", value: "select", description: "Requires a listed option and restores the last committed selection when unmatched text is dismissed." },
         { name: "data-nyx-combobox-value", value: "presence", description: "Marks the hidden input synchronized for form submission." },
+        { name: "data-nyx-combobox-label", value: "string", description: "Sets the readable input text committed when an option is selected." },
         { name: "data-value", value: "string", description: "Sets the submitted value for an option." },
         { name: "data-nyx-search-text", value: "string", description: "Overrides the option text used for filtering." },
         { name: "data-nyx-combobox-placement", value: "placement", description: "Sets the preferred anchored popup placement." },
@@ -1528,12 +1530,17 @@ const pluginApis: Record<PluginName, PluginApi> = {
     initName: "initToasts",
     selector: "[data-nyx-toast-region]",
     reference: {
-      attributes: [{ name: "data-nyx-toast-region", value: "presence", description: "Marks the notification region managed by the controller." }],
+      attributes: [
+        { name: "data-nyx-toast-region", value: "presence", description: "Marks the notification region managed by the controller." },
+        { name: "data-layout", value: "inline", description: "Keeps the region in document flow for previews or embedded notification surfaces." },
+      ],
       options: [
         { name: "title", value: "string", description: "Required notification heading." },
         { name: "description", value: "string", description: "Optional supporting message." },
         { name: "tone", value: "neutral | success | warning | danger", description: "Controls semantic tone and live-region role." },
         { name: "duration", value: "number", description: "Auto-dismiss delay in milliseconds; zero keeps the toast open." },
+        { name: "progress", value: "number | indeterminate", description: "Adds determinate progress from 0–100 or an indeterminate loading state." },
+        { name: "action", value: "{ label, value? }", description: "Adds one optional follow-up action and its application value." },
       ],
       methods: [
         { name: "value", value: "readonly HTMLElement[]", description: "Returns the active toast elements." },
@@ -1544,11 +1551,12 @@ const pluginApis: Record<PluginName, PluginApi> = {
       events: [
         { name: "nyx:toast:before-notify", value: "cancelable", description: "Fires before insertion into the live region." },
         { name: "nyx:toast:notify", value: "not cancelable", description: "Fires after insertion." },
+        { name: "nyx:toast:action", value: "cancelable", description: "Fires when the optional action is chosen; cancellation keeps the toast open." },
         { name: "nyx:toast:before-dismiss", value: "cancelable except destroy", description: "Fires before dismissal." },
         { name: "nyx:toast:dismiss", value: "not cancelable", description: "Fires after removal." },
       ],
-      keyboard: [{ name: "Tab / Enter / Space", description: "Reaches and activates each notification's dismiss button through native button behavior." }],
-      accessibility: "The region is a polite, non-atomic live region labeled Notifications. Each generated toast uses status, or alert for danger, and includes an accessible dismiss button.",
+      keyboard: [{ name: "Tab / Enter / Space", description: "Reaches and activates optional actions and each notification's dismiss button through native button behavior." }],
+      accessibility: "The region is a polite, non-atomic live region labeled Notifications. Each generated toast uses status, or alert for danger, includes an accessible dismiss button, and exposes determinate progress with native progressbar semantics.",
     },
   },
 };

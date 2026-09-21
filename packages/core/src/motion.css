@@ -12,6 +12,10 @@
 @keyframes nyx-shimmer-rtl { from { background-position: -200% 0; } to { background-position: 200% 0; } }
 @keyframes nyx-progress { 0% { transform: translateX(-100%); } 55% { transform: translateX(70%); } 100% { transform: translateX(210%); } }
 @keyframes nyx-progress-rtl { 0% { transform: translateX(100%); } 55% { transform: translateX(-70%); } 100% { transform: translateX(-210%); } }
+@keyframes nyx-progress-fill { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@keyframes nyx-progress-fill-rtl { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }
+@keyframes nyx-progress-fill-vertical { from { clip-path: inset(100% 0 0); } to { clip-path: inset(0); } }
+@keyframes nyx-progress-ring-fill { from { stroke-dashoffset: 100; } }
 @keyframes nyx-progress-wave { from { background-position: 180% 0; } to { background-position: -120% 0; } }
 
 @layer utilities {

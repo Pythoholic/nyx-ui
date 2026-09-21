@@ -40,7 +40,7 @@ import { initFilterBars } from "@nyx-ui/plugins/filter-bar";
 import { initCommandBars } from "@nyx-ui/plugins/command-bar";
 import { initBulkActionToolbars } from "@nyx-ui/plugins/bulk-action-toolbar";
 import { initTabs } from "@nyx-ui/plugins/tabs";
-import { initToasts, type NyxToast } from "@nyx-ui/plugins/toast";
+import { initToasts, type NyxToast, type NyxToastOptions } from "@nyx-ui/plugins/toast";
 import {
   componentCategories,
   foundationPages,
@@ -59,6 +59,28 @@ import { mountWorkspace } from "../../../registry/examples/render-workspace/app.
 interface Destroyable {
   destroy(): void;
 }
+
+const docsThemes = ["solar", "signal", "flux", "plasma"] as const;
+type DocsTheme = (typeof docsThemes)[number];
+const themeStorageKey = "nyx-docs-theme";
+
+function isDocsTheme(value: string | null | undefined): value is DocsTheme {
+  return docsThemes.includes(value as DocsTheme);
+}
+
+function storedTheme(): DocsTheme | undefined {
+  try {
+    const value = localStorage.getItem(themeStorageKey);
+    return isDocsTheme(value) ? value : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const initialTheme = storedTheme() ?? (isDocsTheme(document.documentElement.dataset.nyxTheme)
+  ? document.documentElement.dataset.nyxTheme
+  : "signal");
+document.documentElement.dataset.nyxTheme = initialTheme;
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (!app) throw new Error("Nyx documentation root was not found.");
@@ -96,6 +118,7 @@ function categoryMarkup(category: (typeof componentCategories)[number]): string 
 }
 
 const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
+  <div class="docs-nav-group"><span class="docs-nav-label">Templates</span><div class="docs-nav"><a href="${hrefFor('/admin/')}" data-admin-demo>Admin dashboard ↗</a></div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Getting started").map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Integration").map((page) => pageLink(page)).join("")}</div></div>
@@ -119,7 +142,7 @@ app.innerHTML = `<div class="docs-shell">
   <header class="docs-topbar">
     <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.1.0</span></span></a>
     <button class="docs-search-trigger" data-nyx-dialog-trigger="docs-command-palette" type="button">${icon("search")}<span>Search documentation</span><span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span></button>
-    <div class="docs-theme-list" aria-label="Accent theme" role="group"><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="solar" aria-pressed="false">Solar</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="signal" aria-pressed="true">Signal</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="flux" aria-pressed="false">Flux</button><button class="nyx-button docs-theme-button" data-size="small" data-theme-value="plasma" aria-pressed="false">Plasma</button></div>
+    <div class="docs-theme-list" aria-label="Accent theme" role="group">${docsThemes.map((theme) => `<button class="nyx-button docs-theme-button" data-size="small" data-theme-value="${theme}" aria-pressed="${String(theme === initialTheme)}">${theme[0]?.toUpperCase()}${theme.slice(1)}</button>`).join("")}</div>
   </header>
   <div class="docs-layout">
     <aside class="docs-sidebar nyx-scrollable-overlay">${sidebarMarkup}</aside>
@@ -156,8 +179,9 @@ sidebar.querySelectorAll<HTMLButtonElement>(".docs-nav-parent").forEach((button)
 app.querySelectorAll<HTMLButtonElement>("[data-theme-value]").forEach((button) => {
   button.addEventListener("click", () => {
     const theme = button.dataset.themeValue;
-    if (!theme) return;
+    if (!isDocsTheme(theme)) return;
     document.documentElement.dataset.nyxTheme = theme;
+    try { localStorage.setItem(themeStorageKey, theme); } catch { /* Theme still applies for this page. */ }
     app.querySelectorAll<HTMLButtonElement>("[data-theme-value]").forEach((candidate) => {
       candidate.setAttribute("aria-pressed", String(candidate === button));
     });
@@ -348,9 +372,69 @@ function initializePage(page: DocPage): () => void {
     if (element) replay(element);
   }, { signal: abortController.signal });
 
-  main.querySelector("[data-toast-demo]")?.addEventListener("click", () => {
-    toast?.notify({ title: "Release validated", description: "All component contracts passed.", tone: "success" });
-  }, { signal: abortController.signal });
+  const toastStatus = main.querySelector<HTMLOutputElement>("[data-toast-demo-status]");
+  const toastExamples: Record<string, NyxToastOptions> = {
+    neutral: {
+      title: "Settings saved",
+      description: "Workspace preferences are up to date.",
+    },
+    success: {
+      title: "Release validated",
+      description: "All component contracts passed.",
+      tone: "success",
+    },
+    warning: {
+      title: "Capacity approaching limit",
+      description: "Only 12% of the monthly allocation remains.",
+      tone: "warning",
+      duration: 0,
+    },
+    danger: {
+      title: "Deployment failed",
+      description: "Review the build log before trying again.",
+      tone: "danger",
+      duration: 0,
+    },
+    loading: {
+      title: "Preparing deployment",
+      description: "Validating the release bundle.",
+      progress: "indeterminate",
+    },
+    progress: {
+      title: "Uploading release bundle",
+      description: "68% complete · about 12 seconds remaining.",
+      progress: 68,
+      duration: 0,
+    },
+    action: {
+      title: "Release bundle uploaded",
+      description: "The artifact is ready for review.",
+      tone: "success",
+      action: { label: "View upload", value: "view-upload" },
+      duration: 0,
+    },
+  };
+  main.querySelectorAll<HTMLButtonElement>("[data-toast-demo]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const options = toastExamples[button.dataset.toastDemo ?? "neutral"];
+      const showcase = button.closest<HTMLElement>(".nyx-toast-showcase");
+      const region = showcase?.querySelector<HTMLElement>("[data-nyx-toast-region]");
+      const targetToast = region ? initToasts(region)[0] : toast;
+      if (!targetToast || !options) return;
+      targetToast.notify(options);
+      const status = showcase?.querySelector<HTMLOutputElement>("[data-toast-demo-status]") ?? toastStatus;
+      if (status) status.value = `Created: ${options.title}.`;
+    }, { signal: abortController.signal });
+  });
+  main.querySelectorAll<HTMLElement>("[data-nyx-toast-region]").forEach((region) => {
+    region.addEventListener("nyx:toast:action", (event) => {
+      const toastEvent = event as CustomEvent<{ action?: { label: string } }>;
+      const status = region.closest<HTMLElement>(".nyx-toast-showcase")?.querySelector<HTMLOutputElement>("[data-toast-demo-status]");
+      if (status && toastEvent.detail.action) {
+        status.value = `Action selected: ${toastEvent.detail.action.label}.`;
+      }
+    }, { signal: abortController.signal });
+  });
 
   return () => {
     abortController.abort();

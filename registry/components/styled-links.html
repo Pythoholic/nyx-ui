@@ -1,12 +1,35 @@
-<div>
-  <p>
-    Review the <a class="nyx-link" href="/guides/accessibility">accessibility guide</a>
-    before publishing a new workflow.
-  </p>
-  <p>
-    <a class="nyx-link" data-variant="muted" href="/guides/theming">Theme integration notes</a>
-  </p>
-  <a class="nyx-link" data-variant="standalone" href="/guides/installation">
-    Open installation guide <span aria-hidden="true">&rarr;</span>
-  </a>
-</div>
+<section class="nyx-link-example" aria-labelledby="nyx-link-example-title">
+  <header class="nyx-link-example-header">
+    <span class="nyx-eyebrow">Link hierarchy</span>
+    <h3 class="nyx-panel-title" id="nyx-link-example-title">Release documentation</h3>
+    <p class="nyx-panel-description">Choose a treatment from the link's role in the surrounding content, not from color preference.</p>
+  </header>
+
+  <div class="nyx-link-patterns">
+    <section class="nyx-link-pattern" aria-labelledby="nyx-inline-link-title">
+      <span class="nyx-eyebrow">Inline link</span>
+      <h4 class="nyx-link-pattern-title" id="nyx-inline-link-title">Continue a sentence</h4>
+      <p>
+        Before publishing this workflow, review the
+        <a class="nyx-link" href="/guides/accessibility">accessibility guidance</a>
+        with the release owner.
+      </p>
+    </section>
+
+    <section class="nyx-link-pattern" aria-labelledby="nyx-muted-link-title">
+      <span class="nyx-eyebrow">Muted link</span>
+      <h4 class="nyx-link-pattern-title" id="nyx-muted-link-title">Offer related context</h4>
+      <p class="nyx-panel-description">A useful reference that should not compete with the primary route.</p>
+      <a class="nyx-link" data-variant="muted" href="/guides/theming">Review theme integration</a>
+    </section>
+
+    <section class="nyx-link-pattern" aria-labelledby="nyx-standalone-link-title">
+      <span class="nyx-eyebrow">Standalone link</span>
+      <h4 class="nyx-link-pattern-title" id="nyx-standalone-link-title">Lead to the next page</h4>
+      <p class="nyx-panel-description">Use a stronger treatment when navigation is the section's conclusion.</p>
+      <a class="nyx-link" data-variant="standalone" href="/guides/installation">
+        Open installation guide <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
+  </div>
+</section>

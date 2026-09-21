@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, type Plugin } from "vite";
 import { routePaths } from "./src/routes.js";
+import { fileURLToPath } from "node:url";
 
 function staticRouteFallbacks(): Plugin {
   return {
@@ -29,6 +30,12 @@ export default defineConfig({
   resolve: { dedupe: ["@nyx-ui/core", "@nyx-ui/plugins"] },
   plugins: [tailwindcss(), staticRouteFallbacks()],
   build: {
+    rolldownOptions: {
+      input: {
+        docs: fileURLToPath(new URL("./index.html", import.meta.url)),
+        admin: fileURLToPath(new URL("./admin/index.html", import.meta.url)),
+      },
+    },
     emptyOutDir: true,
     outDir: "../../dist",
   },

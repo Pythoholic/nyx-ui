@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 
 const repositoryRoot = resolve(import.meta.dirname, "..");
 const packDirectory = mkdtempSync(join(tmpdir(), "nyx-package-check-"));
-const packageDirectories = ["packages/core", "packages/plugins"];
+const packageDirectories = ["packages/core", "packages/plugins", "packages/mcp"];
 const packages = [];
 
 if (!packDirectory.startsWith(`${resolve(tmpdir())}${sep}`)) {

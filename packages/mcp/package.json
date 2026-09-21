@@ -1,0 +1,47 @@
+{
+  "name": "@nyx-ui/mcp",
+  "version": "0.1.0",
+  "description": "MCP server for AI-readable Nyx UI registry discovery.",
+  "keywords": ["nyx-ui", "mcp", "model-context-protocol", "design-system"],
+  "license": "Apache-2.0",
+  "type": "module",
+  "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
+  "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pythoholic/nyx-stealth.git",
+    "directory": "packages/mcp"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "nyx-mcp": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsc -b tsconfig.json && node scripts/copy-registry.mjs",
+    "test": "pnpm build && vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "zod": "4.2.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0",
+    "@types/node": "24.10.1",
+    "typescript": "7.0.2",
+    "vitest": "5.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

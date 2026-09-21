@@ -6,6 +6,7 @@ The project separates styling, behavior, and markup so adopters can take only th
 
 - `@nyx-ui/core` provides tokens, themes, foundations, motion, and component CSS.
 - `@nyx-ui/plugins` provides optional framework-agnostic controllers through per-component ESM subpaths.
+- `@nyx-ui/mcp` exposes the registry to compatible AI coding tools through a read-only MCP server.
 - `registry/` provides canonical, editable HTML for every catalog component and layout.
 - `apps/docs` renders those same registry files as the live documentation catalog.
 

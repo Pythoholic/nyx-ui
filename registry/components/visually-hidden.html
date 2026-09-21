@@ -1,20 +1,42 @@
-<section class="nyx-panel" aria-labelledby="nyx-visually-hidden-title">
-  <div class="nyx-panel-header">
-    <h2 class="nyx-panel-title" id="nyx-visually-hidden-title">
-      Transfer status
-      <span class="nyx-visually-hidden">for deployment package nyx-204</span>
-    </h2>
-    <button class="nyx-button nyx-icon-button" type="button">
-      <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24">
-        <path d="M18 6 6 18M6 6l12 12" />
-      </svg>
-      <span class="nyx-visually-hidden">Cancel transfer</span>
-    </button>
-  </div>
-  <div class="nyx-panel-body">
-    <p class="nyx-panel-description">The hidden text supplies context and an accessible name without changing the visible layout.</p>
-    <a class="nyx-link nyx-visually-hidden-focusable" href="#nyx-visually-hidden-example-end">Skip example details</a>
-    <span class="nyx-visually-hidden" aria-live="polite" role="status"></span>
-    <span id="nyx-visually-hidden-example-end" tabindex="-1">Visible destination for the focusable skip link.</span>
-  </div>
-</section>
+<div class="nyx-visually-hidden-example">
+  <section class="nyx-panel" aria-labelledby="nyx-visually-hidden-title">
+    <a class="nyx-link nyx-visually-hidden-focusable" href="#nyx-report-actions">Skip to report actions</a>
+    <div class="nyx-panel-header">
+      <div>
+        <span class="nyx-eyebrow">Visible interface</span>
+        <h2 class="nyx-panel-title" id="nyx-visually-hidden-title">
+          Quarterly report
+          <span class="nyx-visually-hidden">for Tokyo operations</span>
+        </h2>
+      </div>
+      <a class="nyx-button nyx-icon-button" href="#nyx-report-actions">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" /></svg>
+        <span class="nyx-visually-hidden">Download quarterly report for Tokyo operations</span>
+      </a>
+    </div>
+    <div class="nyx-panel-body">
+      <p class="nyx-panel-description">The visible layout stays concise while hidden words make short labels and icon-only controls specific.</p>
+      <p class="nyx-visually-hidden-format-link">
+        Available format:
+        <a class="nyx-link" href="#nyx-report-actions"><span class="nyx-visually-hidden">Quarterly report for Tokyo operations, </span>PDF</a>
+      </p>
+      <div class="nyx-visually-hidden-target" id="nyx-report-actions" tabindex="-1">
+        <span class="nyx-eyebrow">Skip-link destination</span>
+        <strong>Report actions</strong>
+        <span>Press Tab from the preview controls to reveal the skip link above this card.</span>
+      </div>
+    </div>
+  </section>
+
+  <aside class="nyx-visually-hidden-explainer" aria-labelledby="nyx-assistive-output-title">
+    <span class="nyx-eyebrow">What assistive technology gets</span>
+    <h3 class="nyx-panel-title" id="nyx-assistive-output-title">Extra meaning, no extra clutter</h3>
+    <dl>
+      <div><dt>Visible heading</dt><dd>Quarterly report</dd></div>
+      <div><dt>Full heading</dt><dd>Quarterly report for Tokyo operations</dd></div>
+      <div><dt>Visible link</dt><dd>PDF</dd></div>
+      <div><dt>Full link name</dt><dd>Quarterly report for Tokyo operations, PDF</dd></div>
+      <div><dt>Icon-only link</dt><dd>Download quarterly report for Tokyo operations</dd></div>
+    </dl>
+  </aside>
+</div>

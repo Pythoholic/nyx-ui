@@ -217,8 +217,30 @@
       "name": "tooltip",
       "type": "component",
       "status": "stable",
+      "description": "Brief, non-interactive help associated with a visible control or compact trigger.",
+      "useWhen": [
+        "A control needs a short clarification that is useful on hover and keyboard focus."
+      ],
+      "avoidWhen": [
+        "The content is required to complete the task.",
+        "The content contains links, buttons, or other interactive elements.",
+        "A visible label would communicate the meaning more clearly."
+      ],
       "files": ["components/tooltip.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tooltip"]
+      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tooltip"],
+      "initializer": {
+        "import": "@nyx-ui/plugins/tooltip",
+        "function": "initTooltips",
+        "selector": "[data-nyx-tooltip]"
+      },
+      "accessibility": {
+        "requirements": [
+          "The trigger remains a native focusable control.",
+          "The tooltip contains plain descriptive text and no interactive descendants.",
+          "Escape dismisses the tooltip and focus remains on the trigger."
+        ]
+      },
+      "related": ["hover-card", "popover", "visible-help-text"]
     },
     {
       "name": "context-menu",
