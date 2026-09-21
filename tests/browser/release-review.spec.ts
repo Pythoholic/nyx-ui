@@ -253,13 +253,32 @@ test("notification read actions name the next action without toggle semantics", 
   await expect(button).toHaveAccessibleName('Mark notification unread');
 });
 
-test("progress renders its declared value and animates pending work", async ({ page }) => {
+test("progress catalog renders declared values, alternate geometry, and pending work", async ({ page }) => {
   await page.goto("/components/feedback/progress");
-  const bar = page.locator('[role="tabpanel"] .nyx-progress[aria-valuenow="68"]');
+  const preview = page.locator("[data-docs-example]", { has: page.getByRole("heading", { name: "Progress patterns", exact: true }) }).getByRole("tabpanel", { name: "Preview", exact: true });
+  const bar = preview.locator('.nyx-progress[aria-valuenow="68"]').first();
   const ratio = await bar.evaluate(element => element.firstElementChild!.getBoundingClientRect().width / element.getBoundingClientRect().width);
   expect(ratio).toBeCloseTo(0.68, 2);
-  await expect(page.getByText("Upload progress: 68%", { exact: true })).toBeVisible();
-  const pending = page.locator('[role="tabpanel"] [data-indeterminate] .nyx-progress-bar');
+  await expect(preview.getByText("Upload progress", { exact: true })).toBeVisible();
+  await expect(preview.getByText("68%", { exact: true }).first()).toBeVisible();
+  await expect(preview.locator(".nyx-progress-radial")).toHaveCount(2);
+  await expect(preview.locator(".nyx-progress-gauge")).toHaveCount(1);
+  await expect(preview.locator(".nyx-progress-vertical")).toHaveCount(4);
+
+  const segmented = await preview.locator('.nyx-progress[data-layout="segmented"]').evaluate(element => {
+    const track = element.getBoundingClientRect().width;
+    const segments = Array.from(element.children, child => child.getBoundingClientRect().width);
+    return segments.reduce((total, width) => total + width, 0) / track;
+  });
+  expect(segmented).toBeCloseTo(1, 2);
+
+  const vertical = preview.locator('.nyx-progress-vertical[aria-valuenow="92"]');
+  const verticalRatio = await vertical.evaluate(element => element.firstElementChild!.getBoundingClientRect().height / element.getBoundingClientRect().height);
+  expect(verticalRatio).toBeCloseTo(0.92, 2);
+
+  const pendingTrack = preview.locator('[data-indeterminate]');
+  await expect(pendingTrack).not.toHaveAttribute("aria-valuenow");
+  const pending = pendingTrack.locator(".nyx-progress-bar");
   expect((await pending.boundingBox())!.width).toBeGreaterThan(0);
   const first = await pending.evaluate(element => getComputedStyle(element).transform);
   await expect.poll(() => pending.evaluate(element => getComputedStyle(element).transform)).not.toBe(first);

@@ -32,9 +32,9 @@ export const feedbackPages = [
     categoryId: "feedback",
     categoryLabel: "Feedback",
     title: "Progress",
-    description: "Progress communicates determinate and indeterminate work with a native progressbar contract.",
-    searchTerms: "progress bar loading processing determinate indeterminate",
-    body: `<section class="docs-prose-section"><h2>Reflect work the application actually knows</h2><p>Use a native <code>progress</code> element with a numeric value for determinate work and omit the value when completion cannot be estimated. Keep a visible text label nearby. Nyx styles the state; the application supplies truthful progress and decides when work can be canceled or retried.</p></section>${card("Progress", selectMarkup(feedbackMarkup, ["[data-nyx-example='progress']"]), "Registry source")}`,
+    description: "Progress patterns cover determinate and pending work, readable labels, semantic states, distributions, and dashboard geometry.",
+    searchTerms: "progress bar loading processing determinate indeterminate sizes labels colors segmented stacked vertical circular radial gauge",
+    body: `<section class="docs-prose-section"><h2>Reflect only the progress the application knows</h2><p>Use a determinate progressbar when completion can be calculated, and omit <code>aria-valuenow</code> while the estimate is unknown. Always expose an accessible name and keep the current value or state visible nearby. Semantic color must describe an actual outcome such as success, warning, or failure rather than decorate arbitrary percentages.</p><p>Linear progress is the default for tasks. Use segmented tracks for parts of a whole, and reserve vertical, circular, or gauge geometry for dashboards where their compact shape improves comparison. Nyx supplies presentation; the application supplies truthful values and decides when work can be canceled, retried, or announced.</p></section>${card("Progress patterns", selectMarkup(feedbackMarkup, ["[data-nyx-example='progress']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.stepper,

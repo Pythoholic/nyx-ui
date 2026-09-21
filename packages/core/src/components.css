@@ -475,10 +475,59 @@
   .nyx-toast[data-state="closing"]:dir(rtl) { animation-name: nyx-slide-out-rtl; }
   .nyx-toast-title { color: var(--nyx-ink); font-size: var(--nyx-type-nav); font-weight: var(--nyx-weight-semibold); }
   .nyx-toast-description { margin: 0.25rem 0 0; color: var(--nyx-muted); font-size: var(--nyx-type-body); }
+  .nyx-progress-catalog { display: grid; gap: var(--nyx-space-8); }
+  .nyx-progress-group { display: grid; gap: var(--nyx-space-4); }
+  .nyx-progress-group-header { display: grid; max-inline-size: 72ch; gap: var(--nyx-space-1); }
+  .nyx-progress-group-header > :is(h3, p) { margin: 0; }
+  .nyx-progress-group-header > h3 { color: var(--nyx-ink); font-size: var(--nyx-type-panel); font-weight: var(--nyx-weight-semibold); line-height: 1.35; }
+  .nyx-progress-group-header > p { color: var(--nyx-muted); font-size: var(--nyx-type-body); }
+  .nyx-progress-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nyx-space-4); }
+  .nyx-progress-size-list { display: grid; gap: var(--nyx-space-4); }
+  .nyx-progress-block { --nyx-progress-color: var(--nyx-accent); display: grid; min-inline-size: 0; align-content: start; gap: var(--nyx-space-2); padding: var(--nyx-space-4); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); }
+  .nyx-progress-block[data-tone="info"], :is(.nyx-progress-radial, .nyx-progress-gauge)[data-tone="info"] { --nyx-progress-color: var(--nyx-info); }
+  .nyx-progress-block[data-tone="success"], :is(.nyx-progress-radial, .nyx-progress-gauge)[data-tone="success"] { --nyx-progress-color: var(--nyx-signal); }
+  .nyx-progress-block[data-tone="warning"], :is(.nyx-progress-radial, .nyx-progress-gauge)[data-tone="warning"] { --nyx-progress-color: var(--nyx-warning); }
+  .nyx-progress-block[data-tone="danger"], :is(.nyx-progress-radial, .nyx-progress-gauge)[data-tone="danger"] { --nyx-progress-color: var(--nyx-danger); }
+  .nyx-progress-meta { display: flex; align-items: baseline; justify-content: space-between; gap: var(--nyx-space-3); color: var(--nyx-muted); font-size: var(--nyx-type-nav); }
+  .nyx-progress-meta > strong { flex: none; color: var(--nyx-ink); font-weight: var(--nyx-weight-semibold); }
   .nyx-progress { overflow: hidden; block-size: 0.625rem; border-radius: var(--nyx-radius-round); background: var(--nyx-line); }
-  .nyx-progress-bar { display: block; block-size: 100%; inline-size: var(--nyx-progress, 0%); border-radius: inherit; background: var(--nyx-accent); transition: inline-size var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  .nyx-progress[data-size="thin"] { block-size: 0.25rem; }
+  .nyx-progress[data-size="large"] { block-size: 1.5rem; }
+  .nyx-progress[data-shape="square"] { border-radius: 0; }
+  .nyx-progress-bar { display: block; block-size: 100%; inline-size: var(--nyx-progress, 0%); overflow: hidden; border-radius: inherit; background: var(--nyx-progress-color, var(--nyx-accent)); transition: inline-size var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  .nyx-progress-bar > span { display: flex; block-size: 100%; align-items: center; justify-content: flex-end; padding-inline: var(--nyx-space-2); color: var(--nyx-accent-ink); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-bold); line-height: 1; }
   .nyx-progress[data-indeterminate="true"] .nyx-progress-bar { inline-size: 45%; animation: nyx-progress var(--nyx-duration-progress) var(--nyx-ease-standard) infinite; }
   .nyx-progress[data-indeterminate="true"]:dir(rtl) .nyx-progress-bar { animation-name: nyx-progress-rtl; }
+  .nyx-progress[data-layout="segmented"] { display: flex; }
+  .nyx-progress-segment { display: block; block-size: 100%; inline-size: var(--nyx-progress); background: var(--nyx-accent); }
+  .nyx-progress-segment[data-tone="info"] { background: var(--nyx-info); }
+  .nyx-progress-segment[data-tone="success"] { background: var(--nyx-signal); }
+  .nyx-progress-segment[data-tone="warning"] { background: var(--nyx-warning); }
+  .nyx-progress-segment[data-tone="danger"] { background: var(--nyx-danger); }
+  .nyx-progress-segment[data-tone="muted"] { background: var(--nyx-line-strong); }
+  .nyx-progress-legend { display: flex; flex-wrap: wrap; gap: var(--nyx-space-3); color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+  .nyx-progress-legend > span { display: inline-flex; align-items: center; gap: var(--nyx-space-1); }
+  .nyx-progress-legend > span::before { inline-size: 0.5rem; block-size: 0.5rem; border-radius: var(--nyx-radius-xs); background: var(--nyx-line-strong); content: ""; }
+  .nyx-progress-legend > span[data-tone="info"]::before { background: var(--nyx-info); }
+  .nyx-progress-legend > span[data-tone="success"]::before { background: var(--nyx-signal); }
+  .nyx-progress-geometry-grid { display: grid; grid-template-columns: minmax(16rem, 0.75fr) minmax(0, 1.25fr); gap: var(--nyx-space-4); }
+  .nyx-progress-geometry-panel { display: grid; min-inline-size: 0; align-content: start; gap: var(--nyx-space-5); padding: var(--nyx-space-5); border: var(--nyx-border) solid var(--nyx-line); border-radius: var(--nyx-radius-panel); background: var(--nyx-panel-raised); }
+  .nyx-progress-panel-title { color: var(--nyx-ink); font-size: var(--nyx-type-nav); }
+  .nyx-progress-vertical-group { display: flex; min-block-size: 11rem; align-items: end; justify-content: space-around; gap: var(--nyx-space-4); }
+  .nyx-progress-vertical-item { display: grid; justify-items: center; gap: var(--nyx-space-2); color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+  .nyx-progress.nyx-progress-vertical { display: flex; inline-size: 0.75rem; block-size: 8rem; align-items: end; }
+  .nyx-progress.nyx-progress-vertical .nyx-progress-bar { inline-size: 100%; block-size: var(--nyx-progress, 0%); transition-property: block-size; }
+  .nyx-progress-radial-group { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-around; gap: var(--nyx-space-5); }
+  .nyx-progress-radial, .nyx-progress-gauge { --nyx-progress-color: var(--nyx-accent); position: relative; display: grid; inline-size: 7rem; aspect-ratio: 1; place-items: center; }
+  .nyx-progress-radial > svg, .nyx-progress-gauge > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; overflow: visible; fill: none; }
+  .nyx-progress-radial > svg { transform: rotate(-90deg); }
+  .nyx-progress-ring-track, .nyx-progress-ring-value { fill: none; stroke: var(--nyx-line-strong); stroke-linecap: round; stroke-width: 8; }
+  .nyx-progress-ring-value { stroke: var(--nyx-progress-color); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--nyx-progress-value)); transition: stroke-dashoffset var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
+  :is(.nyx-progress-radial, .nyx-progress-gauge) > span { position: relative; display: grid; justify-items: center; gap: var(--nyx-space-1); }
+  :is(.nyx-progress-radial, .nyx-progress-gauge) > span > strong { color: var(--nyx-ink); font-size: var(--nyx-type-panel); }
+  :is(.nyx-progress-radial, .nyx-progress-gauge) > span > small { color: var(--nyx-label); font-size: var(--nyx-type-meta); }
+  .nyx-progress-gauge { block-size: 5.5rem; aspect-ratio: auto; }
+  .nyx-progress-gauge > span { align-self: end; translate: 0 -0.25rem; }
   .nyx-steps { display: grid; grid-template-columns: repeat(var(--nyx-step-count, 4), 1fr); gap: var(--nyx-space-2); margin: 0; padding: 0; list-style: none; }
   .nyx-step { position: relative; padding-block-start: 1.5rem; color: var(--nyx-label); font-size: var(--nyx-type-label); letter-spacing: var(--nyx-track-meta); text-transform: uppercase; }
   .nyx-step::before { content: ""; position: absolute; inset: 0 0 auto; block-size: 0.25rem; background: var(--nyx-line-strong); }
@@ -947,6 +996,7 @@
 
 @media (max-width: 48rem) {
   .nyx-alert-grid, .nyx-alert-grid[data-columns="3"] { grid-template-columns: 1fr; }
+  .nyx-progress-grid, .nyx-progress-geometry-grid { grid-template-columns: 1fr; }
   .nyx-navigation-menu-bar { align-items: flex-start; flex-direction: column; gap: var(--nyx-space-2); }
   .nyx-navigation-menu-list { inline-size: 100%; }
   .nyx-navigation-menu-links { grid-template-columns: 1fr; min-inline-size: min(20rem, calc(100vw - 2rem)); }
