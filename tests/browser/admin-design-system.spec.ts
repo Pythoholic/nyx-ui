@@ -80,6 +80,16 @@ test('dashboard visualizations retain useful proportions at desktop and mobile w
   }
   await expect(page.locator('.admin-chart title')).toHaveCount(0);
   await expect(page.locator('.admin-chart desc')).toContainText('Apr $1,420');
+
+  await page.setViewportSize({ width: 2048, height: 1050 });
+  await page.goto('/admin/#analytics');
+  const wideChart = await page.locator('.admin-chart svg').boundingBox();
+  const widePanel = await page.locator('.admin-chart').locator('xpath=ancestor::section[1]').boundingBox();
+  expect(wideChart).not.toBeNull();
+  expect(widePanel).not.toBeNull();
+  expect(wideChart!.width).toBeLessThanOrEqual(1281);
+  expect(wideChart!.height).toBeLessThanOrEqual(375);
+  expect(wideChart!.x + wideChart!.width / 2).toBeCloseTo(widePanel!.x + widePanel!.width / 2, 0);
 });
 
 test('admin shell composes the published Nyx navigation, activity, action, and calendar patterns', async ({ page }) => {
