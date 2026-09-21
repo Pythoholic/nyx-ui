@@ -290,6 +290,23 @@ test("progress catalog renders declared values, alternate geometry, and pending 
     radial: "nyx-progress-ring-fill",
   });
 
+  const ringRendering = await preview.locator(".nyx-progress-radial").first().evaluate((element) => {
+    const svg = element.querySelector("svg")!;
+    const value = element.querySelector<SVGCircleElement>(".nyx-progress-ring-value")!;
+    return {
+      svgTransform: getComputedStyle(svg).transform,
+      shapeRendering: getComputedStyle(svg).shapeRendering,
+      vectorEffect: getComputedStyle(value).vectorEffect,
+      valueTransform: value.getAttribute("transform"),
+    };
+  });
+  expect(ringRendering).toEqual({
+    svgTransform: "none",
+    shapeRendering: "geometricprecision",
+    vectorEffect: "non-scaling-stroke",
+    valueTransform: "rotate(-90 56 56)",
+  });
+
   for (const radial of await preview.locator(".nyx-progress-radial").all()) {
     const separation = await radial.evaluate((element) => {
       const ring = element.querySelector("svg")!.getBoundingClientRect();

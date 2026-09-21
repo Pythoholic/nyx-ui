@@ -523,9 +523,8 @@
   .nyx-progress-radial-group { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-around; gap: var(--nyx-space-5); }
   .nyx-progress-radial, .nyx-progress-gauge { --nyx-progress-color: var(--nyx-accent); position: relative; display: grid; inline-size: 7rem; place-items: center; }
   .nyx-progress-radial { block-size: 8.75rem; }
-  .nyx-progress-radial > svg, .nyx-progress-gauge > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; overflow: visible; fill: none; }
-  .nyx-progress-radial > svg { transform: rotate(-90deg); }
-  .nyx-progress-ring-track, .nyx-progress-ring-value { fill: none; stroke: var(--nyx-line-strong); stroke-linecap: round; stroke-width: 8; }
+  .nyx-progress-radial > svg, .nyx-progress-gauge > svg { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; overflow: visible; fill: none; shape-rendering: geometricPrecision; }
+  .nyx-progress-ring-track, .nyx-progress-ring-value { fill: none; stroke: var(--nyx-line-strong); stroke-linecap: round; stroke-width: 8; vector-effect: non-scaling-stroke; }
   .nyx-progress-ring-value { stroke: var(--nyx-progress-color); stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--nyx-progress-value)); animation: nyx-progress-ring-fill calc(var(--nyx-duration-deliberate) * 3) var(--nyx-ease-enter) both; transition: stroke-dashoffset var(--nyx-duration-deliberate) var(--nyx-ease-standard); }
   :is(.nyx-progress-radial, .nyx-progress-gauge) > span { position: relative; display: grid; justify-items: center; gap: var(--nyx-space-1); }
   :is(.nyx-progress-radial, .nyx-progress-gauge) > span > strong { color: var(--nyx-ink); font-size: var(--nyx-type-panel); }
