@@ -971,7 +971,7 @@
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-app-sidebar { padding-inline: 0.75rem; }
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] [data-nyx-sidebar-label] { max-inline-size: 0; opacity: 0; visibility: hidden; }
   .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-sidebar-header { justify-content: center; }
-  .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-sidebar-nav :is(a, button) { inline-size: 2.75rem; block-size: 2.75rem; justify-self: center; justify-content: center; padding: 0; }
+  .nyx-app-shell[data-nyx-sidebar-collapsed="true"] .nyx-sidebar-nav :is(a, button) { inline-size: 2.75rem; block-size: 2.75rem; justify-self: center; justify-content: center; gap: 0; padding: 0; }
   .nyx-app-content { min-inline-size: 0; background: var(--nyx-void); }
   .nyx-app-content > .nyx-topbar { padding: var(--nyx-space-3) var(--nyx-space-5); border-block-end: var(--nyx-border) solid var(--nyx-line); background: var(--nyx-panel-raised); }
   .nyx-app-main { display: grid; align-content: start; gap: var(--nyx-space-3); padding: var(--nyx-space-6) var(--nyx-space-5); }

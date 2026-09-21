@@ -108,9 +108,18 @@ test('admin shell composes the published Nyx navigation, activity, action, and c
   expect(topbarAfter!.x).toBeCloseTo(topbarBefore!.x, 0);
   expect(topbarAfter!.width).toBeCloseTo(topbarBefore!.width, 0);
   expect(sidebarAfter!.width).toBeLessThan(sidebarBefore!.width);
-  const collapsedNavItem = await page.locator('#admin-sidebar .nyx-sidebar-nav a').first().boundingBox();
+  const collapsedNavLink = page.locator('#admin-sidebar .nyx-sidebar-nav a').first();
+  await expect.poll(async () => {
+    const [linkBox, iconBox] = await Promise.all([collapsedNavLink.boundingBox(), collapsedNavLink.locator('.nyx-icon').boundingBox()]);
+    return linkBox && iconBox ? Math.abs((iconBox.x + iconBox.width / 2) - (linkBox.x + linkBox.width / 2)) : Number.POSITIVE_INFINITY;
+  }).toBeLessThan(0.5);
+  const collapsedNavItem = await collapsedNavLink.boundingBox();
+  const collapsedNavIcon = await collapsedNavLink.locator('.nyx-icon').boundingBox();
   expect(collapsedNavItem).not.toBeNull();
+  expect(collapsedNavIcon).not.toBeNull();
   expect(collapsedNavItem!.width).toBeCloseTo(collapsedNavItem!.height, 0);
+  expect(collapsedNavIcon!.x + collapsedNavIcon!.width / 2).toBeCloseTo(collapsedNavItem!.x + collapsedNavItem!.width / 2, 0);
+  expect(collapsedNavIcon!.y + collapsedNavIcon!.height / 2).toBeCloseTo(collapsedNavItem!.y + collapsedNavItem!.height / 2, 0);
 
   await page.goto('/admin/#calendar');
   await expect(page.locator('.admin-calendar-layout > .nyx-calendar')).toBeVisible();

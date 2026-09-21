@@ -553,10 +553,19 @@ test("sidebar stays inside its shell and makes rail changes legible", async ({ p
   await toggle.click();
   await expect(shell).toHaveAttribute("data-state", "collapsed");
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
-  const collapsedLinkBox = await panel.getByRole("link", { name: "Settings" }).boundingBox();
+  const collapsedLink = panel.getByRole("link", { name: "Settings" });
+  await expect.poll(async () => {
+    const [linkBox, iconBox] = await Promise.all([collapsedLink.boundingBox(), collapsedLink.locator(".nyx-icon").boundingBox()]);
+    return linkBox && iconBox ? Math.abs((iconBox.x + iconBox.width / 2) - (linkBox.x + linkBox.width / 2)) : Number.POSITIVE_INFINITY;
+  }).toBeLessThan(0.5);
+  const collapsedLinkBox = await collapsedLink.boundingBox();
+  const collapsedIconBox = await collapsedLink.locator(".nyx-icon").boundingBox();
   expect(collapsedLinkBox).not.toBeNull();
+  expect(collapsedIconBox).not.toBeNull();
   expect(collapsedLinkBox!.width).toBeCloseTo(collapsedLinkBox!.height, 0);
   expect(collapsedLinkBox!.width).toBeGreaterThanOrEqual(44);
+  expect(collapsedIconBox!.x + collapsedIconBox!.width / 2).toBeCloseTo(collapsedLinkBox!.x + collapsedLinkBox!.width / 2, 0);
+  expect(collapsedIconBox!.y + collapsedIconBox!.height / 2).toBeCloseTo(collapsedLinkBox!.y + collapsedLinkBox!.height / 2, 0);
 });
 
 test("sidebar destinations switch content at each desktop review width", async ({ page }) => {
