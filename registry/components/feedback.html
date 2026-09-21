@@ -5,15 +5,77 @@
   <span class="nyx-badge" data-tone="danger">Failed</span>
 </div>
 
-<div class="nyx-stack" data-nyx-example="alerts">
-  <div class="nyx-alert" data-tone="success" role="status">
-    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
-    <div><strong class="nyx-alert-title">Deployment complete</strong>The new version is active.</div>
-  </div>
-  <div class="nyx-alert" data-tone="danger">
-    <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
-    <div><strong class="nyx-alert-title">Validation failed</strong>Correct two fields before continuing.</div>
-  </div>
+<div class="nyx-alert-catalog" data-nyx-example="alerts">
+  <section class="nyx-alert-group" aria-labelledby="alert-tones-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-tones-title">Status tones</h3>
+      <p>Match the tone to the meaning. The icon and copy keep color from carrying the message alone.</p>
+    </header>
+    <div class="nyx-alert-grid">
+      <div class="nyx-alert" data-tone="info">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5m0-8h.01" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">New audit window</strong><p>Logs remain available for the next 30 days.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="success">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Deployment complete</strong><p>The new version is active in all regions.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Capacity approaching limit</strong><p>Tokyo is using 82% of its reserved capacity.</p></div>
+      </div>
+      <div class="nyx-alert" data-tone="danger">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m9 9 6 6m0-6-6 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Validation failed</strong><p>Correct two fields before continuing.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-alert-group" aria-labelledby="alert-emphasis-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-emphasis-title">Choose the emphasis</h3>
+      <p>Use soft by default, outline for lower-priority context, and solid for a rare state that needs immediate attention.</p>
+    </header>
+    <div class="nyx-alert-grid" data-columns="3">
+      <div class="nyx-alert" data-tone="success">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Soft</strong><p>Routine confirmation.</p></div>
+      </div>
+      <div class="nyx-alert" data-emphasis="outline" data-tone="info">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5m0-8h.01" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Outline</strong><p>Persistent context.</p></div>
+      </div>
+      <div class="nyx-alert" data-emphasis="solid" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content"><strong class="nyx-alert-title">Solid</strong><p>Immediate attention.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nyx-alert-group" aria-labelledby="alert-detail-title">
+    <header class="nyx-alert-group-header">
+      <h3 id="alert-detail-title">Supporting content and recovery</h3>
+      <p>Keep the explanation short, then give people the specific facts or next step they need.</p>
+    </header>
+    <div class="nyx-alert-grid">
+      <div class="nyx-alert" data-tone="warning">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01" /><path d="M10.3 3.7 2.2 18a2 2 0 0 0 1.8 3h16a2 2 0 0 0 1.8-3L13.7 3.7a2 2 0 0 0-3.4 0Z" /></svg>
+        <div class="nyx-alert-content">
+          <strong class="nyx-alert-title">Maintenance starts at 02:00 UTC</strong>
+          <p>Two services will briefly enter read-only mode:</p>
+          <ul class="nyx-alert-list"><li>Deployment history</li><li>Audit exports</li></ul>
+        </div>
+      </div>
+      <div class="nyx-alert" data-tone="danger">
+        <svg aria-hidden="true" class="nyx-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m9 9 6 6m0-6-6 6" /></svg>
+        <div class="nyx-alert-content">
+          <strong class="nyx-alert-title">Release blocked by two checks</strong>
+          <p>Resolve the required fields or review the recovery guidance before running the release again.</p>
+          <div class="nyx-alert-actions"><a class="nyx-link" href="/components/forms/text-fields">Review fields</a><a class="nyx-link" data-variant="muted" href="/guides/accessibility">Validation guidance</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <div class="nyx-stack" data-nyx-example="progress">

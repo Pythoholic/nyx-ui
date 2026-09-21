@@ -23,9 +23,9 @@ export const feedbackPages = [
     categoryId: "feedback",
     categoryLabel: "Feedback",
     title: "Alerts",
-    description,
-    searchTerms: "alert notice message success danger validation status",
-    body: `<section class="docs-prose-section"><h2>Use for information that must remain in context</h2><p>The canonical alerts are static content blocks with a title and message. Add <code>role="alert"</code> only when an urgent message is inserted after load; content already present does not need a live-region role. The application owns dismissal, recovery actions, and field-level error association.</p></section>${card("Alerts", selectMarkup(feedbackMarkup, ["[data-nyx-example='alerts']"]), "Registry source")}`,
+    description: "Alerts keep contextual feedback visible with semantic tone, deliberate emphasis, supporting detail, and a clear recovery path.",
+    searchTerms: "alert notice message info success warning danger validation status solid outline actions list",
+    body: `<section class="docs-prose-section"><h2>Choose meaning before visual emphasis</h2><p>Use info for neutral context, success for a completed result, warning for a risk people can still avoid, and danger for failure or blocked work. Soft alerts are the default; reserve solid emphasis for a rare message that must dominate its region.</p><p>These examples are present when the page loads, so they do not use live-region roles. Add <code>role="alert"</code> only when urgent content is inserted after load, or <code>role="status"</code> for a polite result. The application owns dismissal, recovery actions, and field-level error association.</p></section>${card("Alert patterns", selectMarkup(feedbackMarkup, ["[data-nyx-example='alerts']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.progress,

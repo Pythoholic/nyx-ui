@@ -757,6 +757,29 @@ test("activity feed status semantics remain distinct across accent themes", asyn
   }
 });
 
+test("alert catalog covers tone, emphasis, supporting content, and recovery without overflow", async ({ page }) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 1200 });
+    await page.goto("/components/feedback/alerts");
+    await page.evaluate(() => document.fonts.ready);
+
+    const preview = example(page, "Alert patterns");
+    await expect(preview.locator(".nyx-alert")).toHaveCount(9);
+    await expect(preview.locator(".nyx-alert[data-tone='info']")).toHaveCount(2);
+    await expect(preview.locator(".nyx-alert[data-emphasis='outline']")).toHaveCount(1);
+    await expect(preview.locator(".nyx-alert[data-emphasis='solid']")).toHaveCount(1);
+    await expect(preview.locator(".nyx-alert-list li")).toHaveText(["Deployment history", "Audit exports"]);
+    await expect(preview.getByRole("link", { name: "Review fields" })).toHaveAttribute("href", "/components/forms/text-fields");
+
+    const layout = await preview.evaluate((element) => {
+      const columns = Array.from(element.querySelectorAll<HTMLElement>(".nyx-alert-grid"), grid => getComputedStyle(grid).gridTemplateColumns.split(" ").length);
+      return { columns, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+    });
+    expect(layout.overflow, `${width}px page overflow`).toBeLessThanOrEqual(1);
+    expect(layout.columns, `${width}px responsive alert columns`).toEqual(width <= 768 ? [1, 1, 1] : [2, 3, 2]);
+  }
+});
+
 test("activity feed payloads align with the sentence above them", async ({ page }) => {
   for (const width of [1280, 1920, 2560]) {
     await page.setViewportSize({ width, height: 1400 });
