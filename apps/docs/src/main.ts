@@ -118,6 +118,7 @@ function categoryMarkup(category: (typeof componentCategories)[number]): string 
 }
 
 const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
+  <div class="docs-nav-group"><span class="docs-nav-label">Templates</span><div class="docs-nav"><a href="${hrefFor('/admin/')}" data-admin-demo>Admin dashboard ↗</a></div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Getting started").map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Integration").map((page) => pageLink(page)).join("")}</div></div>
