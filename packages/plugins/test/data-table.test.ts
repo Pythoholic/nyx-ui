@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initDataTables, type NyxDataTable } from "../src/data-table.js";
 
+type DataRowElement = HTMLTableSectionElement["rows"][number];
+
 function renderTable(controlled = false): HTMLElement {
   document.body.innerHTML = `<div data-nyx-data-table data-nyx-data-table-page-size="2"${controlled ? ' data-nyx-data-table-controlled="true"' : ""}>
     <input data-nyx-data-table-filter><span data-nyx-data-table-page-status></span>
@@ -35,7 +37,7 @@ describe("NyxDataTable", () => {
     const root = renderTable();
     dataTable = initDataTables()[0];
     root.querySelector<HTMLButtonElement>("[data-nyx-data-table-sort]")?.click();
-    const visible = Array.from(root.querySelectorAll<HTMLTableRowElement>("tr[data-row-key]")).filter((row) => !row.hidden);
+    const visible = Array.from(root.querySelectorAll<DataRowElement>("tr[data-row-key]")).filter((row) => !row.hidden);
     expect(visible.map((row) => row.dataset.rowKey)).toEqual(["alpha", "bravo"]);
     expect(root.querySelector("th[aria-sort='ascending']")).not.toBeNull();
     expect(root.querySelectorAll("[data-nyx-motion='reordered']")).toHaveLength(0);
@@ -47,7 +49,7 @@ describe("NyxDataTable", () => {
     const filter = root.querySelector<HTMLInputElement>("[data-nyx-data-table-filter]")!;
     filter.value = "bravo";
     filter.dispatchEvent(new Event("input", { bubbles: true }));
-    expect(Array.from(root.querySelectorAll<HTMLTableRowElement>("tr[data-row-key]")).filter((row) => !row.hidden).map((row) => row.dataset.rowKey)).toEqual(["bravo"]);
+    expect(Array.from(root.querySelectorAll<DataRowElement>("tr[data-row-key]")).filter((row) => !row.hidden).map((row) => row.dataset.rowKey)).toEqual(["bravo"]);
     expect(root.querySelector("[data-nyx-data-table-page-status]")?.textContent).toBe("Page 1 of 1");
   });
 
@@ -72,6 +74,6 @@ describe("NyxDataTable", () => {
     expect(dataTable!.state.sortColumn).toBeUndefined();
     root.removeEventListener("nyx:data-table:before-sort", before);
     expect(dataTable!.sort("name")).toBe(true);
-    expect(Array.from(root.querySelectorAll<HTMLTableRowElement>("tr[data-row-key]")).map((row) => row.dataset.rowKey)).toEqual(["charlie", "alpha", "bravo"]);
+    expect(Array.from(root.querySelectorAll<DataRowElement>("tr[data-row-key]")).map((row) => row.dataset.rowKey)).toEqual(["charlie", "alpha", "bravo"]);
   });
 });

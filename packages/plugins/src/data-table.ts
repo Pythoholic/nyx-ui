@@ -1,14 +1,16 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { animateReorder } from "./internal/motion.js";
 
+type DataRowElement = HTMLTableSectionElement["rows"][number];
+
 export type NyxDataTableSortDirection = "ascending" | "descending";
 export type NyxDataTableComparator = (
   leftValue: string,
   rightValue: string,
-  leftRow: HTMLTableRowElement,
-  rightRow: HTMLTableRowElement,
+  leftRow: DataRowElement,
+  rightRow: DataRowElement,
 ) => number;
-export type NyxDataTablePredicate = (row: HTMLTableRowElement, query: string) => boolean;
+export type NyxDataTablePredicate = (row: DataRowElement, query: string) => boolean;
 
 export interface NyxDataTableOptions {
   comparators?: Record<string, NyxDataTableComparator>;
@@ -76,7 +78,7 @@ export class NyxDataTable {
   private readonly selected = new Set<string>();
   private readonly tbody: HTMLTableSectionElement;
   private readonly totalRows: number | undefined;
-  private rows: HTMLTableRowElement[] = [];
+  private rows: DataRowElement[] = [];
   private tableState: NyxDataTableState;
 
   constructor(element: HTMLElement, options: NyxDataTableOptions = {}) {
@@ -154,7 +156,7 @@ export class NyxDataTable {
   }
 
   refresh(): void {
-    this.rows = Array.from(this.tbody.querySelectorAll<HTMLTableRowElement>("tr[data-row-key]"));
+    this.rows = Array.from(this.tbody.querySelectorAll<DataRowElement>("tr[data-row-key]"));
     this.rows.forEach((row) => {
       const checkbox = row.querySelector<HTMLInputElement>("[data-nyx-data-table-row-select]");
       if (checkbox?.checked && row.dataset.rowKey) this.selected.add(row.dataset.rowKey);
@@ -175,17 +177,17 @@ export class NyxDataTable {
     return value;
   }
 
-  private cellValue(row: HTMLTableRowElement, column: string): string {
+  private cellValue(row: DataRowElement, column: string): string {
     const cell = Array.from(row.querySelectorAll<HTMLElement>("[data-column]")).find((candidate) => candidate.dataset.column === column);
     return cell?.dataset.sortValue ?? cell?.textContent?.trim() ?? "";
   }
 
-  private filteredRows(): HTMLTableRowElement[] {
+  private filteredRows(): DataRowElement[] {
     const query = this.tableState.filter.trim();
     return query ? this.rows.filter((row) => this.predicate(row, query)) : [...this.rows];
   }
 
-  private sortedRows(rows: HTMLTableRowElement[]): HTMLTableRowElement[] {
+  private sortedRows(rows: DataRowElement[]): DataRowElement[] {
     const { sortColumn, sortDirection } = this.tableState;
     if (!sortColumn || !sortDirection) return rows;
     const comparator = this.comparators[sortColumn] ?? ((left, right) => left.localeCompare(right, undefined, { numeric: true, sensitivity: "base" }));
@@ -200,7 +202,7 @@ export class NyxDataTable {
     return Math.max(1, Math.ceil((this.controlled ? this.totalRows ?? filteredCount : filteredCount) / this.tableState.pageSize));
   }
 
-  private currentPageRows(): HTMLTableRowElement[] {
+  private currentPageRows(): DataRowElement[] {
     if (this.controlled) return this.rows.filter((row) => !row.hidden);
     return this.rows.filter((row) => !row.hidden);
   }
@@ -296,7 +298,7 @@ export class NyxDataTable {
     const target = event.target;
     if (!(target instanceof HTMLInputElement)) return;
     if (target.matches("[data-nyx-data-table-row-select]")) {
-      const key = target.closest<HTMLTableRowElement>("tr[data-row-key]")?.dataset.rowKey;
+      const key = target.closest<DataRowElement>("tr[data-row-key]")?.dataset.rowKey;
       if (key) this.select(key, target.checked);
       return;
     }
