@@ -1,6 +1,6 @@
 {
   "name": "@nyx-raul/core",
-  "version": "0.1.0",
+  "version": "0.2.0-beta.1",
   "description": "Nyx UI tokens, themes, foundations, and component styles.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "css"],
   "license": "Apache-2.0",

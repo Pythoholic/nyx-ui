@@ -1,6 +1,6 @@
 {
   "name": "@nyx-raul/plugins",
-  "version": "0.1.0",
+  "version": "0.2.0-beta.1",
   "description": "Optional framework-agnostic behavior for Nyx UI components.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "components"],
   "license": "Apache-2.0",

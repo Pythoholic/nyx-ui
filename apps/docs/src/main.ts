@@ -140,7 +140,7 @@ const searchPaletteMarkup = `<dialog aria-label="Search documentation" class="ny
 
 app.innerHTML = `<div class="docs-shell">
   <header class="docs-topbar">
-    <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.1.0</span></span></a>
+    <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.2.0-beta.1</span></span></a>
     <button class="docs-search-trigger" data-nyx-dialog-trigger="docs-command-palette" type="button">${icon("search")}<span>Search documentation</span><span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span></button>
     <div class="docs-theme-list" aria-label="Accent theme" role="group">${docsThemes.map((theme) => `<button class="nyx-button docs-theme-button" data-size="small" data-theme-value="${theme}" aria-pressed="${String(theme === initialTheme)}">${theme[0]?.toUpperCase()}${theme.slice(1)}</button>`).join("")}</div>
   </header>
@@ -454,7 +454,7 @@ function render(pathname = window.location.pathname): void {
   if (canonical !== path) history.replaceState(null, "", hrefFor(canonical));
   const page = pageByPath.get(canonical);
   main.innerHTML = page
-    ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.1.0 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-ui">Source repository</a></footer>`
+    ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.2.0-beta.1 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-ui">Source repository</a></footer>`
     : notFoundMarkup();
   updateNavigation(page);
   document.title = page ? `${page.title} — Nyx UI` : "Page not found — Nyx UI";

@@ -1,0 +1,136 @@
+name: Release beta packages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type "publish 0.2.0-beta.1" to approve this exact beta
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify and prepare beta tarballs
+    if: >-
+      (github.event_name == 'release' &&
+      github.event.release.prerelease == true &&
+      github.event.release.tag_name == 'v0.2.0-beta.1') ||
+      (github.event_name == 'workflow_dispatch' &&
+      inputs.confirmation == 'publish 0.2.0-beta.1')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Enable package manager
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Pin Trusted Publishing compatible npm
+        run: npm install --global npm@11.15.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Test
+        run: pnpm test
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Verify publishable packages
+        run: pnpm packages:check
+
+      - name: Assert release versions
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+
+          const expected = "0.2.0-beta.1";
+          const manifests = [
+            "packages/core/package.json",
+            "packages/plugins/package.json",
+            "packages/mcp/package.json",
+          ];
+
+          for (const manifest of manifests) {
+            const pkg = JSON.parse(await readFile(manifest, "utf8"));
+            if (pkg.version !== expected) {
+              throw new Error(`${pkg.name} is ${pkg.version}; expected ${expected}`);
+            }
+          }
+          NODE
+
+      - name: Pack reviewed release artifacts
+        run: |
+          mkdir release-artifacts
+          npm pack ./packages/core --pack-destination ./release-artifacts --ignore-scripts
+          npm pack ./packages/plugins --pack-destination ./release-artifacts --ignore-scripts
+          npm pack ./packages/mcp --pack-destination ./release-artifacts --ignore-scripts
+
+      - name: Upload reviewed release artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: nyx-ui-0.2.0-beta.1
+          path: release-artifacts/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish beta packages
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: release
+    permissions:
+      contents: read
+      id-token: write
+
+    # FIRST-PUBLISH BOOTSTRAP (one time per package)
+    # A brand-new npm package cannot use Trusted Publishing until it exists.
+    # The owner must publish its first version manually with 2FA, then bind that
+    # package's npm Trusted Publisher to Pythoholic/nyx-ui, release.yml, and the
+    # protected "release" environment. Every subsequent release uses this job.
+
+    steps:
+      - name: Set up Node.js for npm Trusted Publishing
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.20.0
+          registry-url: https://registry.npmjs.org
+
+      - name: Pin Trusted Publishing compatible npm
+        run: npm install --global npm@11.15.0
+
+      - name: Download reviewed release artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: nyx-ui-0.2.0-beta.1
+          path: release-artifacts
+
+      - name: Publish core, plugins, and MCP to the beta channel
+        run: |
+          npm publish release-artifacts/nyx-raul-core-0.2.0-beta.1.tgz --tag beta --provenance --access public
+          npm publish release-artifacts/nyx-raul-plugins-0.2.0-beta.1.tgz --tag beta --provenance --access public
+          npm publish release-artifacts/nyx-raul-mcp-0.2.0-beta.1.tgz --tag beta --provenance --access public
