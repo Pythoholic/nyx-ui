@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a reproducible problem in Nyx UI.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Nyx UI. For security vulnerabilities, use the private reporting path in SECURITY.md instead of this form.
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the problem and its impact.
+      placeholder: Tell us what you observed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps or link
+      description: Provide minimal steps, a repository, or a live reproduction.
+      placeholder: |
+        1. Initialize ...
+        2. Interact with ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: affected_surface
+    attributes:
+      label: Affected component or route
+      placeholder: dialog, data-table, /admin/#overview, or another surface
+    validations:
+      required: true
+  - type: input
+    id: package_version
+    attributes:
+      label: Package and version
+      description: Include every affected package when known.
+      placeholder: "@nyx-raul/plugins@0.2.0-beta.1"
+    validations:
+      required: true
+  - type: input
+    id: browser_os
+    attributes:
+      label: Browser and operating system
+      placeholder: Firefox 143 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: assistive_technology
+    attributes:
+      label: Assistive technology
+      description: If relevant, include the product and version or write "Not applicable."
+      placeholder: NVDA 2026.1
+    validations:
+      required: false

@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a component, behavior, or improvement for Nyx UI.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user need or limitation, not only the desired implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed component or behavior
+      description: Explain the public API, interaction, or outcome you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: prior_art
+    attributes:
+      label: Prior art
+      description: Link to relevant standards, design systems, libraries, or examples.
+    validations:
+      required: false
+  - type: dropdown
+    id: project_layer
+    attributes:
+      label: Where does this belong?
+      description: Choose the primary Nyx UI layer for the request.
+      options:
+        - Core CSS
+        - Plugins behavior
+        - Registry markup
+        - Unsure
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Willingness to contribute
+      description: Would you be willing to help implement this after discussion?
+      options:
+        - "Yes"
+        - Maybe, with guidance
+        - "No"
+    validations:
+      required: true

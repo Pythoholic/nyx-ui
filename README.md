@@ -123,6 +123,10 @@ pnpm changeset
 
 Maintainers apply pending versions with `pnpm version-packages`. Publishing is a maintainer-only release operation; do not run `pnpm release` as part of ordinary development.
 
+See [Contributing](./CONTRIBUTING.md), the [Code of Conduct](./CODE_OF_CONDUCT.md),
+the [Security Policy](./SECURITY.md), and the [Changelog](./CHANGELOG.md) for the
+project's complete governance and release guidance.
+
 ## License
 
 Apache-2.0
