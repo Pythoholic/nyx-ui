@@ -126,3 +126,7 @@ Maintainers apply pending versions with `pnpm version-packages`. Publishing is i
 ## License
 
 Apache-2.0
+
+## Credits
+
+Soumya Raula, Senior Software Engineer, AI, Cloud, SRE

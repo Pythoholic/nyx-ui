@@ -4,6 +4,7 @@
   "description": "MCP server for AI-readable Nyx UI registry discovery.",
   "keywords": ["nyx-ui", "mcp", "model-context-protocol", "design-system"],
   "license": "Apache-2.0",
+  "author": "Soumya Raula <soumyaraula20@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
   "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
@@ -24,7 +25,7 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": ["dist", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc -b tsconfig.json && node scripts/copy-registry.mjs",
     "test": "pnpm build && vitest run",

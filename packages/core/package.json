@@ -4,6 +4,7 @@
   "description": "Nyx UI tokens, themes, foundations, and component styles.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "css"],
   "license": "Apache-2.0",
+  "author": "Soumya Raula <soumyaraula20@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
   "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
@@ -17,7 +18,7 @@
     ".": "./src/index.css",
     "./theme.css": "./src/index.css"
   },
-  "files": ["src/**/*.css"],
+  "files": ["src/**/*.css", "LICENSE"],
   "sideEffects": ["**/*.css"],
   "publishConfig": {
     "access": "public"

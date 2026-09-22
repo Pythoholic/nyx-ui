@@ -132,6 +132,7 @@ try {
     const requiredFiles = [
       "package.json",
       "README.md",
+      "LICENSE",
       ...collectExportTargets(manifest.exports).map((target) =>
         target.replace(/^\.\//, ""),
       ),

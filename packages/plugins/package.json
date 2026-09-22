@@ -4,6 +4,7 @@
   "description": "Optional framework-agnostic behavior for Nyx UI components.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "components"],
   "license": "Apache-2.0",
+  "author": "Soumya Raula <soumyaraula20@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
   "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
@@ -193,7 +194,7 @@
       "default": "./dist/toast.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "LICENSE"],
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "test": "vitest run --environment jsdom --pool=vmThreads",
