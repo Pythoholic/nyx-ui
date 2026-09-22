@@ -27,3 +27,6 @@ scripts/ralph.sh
 scripts/verify-review-regressions.py
 nyx-design/NYX_UI_PROJECT_BRIEF.md
 nyx-design/index.html
+
+# pnpm local content-addressable store (build artifact)
+.pnpm-store/
