@@ -1,8 +1,6 @@
 import { dispatchNyxEvent, queryAllIncludingRoot } from "./internal/dom.js";
 import { horizontalArrowDelta } from "./internal/direction.js";
 
-type CalendarRowElement = HTMLTableSectionElement["rows"][number];
-
 export interface NyxCalendarDate {
   day: number;
   month: number;
@@ -153,7 +151,7 @@ export class NyxCalendar {
   private readonly nextButton: HTMLButtonElement;
   private readonly previousButton: HTMLButtonElement;
   private readonly valueInput: HTMLInputElement | undefined;
-  private readonly weekdayRow: CalendarRowElement;
+  private readonly weekdayRow: HTMLTableRowElement;
   private focusedDate: NyxCalendarDate;
   private monthDate: NyxCalendarDate;
   private selectedValue: NyxCalendarValue;
@@ -170,7 +168,7 @@ export class NyxCalendar {
     this.heading = this.required<HTMLElement>("[data-nyx-calendar-heading]");
     this.previousButton = this.required<HTMLButtonElement>("[data-nyx-calendar-previous]");
     this.nextButton = this.required<HTMLButtonElement>("[data-nyx-calendar-next]");
-    this.weekdayRow = this.required<CalendarRowElement>("[data-nyx-calendar-weekdays]");
+    this.weekdayRow = this.required<HTMLTableRowElement>("[data-nyx-calendar-weekdays]");
     this.gridBody = this.required<HTMLTableSectionElement>("[data-nyx-calendar-grid]");
     this.announcer = this.required<HTMLElement>("[data-nyx-calendar-announcer]");
     this.valueInput = element.querySelector<HTMLInputElement>("[data-nyx-calendar-value]") ?? undefined;
