@@ -8,12 +8,30 @@ index.
 
 ## Unreleased
 
-### Planned for 0.2.0-beta.1
+## 0.2.0-beta.1 - 2026-09-22
 
-- Prepare attribution and Apache-2.0 licensing for the public release.
-- Establish the `Pythoholic/nyx-ui` repository identity.
-- Move public packages to the `@nyx-raul` npm scope.
-- Add public contribution, conduct, security, issue, and pull-request governance.
-- Prepare beta publishing under the npm `beta` dist-tag.
+This is a beta source release. The packages are not yet published to npm; once
+published, they will use the `beta` dist-tag.
 
-`0.2.0-beta.1` has not been published yet.
+### Added
+
+- Apache-2.0 license files in each public package and a root `NOTICE` with
+  maintainer attribution.
+- Public contribution, conduct, security, issue, and pull-request governance.
+- Changesets prerelease configuration, per-package changelogs, and a protected
+  beta release workflow with package verification.
+
+### Changed
+
+- Established `Pythoholic/nyx-ui` as the public repository identity.
+- Moved the public packages to the `@nyx-raul` scope and versioned the packages,
+  workspace, documentation, and registry as `0.2.0-beta.1`.
+- Declared Tailwind CSS `>=4 <5` as an optional peer of `@nyx-raul/core` so
+  direct CSS consumers do not receive a peer warning.
+- Replaced remote admin-demo image slots with locally rendered artwork and
+  removed internal release and review artifacts from the public tree.
+
+### Fixed
+
+- Released each browser page after its route audit to avoid retaining pages
+  across the full catalog check.
