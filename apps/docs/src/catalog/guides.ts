@@ -7,7 +7,7 @@ function prose(title: string, body: string): string {
   return `<section class="docs-prose-section"><h2>${title}</h2>${body}</section>`;
 }
 
-const installCommand = `pnpm add @nyx-ui/core @nyx-ui/plugins`;
+const installCommand = `pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta`;
 const tailwindSetup = `@import "tailwindcss";
 @source "../src/**/*.{html,js,ts,jsx,tsx}";
 @source "../node_modules/@nyx-ui/core/src/**/*.css";
@@ -51,7 +51,7 @@ const registryAdoption = `# Copy the canonical structure into application source
 cp registry/components/dialog.html src/components/account-dialog.html
 
 # Keep shared presentation and optional behavior as dependencies
-pnpm add @nyx-ui/core @nyx-ui/plugins`;
+pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta`;
 interface AiRegistryItem {
   name: string;
   type: string;
@@ -76,18 +76,18 @@ const aiResult = `Selected: tooltip
 Reason: the request is brief, descriptive, and non-interactive.
 
 Copy: registry/components/tooltip.html
-Install: @nyx-ui/core and @nyx-ui/plugins/tooltip
+Install: @nyx-ui/core@beta and @nyx-ui/plugins@beta
 Initialize: initTooltips(root)
 
 Guardrails:
 - Keep the trigger as a native focusable control.
 - Do not put links or buttons inside the tooltip.
 - Retain controller instances and destroy them before replacing root.`;
-const mcpRun = `npx -y @nyx-ui/mcp`;
-const skillInstall = `npx skills add Pythoholic/nyx-stealth --skill nyx-ui`;
+const mcpRun = `npx -y @nyx-ui/mcp@beta`;
+const skillInstall = `npx skills add Pythoholic/nyx-ui --skill nyx-ui`;
 const codexMcpConfig = `[mcp_servers.nyx]
 command = "npx"
-args = ["-y", "@nyx-ui/mcp"]
+args = ["-y", "@nyx-ui/mcp@beta"]
 enabled_tools = [
   "list_components",
   "search_components",
@@ -99,7 +99,7 @@ const claudeMcpConfig = `{
     "nyx": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@nyx-ui/mcp"]
+      "args": ["-y", "@nyx-ui/mcp@beta"]
     }
   }
 }`;
@@ -152,7 +152,7 @@ export const guidePages = [
       ${prose("Packages", `<p><code>@nyx-ui/core</code> supplies the token layers, themes, foundations, and component CSS. <code>@nyx-ui/plugins</code> supplies optional DOM behavior through per-component ESM subpaths.</p>${codeBlock(installCommand, "shell", "Shell")}`)}
       ${prose("Tailwind CSS 4 setup", `<p>Import the compiler, register your application and Nyx source locations, then import the Nyx stylesheet. Keep the <code>@source</code> entries accurate for every place copied markup can live so its classes are detected.</p>${codeBlock(tailwindSetup, "css", "CSS")}`)}
       ${prose("Load the font", `<p>Nyx declares JetBrains Mono but does not bundle font files. Load weights 400, 500, 600, and 700 in your document head, or self-host licensed font files with matching <code>@font-face</code> rules and <code>font-display: swap</code>. While loading, or if the request fails, the stack uses Cascadia Code, then the system monospace fallback. Layout stays usable; glyph shapes and text wrapping may differ.</p>${codeBlock(fontSetup, "html", "Document head")}`)}
-      ${prose("Without a build step", `<p>Nyx does not currently publish a supported browser-CDN bundle or precompiled stylesheet. The source package and its theme integration require a CSS build. Plain HTML is the component contract, but a no-build distribution is not promised in version 0.1.</p>`)}
+      ${prose("Without a build step", `<p>Nyx does not currently publish a supported browser-CDN bundle or precompiled stylesheet. The source package and its theme integration require a CSS build. Plain HTML is the component contract, but a no-build distribution is not included in the beta.</p>`)}
     </div>`,
   }),
   page({
@@ -296,7 +296,7 @@ export const guidePages = [
       </section>
 
       <section class="docs-overview-section" aria-labelledby="ai-mcp-heading">
-        <header class="docs-overview-section-head"><span class="nyx-eyebrow">MCP server</span><h2 id="ai-mcp-heading">Connect an agent to the Nyx registry</h2><p>Once published, the package runs as a local stdio server. Add the command below to a compatible MCP client.</p></header>
+        <header class="docs-overview-section-head"><span class="nyx-eyebrow">MCP server</span><h2 id="ai-mcp-heading">Connect an agent to the Nyx registry</h2><p>The beta package runs as a local stdio server. Add the command below to a compatible MCP client.</p></header>
         <div class="docs-ai-mcp-build">${codeBlock(mcpRun, "shell", "Run the MCP server")}<div><strong>Read-only by design</strong><p>The server can return registry metadata and declared component source. It cannot edit a project or execute component code.</p></div></div>
         <ul class="docs-ai-tools" aria-label="Nyx MCP tools">
           <li><code>list_components</code><span>Browse registry items by type or status.</span></li>
@@ -365,8 +365,8 @@ export const guidePages = [
       </section>
 
       <aside class="docs-ai-boundary" aria-labelledby="ai-boundary-heading">
-        <div><span class="nyx-eyebrow">Availability</span><h2 id="ai-boundary-heading">Public package release required</h2></div>
-        <p>The configuration above becomes installable when <code>@nyx-ui/mcp</code> is published. Until then, treat the MCP connection as a preview; the repository-hosted Agent Skill remains available independently.</p>
+        <div><span class="nyx-eyebrow">Availability</span><h2 id="ai-boundary-heading">Use the beta release</h2></div>
+        <p>Use the explicit <code>@beta</code> package tag until a stable release is available. The repository-hosted Agent Skill remains available independently.</p>
       </aside>
     </div>`,
   }),

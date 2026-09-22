@@ -85,7 +85,7 @@ Its identity is:
 ## Proposed repository architecture
 
 ```text
-nyx-stealth/
+nyx-ui/
 ├─ apps/
 │  ├─ docs/                  # Documentation, live examples, registry endpoint
 │  └─ playground/            # Manual development and accessibility sandbox

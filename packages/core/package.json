@@ -6,11 +6,11 @@
   "license": "Apache-2.0",
   "author": "Soumya Raula <soumyaraula20@gmail.com>",
   "type": "module",
-  "homepage": "https://github.com/Pythoholic/nyx-stealth#readme",
-  "bugs": "https://github.com/Pythoholic/nyx-stealth/issues",
+  "homepage": "https://github.com/Pythoholic/nyx-ui#readme",
+  "bugs": "https://github.com/Pythoholic/nyx-ui/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pythoholic/nyx-stealth.git",
+    "url": "git+https://github.com/Pythoholic/nyx-ui.git",
     "directory": "packages/core"
   },
   "style": "./src/index.css",
@@ -20,6 +20,14 @@
   },
   "files": ["src/**/*.css", "LICENSE"],
   "sideEffects": ["**/*.css"],
+  "peerDependencies": {
+    "tailwindcss": ">=4 <5"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "access": "public"
   }

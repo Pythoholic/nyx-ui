@@ -454,7 +454,7 @@ function render(pathname = window.location.pathname): void {
   if (canonical !== path) history.replaceState(null, "", hrefFor(canonical));
   const page = pageByPath.get(canonical);
   main.innerHTML = page
-    ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.1.0 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-stealth">Source repository</a></footer>`
+    ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.1.0 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-ui">Source repository</a></footer>`
     : notFoundMarkup();
   updateNavigation(page);
   document.title = page ? `${page.title} — Nyx UI` : "Page not found — Nyx UI";

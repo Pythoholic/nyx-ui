@@ -183,13 +183,13 @@ test("AI integration renders its pilot contract from the registry", async ({ pag
   await expect(page.locator(".docs-ai-contract")).toContainText('"function": "initTooltips"');
   await expect(page.locator(".docs-ai-contract-notes")).toContainText("components/tooltip.html");
   await expect(page.locator(".docs-ai-tools > li")).toHaveCount(4);
-  await expect(page.locator(".docs-ai-skill")).toContainText("skills add Pythoholic/nyx-stealth");
+  await expect(page.locator(".docs-ai-skill")).toContainText("skills add Pythoholic/nyx-ui");
   await expect(page.locator(".docs-ai-agents > article")).toHaveCount(6);
   await expect(page.locator(".docs-ai-agents")).toContainText("Claude Code");
   await expect(page.locator(".docs-ai-connect")).toContainText(".codex/config.toml");
   await expect(page.locator(".docs-ai-connect")).toContainText(".mcp.json");
-  await expect(page.locator(".docs-ai-connect")).toContainText("@nyx-ui/mcp");
-  await expect(page.locator(".docs-ai-boundary")).toContainText("Public package release required");
+  await expect(page.locator(".docs-ai-connect")).toContainText("@nyx-ui/mcp@beta");
+  await expect(page.locator(".docs-ai-boundary")).toContainText("Use the beta release");
 
   const exchangeCards = page.locator(".docs-ai-example > .docs-code");
   const requestBox = await exchangeCards.nth(0).boundingBox();

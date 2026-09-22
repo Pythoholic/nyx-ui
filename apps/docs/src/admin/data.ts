@@ -33,13 +33,6 @@ export function initialState(): AdminState {
       { id: 'msg2', name: 'James Wilson', subject: 'Order NX-1046 · delivery update', body: 'Could you confirm the shipping details for this order? The customer has asked for an update before Friday.', unread: true, replies: [] },
       { id: 'msg3', name: 'Maya Patel', subject: 'Photography brief', body: 'The shot list covers the six hero products. We are waiting on the final images before publishing.', unread: false, replies: [] },
     ],
-    settings: { workspace: 'Stealth Studio', email: 'hello@example.com', timezone: 'Asia/Tokyo', digest: true }, theme: 'signal',
+    settings: { workspace: 'Northstar Studio', email: 'hello@example.com', timezone: 'Asia/Tokyo', digest: true }, theme: 'signal',
   };
 }
-
-/** Supply local image paths here. Empty paths intentionally render labelled placeholders. */
-export const imageSlots: Record<string, { src: string; alt: string; ratio: string }> = {
-  campaign: { src: '', alt: 'Autumn campaign image', ratio: '16:9' },
-  ...Object.fromEntries(initialState().products.map(p => [p.id, { src: '', alt: p.name, ratio: '4:3' }])),
-  ...Object.fromEntries(names.map((name, i) => [`avatar-${i}`, { src: '', alt: name, ratio: '1:1' }])),
-};

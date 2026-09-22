@@ -12,15 +12,24 @@ The project separates styling, behavior, and markup so adopters can take only th
 
 ## What ships
 
-The catalog contains 86 component routes across actions, forms, primitives, navigation, overlays, feedback, data display, visualization, media, AI-product patterns, and layouts. It includes static semantic patterns as well as controllers for dialogs, menus, composite form controls, tables, queues, uploads, carousels, workspace navigation, and other stateful interfaces.
+The catalog contains 68 registry entries across actions, forms, primitives, navigation, overlays, feedback, data display, visualization, media, AI-product patterns, and layouts. It includes static semantic patterns as well as controllers for dialogs, menus, composite form controls, tables, queues, uploads, carousels, workspace navigation, and other stateful interfaces.
 
 Nyx favors native elements first: forms remain forms, navigation remains links, tables remain tables, and modal behavior composes the native `dialog` element. Controllers add the behavior that HTML does not supply on its own, including focus movement, keyboard interaction, dismissal, positioning, synchronized state, cancelable before-events, and cleanup.
 
 ## Installation
 
-Package distribution is being evaluated before the first public release. The final consumer install commands will be added after that decision; do not assume that the current package names are available from a public registry yet.
+Nyx UI is distributed on npm through the `beta` dist-tag. Consumer projects should keep the tag explicit until a stable release is available:
 
-To evaluate Nyx from this repository today, clone it, install the workspace dependencies, and run the documentation application:
+```shell
+pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta
+npx -y @nyx-ui/mcp@beta
+```
+
+The MCP command starts the read-only registry server; it is not required by applications that only use Nyx CSS or browser behavior.
+
+### Repository development
+
+To work on Nyx itself, clone this repository, install the workspace dependencies, and run the documentation application:
 
 ```shell
 pnpm install
@@ -92,19 +101,10 @@ pnpm install
 pnpm dev
 ```
 
-`pnpm dev` builds the behavior package, then serves the documentation catalog on
-`http://127.0.0.1:5173/`. The port is not pinned: if 5173 is already in use the dev server takes
-the next free port and prints the URL it chose, so read the terminal output rather than assuming
-5173. Stop the server with `Ctrl+C`; leaving one running is what holds the port for the next run.
-
-To pin the port explicitly, pass it through:
-
-```shell
-pnpm dev -- --port 5173 --strictPort
-```
-
-`--strictPort` fails loudly instead of silently moving to another port, which is what you want
-when a test run or a script expects a fixed URL.
+`pnpm dev` builds the behavior package, then serves the documentation catalog at
+`http://127.0.0.1:5174/`. The development server uses strict-port behavior and exits with an
+error when port 5174 is occupied. Stop the existing process with `Ctrl+C` before starting another
+server.
 
 Before committing a phase, run:
 
@@ -121,7 +121,7 @@ Consumer-visible changes use Changesets:
 pnpm changeset
 ```
 
-Maintainers apply pending versions with `pnpm version-packages`. Publishing is intentionally deferred until the distribution decision is recorded; do not run `pnpm release` as part of ordinary development.
+Maintainers apply pending versions with `pnpm version-packages`. Publishing is a maintainer-only release operation; do not run `pnpm release` as part of ordinary development.
 
 ## License
 

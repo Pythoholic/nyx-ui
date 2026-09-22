@@ -39,7 +39,7 @@ This is the lowest-friction option for an open-source package intended for broad
 
 ### Consumer experience
 
-The repository is hosted under `Pythoholic/nyx-stealth`. The host registry only accepts scoped packages whose namespace is the publishing user or organization. Consumers would need a scope mapping and an access token even for public npm-format packages:
+The repository is hosted under `Pythoholic/nyx-ui`. The host registry only accepts scoped packages whose namespace is the publishing user or organization. Consumers would need a scope mapping and an access token even for public npm-format packages:
 
 ```ini
 @NAMESPACE:registry=https://npm.pkg.github.com

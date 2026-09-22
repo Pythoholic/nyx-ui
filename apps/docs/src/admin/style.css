@@ -53,13 +53,16 @@ main > .admin-panel { margin-bottom: 22px; }
 .admin-person strong, .admin-person small { display: block; font-weight: 500; }
 .admin-person small { font-size: var(--nyx-type-meta); color: var(--nyx-label); margin-top: 3px; }
 .admin-muted { color: var(--nyx-label); font-size: var(--nyx-type-meta); line-height: 1.7; }
-.admin-art { width: 100%; aspect-ratio: 4/3; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 9px; background: repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--nyx-line) 30%, transparent) 14px 15px), var(--nyx-input); color: var(--nyx-label); object-fit: cover; border: 1px dashed var(--nyx-line-strong); }
-.admin-art > span:first-child { width: 38px; height: 38px; border: 1px solid var(--nyx-line-strong); border-radius: var(--nyx-radius-panel); display: grid; place-items: center; }
-.admin-art small { font-size: var(--nyx-type-meta); }
-.admin-art-spec { font: var(--nyx-type-meta)/1.5 var(--font-nyx); letter-spacing: .1em; opacity: .7; }
-.admin-art.compact { width: 48px; height: 48px; }
+.admin-art { --admin-art-accent: var(--nyx-accent); --admin-art-secondary: var(--nyx-chart-secondary); position: relative; isolation: isolate; width: 100%; aspect-ratio: 4/3; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--admin-art-accent) 52%, transparent) 0 8%, transparent 34%), linear-gradient(145deg, color-mix(in srgb, var(--admin-art-accent) 24%, var(--nyx-input)), var(--nyx-panel) 54%, color-mix(in srgb, var(--admin-art-secondary) 30%, var(--nyx-input))); color: var(--nyx-ink); border-bottom: 1px solid var(--nyx-line-strong); }
+.admin-art::before { content: ''; position: absolute; inset: 0; z-index: -2; background: repeating-linear-gradient(90deg, transparent 0 47px, color-mix(in srgb, var(--nyx-line) 40%, transparent) 47px 48px), repeating-linear-gradient(0deg, transparent 0 47px, color-mix(in srgb, var(--nyx-line) 40%, transparent) 47px 48px); mask-image: linear-gradient(135deg, rgb(0 0 0 / 75%), transparent 72%); }
+.admin-art::after { content: ''; position: absolute; z-index: -1; width: 48%; aspect-ratio: 1; right: -8%; bottom: -28%; border-radius: 50%; border: 1.5rem solid color-mix(in srgb, var(--admin-art-secondary) 28%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--admin-art-secondary) 56%, transparent); }
+.admin-art-orbit { position: absolute; width: 42%; aspect-ratio: 1; border: 1px solid color-mix(in srgb, var(--admin-art-accent) 68%, transparent); border-radius: 50%; transform: rotate(-18deg) scaleY(.42); box-shadow: 0 0 1.5rem color-mix(in srgb, var(--admin-art-accent) 18%, transparent); }
+.admin-art strong { font: 700 clamp(2.4rem, 7vw, 5.5rem)/1 var(--font-nyx); letter-spacing: -.08em; text-shadow: 0 0 2rem color-mix(in srgb, var(--admin-art-accent) 35%, transparent); }
+.admin-art small { position: absolute; left: 18px; bottom: 16px; font: 600 var(--nyx-type-meta)/1 var(--font-nyx); letter-spacing: .14em; color: var(--nyx-label); }
+.admin-art[data-art="prod-2"], .admin-art[data-art="prod-5"] { --admin-art-accent: var(--nyx-info); --admin-art-secondary: var(--nyx-accent); }
+.admin-art[data-art="prod-3"], .admin-art[data-art="prod-6"] { --admin-art-accent: var(--nyx-warning); --admin-art-secondary: var(--nyx-danger); }
 .admin-campaign { padding: 0; overflow: hidden; }
-.admin-campaign .admin-art { aspect-ratio: 16/9; border: 0; border-bottom: 1px dashed var(--nyx-line-strong); }
+.admin-campaign .admin-art { aspect-ratio: 16/9; }
 .admin-campaign > div:last-child { padding: 22px; }
 .admin-campaign h2 { margin: var(--nyx-space-3) 0; }
 .admin-campaign p { font-size: var(--nyx-type-body); color: var(--nyx-muted); line-height: 1.65; margin-bottom: 18px; }

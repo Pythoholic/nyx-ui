@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 
 test('admin products, inbox and member roles persist without connected services', async ({ page }) => {
   await page.goto('/admin/#products');
+  await expect(page.getByRole('img', { name: /Abstract product artwork for/ })).toHaveCount(6);
+  await expect(page.locator('.admin-product img')).toHaveCount(0);
   await page.locator('article').filter({ has: page.getByRole('heading', { name: 'Studio headphones' }) }).getByRole('button', { name: 'Edit product' }).click();
   await page.getByLabel('Stock quantity').fill('0');
   await page.getByRole('button', { name: 'Save changes' }).click();
@@ -44,6 +46,8 @@ test('admin routes render, navigation responds, and the page stays bounded on mo
   page.on('pageerror', e => errors.push(e.message));
   await page.goto('/admin/');
   await expect(page.getByRole('heading', { name: 'Workspace overview' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'Abstract artwork for the autumn 2026 campaign' })).toBeVisible();
+  await expect(page.locator('.admin-campaign img')).toHaveCount(0);
   for (const width of [2560, 1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of ['overview', 'analytics', 'orders', 'customers', 'products', 'projects', 'inbox', 'calendar', 'team', 'billing', 'settings']) {
