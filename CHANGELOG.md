@@ -8,6 +8,16 @@ index.
 
 ## Unreleased
 
+## 0.2.0-beta.2 - 2026-09-22
+
+### Added
+
+- 0.2.0-beta.1 release notes and changelog entry.
+
+### Removed
+
+- An external design references section from the admin demo notes.
+
 ## 0.2.0-beta.1 - 2026-09-22
 
 This is a beta source release. The packages are not yet published to npm; once
