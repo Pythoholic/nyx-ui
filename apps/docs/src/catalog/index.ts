@@ -80,12 +80,12 @@ export const overviewPage = page({
           <a class="nyx-button" data-variant="primary" data-docs-link data-docs-path="/guides/render-workspace" href="/guides/render-workspace">Open the working example</a>
           <a class="nyx-link" data-docs-link data-docs-path="/guides/installation" href="/guides/installation">Read installation guidance</a>
         </div>
-        <p class="docs-overview-note">Nyx 0.2.0-beta.1 requires a CSS build step. It does not currently provide a supported CDN bundle or framework wrapper.</p>
+        <p class="docs-overview-note">Nyx 0.2.0-beta.2 requires a CSS build step. It does not currently provide a supported CDN bundle or framework wrapper.</p>
       </aside>
     </section>
 
     <div class="docs-readout" aria-label="Current catalog scope">
-      <div class="docs-readout-row"><span>Release</span><strong>0.2.0-beta.1</strong></div>
+      <div class="docs-readout-row"><span>Release</span><strong>0.2.0-beta.2</strong></div>
       <div class="docs-readout-row"><span>Foundation groups</span><strong>4</strong></div>
       <div class="docs-readout-row"><span>Component pages</span><strong>84</strong></div>
       <div class="docs-readout-row"><span>Delivery</span><strong>CSS · HTML · ESM</strong></div>

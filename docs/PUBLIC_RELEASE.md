@@ -1,6 +1,6 @@
 # Public release checklist
 
-Target: `0.2.0-beta.1` on npm under dist-tag `beta`.
+Target: `0.2.0-beta.2` on npm under dist-tag `beta`.
 
 Line references below describe the pre-remediation tree audited on 2026-09-22.
 
@@ -24,7 +24,7 @@ Completed repository work:
 - Blockers 4, 7-9, and 13-16: `f04055b` (`release: rename repository identity and finish public surfaces`).
 - Scoped package identity used by Phase 5: `d39c234` (`release: move packages to the nyx-raul npm scope`).
 - Blocker 10: `b0e5bcf` (`docs: add public project governance`).
-- Blockers 5-6 and 11-12: this Phase 5 commit (`release: prepare 0.2.0-beta.1 publishing`); its hash is the commit containing this checklist.
+- Blockers 5-6 and 11-12: this Phase 5 commit (`release: prepare 0.2.0-beta.2 publishing`); its hash is the commit containing this checklist.
 
 Outstanding owner actions before any release run:
 
@@ -32,7 +32,7 @@ Outstanding owner actions before any release run:
 - Create and protect the GitHub environment named `release`, require Soumya Raula's approval for each deployment, and configure the intended branch/tag protection.
 - For each new package name (`@nyx-raul/core`, `@nyx-raul/plugins`, and `@nyx-raul/mcp`), perform the one-time first publish manually with 2FA because a package must exist before npm Trusted Publishing can be bound.
 - Immediately after each first publish, bind that package's npm Trusted Publisher to `Pythoholic/nyx-ui`, workflow `release.yml`, environment `release`, and direct `npm publish`; verify all three bindings before any subsequent workflow release.
-- Review the exact tarballs, authorize publishing separately, and approve the protected workflow job. Never run the workflow for a version already published during bootstrap.
+- Review the exact tarballs, authorize publishing separately, and approve the protected workflow job. Never run the workflow for a version already published during initial setup.
 
 ## 2. BLOCKERS
 
@@ -63,10 +63,10 @@ Outstanding owner actions before any release run:
    - Owner action outside repo: run `npm login`; enable account-level 2FA; retain and test at least one recovery path; manually publish each brand-new package once with 2FA; then create a Trusted Publisher binding for each package targeting `Pythoholic/nyx-ui`, `release.yml`, and environment `release`.
    - Acceptance: the authenticated owner verifies scope rights, recovery readiness, and all three per-package Trusted Publisher bindings. Do not use a disposable publish or an unauthenticated `npm view` as a substitute.
 
-6. **DONE (this Phase 5 commit) — Set the complete release surface to `0.2.0-beta.1`.**
+6. **DONE (this Phase 5 commit) — Set the complete release surface to `0.2.0-beta.2`.**
    - Problem: publishable manifests are `0.1.0` at `packages/core/package.json:3`, `packages/plugins/package.json:3`, and `packages/mcp/package.json:3`; product/version surfaces are stale at `package.json:3`, `apps/docs/package.json:3`, `registry/examples/render-workspace/package.json:3`, `registry/registry.json:3`, `apps/docs/src/catalog/index.ts:83,88`, `apps/docs/src/main.ts:143,457`, and `registry/components/dialog.html:86`. Pending patch plans at `.changeset/calm-moons-pack.md:2-3` and `.changeset/large-radials-balance.md:2` would not produce the settled target.
-   - Change: reconcile the pending changesets and update every product-facing version above to `0.2.0-beta.1`; keep unrelated dependency and test-client versions unchanged.
-   - Acceptance: all three packed manifests report `0.2.0-beta.1`; docs, registry, and example report the same version; the version plan cannot increment the release to a different number.
+   - Change: reconcile the pending changesets and update every product-facing version above to `0.2.0-beta.2`; keep unrelated dependency and test-client versions unchanged.
+   - Acceptance: all three packed manifests report `0.2.0-beta.2`; docs, registry, and example report the same version; the version plan cannot increment the release to a different number.
 
 7. **DONE (`f04055b`) — Make installation guidance consistent with a beta dist-tag.**
    - Problem: `README.md:21` says public names are undecided and `README.md:124` says publishing is deferred, while `apps/docs/src/catalog/guides.ts:10,54,79,86,90,102` presents unqualified public installs. Unqualified installs do not express the settled `beta` channel.
@@ -91,13 +91,13 @@ Outstanding owner actions before any release run:
 11. **DONE (this Phase 5 commit) — Enable generated changelogs.**
     - Problem: `.changeset/config.json:3` sets `"changelog": false`; package versioning cannot generate release notes. `.changeset/config.json:5-6` also leaves related package version policy implicit.
     - Change: set the changelog generator to `@changesets/cli/changelog`; record whether core, plugins, and MCP are fixed together for the beta line, and align the pending release plan. Maintain the root `CHANGELOG.md` as the release index if package changelogs remain package-local.
-    - Acceptance: run the version command on a temporary branch/worktree; it produces changelog entries for every bumped package at exactly `0.2.0-beta.1`, consumes the intended changesets, and leaves no unexplained version divergence.
+    - Acceptance: run the version command on a temporary branch/worktree; it produces changelog entries for every bumped package at exactly `0.2.0-beta.2`, consumes the intended changesets, and leaves no unexplained version divergence.
 
 12. **REPOSITORY DONE (this Phase 5 commit); OWNER SETUP PENDING — Add a protected beta release workflow.**
     - Problem: `.github/workflows/ci.yml:1-60` is the only workflow. It verifies code but has no release trigger, protected environment, OIDC permission, provenance path, or `beta` tag enforcement. `package.json:23` is an unrestricted local publish command.
-    - Change: add a dedicated `.github/workflows/release.yml`; pin a Trusted-Publishing-compatible Node/npm toolchain; run install, tests, typecheck, build, and package inspection before authority is granted; isolate `id-token: write` to the publish job; publish all three tarballs with `--tag beta`; guard or replace the local release script. Document the one-time first-package bootstrap and immediate Trusted Publisher setup for each package.
-    - Acceptance: a non-publishing workflow test reaches the publish boundary with exact reviewed tarballs; only the protected release environment can mint publish authority; package/version/tag mismatches fail; post-release `npm view @nyx-raul/core dist-tags.beta`, `npm view @nyx-raul/plugins dist-tags.beta`, and `npm view @nyx-raul/mcp dist-tags.beta` each return `0.2.0-beta.1`; provenance links to the renamed public repository and release commit.
-    - Owner action outside repo: create the protected GitHub release environment, required reviewers, branch protection, and per-package npm Trusted Publisher bindings; execute and audit the first-package bootstrap.
+    - Change: add a dedicated `.github/workflows/release.yml`; pin a Trusted-Publishing-compatible Node/npm toolchain; run install, tests, typecheck, build, and package inspection before authority is granted; isolate `id-token: write` to the publish job; publish all three tarballs with `--tag beta`; guard or replace the local release script. Document the one-time first-package setup and immediate Trusted Publisher setup for each package.
+    - Acceptance: a non-publishing workflow test reaches the publish boundary with exact reviewed tarballs; only the protected release environment can mint publish authority; package/version/tag mismatches fail; post-release `npm view @nyx-raul/core dist-tags.beta`, `npm view @nyx-raul/plugins dist-tags.beta`, and `npm view @nyx-raul/mcp dist-tags.beta` each return `0.2.0-beta.2`; provenance links to the renamed public repository and release commit.
+    - Owner action outside repo: create the protected GitHub release environment, required reviewers, branch protection, and per-package npm Trusted Publisher bindings; execute and audit the first-package setup.
 
 13. **DONE (`f04055b`) — Declare core's Tailwind CSS compatibility.**
     - Problem: `packages/core/package.json:20-24` has no Tailwind peer range even though `packages/core/README.md:9` and the public installation guide require Tailwind CSS 4 behavior.
@@ -152,9 +152,9 @@ Each phase is one independently committable unit. Do not start publishing before
 ### Phase 5 - Version and release plumbing — REPOSITORY COMPLETE (this commit); OWNER ACTIONS PENDING
 
 - Complete blockers 5, 6, 11, and 12.
-- Commit: `release: prepare 0.2.0-beta.1 publishing`.
+- Commit: `release: prepare 0.2.0-beta.2 publishing`.
 - Verify: temporary version rehearsal, full clean-checkout gates, exact tarball inspection, non-publishing workflow rehearsal, then npm `beta` dist-tag and provenance checks.
-- Owner action outside repo: claim/configure `@nyx-raul`, establish maintainers and recovery, configure npm Trusted Publishers, approve the bootstrap, and authorize the protected release.
+- Owner action outside repo: claim/configure `@nyx-raul`, establish maintainers and recovery, configure npm Trusted Publishers, approve the initial setup, and authorize the protected release.
 
 ## 4. NICE-TO-HAVES
 
@@ -171,6 +171,6 @@ Deferred and explicitly out of scope for this beta:
 - All 16 blockers are closed and all five phases are merged in order.
 - GitHub is public at `Pythoholic/nyx-ui`; `@nyx-raul` control, branch protection, release environment, maintainers, recovery, and publisher trust are verified.
 - A clean checkout passes `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm packages:check`.
-- The three reviewed tarballs contain correct attribution, Apache-2.0 text, standalone READMEs, renamed URLs, and only intended files; all report `0.2.0-beta.1`.
-- `@nyx-raul/core`, `@nyx-raul/plugins`, and `@nyx-raul/mcp` install from dist-tag `beta`; `dist-tags.beta` resolves to `0.2.0-beta.1`; the isolated consumer example builds and runs.
-- Release notes and changelogs exist, public links resolve, no stale old-name reference outside this checklist or tracked internal artifact remains, and the release record identifies the exact commit and provenance/bootstrap evidence.
+- The three reviewed tarballs contain correct attribution, Apache-2.0 text, standalone READMEs, renamed URLs, and only intended files; all report `0.2.0-beta.2`.
+- `@nyx-raul/core`, `@nyx-raul/plugins`, and `@nyx-raul/mcp` install from dist-tag `beta`; `dist-tags.beta` resolves to `0.2.0-beta.2`; the isolated consumer example builds and runs.
+- Release notes and changelogs exist, public links resolve, no stale old-name reference outside this checklist or tracked internal artifact remains, and the release record identifies the exact commit and provenance/setup evidence.

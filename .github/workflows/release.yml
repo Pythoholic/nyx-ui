@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       confirmation:
-        description: Type "publish 0.2.0-beta.1" to approve this exact beta
+        description: Type "publish 0.2.0-beta.2" to approve this exact beta
         required: true
         type: string
 
@@ -19,9 +19,9 @@ jobs:
     if: >-
       (github.event_name == 'release' &&
       github.event.release.prerelease == true &&
-      github.event.release.tag_name == 'v0.2.0-beta.1') ||
+      github.event.release.tag_name == 'v0.2.0-beta.2') ||
       (github.event_name == 'workflow_dispatch' &&
-      inputs.confirmation == 'publish 0.2.0-beta.1')
+      inputs.confirmation == 'publish 0.2.0-beta.2')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
 
@@ -66,7 +66,7 @@ jobs:
           node --input-type=module <<'NODE'
           import { readFile } from "node:fs/promises";
 
-          const expected = "0.2.0-beta.1";
+          const expected = "0.2.0-beta.2";
           const manifests = [
             "packages/core/package.json",
             "packages/plugins/package.json",
@@ -91,7 +91,7 @@ jobs:
       - name: Upload reviewed release artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: nyx-ui-0.2.0-beta.1
+          name: nyx-ui-0.2.0-beta.2
           path: release-artifacts/*.tgz
           if-no-files-found: error
           retention-days: 7
@@ -107,7 +107,7 @@ jobs:
       contents: read
       id-token: write
 
-    # FIRST-PUBLISH BOOTSTRAP (one time per package)
+    # FIRST-PUBLISH SETUP (one time per package)
     # A brand-new npm package cannot use Trusted Publishing until it exists.
     # The owner must publish its first version manually with 2FA, then bind that
     # package's npm Trusted Publisher to Pythoholic/nyx-ui, release.yml, and the
@@ -126,11 +126,11 @@ jobs:
       - name: Download reviewed release artifacts
         uses: actions/download-artifact@v6
         with:
-          name: nyx-ui-0.2.0-beta.1
+          name: nyx-ui-0.2.0-beta.2
           path: release-artifacts
 
       - name: Publish core, plugins, and MCP to the beta channel
         run: |
-          npm publish release-artifacts/nyx-raul-core-0.2.0-beta.1.tgz --tag beta --provenance --access public
-          npm publish release-artifacts/nyx-raul-plugins-0.2.0-beta.1.tgz --tag beta --provenance --access public
-          npm publish release-artifacts/nyx-raul-mcp-0.2.0-beta.1.tgz --tag beta --provenance --access public
+          npm publish release-artifacts/nyx-raul-core-0.2.0-beta.2.tgz --tag beta --provenance --access public
+          npm publish release-artifacts/nyx-raul-plugins-0.2.0-beta.2.tgz --tag beta --provenance --access public
+          npm publish release-artifacts/nyx-raul-mcp-0.2.0-beta.2.tgz --tag beta --provenance --access public
