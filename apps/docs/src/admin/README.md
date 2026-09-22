@@ -39,7 +39,3 @@ The template composes the public components rather than reskinning them. Do not 
 Application code owns page composition, routing, fixture data, filtering, pagination, CSV export, event data, CSS artwork, and inbox/project layouts. Calendar navigation, selection, keyboard behavior, and month announcements come from the public Nyx calendar controller.
 
 `tests/browser/admin-design-system.spec.ts` compares rendered primitives with unmodified Nyx controls in the docs across all four themes and verifies mobile drawer/dialog focus behavior. `admin.spec.ts` covers workflows, persistence, and responsive page bounds. These checks complement visual review; they do not claim backend readiness or exhaustive accessibility certification.
-
-## Design references
-
-The feature plan was informed by [Tabler](https://github.com/tabler/tabler), its [live preview](https://preview.tabler.io/), [shadcn's dashboard block](https://ui.shadcn.com/blocks), and [TailAdmin's free repository](https://github.com/TailAdmin/free-react-tailwind-admin-dashboard). The Nyx implementation uses its own markup, styling, and behavior; no source or artwork was copied from these templates.
