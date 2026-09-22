@@ -18,3 +18,12 @@ review/
 
 .playwright-mcp/
 error.log
+
+# Internal release and review artifacts retained only in local worktrees.
+.openai/hosting.json
+docs/architecture/EXTERNAL_REVIEW_BRIEF.md
+docs/architecture/RALPH_PROMPT.md
+scripts/ralph.sh
+scripts/verify-review-regressions.py
+nyx-design/NYX_UI_PROJECT_BRIEF.md
+nyx-design/index.html
