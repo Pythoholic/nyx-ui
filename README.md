@@ -4,9 +4,9 @@ Nyx is an open-source interface system for dense applications, operational works
 
 The project separates styling, behavior, and markup so adopters can take only the layers they need:
 
-- `@nyx-ui/core` provides tokens, themes, foundations, motion, and component CSS.
-- `@nyx-ui/plugins` provides optional framework-agnostic controllers through per-component ESM subpaths.
-- `@nyx-ui/mcp` exposes the registry to compatible AI coding tools through a read-only MCP server.
+- `@nyx-raul/core` provides tokens, themes, foundations, motion, and component CSS.
+- `@nyx-raul/plugins` provides optional framework-agnostic controllers through per-component ESM subpaths.
+- `@nyx-raul/mcp` exposes the registry to compatible AI coding tools through a read-only MCP server.
 - `registry/` provides canonical, editable HTML for every catalog component and layout.
 - `apps/docs` renders those same registry files as the live documentation catalog.
 
@@ -21,8 +21,8 @@ Nyx favors native elements first: forms remain forms, navigation remains links, 
 Nyx UI is distributed on npm through the `beta` dist-tag. Consumer projects should keep the tag explicit until a stable release is available:
 
 ```shell
-pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta
-npx -y @nyx-ui/mcp@beta
+pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta
+npx -y @nyx-raul/mcp@beta
 ```
 
 The MCP command starts the read-only registry server; it is not required by applications that only use Nyx CSS or browser behavior.
@@ -45,8 +45,8 @@ Open `http://127.0.0.1:5174/`.
 Core exposes one CSS entry that imports the tokens, base rules, motion language, and component styles. A Tailwind CSS 4 application registers the package source and imports core from its main stylesheet:
 
 ```css
-@source "../node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";
 ```
 
 Themes are structural. Set `data-nyx-theme` on the document root and the semantic accent tokens flow through every component:
@@ -66,7 +66,7 @@ Static components need only core CSS. Interactive components also name the behav
 Import behavior by component rather than loading the package root:
 
 ```js
-import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 const instances = initDialogs(document);
 

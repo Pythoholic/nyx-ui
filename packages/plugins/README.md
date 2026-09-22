@@ -1,21 +1,21 @@
-# @nyx-ui/plugins
+# @nyx-raul/plugins
 
 Optional, framework-agnostic DOM controllers for interactive Nyx UI components. The package ships ESM and type declarations for the root entry point and for each documented component subpath.
 
 ## Install
 
 ```shell
-pnpm add @nyx-ui/plugins@beta
+pnpm add @nyx-raul/plugins@beta
 ```
 
-Nyx Core supplies the corresponding component presentation. Install it separately with `pnpm add @nyx-ui/core@beta` when it is not already present.
+Nyx Core supplies the corresponding component presentation. Install it separately with `pnpm add @nyx-raul/core@beta` when it is not already present.
 
 ## Import by component
 
-Prefer a per-component entry such as `@nyx-ui/plugins/dialog`, `@nyx-ui/plugins/tabs`, or `@nyx-ui/plugins/toast` so unrelated controllers stay out of the consumer bundle:
+Prefer a per-component entry such as `@nyx-raul/plugins/dialog`, `@nyx-raul/plugins/tabs`, or `@nyx-raul/plugins/toast` so unrelated controllers stay out of the consumer bundle:
 
 ```js
-import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 const root = document.querySelector("#account-settings");
 const dialogs = initDialogs(root);

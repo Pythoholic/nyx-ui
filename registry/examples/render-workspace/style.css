@@ -1,5 +1,5 @@
 @import "tailwindcss";
 @source "./*.{html,ts}";
-@source "./node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";
+@source "./node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";
 @import "./app.css";

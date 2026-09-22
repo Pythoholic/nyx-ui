@@ -14,7 +14,7 @@ The sequencing note is correct. Publishing and deployment should remain last. Th
 
 | Claim | Finding | Evidence and correction |
 | --- | --- | --- |
-| Both packages use scoped names and public access | **Holds as repository configuration, not as registry ownership.** | `packages/core/package.json` and `packages/plugins/package.json` name `@nyx-ui/core` and `@nyx-ui/plugins` and set `publishConfig.access` to `public`. `.changeset/config.json` also sets public access. This does not establish that the project controls `@nyx-ui`. |
+| Both packages use scoped names and public access | **Holds as repository configuration, not as registry ownership.** | `packages/core/package.json` and `packages/plugins/package.json` name `@nyx-raul/core` and `@nyx-raul/plugins` and set `publishConfig.access` to `public`. `.changeset/config.json` also sets public access. This does not establish that the project controls `@nyx-raul`. |
 | Both package records return 404 | **Holds as of this review.** | Read-only `npm view` requests returned `E404` for both names. This shows that neither public package record resolves; it does not establish scope availability. |
 | Both packages use a `files` allowlist and no `.npmignore` | **Holds.** | Core uses `files: ["src/**/*.css"]`; plugins uses `files: ["dist"]`; no `.npmignore` exists. npm's `files` field is an inclusion list, although npm also force-includes certain package-root files such as the manifest, README, and a package-root license when present ([npm package contents](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#files)). |
 | The allowlist migration remains to be done | **Does not hold.** | The mechanism is already in place. What remains is to define and enforce the exact intended artifact inventory. The current verifier checks required files but does not reject unexpected ones. |
@@ -32,7 +32,7 @@ The sequencing note is correct. Publishing and deployment should remain last. Th
 
 ### 1. Scoped organization naming — partially satisfied
 
-The desired names are consistently configured and public access is explicit. That is valuable preparation, but it is not ownership. The authoritative gate is whether the intended publisher controls the `nyx-ui` npm organization/scope and can grant the maintainers and automation the required package rights. A 404 for a package does not distinguish an unclaimed scope from a controlled scope with no public packages.
+The desired names are consistently configured and public access is explicit. That is valuable preparation, but it is not ownership. The authoritative gate is whether the intended publisher controls the `nyx-raul` npm organization/scope and can grant the maintainers and automation the required package rights. A 404 for a package does not distinguish an unclaimed scope from a controlled scope with no public packages.
 
 Remaining work is to settle the durable organization identity, verify scope control through npm's authenticated process, define owner recovery and at least two appropriate maintainers, and only then freeze the package coordinates. If the scope cannot be controlled, rename both packages and all documentation/import references before either package is published.
 

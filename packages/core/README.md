@@ -1,4 +1,4 @@
-# @nyx-ui/core
+# @nyx-raul/core
 
 The CSS foundation for Nyx UI: design tokens, four accent themes, base styles, motion rules, and component styles without a JavaScript runtime.
 
@@ -7,7 +7,7 @@ The CSS foundation for Nyx UI: design tokens, four accent themes, base styles, m
 For Tailwind CSS 4 projects, install the beta package with a compatible Tailwind release:
 
 ```shell
-pnpm add @nyx-ui/core@beta tailwindcss@^4
+pnpm add @nyx-raul/core@beta tailwindcss@^4
 ```
 
 Register the locations that contain Nyx markup, then import the stylesheet:
@@ -15,8 +15,8 @@ Register the locations that contain Nyx markup, then import the stylesheet:
 ```css
 @import "tailwindcss";
 @source "../src/**/*.{html,js,ts,jsx,tsx}";
-@source "../node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";
 ```
 
 Tailwind CSS is an optional peer dependency with the supported range `>=4 <5`. It is required for the source-scanning workflow above.
@@ -26,11 +26,11 @@ Tailwind CSS is an optional peer dependency with the supported range `>=4 <5`. I
 Projects with an existing CSS bundler can consume the package stylesheet without installing Tailwind:
 
 ```shell
-pnpm add @nyx-ui/core@beta
+pnpm add @nyx-raul/core@beta
 ```
 
 ```css
-@import "@nyx-ui/core";
+@import "@nyx-raul/core";
 ```
 
 The optional peer declaration keeps this mode free of an unexplained Tailwind peer warning. The package does not ship a browser CDN bundle; the CSS import must be handled by the consumer's bundler.

@@ -139,7 +139,7 @@ export const formPages = [
     description: "A native file input gains drag-and-drop, validation, leak-free image previews, queue state, and consumer-driven upload progress.",
     searchTerms: "file upload input drop zone multiple asset queue preview validation progress transport adapter",
     plugins: ["file-upload"],
-    body: `<section class="docs-prose-section"><h2>Transport stays with the consumer</h2><p>Nyx owns selection, validation, previews, queue state, and progress display. Supply an adapter that performs the request and calls <code>reportProgress</code>. Use an XHR-based or streaming implementation when upload progress matters; <code>fetch</code> does not provide a universally useful upload-progress callback.</p>${codeBlock(`import { initFileUploads } from "@nyx-ui/plugins/file-upload";
+    body: `<section class="docs-prose-section"><h2>Transport stays with the consumer</h2><p>Nyx owns selection, validation, previews, queue state, and progress display. Supply an adapter that performs the request and calls <code>reportProgress</code>. Use an XHR-based or streaming implementation when upload progress matters; <code>fetch</code> does not provide a universally useful upload-progress callback.</p>${codeBlock(`import { initFileUploads } from "@nyx-raul/plugins/file-upload";
 
 const [upload] = initFileUploads(root, {
   transport: async (file, { reportProgress, signal }) => {

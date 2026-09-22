@@ -7,22 +7,22 @@ function prose(title: string, body: string): string {
   return `<section class="docs-prose-section"><h2>${title}</h2>${body}</section>`;
 }
 
-const installCommand = `pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta`;
+const installCommand = `pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta`;
 const tailwindSetup = `@import "tailwindcss";
 @source "../src/**/*.{html,js,ts,jsx,tsx}";
-@source "../node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";`;
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";`;
 const fontSetup = `<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />`;
-const behaviorSetup = `import { initDialogs } from "@nyx-ui/plugins/dialog";
+const behaviorSetup = `import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 const root = document.querySelector("#account-settings");
 const dialogs = initDialogs(root);
 
 // Before removing or replacing the rendered subtree:
 dialogs.forEach((dialog) => dialog.destroy());`;
-const explicitSetup = `import { NyxDialog } from "@nyx-ui/plugins/dialog";
+const explicitSetup = `import { NyxDialog } from "@nyx-raul/plugins/dialog";
 
 const element = document.querySelector("dialog[data-nyx-dialog]");
 const dialog = new NyxDialog(element, {
@@ -45,13 +45,13 @@ const registryEntry = `{
   "type": "component",
   "status": "stable",
   "files": ["components/dialog.html"],
-  "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+  "requires": ["@nyx-raul/core", "@nyx-raul/plugins/dialog"]
 }`;
 const registryAdoption = `# Copy the canonical structure into application source
 cp registry/components/dialog.html src/components/account-dialog.html
 
 # Keep shared presentation and optional behavior as dependencies
-pnpm add @nyx-ui/core@beta @nyx-ui/plugins@beta`;
+pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta`;
 interface AiRegistryItem {
   name: string;
   type: string;
@@ -76,18 +76,18 @@ const aiResult = `Selected: tooltip
 Reason: the request is brief, descriptive, and non-interactive.
 
 Copy: registry/components/tooltip.html
-Install: @nyx-ui/core@beta and @nyx-ui/plugins@beta
+Install: @nyx-raul/core@beta and @nyx-raul/plugins@beta
 Initialize: initTooltips(root)
 
 Guardrails:
 - Keep the trigger as a native focusable control.
 - Do not put links or buttons inside the tooltip.
 - Retain controller instances and destroy them before replacing root.`;
-const mcpRun = `npx -y @nyx-ui/mcp@beta`;
+const mcpRun = `npx -y @nyx-raul/mcp@beta`;
 const skillInstall = `npx skills add Pythoholic/nyx-ui --skill nyx-ui`;
 const codexMcpConfig = `[mcp_servers.nyx]
 command = "npx"
-args = ["-y", "@nyx-ui/mcp@beta"]
+args = ["-y", "@nyx-raul/mcp@beta"]
 enabled_tools = [
   "list_components",
   "search_components",
@@ -99,11 +99,11 @@ const claudeMcpConfig = `{
     "nyx": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@nyx-ui/mcp@beta"]
+      "args": ["-y", "@nyx-raul/mcp@beta"]
     }
   }
 }`;
-const tokenSetup = `@import "@nyx-ui/core";
+const tokenSetup = `@import "@nyx-raul/core";
 
 :root {
   --nyx-accent: #7cf6d4;
@@ -113,7 +113,7 @@ const tokenSetup = `@import "@nyx-ui/core";
   --nyx-radius-panel: 0.375rem;
 }`;
 const reactSetup = `import { useEffect, useRef } from "react";
-import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 export function AccountDialog() {
   const rootRef = useRef(null);
@@ -149,7 +149,7 @@ export const guidePages = [
     searchTerms: "install package getting started css plugins tailwind source build step",
     body: `<div class="docs-prose">
       ${prose("Start with a working screen", `<p><a class="nyx-link" href="/guides/render-workspace">Run the render workspace</a> for a complete installation, font, theme, event, and cleanup example.</p>`)}
-      ${prose("Packages", `<p><code>@nyx-ui/core</code> supplies the token layers, themes, foundations, and component CSS. <code>@nyx-ui/plugins</code> supplies optional DOM behavior through per-component ESM subpaths.</p>${codeBlock(installCommand, "shell", "Shell")}`)}
+      ${prose("Packages", `<p><code>@nyx-raul/core</code> supplies the token layers, themes, foundations, and component CSS. <code>@nyx-raul/plugins</code> supplies optional DOM behavior through per-component ESM subpaths.</p>${codeBlock(installCommand, "shell", "Shell")}`)}
       ${prose("Tailwind CSS 4 setup", `<p>Import the compiler, register your application and Nyx source locations, then import the Nyx stylesheet. Keep the <code>@source</code> entries accurate for every place copied markup can live so its classes are detected.</p>${codeBlock(tailwindSetup, "css", "CSS")}`)}
       ${prose("Load the font", `<p>Nyx declares JetBrains Mono but does not bundle font files. Load weights 400, 500, 600, and 700 in your document head, or self-host licensed font files with matching <code>@font-face</code> rules and <code>font-display: swap</code>. While loading, or if the request fails, the stack uses Cascadia Code, then the system monospace fallback. Layout stays usable; glyph shapes and text wrapping may differ.</p>${codeBlock(fontSetup, "html", "Document head")}`)}
       ${prose("Without a build step", `<p>Nyx does not currently publish a supported browser-CDN bundle or precompiled stylesheet. The source package and its theme integration require a CSS build. Plain HTML is the component contract, but a no-build distribution is not included in the beta.</p>`)}
@@ -166,7 +166,7 @@ export const guidePages = [
       ${prose("Root-scoped auto-initialization", `<p>Every <code>initX(root)</code> function searches the descendants and the root itself. Repeated calls return the existing controller for an already initialized element. After <code>destroy()</code>, the same markup can be initialized again.</p>${codeBlock(behaviorSetup, "js", "JavaScript")}`)}
       ${prose("Explicit construction", `<p>Use a constructor when your code already owns one element or needs constructor options. Keep the returned instance and destroy it with the same lifecycle as its DOM subtree.</p>${codeBlock(explicitSetup, "js", "JavaScript")}`)}
       ${prose("Events", `<p>State-changing operations emit a cancelable <code>before-*</code> event, then a non-cancelable after-event once state and focus are settled. Call <code>preventDefault()</code> on the before-event to veto the operation. Destruction is intentionally not vetoable.</p>${codeBlock(eventSetup, "js", "JavaScript")}`)}
-      ${prose("Per-component imports", `<p>Import from subpaths such as <code>@nyx-ui/plugins/dialog</code>, <code>@nyx-ui/plugins/tabs</code>, or <code>@nyx-ui/plugins/toast</code>. This keeps unrelated controllers out of the consumer bundle.</p>`)}
+      ${prose("Per-component imports", `<p>Import from subpaths such as <code>@nyx-raul/plugins/dialog</code>, <code>@nyx-raul/plugins/tabs</code>, or <code>@nyx-raul/plugins/toast</code>. This keeps unrelated controllers out of the consumer bundle.</p>`)}
     </div>`,
   }),
   page({
@@ -263,7 +263,7 @@ export const guidePages = [
     body: `<div class="docs-registry-guide">
       <section class="docs-overview-lead" aria-labelledby="registry-model">
         <div><span class="nyx-eyebrow">Distribution model</span><h2 id="registry-model">Source you can inspect, adapt, and maintain</h2></div>
-        <div class="docs-overview-copy"><p>Nyx does not render components through an opaque package-owned wrapper. The registry contains canonical HTML compositions that become part of your application source. This keeps semantics, content structure, and application-specific changes visible in code review.</p><p>Copying markup does not remove all dependencies. <code>@nyx-ui/core</code> continues to provide tokens and component styles. Interactive patterns also import the documented <code>@nyx-ui/plugins/*</code> controller. Your application owns content, business logic, data, and the adapted HTML.</p></div>
+        <div class="docs-overview-copy"><p>Nyx does not render components through an opaque package-owned wrapper. The registry contains canonical HTML compositions that become part of your application source. This keeps semantics, content structure, and application-specific changes visible in code review.</p><p>Copying markup does not remove all dependencies. <code>@nyx-raul/core</code> continues to provide tokens and component styles. Interactive patterns also import the documented <code>@nyx-raul/plugins/*</code> controller. Your application owns content, business logic, data, and the adapted HTML.</p></div>
       </section>
 
       <section class="docs-overview-section" aria-labelledby="registry-entry">
@@ -292,7 +292,7 @@ export const guidePages = [
     body: `<div class="docs-ai-guide">
       <section class="docs-overview-lead" aria-labelledby="ai-contract-model">
         <div><span class="nyx-eyebrow">Integration preview</span><h2 id="ai-contract-model">One registry contract, usable by every agent</h2></div>
-        <div class="docs-overview-copy"><p><code>@nyx-ui/mcp</code> exposes the same component registry used by this catalog to Codex, Claude Code, and other MCP clients.</p><p>Agents can discover components, compare usage guidance, inspect a contract, and retrieve canonical source instead of relying on remembered APIs.</p></div>
+        <div class="docs-overview-copy"><p><code>@nyx-raul/mcp</code> exposes the same component registry used by this catalog to Codex, Claude Code, and other MCP clients.</p><p>Agents can discover components, compare usage guidance, inspect a contract, and retrieve canonical source instead of relying on remembered APIs.</p></div>
       </section>
 
       <section class="docs-overview-section" aria-labelledby="ai-mcp-heading">

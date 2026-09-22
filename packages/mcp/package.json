@@ -1,10 +1,10 @@
 {
-  "name": "@nyx-ui/mcp",
+  "name": "@nyx-raul/mcp",
   "version": "0.1.0",
   "description": "MCP server for AI-readable Nyx UI registry discovery.",
   "keywords": ["nyx-ui", "mcp", "model-context-protocol", "design-system"],
   "license": "Apache-2.0",
-  "author": "Soumya Raula <soumyaraula20@gmail.com>",
+  "author": "Soumya Raula <boxitupsam@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-ui#readme",
   "bugs": "https://github.com/Pythoholic/nyx-ui/issues",

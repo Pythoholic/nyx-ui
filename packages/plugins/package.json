@@ -1,10 +1,10 @@
 {
-  "name": "@nyx-ui/plugins",
+  "name": "@nyx-raul/plugins",
   "version": "0.1.0",
   "description": "Optional framework-agnostic behavior for Nyx UI components.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "components"],
   "license": "Apache-2.0",
-  "author": "Soumya Raula <soumyaraula20@gmail.com>",
+  "author": "Soumya Raula <boxitupsam@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-ui#readme",
   "bugs": "https://github.com/Pythoholic/nyx-ui/issues",

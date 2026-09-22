@@ -1,4 +1,4 @@
-# @nyx-ui/mcp
+# @nyx-raul/mcp
 
 Read-only Model Context Protocol server for the Nyx UI registry. It lets compatible coding tools discover components, search usage guidance, inspect contracts, and retrieve canonical source without granting project write access.
 
@@ -7,7 +7,7 @@ Read-only Model Context Protocol server for the Nyx UI registry. It lets compati
 Node.js 22 or newer is required. Run the beta package over standard input/output:
 
 ```shell
-npx -y @nyx-ui/mcp@beta
+npx -y @nyx-raul/mcp@beta
 ```
 
 ## Client configuration
@@ -19,7 +19,7 @@ Configure an MCP client to launch `npx` with the beta-qualified package. For a J
   "mcpServers": {
     "nyx": {
       "command": "npx",
-      "args": ["-y", "@nyx-ui/mcp@beta"]
+      "args": ["-y", "@nyx-raul/mcp@beta"]
     }
   }
 }

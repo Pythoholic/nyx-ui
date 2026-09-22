@@ -43,7 +43,7 @@ export const overviewPage = page({
         <article class="docs-overview-card">
           <span class="docs-overview-index" aria-hidden="true">01</span>
           <h3>Core CSS</h3>
-          <p><code>@nyx-ui/core</code> supplies semantic tokens, four accent themes, typography, layout foundations, motion rules, and component styles for Tailwind CSS 4 projects.</p>
+          <p><code>@nyx-raul/core</code> supplies semantic tokens, four accent themes, typography, layout foundations, motion rules, and component styles for Tailwind CSS 4 projects.</p>
         </article>
         <article class="docs-overview-card">
           <span class="docs-overview-index" aria-hidden="true">02</span>
@@ -53,7 +53,7 @@ export const overviewPage = page({
         <article class="docs-overview-card">
           <span class="docs-overview-index" aria-hidden="true">03</span>
           <h3>Optional behavior</h3>
-          <p><code>@nyx-ui/plugins</code> provides focused ESM controllers for dialogs, menus, data controls, uploads, and other interactive patterns without requiring a UI framework.</p>
+          <p><code>@nyx-raul/plugins</code> provides focused ESM controllers for dialogs, menus, data controls, uploads, and other interactive patterns without requiring a UI framework.</p>
         </article>
       </div>
     </section>

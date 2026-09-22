@@ -1,5 +1,5 @@
-import { initNumberInputs } from "@nyx-ui/plugins/number-input";
-import { initGenerationQueues } from "@nyx-ui/plugins/generation-queue";
+import { initNumberInputs } from "@nyx-raul/plugins/number-input";
+import { initGenerationQueues } from "@nyx-raul/plugins/generation-queue";
 
 /** Mount once per rendered root; call the returned function before replacing it. */
 export function mountWorkspace(root: HTMLElement): () => void {

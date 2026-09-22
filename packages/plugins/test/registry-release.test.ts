@@ -58,7 +58,7 @@ describe("release registry contract", () => {
     expect(tooltip?.useWhen).not.toHaveLength(0);
     expect(tooltip?.avoidWhen).not.toHaveLength(0);
     expect(tooltip?.initializer).toEqual({
-      import: "@nyx-ui/plugins/tooltip",
+      import: "@nyx-raul/plugins/tooltip",
       function: "initTooltips",
       selector: "[data-nyx-tooltip]",
     });

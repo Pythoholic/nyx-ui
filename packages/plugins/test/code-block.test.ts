@@ -104,6 +104,6 @@ describe("NyxCodeBlock", () => {
     };
     const item = registry.items.find((candidate) => candidate.name === "code-block");
     expect(item?.files).toEqual(["components/code-block.html"]);
-    expect(item?.requires).toEqual(["@nyx-ui/core", "@nyx-ui/plugins/code-block"]);
+    expect(item?.requires).toEqual(["@nyx-raul/core", "@nyx-raul/plugins/code-block"]);
   });
 });

@@ -14,7 +14,7 @@ const packagePath = resolve(destination, "package.json");
 const manifest = JSON.parse(readFileSync(packagePath, "utf8"));
 for (const name of ["core", "plugins"]) {
   const version = JSON.parse(readFileSync(resolve(repository, `packages/${name}/package.json`), "utf8")).version;
-  manifest.dependencies[`@nyx-ui/${name}`] = `^${version}`;
+  manifest.dependencies[`@nyx-raul/${name}`] = `^${version}`;
 }
 manifest.name = "render-workspace";
 manifest.scripts.dev = "vite --host 127.0.0.1 --port 5174 --strictPort";

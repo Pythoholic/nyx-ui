@@ -82,7 +82,7 @@ for (const entry of entries) {
   assert.equal(actual, expected, entry.specifier);
   assert.ok(actual.startsWith(installedRoot), entry.specifier + " escapes consumer installation");
   assert.ok(statSync(actual).isFile(), entry.specifier);
-  if (entry.name === "@nyx-ui/plugins") assert.ok(target.startsWith("./dist/"), entry.specifier);
+  if (entry.name === "@nyx-raul/plugins") assert.ok(target.startsWith("./dist/"), entry.specifier);
 }
 console.log("Verified " + entries.length + " installed exports (" + process.argv[2] + ")");
 `);
@@ -90,7 +90,7 @@ console.log("Verified " + entries.length + " installed exports (" + process.argv
   console.log(run("node", ["--conditions=types", "verify-resolution.mjs", "types"], consumer).trim());
   // TypeScript must also be able to consume every plugin declaration subpath.
   writeFileSync(join(consumer, "verify-types.ts"), entries
-    .filter(entry => entry.name === "@nyx-ui/plugins")
+    .filter(entry => entry.name === "@nyx-raul/plugins")
     .map((entry, index) => `import type * as Export${index} from ${JSON.stringify(entry.specifier)};`)
     .join("\n"));
   run("pnpm", ["build"], consumer);

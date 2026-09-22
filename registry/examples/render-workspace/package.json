@@ -1,9 +1,9 @@
 {
-  "name": "@nyx-ui/workspace-example",
+  "name": "@nyx-raul/workspace-example",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": { "build": "tsc --noEmit && vite build", "typecheck": "tsc --noEmit" },
-  "dependencies": { "@nyx-ui/core": "workspace:*", "@nyx-ui/plugins": "workspace:*" },
+  "dependencies": { "@nyx-raul/core": "workspace:*", "@nyx-raul/plugins": "workspace:*" },
   "devDependencies": { "@tailwindcss/vite": "4.3.3", "tailwindcss": "4.3.3", "typescript": "7.0.2", "vite": "8.3.0" }
 }

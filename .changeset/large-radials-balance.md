@@ -1,5 +1,5 @@
 ---
-"@nyx-ui/core": patch
+"@nyx-raul/core": patch
 ---
 
 Add a documented large radial progress size for dashboard summary panels.

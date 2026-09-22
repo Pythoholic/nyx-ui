@@ -1,10 +1,10 @@
 {
-  "name": "@nyx-ui/core",
+  "name": "@nyx-raul/core",
   "version": "0.1.0",
   "description": "Nyx UI tokens, themes, foundations, and component styles.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "css"],
   "license": "Apache-2.0",
-  "author": "Soumya Raula <soumyaraula20@gmail.com>",
+  "author": "Soumya Raula <boxitupsam@gmail.com>",
   "type": "module",
   "homepage": "https://github.com/Pythoholic/nyx-ui#readme",
   "bugs": "https://github.com/Pythoholic/nyx-ui/issues",

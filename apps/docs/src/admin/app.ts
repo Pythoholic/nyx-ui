@@ -1,7 +1,7 @@
-import { NyxToast } from '@nyx-ui/plugins/toast';
-import { NyxDialog } from '@nyx-ui/plugins/dialog';
-import { NyxSidebar } from '@nyx-ui/plugins/sidebar';
-import { NyxCalendar } from '@nyx-ui/plugins/calendar';
+import { NyxToast } from '@nyx-raul/plugins/toast';
+import { NyxDialog } from '@nyx-raul/plugins/dialog';
+import { NyxSidebar } from '@nyx-raul/plugins/sidebar';
+import { NyxCalendar } from '@nyx-raul/plugins/calendar';
 import { initialState, type AdminState, type RecordItem } from './data.js';
 import './style.css';
 

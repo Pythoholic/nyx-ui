@@ -1623,8 +1623,8 @@ function table(title: string, headings: string[], rows: ReferenceRow[]): string 
 
 function initialization(plugin: PluginName): string {
   const api = pluginApis[plugin];
-  const batch = `import { ${api.initName} } from "@nyx-ui/plugins/${plugin}";\n\nexport function mount(root) {\n  const instances = ${api.initName}(root);\n  // Call the returned cleanup before removing or replacing root.\n  return () => instances.forEach((item) => item.destroy());\n}`;
-  const single = `import { ${api.className} } from "@nyx-ui/plugins/${plugin}";\n\nexport function mount(element) {\n  const instance = new ${api.className}(element);\n  // Call the returned cleanup before removing or replacing element.\n  return () => instance.destroy();\n}`;
+  const batch = `import { ${api.initName} } from "@nyx-raul/plugins/${plugin}";\n\nexport function mount(root) {\n  const instances = ${api.initName}(root);\n  // Call the returned cleanup before removing or replacing root.\n  return () => instances.forEach((item) => item.destroy());\n}`;
+  const single = `import { ${api.className} } from "@nyx-raul/plugins/${plugin}";\n\nexport function mount(element) {\n  const instance = new ${api.className}(element);\n  // Call the returned cleanup before removing or replacing element.\n  return () => instance.destroy();\n}`;
   return `<section class="docs-reference-section"><h2>JavaScript initialization</h2><p>Choose one lifecycle for each element. Call <code>mount</code> when its markup is ready and retain the returned cleanup for unmount.</p>${codeBlock(batch, "js", "Initialize a subtree")}${codeBlock(single, "js", "Construct one controller")}</section>`;
 }
 

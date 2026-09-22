@@ -1,18 +1,18 @@
 ---
 name: nyx-ui
-description: Build, integrate, debug, or adapt interfaces with Nyx UI registry components, core styles, and optional behavior plugins. Use when a request mentions Nyx UI, @nyx-ui packages, the Nyx registry, or an existing Nyx component. Do not use for unrelated UI libraries.
+description: Build, integrate, debug, or adapt interfaces with Nyx UI registry components, core styles, and optional behavior plugins. Use when a request mentions Nyx UI, @nyx-raul packages, the Nyx registry, or an existing Nyx component. Do not use for unrelated UI libraries.
 ---
 
 # Nyx UI
 
-Use Nyx as an open-code component system: canonical markup comes from the registry, presentation comes from `@nyx-ui/core`, and interactive behavior comes from explicit `@nyx-ui/plugins/*` subpaths.
+Use Nyx as an open-code component system: canonical markup comes from the registry, presentation comes from `@nyx-raul/core`, and interactive behavior comes from explicit `@nyx-raul/plugins/*` subpaths.
 
 ## Establish project context
 
 Inspect the target repository before choosing a component:
 
 - Detect its package manager and framework from existing manifests and source.
-- Check whether `@nyx-ui/core` or `@nyx-ui/plugins` is already installed.
+- Check whether `@nyx-raul/core` or `@nyx-raul/plugins` is already installed.
 - Find the stylesheet that imports Nyx Core and the current `data-nyx-theme` value.
 - Preserve existing file placement, naming, rendering, and lifecycle conventions.
 
@@ -32,7 +32,7 @@ If MCP is unavailable but the repository contains `registry/registry.json`, read
 ## Integrate the selected source
 
 - Copy the canonical markup into application-owned source and adapt its content without discarding native semantics, accessible names, ID relationships, or `data-nyx-*` hooks.
-- Keep `@nyx-ui/core` as the shared presentation dependency.
+- Keep `@nyx-raul/core` as the shared presentation dependency.
 - Add only the plugin subpath declared by the contract for interactive behavior.
 - Initialize the smallest stable subtree after its markup exists.
 - Retain returned controller instances and call `destroy()` before removing or replacing that subtree.

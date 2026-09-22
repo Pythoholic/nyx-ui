@@ -110,7 +110,7 @@ nyx-ui/
 
 ### Package boundaries
 
-#### `@nyx-ui/core`
+#### `@nyx-raul/core`
 
 Contains only CSS-facing foundations:
 
@@ -123,13 +123,13 @@ Contains only CSS-facing foundations:
 
 It must not depend on a JavaScript framework.
 
-#### `@nyx-ui/plugins`
+#### `@nyx-raul/plugins`
 
 Contains optional DOM behavior with subpath exports:
 
 ```ts
-import { NyxDialog } from "@nyx-ui/plugins/dialog";
-import { NyxTooltip } from "@nyx-ui/plugins/tooltip";
+import { NyxDialog } from "@nyx-raul/plugins/dialog";
+import { NyxTooltip } from "@nyx-raul/plugins/tooltip";
 ```
 
 Every interactive plugin should provide:
@@ -142,7 +142,7 @@ Every interactive plugin should provide:
 - synchronization of `aria-*`, `hidden`, and `data-state`;
 - no styling decisions beyond state attributes and positioning variables.
 
-An optional `@nyx-ui/plugins/auto` entry point may scan `[data-nyx-*]`. It must remain opt-in.
+An optional `@nyx-raul/plugins/auto` entry point may scan `[data-nyx-*]`. It must remain opt-in.
 
 #### Interactive plugin contract
 
@@ -175,7 +175,7 @@ The docs site and examples must render the same source files distributed by the 
 
 #### Icons
 
-Do not build a full icon library in the first release. Nyx components must accept arbitrary inline SVG and use a common size/stroke contract. A small `@nyx-ui/icons` package should be reserved for genuinely Nyx-specific brand and product symbols later.
+Do not build a full icon library in the first release. Nyx components must accept arbitrary inline SVG and use a common size/stroke contract. A small `@nyx-raul/icons` package should be reserved for genuinely Nyx-specific brand and product symbols later.
 
 ## Styling and theming contract
 
@@ -271,7 +271,7 @@ The first milestone should prove the architecture with a vertical slice, not max
 
 1. Scaffold the workspace and quality commands.
 2. Extract and normalize color, typography, spacing, radius, border, shadow, motion, and breakpoint tokens from the reference.
-3. Build the docs shell using the real `@nyx-ui/core` package.
+3. Build the docs shell using the real `@nyx-raul/core` package.
 4. Implement Button as a static source-owned component.
 5. Implement Dialog as an interactive plugin with focus management, Escape handling, focus return, scroll locking, and accessible labelling.
 6. Publish both through the local registry.
@@ -284,7 +284,7 @@ If this slice is clean, the same contract can expand to fields, tabs, accordion,
 
 - Tailwind baseline: version 4.
 - Universal component language: semantic HTML plus Tailwind utilities.
-- Styling distribution: `@nyx-ui/core`.
+- Styling distribution: `@nyx-raul/core`.
 - Behavior distribution: optional per-plugin ESM imports.
 - Component distribution: open-code registry.
 - Framework policy: framework-agnostic first; adapters later.

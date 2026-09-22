@@ -25,7 +25,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `pnpm --filter @nyx-ui/docs dev --host 127.0.0.1 --port ${port} --strictPort`,
+    command: `pnpm --filter @nyx-raul/docs dev --host 127.0.0.1 --port ${port} --strictPort`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

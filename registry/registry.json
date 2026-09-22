@@ -8,210 +8,210 @@
       "type": "example",
       "status": "stable",
       "files": ["examples/render-workspace/screen.html", "examples/render-workspace/app.ts", "examples/render-workspace/entry.ts", "examples/render-workspace/index.html", "examples/render-workspace/style.css", "examples/render-workspace/app.css", "examples/render-workspace/package.json", "examples/render-workspace/tsconfig.json", "examples/render-workspace/vite.config.ts", "examples/render-workspace/README.md"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins"]
     },
     {
       "name": "button",
       "type": "component",
       "status": "stable",
       "files": ["components/button.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "static-primitives",
       "type": "component-group",
       "status": "stable",
       "files": ["components/static-primitives.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "aspect-ratio",
       "type": "component",
       "status": "stable",
       "files": ["components/aspect-ratio.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "container-responsive-columns",
       "type": "component-group",
       "status": "stable",
       "files": ["components/container-columns.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "styled-links",
       "type": "component",
       "status": "stable",
       "files": ["components/styled-links.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "blockquote",
       "type": "component",
       "status": "stable",
       "files": ["components/blockquote.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "code-block",
       "type": "component",
       "status": "stable",
       "files": ["components/code-block.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/code-block"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/code-block"]
     },
     {
       "name": "icon-catalog",
       "type": "component-reference",
       "status": "stable",
       "files": ["components/icon-catalog.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "visually-hidden",
       "type": "utility",
       "status": "stable",
       "files": ["components/visually-hidden.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "direction",
       "type": "utility",
       "status": "stable",
       "files": ["components/direction.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "tags",
       "type": "component",
       "status": "stable",
       "files": ["components/tags.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "loading-overlay",
       "type": "component",
       "status": "stable",
       "files": ["components/loading-overlay.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "status-indicator",
       "type": "component",
       "status": "stable",
       "files": ["components/status-indicator.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "toggles",
       "type": "component-group",
       "status": "stable",
       "files": ["components/toggles.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "dialog",
       "type": "component",
       "status": "stable",
       "files": ["components/dialog.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/dialog"]
     },
     {
       "name": "alert-dialog",
       "type": "component-configuration",
       "status": "stable",
       "files": ["components/alert-dialog.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dialog"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/dialog"]
     },
     {
       "name": "forms",
       "type": "component-group",
       "status": "stable",
       "files": ["components/forms.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "combobox",
       "type": "component",
       "status": "stable",
       "files": ["components/combobox.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/combobox"]
     },
     {
       "name": "searchable-select",
       "type": "component-configuration",
       "status": "stable",
       "files": ["components/combobox.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/combobox"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/combobox"]
     },
     {
       "name": "input-otp",
       "type": "component",
       "status": "stable",
       "files": ["components/input-otp.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/input-otp"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/input-otp"]
     },
     {
       "name": "number-input",
       "type": "component",
       "status": "stable",
       "files": ["components/number-input.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/number-input"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/number-input"]
     },
     {
       "name": "password-input",
       "type": "component",
       "status": "stable",
       "files": ["components/password-input.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/password-input"]
     },
     {
       "name": "search-box",
       "type": "component",
       "status": "stable",
       "files": ["components/search-box.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/search-box"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/search-box"]
     },
     {
       "name": "multi-select",
       "type": "component",
       "status": "stable",
       "files": ["components/multi-select.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/multi-select"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/multi-select"]
     },
     {
       "name": "file-upload",
       "type": "component",
       "status": "stable",
       "files": ["components/file-upload.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/file-upload"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/file-upload"]
     },
     {
       "name": "calendar",
       "type": "component",
       "status": "preview",
       "files": ["components/calendar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/calendar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/calendar"]
     },
     {
       "name": "date-picker",
       "type": "component",
       "status": "preview",
       "files": ["components/date-picker.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/date-picker"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/date-picker"]
     },
     {
       "name": "navigation",
       "type": "component-group",
       "status": "stable",
       "files": ["components/navigation.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tabs"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/tabs"]
     },
     {
       "name": "overlays",
       "type": "component-group",
       "status": "stable",
       "files": ["components/overlays.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/dropdown-menu"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/dropdown-menu"]
     },
     {
       "name": "tooltip",
@@ -227,9 +227,9 @@
         "A visible label would communicate the meaning more clearly."
       ],
       "files": ["components/tooltip.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tooltip"],
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/tooltip"],
       "initializer": {
-        "import": "@nyx-ui/plugins/tooltip",
+        "import": "@nyx-raul/plugins/tooltip",
         "function": "initTooltips",
         "selector": "[data-nyx-tooltip]"
       },
@@ -247,259 +247,259 @@
       "type": "component",
       "status": "stable",
       "files": ["components/context-menu.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/context-menu"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/context-menu"]
     },
     {
       "name": "command-palette",
       "type": "component",
       "status": "stable",
       "files": ["components/command-palette.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-palette"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/command-palette"]
     },
     {
       "name": "menubar",
       "type": "component",
       "status": "stable",
       "files": ["components/menubar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/menubar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/menubar"]
     },
     {
       "name": "navigation-menu",
       "type": "component",
       "status": "stable",
       "files": ["components/navigation-menu.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/navigation-menu"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/navigation-menu"]
     },
     {
       "name": "feedback",
       "type": "component-group",
       "status": "stable",
       "files": ["components/feedback.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/toast"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/toast"]
     },
     {
       "name": "notification-center",
       "type": "component",
       "status": "stable",
       "files": ["components/notification-center.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/notification-center"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/notification-center"]
     },
     {
       "name": "data-display",
       "type": "component-group",
       "status": "stable",
       "files": ["components/data-display.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "activity-feed",
       "type": "component",
       "status": "stable",
       "files": ["components/activity-feed.html", "assets/activity-avatar-akira.svg"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/activity-feed"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/activity-feed"]
     },
     {
       "name": "filter-bar",
       "type": "component",
       "status": "stable",
       "files": ["components/filter-bar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/filter-bar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/filter-bar"]
     },
     {
       "name": "command-bar",
       "type": "component",
       "status": "stable",
       "files": ["components/command-bar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/command-bar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/command-bar"]
     },
     {
       "name": "bulk-action-toolbar",
       "type": "component",
       "status": "stable",
       "files": ["components/bulk-action-toolbar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/bulk-action-toolbar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/bulk-action-toolbar"]
     },
     {
       "name": "advanced-data-table",
       "type": "component",
       "status": "preview",
       "files": ["components/data-table.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/data-table"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/data-table"]
     },
     {
       "name": "visualization",
       "type": "component-group",
       "status": "stable",
       "files": ["components/visualization.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "media",
       "type": "component-group",
       "status": "stable",
       "files": ["components/media.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "image-lightbox",
       "type": "component",
       "status": "stable",
       "files": ["components/image-lightbox.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/image-lightbox"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/image-lightbox"]
     },
     {
       "name": "media-carousel",
       "type": "component-configuration",
       "status": "stable",
       "files": ["components/media-carousel.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/media-carousel"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/media-carousel"]
     },
     {
       "name": "upload-dropzone",
       "type": "component-configuration",
       "status": "stable",
       "files": ["components/upload-dropzone.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/upload-dropzone"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/upload-dropzone"]
     },
     {
       "name": "batch-progress-monitor",
       "type": "component-configuration",
       "status": "stable",
       "files": ["components/batch-progress-monitor.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/batch-progress-monitor"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/batch-progress-monitor"]
     },
     {
       "name": "chat-thread",
       "type": "component",
       "status": "stable",
       "files": ["components/chat-thread.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "prompt-composer",
       "type": "component",
       "status": "stable",
       "files": ["components/prompt-composer.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/prompt-composer"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/prompt-composer"]
     },
     {
       "name": "message-scroller",
       "type": "component",
       "status": "stable",
       "files": ["components/message-scroller.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/message-scroller"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/message-scroller"]
     },
     {
       "name": "attachment-previews",
       "type": "component",
       "status": "stable",
       "files": ["components/attachment-previews.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/attachment-previews"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/attachment-previews"]
     },
     {
       "name": "generation-queue",
       "type": "component",
       "status": "stable",
       "files": ["components/generation-queue.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/generation-queue"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/generation-queue"]
     },
     {
       "name": "model-selector",
       "type": "component",
       "status": "stable",
       "files": ["components/model-selector.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/model-selector"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/model-selector"]
     },
     {
       "name": "parameter-inspector",
       "type": "component",
       "status": "stable",
       "files": ["components/parameter-inspector.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/parameter-inspector"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/parameter-inspector"]
     },
     {
       "name": "before-after-comparison",
       "type": "component",
       "status": "stable",
       "files": ["components/before-after.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/before-after"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/before-after"]
     },
     {
       "name": "layouts",
       "type": "component-group",
       "status": "stable",
       "files": ["components/layouts.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "authentication",
       "type": "layout",
       "status": "stable",
       "files": ["components/authentication.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "registration",
       "type": "layout",
       "status": "stable",
       "files": ["components/registration.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/password-input"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/password-input"]
     },
     {
       "name": "welcome-back",
       "type": "layout",
       "status": "stable",
       "files": ["components/welcome-back.html"],
-      "requires": ["@nyx-ui/core"]
+      "requires": ["@nyx-raul/core"]
     },
     {
       "name": "sidebar",
       "type": "component",
       "status": "stable",
       "files": ["components/sidebar.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/sidebar"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/sidebar"]
     },
     {
       "name": "scroll-area",
       "type": "component",
       "status": "stable",
       "files": ["components/scroll-area.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/scroll-area"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/scroll-area"]
     },
     {
       "name": "hover-card",
       "type": "component",
       "status": "stable",
       "files": ["components/hover-card.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/hover-card"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/hover-card"]
     },
     {
       "name": "tree-view",
       "type": "component",
       "status": "stable",
       "files": ["components/tree-view.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/tree-view"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/tree-view"]
     },
     {
       "name": "resizable-panels",
       "type": "component",
       "status": "stable",
       "files": ["components/resizable-panels.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/resizable-panels"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/resizable-panels"]
     },
     {
       "name": "carousel",
       "type": "component",
       "status": "stable",
       "files": ["components/carousel.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/carousel"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/carousel"]
     },
     {
       "name": "stepper",
       "type": "component",
       "status": "stable",
       "files": ["components/stepper.html"],
-      "requires": ["@nyx-ui/core", "@nyx-ui/plugins/stepper"]
+      "requires": ["@nyx-raul/core", "@nyx-raul/plugins/stepper"]
     }
   ]
 }

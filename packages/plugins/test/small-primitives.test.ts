@@ -132,7 +132,7 @@ describe("small primitive registry markup", () => {
     expected.forEach((file, name) => {
       const item = registry.items.find((candidate) => candidate.name === name);
       expect(item?.files).toEqual([file]);
-      expect(item?.requires).toContain("@nyx-ui/core");
+      expect(item?.requires).toContain("@nyx-raul/core");
     });
   });
 });

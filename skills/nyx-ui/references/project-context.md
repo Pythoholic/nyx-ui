@@ -2,8 +2,8 @@
 
 ## Package and source model
 
-- `@nyx-ui/core` exposes the tokens, themes, foundations, and component CSS.
-- `@nyx-ui/plugins` exposes optional framework-agnostic controllers through per-component subpaths.
+- `@nyx-raul/core` exposes the tokens, themes, foundations, and component CSS.
+- `@nyx-raul/plugins` exposes optional framework-agnostic controllers through per-component subpaths.
 - Registry HTML is copied into the consumer repository and becomes application-owned source.
 - Interactive registry entries declare their required plugin subpath and initializer in their contract.
 
@@ -15,8 +15,8 @@ A Tailwind CSS 4 application normally includes its own source plus Nyx Core:
 
 ```css
 @source "../src/**/*.{html,js,ts,jsx,tsx}";
-@source "../node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";
 ```
 
 Preserve an established import order. Do not create a second global stylesheet when the project already has one.
@@ -30,7 +30,7 @@ Nyx themes are selected structurally with `data-nyx-theme` on the document root 
 Import the exact subpath named by the registry contract:
 
 ```js
-import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 const instances = initDialogs(root);
 // Before replacing or removing root:

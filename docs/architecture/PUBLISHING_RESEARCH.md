@@ -6,21 +6,21 @@ Research date: 2026-09-19. This document recommends a direction; it does not rec
 
 The repository already has two publishable packages:
 
-- `@nyx-ui/core` contains source CSS and exports `.` plus `./theme.css`.
-- `@nyx-ui/plugins` contains built ESM and type declarations, with one export per behavior module. Its only runtime dependency is `@floating-ui/dom`.
+- `@nyx-raul/core` contains source CSS and exports `.` plus `./theme.css`.
+- `@nyx-raul/plugins` contains built ESM and type declarations, with one export per behavior module. Its only runtime dependency is `@floating-ui/dom`.
 
-Both manifests are version `0.1.0`, declare Apache-2.0, include repository metadata, and set public access. Changesets is configured with public access, no fixed or linked group, and `@nyx-ui/docs` ignored. The root `pnpm release` command builds, verifies the packed files, then runs `changeset publish`. One pending changeset currently requests only a patch bump for both packages, which would produce `0.1.1` if applied unchanged.
+Both manifests are version `0.1.0`, declare Apache-2.0, include repository metadata, and set public access. Changesets is configured with public access, no fixed or linked group, and `@nyx-raul/docs` ignored. The root `pnpm release` command builds, verifies the packed files, then runs `changeset publish`. One pending changeset currently requests only a patch bump for both packages, which would produce `0.1.1` if applied unchanged.
 
-There has been no published release. Live public-registry queries for `@nyx-ui/core` and `@nyx-ui/plugins` returned `404 Not Found` on 2026-09-19. That shows those two package records are not publicly resolvable; it does **not** prove that the `@nyx-ui` organization scope can still be claimed.
+There has been no published release. Live public-registry queries for `@nyx-raul/core` and `@nyx-raul/plugins` returned `404 Not Found` on 2026-09-19. That shows those two package records are not publicly resolvable; it does **not** prove that the `@nyx-raul` organization scope can still be claimed.
 
 ## Option 1: publish publicly to npm
 
 ### Consumer experience
 
-If the `@nyx-ui` scope is secured, installation is the ordinary public-registry path:
+If the `@nyx-raul` scope is secured, installation is the ordinary public-registry path:
 
 ```shell
-pnpm add @nyx-ui/core @nyx-ui/plugins
+pnpm add @nyx-raul/core @nyx-raul/plugins
 ```
 
 Public packages can be viewed and downloaded by everyone. Consumers do not need a project `.npmrc` or an access token for ordinary public installation. npm organizations that publish only public packages can use the free public plan. Scoped packages are private by default at publish time, so public access must remain explicit; the repository already sets it in both package manifests and Changesets. See [npm's access matrix](https://docs.npmjs.com/package-scope-access-level-and-visibility/), [organization scope model](https://docs.npmjs.com/about-organization-scopes-and-packages/), and [public scoped publishing guide](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages/).
@@ -52,7 +52,7 @@ pnpm add @NAMESPACE/core @NAMESPACE/plugins
 
 The official registry documentation says installation of public, internal, and private packages requires authentication with a classic personal access token; CI may use a repository token where permissions allow it. It also requires the `.npmrc` scope mapping. See [working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry) and [package permissions](https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages).
 
-The current `@nyx-ui/*` names therefore work on this registry only if a user or organization named `nyx-ui` owns the packages. With the repository under `Pythoholic`, the straightforward host-registry names would instead be `@pythoholic/core` and `@pythoholic/plugins`, requiring repository-wide package-name and import changes. Alternatively, the repository and package ownership would need to move under a `nyx-ui` organization.
+The current `@nyx-raul/*` names therefore work on this registry only if a user or organization named `nyx-raul` owns the packages. With the repository under `Pythoholic`, the straightforward host-registry names would instead be `@pythoholic/core` and `@pythoholic/plugins`, requiring repository-wide package-name and import changes. Alternatively, the repository and package ownership would need to move under a `nyx-raul` organization.
 
 ### Commitment
 
@@ -82,15 +82,15 @@ Each shifts update discovery, integrity verification, dependency resolution, and
 
 Deferring a registry avoids claiming a namespace and avoids a public semver promise while APIs are still changing. It commits maintainers to documenting pinning and upgrade procedures and to helping consumers distinguish canonical source from generated build output. If tarballs are offered, those artifacts still need signing/provenance, immutable tags, and release notes.
 
-## The `@nyx-ui` scope question
+## The `@nyx-raul` scope question
 
-The package names can be kept only if the publishing account owns `@nyx-ui` in the selected registry.
+The package names can be kept only if the publishing account owns `@nyx-raul` in the selected registry.
 
-For npm, an organization name becomes its unique package scope when the organization is created. Public organization scopes are free. The public API checks performed for this research found no public `@nyx-ui/core` or `@nyx-ui/plugins` records, and an unauthenticated organization-membership query returned no public members. Neither result is an authoritative availability check: an empty scope can exist without public packages or members. npm's authenticated organization-creation flow is the authoritative place to confirm whether `nyx-ui` can be claimed. Creating it was explicitly out of scope for this research. See [creating an npm organization](https://docs.npmjs.com/creating-an-organization/) and [about scopes](https://docs.npmjs.com/about-scopes/).
+For npm, an organization name becomes its unique package scope when the organization is created. Public organization scopes are free. The public API checks performed for this research found no public `@nyx-raul/core` or `@nyx-raul/plugins` records, and an unauthenticated organization-membership query returned no public members. Neither result is an authoritative availability check: an empty scope can exist without public packages or members. npm's authenticated organization-creation flow is the authoritative place to confirm whether `nyx-raul` can be claimed. Creating it was explicitly out of scope for this research. See [creating an npm organization](https://docs.npmjs.com/creating-an-organization/) and [about scopes](https://docs.npmjs.com/about-scopes/).
 
 Consequences:
 
-- If `nyx-ui` is available and the chosen publisher creates or already controls it, keep `@nyx-ui/core` and `@nyx-ui/plugins`.
+- If `nyx-raul` is available and the chosen publisher creates or already controls it, keep `@nyx-raul/core` and `@nyx-raul/plugins`.
 - If it is owned by someone else, the current names cannot be published there. Choose a scope the maintainer controls, then update both manifests, every import example, registry requirements, docs, package-verification expectations, and release configuration before the first publish.
 - Do not publish one package under the desired scope and rename the other later. Resolve ownership before either first release.
 - Registry scopes are independent. Owning a similarly named repository or organization on one service does not grant the npm scope.
@@ -122,14 +122,14 @@ For subsequent work, every consumer-visible pull request should include a Change
 
 ### Package and build expectations
 
-- Install `@nyx-ui/core` for every Nyx integration and `@nyx-ui/plugins` only when using interactive registry components.
+- Install `@nyx-raul/core` for every Nyx integration and `@nyx-raul/plugins` only when using interactive registry components.
 - Nyx core currently uses Tailwind CSS 4 syntax, including `@theme static`, and is tested in this repository with Tailwind CSS `4.3.3`. The first release should declare a `tailwindcss: ^4.0.0` peer dependency in core so package managers surface the requirement; no peer dependency is declared today.
-- `@nyx-ui/plugins` declares Node.js `>=22` in its package metadata and installs `@floating-ui/dom` transitively. Document that the Node requirement applies to consumer install/build tooling; the controllers execute in the browser.
+- `@nyx-raul/plugins` declares Node.js `>=22` in its package metadata and installs `@floating-ui/dom` transitively. Document that the Node requirement applies to consumer install/build tooling; the controllers execute in the browser.
 - Import core CSS once from the application's main stylesheet and register its package source so Tailwind CSS sees the source-owned classes:
 
 ```css
-@source "../node_modules/@nyx-ui/core/src/**/*.css";
-@import "@nyx-ui/core";
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";
 ```
 
 - Set the theme on the root element, for example `<html data-nyx-theme="signal">`.
@@ -139,7 +139,7 @@ For subsequent work, every consumer-visible pull request should include a Change
 Import only the controller used by copied markup:
 
 ```js
-import { initDialogs } from "@nyx-ui/plugins/dialog";
+import { initDialogs } from "@nyx-raul/plugins/dialog";
 
 const instances = initDialogs(root);
 // Before replacing or unmounting root:
@@ -156,8 +156,8 @@ The first-release instructions should give one complete path: install packages, 
 
 ## Recommendation
 
-Choose public npm, contingent on confirming ownership of `@nyx-ui`, and publish both packages first at `0.2.0`.
+Choose public npm, contingent on confirming ownership of `@nyx-raul`, and publish both packages first at `0.2.0`.
 
-This option matches the repository's existing machinery and gives adopters the only low-friction, anonymous installation path. The repository-host registry adds mandatory token and `.npmrc` work for every consumer and would probably require either moving ownership under a `nyx-ui` namespace or renaming the packages. A no-registry release is acceptable for a short evaluation period, but the current monorepo means a Git URL does not cleanly install the two intended packages, so it would turn dependency management into a manual support burden.
+This option matches the repository's existing machinery and gives adopters the only low-friction, anonymous installation path. The repository-host registry adds mandatory token and `.npmrc` work for every consumer and would probably require either moving ownership under a `nyx-raul` namespace or renaming the packages. A no-registry release is acceptable for a short evaluation period, but the current monorepo means a Git URL does not cleanly install the two intended packages, so it would turn dependency management into a manual support burden.
 
-The trade-off is that public npm creates a durable compatibility and security obligation. Resolve the scope first, declare the Tailwind CSS peer expectation, choose whether core and plugins remain version-locked, and add protected release credentials/provenance before the first publish. If `@nyx-ui` is unavailable, stop and rename before publishing anything; do not compromise the first release with package names the maintainer cannot own long term.
+The trade-off is that public npm creates a durable compatibility and security obligation. Resolve the scope first, declare the Tailwind CSS peer expectation, choose whether core and plugins remain version-locked, and add protected release credentials/provenance before the first publish. If `@nyx-raul` is unavailable, stop and rename before publishing anything; do not compromise the first release with package names the maintainer cannot own long term.

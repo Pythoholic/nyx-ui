@@ -188,7 +188,7 @@ test("AI integration renders its pilot contract from the registry", async ({ pag
   await expect(page.locator(".docs-ai-agents")).toContainText("Claude Code");
   await expect(page.locator(".docs-ai-connect")).toContainText(".codex/config.toml");
   await expect(page.locator(".docs-ai-connect")).toContainText(".mcp.json");
-  await expect(page.locator(".docs-ai-connect")).toContainText("@nyx-ui/mcp@beta");
+  await expect(page.locator(".docs-ai-connect")).toContainText("@nyx-raul/mcp@beta");
   await expect(page.locator(".docs-ai-boundary")).toContainText("Use the beta release");
 
   const exchangeCards = page.locator(".docs-ai-example > .docs-code");

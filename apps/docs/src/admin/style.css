@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '@nyx-ui/core';
+@import '@nyx-raul/core';
 
 /* Application composition only. Nyx Core owns component typography, surfaces,
    borders, control geometry, states and motion. Keep core classes unmodified. */
