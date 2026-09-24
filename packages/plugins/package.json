@@ -194,7 +194,7 @@
       "default": "./dist/toast.js"
     }
   },
-  "files": ["dist", "LICENSE"],
+  "files": ["dist", "!dist/.tsbuildinfo", "LICENSE"],
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "test": "vitest run --environment jsdom --pool=vmThreads",

@@ -25,7 +25,7 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": ["dist", "!dist/.tsbuildinfo", "README.md", "LICENSE"],
   "scripts": {
     "build": "tsc -b tsconfig.json && node scripts/copy-registry.mjs",
     "test": "pnpm build && vitest run",
