@@ -44,7 +44,7 @@ body:
     attributes:
       label: Package and version
       description: Include every affected package when known.
-      placeholder: "@nyx-raul/plugins@0.2.0-beta.2"
+      placeholder: "@nyx-raul/plugins@0.2.0-beta.3"
     validations:
       required: true
   - type: input
