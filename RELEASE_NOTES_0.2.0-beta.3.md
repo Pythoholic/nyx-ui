@@ -29,9 +29,9 @@ Open http://127.0.0.1:5174/.
 ## Beta status
 
 - APIs may change before the stable release.
-- The packages are not yet published to npm. They will ship under the npm `beta` dist-tag once published.
+- This is the first package publication, released under the `beta` channel.
 - The three preview components may change shape.
-- Nyx UI is maintained by one person. Report vulnerabilities through [SECURITY.md](https://github.com/Pythoholic/nyx-ui/blob/v0.2.0-beta.2/SECURITY.md) and see [CONTRIBUTING.md](https://github.com/Pythoholic/nyx-ui/blob/v0.2.0-beta.2/CONTRIBUTING.md) before contributing.
+- Nyx UI is maintained by one person. Report vulnerabilities through [SECURITY.md](https://github.com/Pythoholic/nyx-ui/blob/v0.2.0-beta.3/SECURITY.md) and see [CONTRIBUTING.md](https://github.com/Pythoholic/nyx-ui/blob/v0.2.0-beta.3/CONTRIBUTING.md) before contributing.
 
 ## Requirements
 

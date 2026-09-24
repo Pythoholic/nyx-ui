@@ -81,8 +81,6 @@ React applications use the same registry markup and initialize the relevant subt
 ## Where to start
 
 - Browse the local catalog at `http://127.0.0.1:5174/` after starting the dev server.
-- Read [Framework research and architecture direction](./docs/architecture/FRAMEWORK_RESEARCH.md) for the package and registry model.
-- Read [Build loop](./docs/architecture/BUILD_LOOP.md) for the lifecycle and completeness contract applied to components.
 - Use `registry/registry.json` to inspect component maturity, canonical files, and runtime requirements.
 - Use the Accessibility, Behavior, Registry, Theming, and React guides in the documentation application before integrating interactive components.
 

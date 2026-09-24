@@ -21,8 +21,15 @@ error.log
 
 # Internal release and review artifacts retained only in local worktrees.
 .openai/hosting.json
+docs/PUBLIC_RELEASE.md
+docs/architecture/BUILD_LOOP.md
 docs/architecture/EXTERNAL_REVIEW_BRIEF.md
+docs/architecture/FRAMEWORK_RESEARCH.md
+docs/architecture/PUBLISHING_PLAN_REVIEW.md
+docs/architecture/PUBLISHING_RESEARCH.md
 docs/architecture/RALPH_PROMPT.md
+docs/architecture/UX_AUDIT_FINDINGS.md
+docs/architecture/V0.2_SCOPING_NOTES.md
 scripts/ralph.sh
 scripts/verify-review-regressions.py
 nyx-design/NYX_UI_PROJECT_BRIEF.md

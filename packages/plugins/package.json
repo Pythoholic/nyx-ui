@@ -1,6 +1,6 @@
 {
   "name": "@nyx-raul/plugins",
-  "version": "0.2.0-beta.2",
+  "version": "0.2.0-beta.3",
   "description": "Optional framework-agnostic behavior for Nyx UI components.",
   "keywords": ["nyx-ui", "tailwindcss", "design-system", "components"],
   "license": "Apache-2.0",
@@ -194,7 +194,7 @@
       "default": "./dist/toast.js"
     }
   },
-  "files": ["dist", "LICENSE"],
+  "files": ["dist", "!dist/.tsbuildinfo", "LICENSE"],
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "test": "vitest run --environment jsdom --pool=vmThreads",

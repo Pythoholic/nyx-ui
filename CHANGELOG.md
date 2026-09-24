@@ -8,6 +8,15 @@ index.
 
 ## Unreleased
 
+## 0.2.0-beta.3 - 2026-09-24
+
+### Changed
+
+- Published the packages for the first time under the beta channel.
+- Excluded build information files from package tarballs.
+- Removed internal planning and review documents from the repository while retaining local copies.
+- Made the release workflow skip package versions that are already published.
+
 ## 0.2.0-beta.2 - 2026-09-22
 
 ### Added
