@@ -2,6 +2,27 @@
 
 Nyx is an open-source interface system for dense applications, operational workspaces, creative tools, and data-heavy products. It is designed for teams that want a strong visual language without giving up semantic HTML or ownership of their component markup.
 
+![Nyx UI admin dashboard showing operational metrics, revenue, orders, and workspace navigation](.github/assets/readme/nyx-admin-dashboard.webp)
+
+## A look inside
+
+![Nyx UI documentation overview with navigation, foundations, and architecture](.github/assets/readme/nyx-docs-overview.webp)
+
+<table>
+  <tr>
+    <td width="50%"><img src=".github/assets/readme/nyx-command-palette.webp" alt="Nyx UI command palette open with grouped navigation and action commands" width="100%"></td>
+    <td width="50%"><img src=".github/assets/readme/nyx-dialog.webp" alt="Nyx UI confirmation dialog open with a change note field and actions" width="100%"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src=".github/assets/readme/nyx-data-table.webp" alt="Nyx UI advanced data table sorted by duration with a failed job selected" width="100%"></td>
+    <td width="50%"><img src=".github/assets/readme/nyx-toast-stack.webp" alt="Nyx UI toast stack showing success, warning, and failure notifications" width="100%"></td>
+  </tr>
+</table>
+
+![Solar, Signal, Flux, and Plasma accent themes applied to the same Nyx UI button row](.github/assets/readme/nyx-accent-themes.webp)
+
+Solar, Signal, Flux, and Plasma accents keep the same structure while changing the interface tone.
+
 The project separates styling, behavior, and markup so adopters can take only the layers they need:
 
 - `@nyx-raul/core` provides tokens, themes, foundations, motion, and component CSS.
