@@ -8,6 +8,18 @@ index.
 
 ## Unreleased
 
+### Added
+
+- Added the Create page for composing a shareable Nyx theme against live registry components and copying the generated setup.
+
+### Changed
+
+- Replaced the README hero with the Create workspace.
+
+### Removed
+
+- Removed the standalone admin dashboard template and its browser coverage.
+
 ## 0.2.0-beta.3 - 2026-09-24
 
 ### Changed

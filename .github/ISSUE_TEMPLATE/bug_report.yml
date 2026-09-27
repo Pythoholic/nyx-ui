@@ -36,7 +36,7 @@ body:
     id: affected_surface
     attributes:
       label: Affected component or route
-      placeholder: dialog, data-table, /admin/#overview, or another surface
+      placeholder: dialog, data-table, /create, or another surface
     validations:
       required: true
   - type: input

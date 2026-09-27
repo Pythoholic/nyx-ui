@@ -13,6 +13,7 @@ import { navigationPages } from "./navigation.js";
 import { overlayPages } from "./overlays.js";
 import { primitivePages } from "./primitives.js";
 import { page, type DocPage, type NavigationCategory } from "./shared.js";
+import { createPage } from "../create/page.js";
 
 export const overviewPage = page({
   path: paths.overview,
@@ -77,7 +78,8 @@ export const overviewPage = page({
         <h2 id="overview-start">Evaluate Nyx in a real workflow</h2>
         <p>Begin with the executable render workspace to see installation, scoped themes, repeated controls, events, cleanup, progress, failure, and retry in one screen.</p>
         <div class="docs-overview-actions">
-          <a class="nyx-button" data-variant="primary" data-docs-link data-docs-path="/guides/render-workspace" href="/guides/render-workspace">Open the working example</a>
+          <a class="nyx-button" data-variant="primary" data-docs-link data-docs-path="/create" href="/create">Create your theme</a>
+          <a class="nyx-link" data-docs-link data-docs-path="/guides/render-workspace" href="/guides/render-workspace">Open the working example</a>
           <a class="nyx-link" data-docs-link data-docs-path="/guides/installation" href="/guides/installation">Read installation guidance</a>
         </div>
         <p class="docs-overview-note">Nyx 0.2.0-beta.3 requires a CSS build step. It does not currently provide a supported CDN bundle or framework wrapper.</p>
@@ -109,10 +111,11 @@ export const componentCategories: NavigationCategory[] = [
 
 export const pages: DocPage[] = [
   overviewPage,
+  createPage,
   ...guidePages,
   ...foundationPages,
   ...componentCategories.flatMap((category) => category.pages),
 ];
 
-export { foundationPages, guidePages };
+export { createPage, foundationPages, guidePages };
 export type { DocPage, NavigationCategory } from "./shared.js";

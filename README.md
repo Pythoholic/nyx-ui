@@ -2,7 +2,7 @@
 
 Nyx is an open-source interface system for dense applications, operational workspaces, creative tools, and data-heavy products. It is designed for teams that want a strong visual language without giving up semantic HTML or ownership of their component markup.
 
-![Nyx UI admin dashboard showing operational metrics, revenue, orders, and workspace navigation](.github/assets/readme/nyx-admin-dashboard.webp)
+[![Nyx UI Create page with theme controls and live operational components](.github/assets/readme/nyx-create.webp)](http://127.0.0.1:5174/create)
 
 ## A look inside
 

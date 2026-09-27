@@ -33,7 +33,6 @@ export default defineConfig({
     rolldownOptions: {
       input: {
         docs: fileURLToPath(new URL("./index.html", import.meta.url)),
-        admin: fileURLToPath(new URL("./admin/index.html", import.meta.url)),
       },
     },
     emptyOutDir: true,
