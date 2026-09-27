@@ -2,7 +2,35 @@
 
 Nyx is an open-source interface system for dense applications, operational workspaces, creative tools, and data-heavy products. It is designed for teams that want a strong visual language without giving up semantic HTML or ownership of their component markup.
 
-[![Nyx UI Create page with theme controls and live operational components](.github/assets/readme/nyx-create.webp)](http://127.0.0.1:5174/create)
+![Nyx UI Create page with theme controls and live operational components](.github/assets/readme/nyx-create.webp)
+
+## Create your theme
+
+Use the Create page to adjust the theme against live components. Its generated setup contains only the choices that differ from the defaults.
+
+- Tune the accent preset or a custom colour, base palette, radius, font, borders, shadows, and motion.
+- Share a setup directly: every choice is stored in the URL.
+- Use **Get code** for the install command, `data-nyx-theme` attribute, a `:root` block with only the changed tokens, and an optional font link.
+
+For Plasma with Round radius, the preset is applied as `<html data-nyx-theme="plasma">` and the generated override block is:
+
+```css
+:root {
+  --nyx-radius-xs: 0.5rem;
+  --nyx-radius-sm: 0.75rem;
+  --nyx-radius-control: 1rem;
+  --nyx-radius-panel: 1.5rem;
+  --nyx-radius-round: 999px;
+}
+```
+
+![Nyx UI Create accent picker open with Plasma and Round selected](.github/assets/readme/nyx-create-picker.webp)
+
+To open it locally, start the documentation application and visit `http://127.0.0.1:5174/create`:
+
+```shell
+pnpm dev
+```
 
 ## A look inside
 
