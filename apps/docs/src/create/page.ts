@@ -1,4 +1,5 @@
 import { initToasts } from "@nyx-raul/plugins/toast";
+import { getOrCreateDropdownMenu } from "@nyx-raul/plugins/dropdown-menu";
 import { page, type DocPage } from "../catalog/shared.js";
 import { paths } from "../routes.js";
 import {
@@ -28,6 +29,59 @@ const labels = {
   motion: { calm: "Calm", default: "Default", snappy: "Snappy" },
 } as const;
 
+type PickerName = Exclude<keyof CreateOptions, "customColor">;
+
+const pickerDefinitions = [
+  { name: "accent", label: "Accent", values: accentNames },
+  { name: "palette", label: "Base palette", values: paletteNames },
+  { name: "radius", label: "Radius", values: radiusNames },
+  { name: "font", label: "Font", values: fontNames },
+  { name: "borders", label: "Borders", values: borderNames },
+  { name: "shadows", label: "Shadows", values: shadowNames },
+  { name: "motion", label: "Motion", values: motionNames },
+] as const;
+
+function optionLabel(name: PickerName, value: string): string {
+  return (labels as Record<PickerName, Record<string, string>>)[name][value] ?? value;
+}
+
+function previewMarkup(name: PickerName, value: string): string {
+  if (name === "font") {
+    const family = fontDefinitions[value as keyof typeof fontDefinitions].family;
+    return `<span aria-hidden="true" class="create-option-preview" data-create-preview="font" data-preview-value="${value}"><span class="create-preview-font" style='font-family:${family}'>Aa</span></span>`;
+  }
+  const content = {
+    accent: '<i class="create-preview-accent"></i>',
+    palette: '<i></i><i></i><i></i>',
+    radius: '<i class="create-preview-radius"></i>',
+    borders: '<i class="create-preview-border"></i>',
+    shadows: '<i class="create-preview-shadow"></i>',
+    motion: '<i class="create-preview-motion"><b></b><b></b><b></b></i><span class="create-preview-motion-label"></span>',
+  }[name];
+  return `<span aria-hidden="true" class="create-option-preview" data-create-preview="${name}" data-preview-value="${value}">${content}</span>`;
+}
+
+function pickerControl(definition: (typeof pickerDefinitions)[number]): string {
+  const { label, name, values } = definition;
+  const initialValue = defaultCreateOptions[name];
+  const menuId = `create-picker-${name}`;
+  const customColour = name === "accent"
+    ? `<label class="create-picker-colour"><span>Custom colour</span><span><input aria-label="Custom accent colour" data-create-option="customColor" name="customColor" type="color" value="${defaultCreateOptions.customColor}"><output data-create-color-value>${defaultCreateOptions.customColor.toLocaleUpperCase()}</output></span></label>`
+    : "";
+  return `<div class="create-option-row">
+    <input data-create-option="${name}" name="${name}" type="hidden" value="${initialValue}">
+    <button class="create-option-trigger" data-create-trigger="${name}" data-nyx-dropdown-menu-trigger="${menuId}" type="button">
+      <span class="create-option-copy"><span>${label}</span><strong data-create-current-value="${name}">${optionLabel(name, initialValue)}</strong></span>
+      <span data-create-current-preview="${name}">${previewMarkup(name, initialValue)}</span><span aria-hidden="true" class="create-option-chevron">&#8964;</span>
+    </button>
+    <div class="nyx-popover nyx-menu create-option-picker" data-create-picker="${name}" data-nyx-dropdown-menu data-nyx-dropdown-menu-placement="bottom-start" id="${menuId}">
+      <span class="nyx-menu-label">${label}</span>
+      ${values.map((value) => `<button aria-checked="${String(value === initialValue)}" class="nyx-menu-item create-picker-option" data-create-option-value="${value}" role="menuitemradio" type="button"><span aria-hidden="true" class="nyx-menu-item-indicator">&#10003;</span><span class="create-picker-option-name">${optionLabel(name, value)}</span>${previewMarkup(name, value)}</button>`).join("")}
+      ${customColour}
+    </div>
+  </div>`;
+}
+
 function card(title: string, eyebrow: string, markup: string, className = ""): string {
   return `<article class="create-card ${className}" data-create-card data-create-card-title="${title}">
     <header class="create-card-header"><span class="nyx-eyebrow">// ${eyebrow}</span><h2>${title}</h2></header>
@@ -35,27 +89,8 @@ function card(title: string, eyebrow: string, markup: string, className = ""): s
   </article>`;
 }
 
-function selectControl(name: "accent" | "palette" | "font", values: readonly string[]): string {
-  const controlLabel = name === "palette" ? "Base palette" : `${name[0]?.toUpperCase()}${name.slice(1)}`;
-  return `<label class="nyx-field create-select"><span class="nyx-label">${controlLabel}</span><select class="nyx-select" data-create-option="${name}" name="${name}">${values.map((value) => `<option value="${value}">${labels[name][value as keyof typeof labels[typeof name]]}</option>`).join("")}</select></label>`;
-}
-
-function segmentedControl(name: "radius" | "borders" | "shadows" | "motion", legend: string, values: readonly string[]): string {
-  return `<fieldset class="nyx-segmented-fieldset create-segment"><legend class="nyx-label">${legend}</legend><div class="nyx-segmented">${values.map((value) => {
-    const id = `create-${name}-${value}`;
-    return `<input data-create-option="${name}" id="${id}" name="${name}" type="radio" value="${value}"><label for="${id}">${labels[name][value as keyof typeof labels[typeof name]]}</label>`;
-  }).join("")}</div></fieldset>`;
-}
-
 const controls = `<form class="create-controls-form" data-create-controls>
-  ${selectControl("accent", accentNames)}
-  <label class="nyx-field create-custom-color" data-create-custom><span class="nyx-label">Custom accent</span><span class="create-color-row"><input aria-label="Custom accent colour" data-create-option="customColor" name="customColor" type="color"><output data-create-color-value></output></span></label>
-  ${selectControl("palette", paletteNames)}
-  ${segmentedControl("radius", "Radius", radiusNames)}
-  ${selectControl("font", fontNames)}
-  ${segmentedControl("borders", "Borders", borderNames)}
-  ${segmentedControl("shadows", "Shadows", shadowNames)}
-  ${segmentedControl("motion", "Motion", motionNames)}
+  <div class="create-option-list">${pickerDefinitions.map(pickerControl).join("")}</div>
   <div class="create-control-actions"><button class="nyx-button" data-create-shuffle type="button">Shuffle</button><button class="nyx-button" data-create-reset data-variant="quiet" type="button">Reset</button></div>
 </form><div class="create-control-cta"><button class="nyx-button" data-nyx-dialog-trigger="create-code-dialog" data-variant="primary" type="button">Get code</button></div>`;
 
@@ -114,10 +149,10 @@ export const createPage: DocPage = page({
   navigationLabel: "Create",
   description: "Tune real components, then copy the exact theme setup.",
   searchTerms: "create theme builder custom accent palette radius font border shadow motion generator",
-  plugins: ["tabs", "dialog", "code-block"],
+  plugins: ["tabs", "dialog", "code-block", "dropdown-menu"],
   body: `<div class="create-toolbar"><button class="nyx-button create-customize-toggle" data-create-panel-toggle aria-controls="create-control-panel" aria-expanded="false" type="button">Customize</button></div>
-  <div class="create-workspace">
-    <aside class="create-control-panel" data-mobile-open="false" id="create-control-panel" aria-label="Theme controls"><div class="create-panel-head"><span class="nyx-eyebrow">Theme controls</span><output data-create-summary>Signal · Void</output></div>${controls}</aside>
+  <div class="create-workspace" data-create-scope>
+    <aside class="create-control-panel" data-mobile-open="false" id="create-control-panel" aria-label="Customize theme">${controls}</aside>
     <section class="create-canvas" data-create-canvas aria-label="Live component canvas"><div class="create-canvas-grid">${cards}</div></section>
   </div>${codeDialog}`,
 });
@@ -143,22 +178,48 @@ function syncForm(form: HTMLFormElement, options: CreateOptions): void {
       else control.value = value;
     });
   });
+  pickerDefinitions.forEach(({ name }) => {
+    const value = options[name];
+    const currentValue = form.querySelector<HTMLElement>(`[data-create-current-value="${name}"]`);
+    const currentPreview = form.querySelector<HTMLElement>(`[data-create-current-preview="${name}"]`);
+    if (currentValue) currentValue.textContent = optionLabel(name, value);
+    if (currentPreview) currentPreview.innerHTML = previewMarkup(name, value);
+    form.querySelectorAll<HTMLElement>(`[data-create-picker="${name}"] [data-create-option-value]`).forEach((item) => {
+      const checked = item.dataset.createOptionValue === value;
+      item.setAttribute("aria-checked", String(checked));
+      item.dataset.state = checked ? "checked" : "unchecked";
+    });
+  });
 }
 
 export function initializeCreatePage(root: HTMLElement): () => void {
   const abortController = new AbortController();
   const form = root.querySelector<HTMLFormElement>("[data-create-controls]");
   const canvas = root.querySelector<HTMLElement>("[data-create-canvas]");
+  const scope = root.querySelector<HTMLElement>("[data-create-scope]");
   const masonry = root.querySelector<HTMLElement>(".create-canvas-grid");
   const panel = root.querySelector<HTMLElement>("#create-control-panel");
   const toggle = root.querySelector<HTMLButtonElement>("[data-create-panel-toggle]");
-  if (!form || !canvas || !masonry || !panel || !toggle) throw new Error("Create controls did not render.");
+  if (!form || !canvas || !scope || !masonry || !panel || !toggle) throw new Error("Create controls did not render.");
 
   let options = decodeCreateOptions(window.location.search);
   let fontLink: HTMLLinkElement | undefined;
   let layoutFrame = 0;
   let layoutWidth = 0;
   syncForm(form, options);
+
+  const pickerMenus = Array.from(form.querySelectorAll<HTMLElement>("[data-create-picker]")).map((element) => ({
+    instance: getOrCreateDropdownMenu(element, root),
+    trigger: form.querySelector<HTMLElement>(`[data-nyx-dropdown-menu-trigger="${element.id}"]`),
+  }));
+  const positionPickers = (): void => {
+    const placement = window.matchMedia("(max-width: 62rem)").matches ? "bottom-start" : "right-start";
+    pickerMenus.forEach(({ instance, trigger }) => {
+      if (trigger) instance.setPositioning(trigger, placement);
+    });
+  };
+  positionPickers();
+  window.addEventListener("resize", positionPickers, { signal: abortController.signal });
 
   const masonryCards = Array.from(masonry.querySelectorAll<HTMLElement>("[data-create-card]"));
   const layoutMasonry = (): void => {
@@ -209,15 +270,15 @@ export function initializeCreatePage(root: HTMLElement): () => void {
   };
 
   const apply = (): void => {
-    Object.entries(tokensForOptions(options)).forEach(([token, value]) => canvas.style.setProperty(token, value));
+    Object.entries(tokensForOptions(options)).forEach(([token, value]) => scope.style.setProperty(token, value));
+    scope.style.setProperty("--create-custom-color", options.customColor);
+    scope.dataset.accent = options.accent;
+    scope.dataset.palette = options.palette;
     canvas.dataset.accent = options.accent;
     canvas.dataset.palette = options.palette;
-    const custom = form.querySelector<HTMLElement>("[data-create-custom]");
-    custom?.toggleAttribute("hidden", options.accent !== "custom");
     const colorValue = form.querySelector<HTMLOutputElement>("[data-create-color-value]");
     if (colorValue) colorValue.value = options.customColor.toLocaleUpperCase();
-    const summary = root.querySelector<HTMLOutputElement>("[data-create-summary]");
-    if (summary) summary.value = `${labels.accent[options.accent]} · ${labels.palette[options.palette]} · ${labels.radius[options.radius]}`;
+    syncForm(form, options);
     const fontName = root.querySelector<HTMLElement>("[data-create-font-name]");
     const accentName = root.querySelector<HTMLElement>("[data-create-accent-name]");
     const paletteName = root.querySelector<HTMLElement>("[data-create-palette-name]");
@@ -249,7 +310,20 @@ export function initializeCreatePage(root: HTMLElement): () => void {
     if (event.target instanceof HTMLInputElement && event.target.type === "color") writeUrl(true);
     else writeUrl();
   }, { signal: abortController.signal });
+  form.querySelectorAll<HTMLElement>("[data-create-picker]").forEach((picker) => {
+    picker.addEventListener("nyx:dropdown-menu:select", (event) => {
+      const item = (event as CustomEvent<{ item?: HTMLElement }>).detail.item;
+      const name = picker.dataset.createPicker as PickerName | undefined;
+      const value = item?.dataset.createOptionValue;
+      const input = name ? form.querySelector<HTMLInputElement>(`input[name="${name}"]`) : null;
+      if (!name || !value || !input) return;
+      input.value = value;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    }, { signal: abortController.signal });
+  });
   form.querySelector<HTMLInputElement>('input[type="color"]')?.addEventListener("input", () => {
+    const accent = form.querySelector<HTMLInputElement>('input[name="accent"]');
+    if (accent) accent.value = "custom";
     options = optionFromForm(form);
     apply();
     writeUrl(true);
@@ -279,8 +353,8 @@ export function initializeCreatePage(root: HTMLElement): () => void {
 
   apply();
   const toast = initToasts(root.querySelector<HTMLElement>("[data-nyx-toast-region]") ?? root)[0];
-  toast?.notify({ title: "Theme ready", description: "Canvas tokens are synchronized.", tone: "success", duration: 0 });
-  toast?.notify({ title: "Queue active", description: "Three render jobs are in progress.", progress: 68, duration: 0 });
+  toast?.notify({ title: "Theme ready", description: "Canvas synced.", tone: "success", duration: 0 });
+  toast?.notify({ title: "Queue active", description: "Three jobs rendering.", progress: 68, duration: 0 });
   layoutFrame = requestAnimationFrame(layoutMasonry);
   void document.fonts.ready.then(() => {
     layoutMasonry();

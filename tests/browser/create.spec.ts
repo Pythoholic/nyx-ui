@@ -1,40 +1,50 @@
 import { expect, test, type Page } from "@playwright/test";
 
 async function token(page: Page, name: string): Promise<string> {
-  return page.locator("[data-create-canvas]").evaluate((element, property) => getComputedStyle(element).getPropertyValue(property).trim(), name);
+  return page.locator("[data-create-scope]").evaluate((element, property) => getComputedStyle(element).getPropertyValue(property).trim(), name);
 }
 
-test("every theme control updates the canvas without changing the docs chrome", async ({ page }) => {
+async function chooseOption(page: Page, name: string, value: string): Promise<void> {
+  await page.locator(`[data-create-trigger="${name}"]`).click();
+  await page.locator(`#create-picker-${name} [data-create-option-value="${value}"]`).click();
+}
+
+test("picker rows update the shared panel and canvas theme scope", async ({ page }) => {
   await page.goto("/create");
   const canvas = page.locator("[data-create-canvas]");
+  const panel = page.locator("#create-control-panel");
   const docsPanel = page.locator(".docs-topbar");
   const docsBackground = await docsPanel.evaluate((element) => getComputedStyle(element).backgroundColor);
 
-  await expect(page.locator('select[name="accent"]')).toHaveValue("signal");
+  await expect(page.locator('input[name="accent"]')).toHaveValue("signal");
   await expect.poll(() => token(page, "--nyx-accent")).toBe("#00e08a");
+  await expect(page.locator(".docs-theme-list")).toBeHidden();
+  await expect.poll(() => panel.evaluate((element) => getComputedStyle(element).getPropertyValue("--nyx-accent").trim())).toBe("#00e08a");
+  await expect.poll(() => page.getByRole("button", { name: "Get code" }).evaluate((element) => getComputedStyle(element).backgroundColor)).toBe("rgb(0, 224, 138)");
 
-  await page.locator('select[name="accent"]').selectOption("plasma");
+  await chooseOption(page, "accent", "plasma");
   await expect.poll(() => token(page, "--nyx-accent")).toBe("#8b7cf6");
 
-  await page.locator('select[name="palette"]').selectOption("slate");
+  await chooseOption(page, "palette", "slate");
   await expect.poll(() => token(page, "--nyx-panel")).toBe("#0d1921");
 
-  await page.locator('label[for="create-radius-round"]').click();
+  await chooseOption(page, "radius", "round");
   await expect.poll(() => token(page, "--nyx-radius-panel")).toBe("1.5rem");
 
-  await page.locator('select[name="font"]').selectOption("space");
+  await chooseOption(page, "font", "space");
   await expect.poll(() => token(page, "--font-nyx")).toContain("Space Mono");
 
-  await page.locator('label[for="create-borders-hairline"]').click();
+  await chooseOption(page, "borders", "hairline");
   await expect.poll(() => token(page, "--nyx-border")).toBe("0.0625rem");
 
-  await page.locator('label[for="create-shadows-flat"]').click();
+  await chooseOption(page, "shadows", "flat");
   await expect.poll(() => token(page, "--nyx-shadow-raised")).toBe("none");
 
-  await page.locator('label[for="create-motion-snappy"]').click();
+  await chooseOption(page, "motion", "snappy");
   await expect.poll(() => token(page, "--nyx-duration-normal")).toBe("110ms");
 
-  await page.locator('select[name="accent"]').selectOption("custom");
+  await chooseOption(page, "accent", "custom");
+  await page.locator('[data-create-trigger="accent"]').click();
   await page.locator('input[name="customColor"]').fill("#ffffff");
   await expect.poll(() => token(page, "--nyx-accent-ink")).toBe("#000000");
 
@@ -42,25 +52,49 @@ test("every theme control updates the canvas without changing the docs chrome", 
   await expect.poll(() => docsPanel.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(docsBackground);
 });
 
+test("pickers support keyboard selection and Escape focus return", async ({ page }) => {
+  await page.goto("/create");
+  const accent = page.locator('[data-create-trigger="accent"]');
+  await accent.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#create-picker-accent")).toBeVisible();
+  await expect(page.locator('#create-picker-accent [data-create-option-value="solar"]')).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
+  await expect(accent).toBeFocused();
+  await expect(page).toHaveURL(/accent=plasma/);
+  await expect.poll(() => token(page, "--nyx-accent")).toBe("#8b7cf6");
+
+  const radius = page.locator('[data-create-trigger="radius"]');
+  await radius.focus();
+  await page.keyboard.press("Space");
+  await expect(page.locator("#create-picker-radius")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#create-picker-radius")).toBeHidden();
+  await expect(radius).toBeFocused();
+});
+
 test("create state round-trips through reload and generated code reflects it", async ({ context, page }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/create");
-  await page.locator('select[name="accent"]').selectOption("plasma");
-  await page.locator('select[name="palette"]').selectOption("midnight");
-  await page.locator('label[for="create-radius-round"]').click();
-  await page.locator('select[name="font"]').selectOption("source-code");
-  await page.locator('label[for="create-borders-hairline"]').click();
-  await page.locator('label[for="create-shadows-flat"]').click();
-  await page.locator('label[for="create-motion-calm"]').click();
+  await chooseOption(page, "accent", "plasma");
+  await chooseOption(page, "palette", "midnight");
+  await chooseOption(page, "radius", "round");
+  await chooseOption(page, "font", "source-code");
+  await chooseOption(page, "borders", "hairline");
+  await chooseOption(page, "shadows", "flat");
+  await chooseOption(page, "motion", "calm");
 
   const savedUrl = page.url();
   expect(savedUrl).toContain("accent=plasma");
   expect(savedUrl).toContain("palette=midnight");
   await page.reload();
   expect(page.url()).toBe(savedUrl);
-  await expect(page.locator('select[name="accent"]')).toHaveValue("plasma");
-  await expect(page.locator('select[name="palette"]')).toHaveValue("midnight");
-  await expect(page.locator('input[name="radius"][value="round"]')).toBeChecked();
+  await expect(page.locator('input[name="accent"]')).toHaveValue("plasma");
+  await expect(page.locator('input[name="palette"]')).toHaveValue("midnight");
+  await expect(page.locator('input[name="radius"]')).toHaveValue("round");
   await expect.poll(() => token(page, "--nyx-panel")).toBe("#0e1329");
 
   const trigger = page.getByRole("button", { name: "Get code" });
@@ -122,6 +156,11 @@ test("canvas builds a gapless masonry wall without clipped ellipses", async ({ p
     expect(headerBox!.height).toBeLessThanOrEqual(130);
     expect(canvasBox!.y - mainBox!.y).toBeLessThanOrEqual(170);
     expect(canvasBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(20);
+    const codeButton = page.getByRole("button", { name: "Get code" });
+    await expect(codeButton).toBeVisible();
+    const codeButtonBox = await codeButton.boundingBox();
+    expect(codeButtonBox).not.toBeNull();
+    expect(codeButtonBox!.y + codeButtonBox!.height).toBeLessThanOrEqual(viewport.height);
     await expect(grid).toHaveAttribute("data-create-columns", /\d/);
     const columns = await grid.locator(".create-masonry-column").count();
     expect(Math.abs(columns - viewport.expectedColumns)).toBeLessThanOrEqual(1);
@@ -172,7 +211,7 @@ test("generation queue stays compact", async ({ page }) => {
 test("code dialog wraps the font link and scrolls its body on a short viewport", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 560 });
   await page.goto("/create");
-  await page.locator('select[name="font"]').selectOption("source-code");
+  await chooseOption(page, "font", "source-code");
   await page.getByRole("button", { name: "Get code" }).click();
 
   const dialog = page.locator("#create-code-dialog");
@@ -211,6 +250,15 @@ test("create has no console errors and stays bounded with both mobile panel stat
 
   await page.getByRole("button", { name: "Customize" }).click();
   await expect(panel).toBeVisible();
+  const panelBox = await panel.boundingBox();
+  const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+  expect(panelBox).not.toBeNull();
+  expect(panelBox!.x).toBe(0);
+  expect(panelBox!.width).toBe(clientWidth);
+  await expect(panel.getByRole("button", { name: "Get code" })).toBeVisible();
+  await chooseOption(page, "accent", "plasma");
+  await expect(page).toHaveURL(/accent=plasma/);
+  await expect.poll(() => token(page, "--nyx-accent")).toBe("#8b7cf6");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });
