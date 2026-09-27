@@ -100,12 +100,15 @@ test("default code needs no CSS overrides and puts the accent snippet after inst
   expect(accentBox!.y).toBeGreaterThan(installBox!.y + installBox!.height - 1);
 });
 
-test("desktop canvas keeps wide cards readable and paired cards dense", async ({ page }) => {
+test("canvas adds responsive columns without clipped ellipses", async ({ page }) => {
   const wideTitles = ["Generation queue", "Prompt composer", "Batch progress", "Activity feed", "Advanced data table"];
-  const pairs = [["Model selector", "Parameter inspector"], ["Command palette", "Notification centre"], ["Tabs", "Calendar"], ["Toast stack", "Project form"]];
+  const viewports = [
+    { width: 1440, height: 900, minimumColumns: 3, minimumVisibleCards: 4 },
+    { width: 1920, height: 1080, minimumColumns: 4, minimumVisibleCards: 6 },
+  ];
 
-  for (const width of [1440, 1920]) {
-    await page.setViewportSize({ width, height: 1080 });
+  for (const viewport of viewports) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto("/create");
     const grid = page.locator(".create-canvas-grid");
     const gridBox = await grid.boundingBox();
@@ -116,28 +119,33 @@ test("desktop canvas keeps wide cards readable and paired cards dense", async ({
     expect(canvasBox).not.toBeNull();
     expect(headerBox!.height).toBeLessThanOrEqual(165);
     expect(canvasBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(20);
+    const columns = await grid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
+    expect(columns).toBeGreaterThanOrEqual(viewport.minimumColumns);
+
+    const visibleCards = await page.locator("[data-create-card]").evaluateAll((cards) => cards.filter((card) => {
+      const bounds = card.getBoundingClientRect();
+      return bounds.top < window.innerHeight && bounds.bottom > 0;
+    }).length);
+    expect(visibleCards).toBeGreaterThanOrEqual(viewport.minimumVisibleCards);
 
     for (const title of wideTitles) {
       const card = page.locator("[data-create-card]", { has: page.locator("header", { hasText: title }) });
       const box = await card.boundingBox();
       expect(box).not.toBeNull();
-      expect(box!.width).toBeGreaterThan(gridBox!.width * 0.95);
+      expect(box!.width).toBeGreaterThan(gridBox!.width / columns);
+      expect(box!.width).toBeLessThan(gridBox!.width * 0.8);
     }
 
-    for (const [left, right] of pairs) {
-      const leftBox = await page.locator("[data-create-card]", { has: page.locator("header", { hasText: left }) }).boundingBox();
-      const rightBox = await page.locator("[data-create-card]", { has: page.locator("header", { hasText: right }) }).boundingBox();
-      expect(leftBox).not.toBeNull();
-      expect(rightBox).not.toBeNull();
-      expect(Math.abs(leftBox!.y - rightBox!.y)).toBeLessThanOrEqual(1);
-      expect(Math.abs(leftBox!.height - rightBox!.height)).toBeLessThanOrEqual(1);
-    }
-
-    const ellipsized = await page.locator("[data-create-card] *").evaluateAll((elements) => elements
-      .filter((element) => getComputedStyle(element).textOverflow === "ellipsis")
+    const clippedEllipses = await page.locator("[data-create-canvas] *").evaluateAll((elements) => elements
+      .filter((element) => {
+        const htmlElement = element as HTMLElement;
+        const style = getComputedStyle(htmlElement);
+        return style.textOverflow === "ellipsis"
+          && (htmlElement.scrollWidth > htmlElement.clientWidth || htmlElement.scrollHeight > htmlElement.clientHeight);
+      })
       .map((element) => element.textContent?.trim())
       .filter(Boolean));
-    expect(ellipsized).toEqual([]);
+    expect(clippedEllipses).toEqual([]);
     await expect(page.getByText("release-notes.pdf", { exact: true })).toBeVisible();
     await expect(page.getByText("audit-sample.csv", { exact: true })).toBeVisible();
     await expect(page.getByText("Lobby concept", { exact: true })).toBeVisible();
@@ -159,6 +167,22 @@ test("code dialog wraps the font link and scrolls its body on a short viewport",
   await expect(dialog.locator(".nyx-dialog-footer")).toBeVisible();
   expect(await body.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
   expect(await fontCode.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+});
+
+test("canvas uses two tablet columns and one phone column", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await page.goto("/create");
+  const tabletColumns = await page.locator(".create-canvas-grid").evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
+  expect(tabletColumns).toBe(2);
+  const tabletWide = await page.locator(".create-card-wide").first().boundingBox();
+  const tabletSingle = await page.locator("[data-create-card]:not(.create-card-wide)").first().boundingBox();
+  expect(tabletWide).not.toBeNull();
+  expect(tabletSingle).not.toBeNull();
+  expect(Math.abs(tabletWide!.width - tabletSingle!.width)).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const phoneColumns = await page.locator(".create-canvas-grid").evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
+  expect(phoneColumns).toBe(1);
 });
 
 test("create has no console errors and stays bounded with both mobile panel states", async ({ page }) => {

@@ -89,6 +89,16 @@ function promptComposerPreview(): string {
   return composer?.outerHTML ?? "";
 }
 
+function generationQueuePreview(): string {
+  const template = document.createElement("template");
+  template.innerHTML = generationQueueMarkup;
+  const queue = template.content.querySelector<HTMLElement>("[data-nyx-generation-queue]");
+  Array.from(queue?.querySelectorAll("[data-nyx-generation-item]") ?? []).slice(2).forEach((item) => item.remove());
+  const count = queue?.querySelector<HTMLOutputElement>("[data-nyx-generation-count]");
+  if (count) count.value = "1 active / 2 total";
+  return queue?.outerHTML ?? "";
+}
+
 function tabsPreview(): string {
   const template = document.createElement("template");
   template.innerHTML = selectedMarkup(navigationMarkup, "[data-nyx-tabs]");
@@ -151,20 +161,20 @@ const codeDialog = `<dialog aria-labelledby="create-code-title" class="nyx-dialo
 </dialog>`;
 
 const cards = [
-  card("Generation queue", generationQueueMarkup, "01", "create-card-wide"),
-  card("Prompt composer", promptComposerPreview(), "02", "create-card-wide"),
-  card("Model selector", modelSelectorMarkup, "03"),
-  card("Parameter inspector", parameterInspectorMarkup, "04"),
-  card("Batch progress", batchProgressMarkup, "05", "create-card-wide"),
-  card("Activity feed", activityFeedMarkup, "06", "create-card-wide"),
-  card("Advanced data table", dataTableMarkup, "07", "create-card-wide"),
-  card("Command palette", inlineCommandPalette(), "08"),
-  card("Notification centre", notificationCenterMarkup, "09"),
-  card("Tabs", tabsPreview(), "10"),
-  card("Calendar", selectedMarkup(calendarMarkup, "[data-nyx-calendar]"), "11"),
-  card("Throughput", selectedMarkup(visualizationMarkup, "[data-nyx-example='chart-populated']"), "12", "create-card-wide"),
+  card("Generation queue", generationQueuePreview(), "01", "create-card-wide"),
+  card("Model selector", modelSelectorMarkup, "02"),
+  card("Parameter inspector", parameterInspectorMarkup, "03"),
+  card("Prompt composer", promptComposerPreview(), "04", "create-card-wide"),
+  card("Calendar", selectedMarkup(calendarMarkup, "[data-nyx-calendar]"), "05"),
+  card("Command palette", inlineCommandPalette(), "06"),
+  card("Notification centre", notificationCenterMarkup, "07"),
+  card("Batch progress", batchProgressMarkup, "08", "create-card-wide"),
+  card("Activity feed", activityFeedMarkup, "09", "create-card-wide"),
+  card("Project form", selectedMarkup(formsMarkup, "[data-nyx-example='text-fields']"), "10"),
+  card("Throughput", selectedMarkup(visualizationMarkup, "[data-nyx-example='chart-populated']"), "11"),
+  card("Advanced data table", dataTableMarkup, "12", "create-card-wide"),
   card("Toast stack", selectedMarkup(feedbackMarkup, ".nyx-toast-showcase"), "13"),
-  card("Project form", selectedMarkup(formsMarkup, "[data-nyx-example='text-fields']"), "14"),
+  card("Tabs", tabsPreview(), "14"),
 ].join("");
 
 export const createPage: DocPage = page({
