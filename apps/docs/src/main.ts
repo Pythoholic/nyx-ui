@@ -43,6 +43,7 @@ import { initTabs } from "@nyx-raul/plugins/tabs";
 import { initToasts, type NyxToast, type NyxToastOptions } from "@nyx-raul/plugins/toast";
 import {
   componentCategories,
+  createPage,
   foundationPages,
   guidePages,
   overviewPage,
@@ -52,6 +53,7 @@ import {
 import { renderPage, type PluginName } from "./catalog/shared.js";
 import { icon } from "./icons.js";
 import { consolidatedRoutes, legacyHashRedirects } from "./routes.js";
+import { initializeCreatePage } from "./create/page.js";
 import "./styles.css";
 import "../../../registry/examples/render-workspace/app.css";
 import { mountWorkspace } from "../../../registry/examples/render-workspace/app.js";
@@ -118,8 +120,7 @@ function categoryMarkup(category: (typeof componentCategories)[number]): string 
 }
 
 const sidebarMarkup = `<nav class="docs-navigation" aria-label="Documentation">
-  <div class="docs-nav-group"><span class="docs-nav-label">Templates</span><div class="docs-nav"><a href="${hrefFor('/admin/')}" data-admin-demo>Admin dashboard ↗</a></div></div>
-  <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}</div></div>
+  <div class="docs-nav-group"><span class="docs-nav-label">Start</span><div class="docs-nav">${pageLink(overviewPage)}${pageLink(createPage)}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Getting started</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Getting started").map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Integration</span><div class="docs-nav">${guidePages.filter(page => page.categoryLabel === "Integration").map((page) => pageLink(page)).join("")}</div></div>
   <div class="docs-nav-group"><span class="docs-nav-label">Foundations</span><div class="docs-nav">${foundationPages.map((page) => pageLink(page)).join("")}</div></div>
@@ -141,6 +142,7 @@ const searchPaletteMarkup = `<dialog aria-label="Search documentation" class="ny
 app.innerHTML = `<div class="docs-shell">
   <header class="docs-topbar">
     <a class="docs-brand" data-docs-link data-docs-path="/" href="${hrefFor("/")}" aria-label="Nyx UI documentation overview"><span class="docs-mark" aria-hidden="true">N</span><span><span class="docs-brand-name">Nyx UI</span><span class="docs-version">System catalog · 0.2.0-beta.3</span></span></a>
+    <nav class="docs-primary-nav" aria-label="Primary"><a data-docs-link data-docs-path="/" href="${hrefFor("/")}">Overview</a><a data-docs-link data-docs-path="/create" href="${hrefFor("/create")}">Create</a></nav>
     <button class="docs-search-trigger" data-nyx-dialog-trigger="docs-command-palette" type="button">${icon("search")}<span>Search documentation</span><span class="nyx-kbd-chord" aria-hidden="true"><kbd class="nyx-kbd">Ctrl</kbd><kbd class="nyx-kbd">K</kbd></span></button>
     <div class="docs-theme-list" aria-label="Accent theme" role="group">${docsThemes.map((theme) => `<button class="nyx-button docs-theme-button" data-size="small" data-theme-value="${theme}" aria-pressed="${String(theme === initialTheme)}">${theme[0]?.toUpperCase()}${theme.slice(1)}</button>`).join("")}</div>
   </header>
@@ -286,6 +288,7 @@ function initializePage(page: DocPage): () => void {
   page.plugins?.forEach((plugin) => {
     toast = initializePlugin(plugin, main, destroyables) ?? toast;
   });
+  const destroyCreatePage = page.path === "/create" ? initializeCreatePage(main) : undefined;
 
   main.querySelectorAll<HTMLButtonElement>("[data-nyx-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -438,6 +441,7 @@ function initializePage(page: DocPage): () => void {
 
   return () => {
     abortController.abort();
+    destroyCreatePage?.();
     [...destroyables].reverse().forEach((instance) => instance.destroy());
   };
 }
@@ -453,6 +457,7 @@ function render(pathname = window.location.pathname): void {
   const canonical = consolidatedRoutes[path] ?? path;
   if (canonical !== path) history.replaceState(null, "", hrefFor(canonical));
   const page = pageByPath.get(canonical);
+  main.classList.toggle("docs-main-create", page?.path === "/create");
   main.innerHTML = page
     ? `${renderPage(page)}<footer class="docs-footer"><span>Nyx UI · v0.2.0-beta.3 · Apache-2.0</span><a href="https://github.com/Pythoholic/nyx-ui">Source repository</a></footer>`
     : notFoundMarkup();

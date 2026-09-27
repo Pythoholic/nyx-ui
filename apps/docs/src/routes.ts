@@ -1,5 +1,6 @@
 export const paths = {
   overview: "/",
+  create: "/create",
   guides: {
     renderWorkspace: "/guides/render-workspace",
     installation: "/guides/installation",
