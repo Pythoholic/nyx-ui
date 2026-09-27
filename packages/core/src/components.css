@@ -1016,7 +1016,7 @@
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-panel:first-child { flex: 0 0 var(--nyx-resizable-first, 50%); }
   .nyx-resizable[data-nyx-resizable-orientation="vertical"] > .nyx-resizable-panel:last-child { flex: 1 1 0; }
   .nyx-resizable-handle { position: relative; z-index: 1; flex: 0 0 0.75rem; outline: 0; background: var(--nyx-panel-raised); touch-action: none; transition: background-color var(--nyx-duration-fast), box-shadow var(--nyx-duration-fast); }
-  .nyx-resizable-handle::before { position: absolute; z-index: 1; inset: 50% auto auto 50%; border-radius: var(--nyx-radius-pill); background-color: var(--nyx-line-strong); content: ""; transform: translate(-50%, -50%); transition: background-color var(--nyx-duration-fast), scale var(--nyx-duration-fast) var(--nyx-ease-standard); }
+  .nyx-resizable-handle::before { position: absolute; z-index: 1; inset: 50% auto auto 50%; border-radius: var(--nyx-radius-round); background-color: var(--nyx-line-strong); content: ""; transform: translate(-50%, -50%); transition: background-color var(--nyx-duration-fast), scale var(--nyx-duration-fast) var(--nyx-ease-standard); }
   .nyx-resizable-handle::after { position: absolute; content: ""; background: var(--nyx-line-strong); transition: background-color var(--nyx-duration-fast); }
   .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-handle { cursor: col-resize; }
   .nyx-resizable[data-nyx-resizable-orientation="horizontal"] > .nyx-resizable-handle::before { inline-size: 0.25rem; block-size: 2rem; background: radial-gradient(circle, currentColor 0 0.125rem, transparent 0.15rem) center / 0.25rem 0.5rem; color: var(--nyx-line-strong); }
