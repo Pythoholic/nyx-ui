@@ -77,6 +77,32 @@ function inlineCommandPalette(): string {
   return dialog ? `<div class="nyx-command-palette create-inline-command">${dialog.innerHTML}</div>` : "";
 }
 
+function promptComposerPreview(): string {
+  const template = document.createElement("template");
+  template.innerHTML = promptComposerMarkup;
+  const composer = template.content.querySelector("form");
+  const input = composer?.querySelector("textarea");
+  if (input) {
+    input.removeAttribute("placeholder");
+    input.textContent = "Draft a concise release brief for the completed render batch.";
+  }
+  return composer?.outerHTML ?? "";
+}
+
+function tabsPreview(): string {
+  const template = document.createElement("template");
+  template.innerHTML = selectedMarkup(navigationMarkup, "[data-nyx-tabs]");
+  const tabs = template.content.querySelector<HTMLElement>("[data-nyx-tabs]");
+  const [summary, events] = Array.from(tabs?.querySelectorAll<HTMLElement>("[role='tabpanel']") ?? []);
+  if (summary) {
+    summary.innerHTML = `<dl class="create-tab-metrics"><div><dt>Status</dt><dd><span class="nyx-badge" data-tone="success">Ready</span></dd></div><div><dt>Active jobs</dt><dd>3</dd></div><div><dt>Last sync</dt><dd>2 min ago</dd></div></dl>`;
+  }
+  if (events) {
+    events.innerHTML = `<ol class="create-tab-events"><li><time datetime="2026-09-27T14:42:00+09:00">14:42</time><span>Render batch completed</span></li><li><time datetime="2026-09-27T14:36:00+09:00">14:36</time><span>Review link created</span></li></ol>`;
+  }
+  return tabs?.outerHTML ?? "";
+}
+
 function card(title: string, markup: string, prefix: string, span = ""): string {
   return `<article class="create-card ${span}" data-create-card><header><span>${title}</span><span aria-hidden="true">${prefix.padStart(2, "0")}</span></header><div class="create-card-body">${prefixedMarkup(markup, `create-${prefix}`)}</div></article>`;
 }
@@ -103,7 +129,7 @@ const controls = `<form class="create-controls-form" data-create-controls>
   ${segmentedControl("shadows", "Shadows", shadowNames)}
   ${segmentedControl("motion", "Motion", motionNames)}
   <div class="create-control-actions"><button class="nyx-button" data-create-shuffle type="button">Shuffle</button><button class="nyx-button" data-create-reset data-variant="quiet" type="button">Reset</button></div>
-</form>`;
+</form><div class="create-control-cta"><button class="nyx-button" data-nyx-dialog-trigger="create-code-dialog" data-variant="primary" type="button">Get code</button></div>`;
 
 const installTabs = `<div class="create-code-tabs" data-nyx-tabs>
   <div class="nyx-tabs-list" role="tablist" aria-label="Package manager">
@@ -115,28 +141,29 @@ const installTabs = `<div class="create-code-tabs" data-nyx-tabs>
 const codeDialog = `<dialog aria-labelledby="create-code-title" class="nyx-dialog create-code-dialog" data-nyx-dialog id="create-code-dialog">
   <header class="nyx-dialog-header"><div><h2 class="nyx-dialog-title" id="create-code-title">Get code</h2><p class="nyx-dialog-description">Install the packages, then add the generated theme overrides.</p></div><button aria-label="Close code dialog" class="nyx-button" data-nyx-dialog-close data-size="small" data-variant="quiet" type="button">Close</button></header>
   <div class="nyx-dialog-body">
+    <p class="create-code-step">1 / Install packages</p>
     ${installTabs}
-    <div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">Theme CSS</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-css data-nyx-code-source></code></pre></div>
-    <div class="nyx-code-block" data-create-font-block data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">Font link</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-font-link data-nyx-code-source></code></pre></div>
-    <div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">HTML attribute</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-html data-nyx-code-source></code></pre></div>
+    <div class="nyx-code-block create-code-primary" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">2 / Apply accent preset</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-html data-nyx-code-source></code></pre></div>
+    <div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label" data-create-css-label>3 / Theme CSS</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-css data-nyx-code-source></code></pre></div>
+    <div class="nyx-code-block" data-create-font-block data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">4 / Font link</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-font-link data-nyx-code-source></code></pre></div>
   </div>
   <footer class="nyx-dialog-footer"><a class="nyx-link" data-docs-link data-docs-path="/guides/installation" href="/guides/installation">Installation guide</a><button class="nyx-button" data-nyx-dialog-close data-variant="primary" type="button">Done</button></footer>
 </dialog>`;
 
 const cards = [
   card("Generation queue", generationQueueMarkup, "01", "create-card-wide"),
-  card("Prompt composer", promptComposerMarkup, "02"),
+  card("Prompt composer", promptComposerPreview(), "02", "create-card-wide"),
   card("Model selector", modelSelectorMarkup, "03"),
   card("Parameter inspector", parameterInspectorMarkup, "04"),
   card("Batch progress", batchProgressMarkup, "05", "create-card-wide"),
-  card("Activity feed", activityFeedMarkup, "06"),
-  card("Data table", dataTableMarkup, "07", "create-card-wide"),
+  card("Activity feed", activityFeedMarkup, "06", "create-card-wide"),
+  card("Advanced data table", dataTableMarkup, "07", "create-card-wide"),
   card("Command palette", inlineCommandPalette(), "08"),
   card("Notification centre", notificationCenterMarkup, "09"),
-  card("Tabs", selectedMarkup(navigationMarkup, "[data-nyx-tabs]"), "10"),
+  card("Tabs", tabsPreview(), "10"),
   card("Calendar", selectedMarkup(calendarMarkup, "[data-nyx-calendar]"), "11"),
-  card("Toast stack", selectedMarkup(feedbackMarkup, ".nyx-toast-showcase"), "12"),
-  card("Throughput", selectedMarkup(visualizationMarkup, "[data-nyx-example='chart-populated']"), "13", "create-card-wide"),
+  card("Throughput", selectedMarkup(visualizationMarkup, "[data-nyx-example='chart-populated']"), "12", "create-card-wide"),
+  card("Toast stack", selectedMarkup(feedbackMarkup, ".nyx-toast-showcase"), "13"),
   card("Project form", selectedMarkup(formsMarkup, "[data-nyx-example='text-fields']"), "14"),
 ].join("");
 
@@ -145,12 +172,12 @@ export const createPage: DocPage = page({
   categoryLabel: "Create",
   title: "Create your Nyx",
   navigationLabel: "Create",
-  description: "Tune the system against real operational components, then copy the exact tokens for your project.",
+  description: "Tune real components, then copy the exact theme setup.",
   searchTerms: "create theme builder custom accent palette radius font border shadow motion generator",
   plugins: ["generation-queue", "prompt-composer", "model-selector", "parameter-inspector", "activity-feed", "data-table", "notification-center", "tabs", "calendar", "toast", "dialog", "code-block"],
-  body: `<div class="create-toolbar"><button class="nyx-button create-customize-toggle" data-create-panel-toggle aria-controls="create-control-panel" aria-expanded="false" type="button">Customize</button><button class="nyx-button" data-nyx-dialog-trigger="create-code-dialog" data-variant="primary" type="button">Get code</button></div>
+  body: `<div class="create-toolbar"><button class="nyx-button create-customize-toggle" data-create-panel-toggle aria-controls="create-control-panel" aria-expanded="false" type="button">Customize</button></div>
   <div class="create-workspace">
-    <aside class="create-control-panel" data-mobile-open="false" id="create-control-panel" aria-label="Theme controls"><div class="create-panel-head"><span class="nyx-eyebrow">Theme controls</span><output data-create-summary>Solar · Void</output></div>${controls}</aside>
+    <aside class="create-control-panel" data-mobile-open="false" id="create-control-panel" aria-label="Theme controls"><div class="create-panel-head"><span class="nyx-eyebrow">Theme controls</span><output data-create-summary>Signal · Void</output></div>${controls}</aside>
     <section class="create-canvas" data-create-canvas aria-label="Live component canvas"><div class="create-canvas-grid">${cards}</div></section>
   </div>${codeDialog}`,
 });
@@ -200,9 +227,11 @@ export function initializeCreatePage(root: HTMLElement): () => void {
     const font = root.querySelector<HTMLElement>("[data-create-font-link]");
     const html = root.querySelector<HTMLElement>("[data-create-html]");
     const fontBlock = root.querySelector<HTMLElement>("[data-create-font-block]");
+    const cssLabel = root.querySelector<HTMLElement>("[data-create-css-label]");
     if (css) css.textContent = generated.css;
     if (font) font.textContent = generated.fontLink;
     if (html) html.textContent = generated.htmlAttribute;
+    if (cssLabel) cssLabel.textContent = generated.css.endsWith(":root {\n}") ? "3 / No CSS overrides needed" : "3 / Theme CSS";
     fontBlock?.toggleAttribute("hidden", !generated.fontLink);
   };
 

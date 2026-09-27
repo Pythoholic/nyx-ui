@@ -33,7 +33,7 @@ export interface GeneratedTheme {
 }
 
 export const defaultCreateOptions: CreateOptions = {
-  accent: "solar",
+  accent: "signal",
   palette: "void",
   radius: "default",
   font: "jetbrains",
@@ -276,10 +276,10 @@ export function generateTheme(options: CreateOptions): GeneratedTheme {
   const font = fontDefinitions[options.font];
   return {
     installCommands: {
-      pnpm: "pnpm add @nyx-raul/core @nyx-raul/plugins",
-      npm: "npm install @nyx-raul/core @nyx-raul/plugins",
-      yarn: "yarn add @nyx-raul/core @nyx-raul/plugins",
-      bun: "bun add @nyx-raul/core @nyx-raul/plugins",
+      pnpm: "pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta",
+      npm: "npm install @nyx-raul/core@beta @nyx-raul/plugins@beta",
+      yarn: "yarn add @nyx-raul/core@beta @nyx-raul/plugins@beta",
+      bun: "bun add @nyx-raul/core@beta @nyx-raul/plugins@beta",
     },
     css: ["/* Nyx theme overrides */", ":root {", ...rows, "}"].join("\n"),
     fontLink: font.href ? `<link href="${font.href}" rel="stylesheet">` : "",

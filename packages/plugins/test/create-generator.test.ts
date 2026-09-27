@@ -20,8 +20,11 @@ describe("create theme generator", () => {
     const generated = generateTheme(options());
     expect(generated.css).toBe("/* Nyx theme overrides */\n:root {\n}");
     expect(generated.fontLink).toBe("");
-    expect(generated.htmlAttribute).toContain('data-nyx-theme="solar"');
+    expect(generated.htmlAttribute).toContain('data-nyx-theme="signal"');
     expect(Object.keys(generated.installCommands)).toEqual(["pnpm", "npm", "yarn", "bun"]);
+    expect(Object.values(generated.installCommands).every((command) => (
+      command.includes("@nyx-raul/core@beta") && command.includes("@nyx-raul/plugins@beta")
+    ))).toBe(true);
   });
 
   it.each([
@@ -46,6 +49,35 @@ describe("create theme generator", () => {
   it("uses the HTML theme attribute for named accents", () => {
     expect(generateTheme(options({ accent: "plasma" })).htmlAttribute).toBe('<html data-nyx-theme="plasma">');
     expect(generateTheme(options({ accent: "plasma" })).css).toBe("/* Nyx theme overrides */\n:root {\n}");
+  });
+
+  it.each([
+    [options({ accent: "solar" }), 'data-nyx-theme="solar"'],
+    [options({ accent: "flux" }), 'data-nyx-theme="flux"'],
+    [options({ accent: "plasma" }), 'data-nyx-theme="plasma"'],
+    [options({ accent: "custom", customColor: "#12abef" }), "--nyx-accent: #12abef"],
+    [options({ palette: "graphite" }), "--nyx-panel: #131316"],
+    [options({ palette: "slate" }), "--nyx-panel: #0d1921"],
+    [options({ palette: "midnight" }), "--nyx-panel: #0e1329"],
+    [options({ radius: "sharp" }), "--nyx-radius-panel: 0"],
+    [options({ radius: "soft" }), "--nyx-radius-panel: 1rem"],
+    [options({ radius: "round" }), "--nyx-radius-panel: 1.5rem"],
+    [options({ font: "ibm-plex" }), "IBM Plex Mono"],
+    [options({ font: "space" }), "Space Mono"],
+    [options({ font: "source-code" }), "Source Code Pro"],
+    [options({ borders: "hairline" }), "--nyx-border: 0.0625rem"],
+    [options({ shadows: "flat" }), "--nyx-shadow-raised: none"],
+    [options({ motion: "calm" }), "--nyx-duration-normal: 260ms"],
+    [options({ motion: "snappy" }), "--nyx-duration-normal: 110ms"],
+  ] as const)("makes every non-default choice visible in generated output", (selected, expected) => {
+    const generated = generateTheme(selected);
+    const output = [
+      ...Object.values(generated.installCommands),
+      generated.htmlAttribute,
+      generated.fontLink,
+      generated.css,
+    ].join("\n");
+    expect(output).toContain(expected);
   });
 
   it("keeps ink and muted text AA against every panel palette", () => {

@@ -10,6 +10,9 @@ test("every theme control updates the canvas without changing the docs chrome", 
   const docsPanel = page.locator(".docs-topbar");
   const docsBackground = await docsPanel.evaluate((element) => getComputedStyle(element).backgroundColor);
 
+  await expect(page.locator('select[name="accent"]')).toHaveValue("signal");
+  await expect.poll(() => token(page, "--nyx-accent")).toBe("#00e08a");
+
   await page.locator('select[name="accent"]').selectOption("plasma");
   await expect.poll(() => token(page, "--nyx-accent")).toBe("#8b7cf6");
 
@@ -68,7 +71,10 @@ test("create state round-trips through reload and generated code reflects it", a
   await expect(dialog.locator("[data-create-css]")).toContainText("--nyx-shadow-raised: none");
   await expect(dialog.locator("[data-create-font-link]")).toContainText("Source+Code+Pro");
   await expect(dialog.locator("[data-create-html]")).toContainText('data-nyx-theme="plasma"');
-  await expect(dialog.locator('[data-create-install="pnpm"]')).toContainText("@nyx-raul/core");
+  for (const manager of ["pnpm", "npm", "yarn", "bun"]) {
+    await expect(dialog.locator(`[data-create-install="${manager}"]`)).toContainText("@nyx-raul/core@beta");
+    await expect(dialog.locator(`[data-create-install="${manager}"]`)).toContainText("@nyx-raul/plugins@beta");
+  }
   const copyCss = dialog.locator("[data-create-css]").locator("xpath=ancestor::*[@data-nyx-code-block][1]").locator("[data-nyx-code-copy]");
   await copyCss.click();
   await expect(copyCss).toHaveAttribute("data-state", "copied");
@@ -76,6 +82,83 @@ test("create state round-trips through reload and generated code reflects it", a
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveJSProperty("open", false);
   await expect(trigger).toBeFocused();
+});
+
+test("default code needs no CSS overrides and puts the accent snippet after install", async ({ page }) => {
+  await page.goto("/create");
+  await page.getByRole("button", { name: "Get code" }).click();
+  const dialog = page.locator("#create-code-dialog");
+
+  await expect(dialog.locator("[data-create-css-label]")).toHaveText("3 / No CSS overrides needed");
+  await expect(dialog.locator("[data-create-css]")).toHaveText("/* Nyx theme overrides */\n:root {\n}");
+  await expect(dialog.locator("[data-create-html]")).toHaveText('<html data-nyx-theme="signal">');
+
+  const installBox = await dialog.locator(".create-code-tabs").boundingBox();
+  const accentBox = await dialog.locator(".create-code-primary").boundingBox();
+  expect(installBox).not.toBeNull();
+  expect(accentBox).not.toBeNull();
+  expect(accentBox!.y).toBeGreaterThan(installBox!.y + installBox!.height - 1);
+});
+
+test("desktop canvas keeps wide cards readable and paired cards dense", async ({ page }) => {
+  const wideTitles = ["Generation queue", "Prompt composer", "Batch progress", "Activity feed", "Advanced data table"];
+  const pairs = [["Model selector", "Parameter inspector"], ["Command palette", "Notification centre"], ["Tabs", "Calendar"], ["Toast stack", "Project form"]];
+
+  for (const width of [1440, 1920]) {
+    await page.setViewportSize({ width, height: 1080 });
+    await page.goto("/create");
+    const grid = page.locator(".create-canvas-grid");
+    const gridBox = await grid.boundingBox();
+    const headerBox = await page.locator(".docs-page-header").boundingBox();
+    const canvasBox = await page.locator("[data-create-canvas]").boundingBox();
+    expect(gridBox).not.toBeNull();
+    expect(headerBox).not.toBeNull();
+    expect(canvasBox).not.toBeNull();
+    expect(headerBox!.height).toBeLessThanOrEqual(165);
+    expect(canvasBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(20);
+
+    for (const title of wideTitles) {
+      const card = page.locator("[data-create-card]", { has: page.locator("header", { hasText: title }) });
+      const box = await card.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.width).toBeGreaterThan(gridBox!.width * 0.95);
+    }
+
+    for (const [left, right] of pairs) {
+      const leftBox = await page.locator("[data-create-card]", { has: page.locator("header", { hasText: left }) }).boundingBox();
+      const rightBox = await page.locator("[data-create-card]", { has: page.locator("header", { hasText: right }) }).boundingBox();
+      expect(leftBox).not.toBeNull();
+      expect(rightBox).not.toBeNull();
+      expect(Math.abs(leftBox!.y - rightBox!.y)).toBeLessThanOrEqual(1);
+      expect(Math.abs(leftBox!.height - rightBox!.height)).toBeLessThanOrEqual(1);
+    }
+
+    const ellipsized = await page.locator("[data-create-card] *").evaluateAll((elements) => elements
+      .filter((element) => getComputedStyle(element).textOverflow === "ellipsis")
+      .map((element) => element.textContent?.trim())
+      .filter(Boolean));
+    expect(ellipsized).toEqual([]);
+    await expect(page.getByText("release-notes.pdf", { exact: true })).toBeVisible();
+    await expect(page.getByText("audit-sample.csv", { exact: true })).toBeVisible();
+    await expect(page.getByText("Lobby concept", { exact: true })).toBeVisible();
+    await expect(page.getByText("Night crop", { exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  }
+});
+
+test("code dialog wraps the font link and scrolls its body on a short viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 560 });
+  await page.goto("/create");
+  await page.locator('select[name="font"]').selectOption("source-code");
+  await page.getByRole("button", { name: "Get code" }).click();
+
+  const dialog = page.locator("#create-code-dialog");
+  const body = dialog.locator(".nyx-dialog-body");
+  const fontCode = dialog.locator("[data-create-font-block] pre");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator(".nyx-dialog-footer")).toBeVisible();
+  expect(await body.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
+  expect(await fontCode.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
 });
 
 test("create has no console errors and stays bounded with both mobile panel states", async ({ page }) => {
