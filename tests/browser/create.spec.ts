@@ -100,11 +100,11 @@ test("default code needs no CSS overrides and puts the accent snippet after inst
   expect(accentBox!.y).toBeGreaterThan(installBox!.y + installBox!.height - 1);
 });
 
-test("canvas adds responsive columns without clipped ellipses", async ({ page }) => {
-  const wideTitles = ["Generation queue", "Prompt composer", "Batch progress", "Activity feed", "Advanced data table"];
+test("canvas builds a gapless masonry wall without clipped ellipses", async ({ page }) => {
   const viewports = [
-    { width: 1440, height: 900, minimumColumns: 3, minimumVisibleCards: 4 },
-    { width: 1920, height: 1080, minimumColumns: 4, minimumVisibleCards: 6 },
+    { width: 2560, height: 1440, expectedColumns: 7 },
+    { width: 1920, height: 1080, expectedColumns: 5 },
+    { width: 1440, height: 900, expectedColumns: 3 },
   ];
 
   for (const viewport of viewports) {
@@ -122,26 +122,30 @@ test("canvas adds responsive columns without clipped ellipses", async ({ page })
     expect(headerBox!.height).toBeLessThanOrEqual(130);
     expect(canvasBox!.y - mainBox!.y).toBeLessThanOrEqual(170);
     expect(canvasBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(20);
-    const columns = await grid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
-    expect(columns).toBeGreaterThanOrEqual(viewport.minimumColumns);
+    await expect(grid).toHaveAttribute("data-create-columns", /\d/);
+    const columns = await grid.locator(".create-masonry-column").count();
+    expect(Math.abs(columns - viewport.expectedColumns)).toBeLessThanOrEqual(1);
 
-    const visibleCards = await page.locator("[data-create-card]").evaluateAll((cards) => cards
-      .filter((card) => card.getBoundingClientRect().top < window.innerHeight).length);
-    expect(visibleCards).toBeGreaterThanOrEqual(viewport.minimumVisibleCards);
-
-    const cardBottomGaps = await page.locator("[data-create-card]").evaluateAll((cards) => cards.map((card) => {
-      const body = card.querySelector<HTMLElement>(".create-card-body");
-      return body ? Math.round(card.getBoundingClientRect().bottom - body.getBoundingClientRect().bottom) : 0;
-    }));
-    expect(Math.max(...cardBottomGaps)).toBeLessThanOrEqual(2);
-
-    for (const title of wideTitles) {
-      const card = page.locator("[data-create-card]", { has: page.locator("header", { hasText: title }) });
-      const box = await card.boundingBox();
-      expect(box).not.toBeNull();
-      expect(box!.width).toBeGreaterThan(gridBox!.width / columns);
-      expect(box!.width).toBeLessThan(gridBox!.width * 0.8);
-    }
+    const geometry = await grid.evaluate((element) => {
+      const gap = Number.parseFloat(getComputedStyle(element).columnGap);
+      const cards = Array.from(element.querySelectorAll<HTMLElement>("[data-create-card]"));
+      const overlaps: string[] = [];
+      cards.forEach((first, firstIndex) => cards.slice(firstIndex + 1).forEach((second) => {
+        const a = first.getBoundingClientRect();
+        const b = second.getBoundingClientRect();
+        if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 0.5
+          && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 0.5) {
+          overlaps.push(`${first.dataset.createCardTitle} / ${second.dataset.createCardTitle}`);
+        }
+      }));
+      const verticalGaps = Array.from(element.querySelectorAll<HTMLElement>(".create-masonry-column")).flatMap((column) => {
+        const columnCards = Array.from(column.children).map((card) => card.getBoundingClientRect()).sort((a, b) => a.top - b.top);
+        return columnCards.slice(1).map((card, index) => card.top - columnCards[index]!.bottom);
+      });
+      return { gap, overlaps, verticalGaps };
+    });
+    expect(geometry.overlaps).toEqual([]);
+    expect(Math.max(...geometry.verticalGaps)).toBeLessThanOrEqual(geometry.gap + 2);
 
     const clippedEllipses = await page.locator("[data-create-canvas] *").evaluateAll((elements) => elements
       .filter((element) => {
@@ -153,20 +157,16 @@ test("canvas adds responsive columns without clipped ellipses", async ({ page })
       .map((element) => element.textContent?.trim())
       .filter(Boolean));
     expect(clippedEllipses).toEqual([]);
-    await expect(page.getByText("release-notes.pdf", { exact: true })).toBeVisible();
-    await expect(page.getByText("audit-sample.csv", { exact: true })).toBeVisible();
-    await expect(page.getByText("Lobby concept", { exact: true })).toBeVisible();
-    await expect(page.getByText("Night crop", { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   }
 });
 
-test("generation queue previews every job state", async ({ page }) => {
+test("generation queue stays compact", async ({ page }) => {
   await page.goto("/create");
-  const queue = page.locator("[data-create-card]", { has: page.getByText("Generation queue", { exact: true }) });
-  await expect(queue.locator("[data-nyx-generation-item]")).toHaveCount(4);
+  const queue = page.locator('[data-create-card-title="Render queue"]');
+  await expect(queue.locator("[data-nyx-generation-item]")).toHaveCount(3);
   expect(await queue.locator("[data-nyx-generation-item]").evaluateAll((jobs) => jobs.map((job) => job.getAttribute("data-state"))))
-    .toEqual(["running", "queued", "complete", "failed"]);
+    .toEqual(["running", "queued", "complete"]);
 });
 
 test("code dialog wraps the font link and scrolls its body on a short viewport", async ({ page }) => {
@@ -187,17 +187,14 @@ test("code dialog wraps the font link and scrolls its body on a short viewport",
 test("canvas uses two tablet columns and one phone column", async ({ page }) => {
   await page.setViewportSize({ width: 900, height: 900 });
   await page.goto("/create");
-  const tabletColumns = await page.locator(".create-canvas-grid").evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
+  const tabletColumns = await page.locator(".create-masonry-column").count();
   expect(tabletColumns).toBe(2);
-  const tabletWide = await page.locator(".create-card-wide").first().boundingBox();
-  const tabletSingle = await page.locator("[data-create-card]:not(.create-card-wide)").first().boundingBox();
-  expect(tabletWide).not.toBeNull();
-  expect(tabletSingle).not.toBeNull();
-  expect(Math.abs(tabletWide!.width - tabletSingle!.width)).toBeLessThanOrEqual(1);
 
   await page.setViewportSize({ width: 390, height: 844 });
-  const phoneColumns = await page.locator(".create-canvas-grid").evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
+  await expect(page.locator(".create-canvas-grid")).toHaveAttribute("data-create-columns", "1");
+  const phoneColumns = await page.locator(".create-masonry-column").count();
   expect(phoneColumns).toBe(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
 });
 
 test("create has no console errors and stays bounded with both mobile panel states", async ({ page }) => {
@@ -209,7 +206,7 @@ test("create has no console errors and stays bounded with both mobile panel stat
   await page.goto("/create");
   const panel = page.locator("#create-control-panel");
   await expect(panel).not.toBeVisible();
-  await expect(page.locator("[data-create-card]")).toHaveCount(14);
+  await expect(page.locator("[data-create-card]")).toHaveCount(20);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
 
   await page.getByRole("button", { name: "Customize" }).click();
