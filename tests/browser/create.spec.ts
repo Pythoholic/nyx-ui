@@ -112,21 +112,28 @@ test("canvas adds responsive columns without clipped ellipses", async ({ page })
     await page.goto("/create");
     const grid = page.locator(".create-canvas-grid");
     const gridBox = await grid.boundingBox();
+    const mainBox = await page.locator(".docs-main-create").boundingBox();
     const headerBox = await page.locator(".docs-page-header").boundingBox();
     const canvasBox = await page.locator("[data-create-canvas]").boundingBox();
     expect(gridBox).not.toBeNull();
+    expect(mainBox).not.toBeNull();
     expect(headerBox).not.toBeNull();
     expect(canvasBox).not.toBeNull();
-    expect(headerBox!.height).toBeLessThanOrEqual(165);
+    expect(headerBox!.height).toBeLessThanOrEqual(130);
+    expect(canvasBox!.y - mainBox!.y).toBeLessThanOrEqual(170);
     expect(canvasBox!.y - (headerBox!.y + headerBox!.height)).toBeLessThanOrEqual(20);
     const columns = await grid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length);
     expect(columns).toBeGreaterThanOrEqual(viewport.minimumColumns);
 
-    const visibleCards = await page.locator("[data-create-card]").evaluateAll((cards) => cards.filter((card) => {
-      const bounds = card.getBoundingClientRect();
-      return bounds.top < window.innerHeight && bounds.bottom > 0;
-    }).length);
+    const visibleCards = await page.locator("[data-create-card]").evaluateAll((cards) => cards
+      .filter((card) => card.getBoundingClientRect().top < window.innerHeight).length);
     expect(visibleCards).toBeGreaterThanOrEqual(viewport.minimumVisibleCards);
+
+    const cardBottomGaps = await page.locator("[data-create-card]").evaluateAll((cards) => cards.map((card) => {
+      const body = card.querySelector<HTMLElement>(".create-card-body");
+      return body ? Math.round(card.getBoundingClientRect().bottom - body.getBoundingClientRect().bottom) : 0;
+    }));
+    expect(Math.max(...cardBottomGaps)).toBeLessThanOrEqual(2);
 
     for (const title of wideTitles) {
       const card = page.locator("[data-create-card]", { has: page.locator("header", { hasText: title }) });
@@ -152,6 +159,14 @@ test("canvas adds responsive columns without clipped ellipses", async ({ page })
     await expect(page.getByText("Night crop", { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   }
+});
+
+test("generation queue previews every job state", async ({ page }) => {
+  await page.goto("/create");
+  const queue = page.locator("[data-create-card]", { has: page.getByText("Generation queue", { exact: true }) });
+  await expect(queue.locator("[data-nyx-generation-item]")).toHaveCount(4);
+  expect(await queue.locator("[data-nyx-generation-item]").evaluateAll((jobs) => jobs.map((job) => job.getAttribute("data-state"))))
+    .toEqual(["running", "queued", "complete", "failed"]);
 });
 
 test("code dialog wraps the font link and scrolls its body on a short viewport", async ({ page }) => {

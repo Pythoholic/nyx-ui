@@ -89,16 +89,6 @@ function promptComposerPreview(): string {
   return composer?.outerHTML ?? "";
 }
 
-function generationQueuePreview(): string {
-  const template = document.createElement("template");
-  template.innerHTML = generationQueueMarkup;
-  const queue = template.content.querySelector<HTMLElement>("[data-nyx-generation-queue]");
-  Array.from(queue?.querySelectorAll("[data-nyx-generation-item]") ?? []).slice(2).forEach((item) => item.remove());
-  const count = queue?.querySelector<HTMLOutputElement>("[data-nyx-generation-count]");
-  if (count) count.value = "1 active / 2 total";
-  return queue?.outerHTML ?? "";
-}
-
 function tabsPreview(): string {
   const template = document.createElement("template");
   template.innerHTML = selectedMarkup(navigationMarkup, "[data-nyx-tabs]");
@@ -161,7 +151,7 @@ const codeDialog = `<dialog aria-labelledby="create-code-title" class="nyx-dialo
 </dialog>`;
 
 const cards = [
-  card("Generation queue", generationQueuePreview(), "01", "create-card-wide"),
+  card("Generation queue", generationQueueMarkup, "01", "create-card-wide"),
   card("Model selector", modelSelectorMarkup, "02"),
   card("Parameter inspector", parameterInspectorMarkup, "03"),
   card("Prompt composer", promptComposerPreview(), "04", "create-card-wide"),
