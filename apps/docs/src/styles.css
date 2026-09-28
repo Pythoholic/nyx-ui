@@ -474,6 +474,8 @@ body { overflow-x: clip; }
   .create-code-heading { display: grid; min-inline-size: 0; gap: var(--nyx-space-2); }
   .create-code-summary { display: flex; flex-wrap: wrap; gap: var(--nyx-space-2); padding-block-start: var(--nyx-space-2); }
   .create-code-summary .nyx-badge { min-block-size: 1.5rem; font-size: var(--nyx-type-meta); text-transform: none; }
+  .create-code-summary-label { color: var(--nyx-label); }
+  .create-code-summary-value { color: var(--nyx-ink); }
   .create-code-dialog .nyx-icon-button { flex: none; }
   .create-code-dialog .nyx-dialog-body { min-block-size: 0; gap: 0; padding-block: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
   .create-code-step { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--nyx-space-4); padding-block: var(--nyx-space-5); }

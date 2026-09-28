@@ -33,6 +33,16 @@ const labels = {
 
 type PickerName = Exclude<keyof CreateOptions, "customColor">;
 
+const summaryLabels: Record<PickerName, string> = {
+  accent: "Accent",
+  palette: "Base",
+  radius: "Radius",
+  font: "Font",
+  borders: "Borders",
+  shadows: "Shadows",
+  motion: "Motion",
+};
+
 const pickerDefinitions = [
   { name: "accent", label: "Accent", values: accentNames },
   { name: "palette", label: "Base palette", values: paletteNames },
@@ -133,7 +143,7 @@ function codeStep(number: number, title: string, description: string, content: s
   return `<section class="create-code-step" ${attributes}><span aria-hidden="true" class="create-code-step-number">${String(number).padStart(2, "0")}</span><div class="create-code-step-content"><h3>${title}</h3><p>${description}</p>${content}</div></section>`;
 }
 
-const summaryBadges = pickerDefinitions.map(({ name }) => `<span class="nyx-badge" data-appearance="solid" data-create-summary="${name}" data-tone="neutral">${optionLabel(name, defaultCreateOptions[name])}</span>`).join("");
+const summaryBadges = pickerDefinitions.map(({ name }) => `<span class="nyx-badge" data-appearance="solid" data-create-summary="${name}" data-tone="neutral"><span class="create-code-summary-label">${summaryLabels[name]}:</span> <span class="create-code-summary-value">${optionLabel(name, defaultCreateOptions[name])}</span></span>`).join("");
 
 const codeDialog = `<dialog aria-labelledby="create-code-title" class="nyx-dialog create-code-dialog" data-nyx-dialog id="create-code-dialog">
   <header class="nyx-dialog-header"><div class="create-code-heading"><h2 class="nyx-dialog-title" id="create-code-title">Get code</h2><p class="nyx-dialog-description">Add this setup to your project, then copy only the optional behaviour you need.</p><div class="create-code-summary" aria-label="Selected theme choices">${summaryBadges}</div></div><button aria-label="Close" class="nyx-button nyx-icon-button" data-nyx-dialog-close data-variant="quiet" type="button">${icon("close")}</button></header>
@@ -314,7 +324,7 @@ export function initializeCreatePage(root: HTMLElement): () => void {
     overridesBlock?.toggleAttribute("hidden", !generated.hasOverrides);
     emptyOverrides?.toggleAttribute("hidden", generated.hasOverrides);
     pickerDefinitions.forEach(({ name }) => {
-      const summary = root.querySelector<HTMLElement>(`[data-create-summary="${name}"]`);
+      const summary = root.querySelector<HTMLElement>(`[data-create-summary="${name}"] .create-code-summary-value`);
       if (summary) summary.textContent = optionLabel(name, options[name]);
     });
   };

@@ -105,6 +105,15 @@ test("create state round-trips through reload and generated code reflects it", a
   await expect(dialog.locator("[data-create-css]")).toContainText("--nyx-shadow-raised: none");
   await expect(dialog.locator("[data-create-font-link]")).toContainText("Source+Code+Pro");
   await expect(dialog.locator("[data-create-html]")).toContainText('data-nyx-theme="plasma"');
+  await expect(dialog.locator("[data-create-summary]")).toHaveText([
+    "Accent: Plasma",
+    "Base: Midnight",
+    "Radius: Round",
+    "Font: Source Code Pro",
+    "Borders: Hairline",
+    "Shadows: Flat",
+    "Motion: Calm",
+  ]);
   const dialogPrimary = dialog.getByRole("button", { name: "Done" });
   const canvasPrimary = page.locator("[data-create-canvas]").getByRole("button", { name: "Primary" });
   await expect.poll(() => dialogPrimary.evaluate((element) => getComputedStyle(element).backgroundColor))
@@ -137,6 +146,19 @@ test("default code omits empty overrides and package tabs stay inside step one",
   await expect(dialog).not.toContainText(":root {");
   await expect(dialog.locator("[data-create-html]")).toHaveText('<html data-nyx-theme="signal">');
   await expect(dialog.locator("[data-create-font-link]")).toContainText("JetBrains+Mono");
+  await expect(dialog.locator("[data-create-summary]")).toHaveText([
+    "Accent: Signal",
+    "Base: Void",
+    "Radius: Default",
+    "Font: JetBrains Mono",
+    "Borders: Default",
+    "Shadows: Elevated",
+    "Motion: Default",
+  ]);
+  expect(await dialog.locator(".create-code-summary-label").first().evaluate((element) => getComputedStyle(element).color))
+    .toBe(await dialog.locator(".create-code-step-number").first().evaluate((element) => getComputedStyle(element).color));
+  expect(await dialog.locator(".create-code-summary-value").first().evaluate((element) => getComputedStyle(element).color))
+    .toBe(await dialog.locator(".nyx-dialog-title").evaluate((element) => getComputedStyle(element).color));
 
   const fontBefore = await dialog.locator("[data-create-font-link]").textContent();
   await dialog.getByRole("tab", { name: "npm", exact: true }).click();
