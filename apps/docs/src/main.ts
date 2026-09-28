@@ -51,7 +51,7 @@ import {
   type DocPage,
 } from "./catalog/index.js";
 import { renderPage, type PluginName } from "./catalog/shared.js";
-import { icon } from "./icons.js";
+import { eyebrow, icon } from "./icons.js";
 import { consolidatedRoutes, legacyHashRedirects } from "./routes.js";
 import { initializeCreatePage } from "./create/page.js";
 import "./styles.css";
@@ -447,7 +447,7 @@ function initializePage(page: DocPage): () => void {
 }
 
 function notFoundMarkup(): string {
-  return `<section class="docs-section"><header class="docs-page-header"><span class="nyx-eyebrow">// 404</span><h1 class="docs-title" tabindex="-1">Page not found</h1><p class="docs-intro">This documentation route does not exist.</p></header><a class="nyx-button" data-docs-link data-docs-path="/" href="${hrefFor("/")}">Return to overview</a></section>`;
+  return `<section class="docs-section"><header class="docs-page-header">${eyebrow("404", "alert")}<h1 class="docs-title" tabindex="-1">Page not found</h1><p class="docs-intro">This documentation route does not exist.</p></header><a class="nyx-button" data-docs-link data-docs-path="/" href="${hrefFor("/")}">Return to overview</a></section>`;
 }
 
 function render(pathname = window.location.pathname): void {

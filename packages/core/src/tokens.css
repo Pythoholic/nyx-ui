@@ -65,12 +65,15 @@
   --nyx-accent-line: rgb(245 217 10 / 48%);
   /* Semantic colours stay independent of every theme's action accent. */
   --nyx-signal: #9cdb4a;
+  --nyx-signal-ink: #05080b;
   --nyx-signal-soft: rgb(156 219 74 / 9%);
   --nyx-signal-line: rgb(156 219 74 / 42%);
   --nyx-warning: #ffb02e;
+  --nyx-warning-ink: #05080b;
   --nyx-warning-soft: rgb(255 176 46 / 9%);
   --nyx-warning-line: rgb(255 176 46 / 42%);
   --nyx-danger: #ff4d5d;
+  --nyx-danger-ink: #05080b;
   --nyx-danger-soft: rgb(255 77 93 / 10%);
   --nyx-danger-line: rgb(255 77 93 / 48%);
   --nyx-info: #6da8ff;

@@ -28,9 +28,37 @@ export interface CreateOptions {
 export interface GeneratedTheme {
   installCommands: Record<"pnpm" | "npm" | "yarn" | "bun", string>;
   css: string;
+  hasOverrides: boolean;
+  emptyOverridesMessage: string;
   fontLink: string;
   htmlAttribute: string;
+  stylesheetEntry: string;
+  plainCssEntry: string;
+  behavior: string;
+  copyAll: string;
 }
+
+export const documentedInstallCommands: GeneratedTheme["installCommands"] = {
+  pnpm: "pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta",
+  npm: "npm install @nyx-raul/core@beta @nyx-raul/plugins@beta",
+  yarn: "yarn add @nyx-raul/core@beta @nyx-raul/plugins@beta",
+  bun: "bun add @nyx-raul/core@beta @nyx-raul/plugins@beta",
+};
+
+export const documentedStylesheetEntry = `@import "tailwindcss";
+@source "../src/**/*.{html,js,ts,jsx,tsx}";
+@source "../node_modules/@nyx-raul/core/src/**/*.css";
+@import "@nyx-raul/core";`;
+
+export const documentedPlainCssEntry = `@import "@nyx-raul/core";`;
+
+export const documentedBehaviorSetup = `import { initDialogs } from "@nyx-raul/plugins/dialog";
+
+const root = document.querySelector("#account-settings");
+const dialogs = initDialogs(root);
+
+// Before removing or replacing the rendered subtree:
+dialogs.forEach((dialog) => dialog.destroy());`;
 
 export const defaultCreateOptions: CreateOptions = {
   accent: "signal",
@@ -141,7 +169,7 @@ export const radiusTokens: Record<RadiusName, Record<string, string>> = {
 };
 
 export const fontDefinitions: Record<FontName, { family: string; href: string }> = {
-  jetbrains: { family: '"JetBrains Mono", "Cascadia Code", ui-monospace, monospace', href: "" },
+  jetbrains: { family: '"JetBrains Mono", "Cascadia Code", ui-monospace, monospace', href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" },
   "ibm-plex": { family: '"IBM Plex Mono", "Cascadia Code", ui-monospace, monospace', href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" },
   space: { family: '"Space Mono", "Cascadia Code", ui-monospace, monospace', href: "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" },
   "source-code": { family: '"Source Code Pro", "Cascadia Code", ui-monospace, monospace', href: "https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap" },
@@ -271,18 +299,48 @@ function declarations(options: CreateOptions): Record<string, string> {
   return output;
 }
 
+export function createShareUrl(currentUrl: string, options: CreateOptions): string {
+  const url = new URL(currentUrl);
+  url.search = encodeCreateOptions(options);
+  url.hash = "";
+  return url.toString();
+}
+
+function fontLink(font: FontName): string {
+  return `<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="${fontDefinitions[font].href}" rel="stylesheet" />`;
+}
+
+function combinedSetup(font: string, stylesheet: string, css: string, html: string): string {
+  return [
+    "<!-- Load the font in the document head -->",
+    font,
+    "",
+    "/* Import Nyx in your stylesheet */",
+    stylesheet,
+    ...(css ? ["", "/* Add theme overrides after the Nyx import */", css] : []),
+    "",
+    "<!-- Set the theme on the document root -->",
+    html,
+  ].join("\n");
+}
+
 export function generateTheme(options: CreateOptions): GeneratedTheme {
   const rows = Object.entries(declarations(options)).map(([token, value]) => `  ${token}: ${value};`);
-  const font = fontDefinitions[options.font];
+  const css = rows.length ? ["/* Nyx theme overrides */", ":root {", ...rows, "}"].join("\n") : "";
+  const selectedFontLink = fontLink(options.font);
+  const htmlAttribute = options.accent === "custom" ? "<html>" : `<html data-nyx-theme="${options.accent}">`;
   return {
-    installCommands: {
-      pnpm: "pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta",
-      npm: "npm install @nyx-raul/core@beta @nyx-raul/plugins@beta",
-      yarn: "yarn add @nyx-raul/core@beta @nyx-raul/plugins@beta",
-      bun: "bun add @nyx-raul/core@beta @nyx-raul/plugins@beta",
-    },
-    css: ["/* Nyx theme overrides */", ":root {", ...rows, "}"].join("\n"),
-    fontLink: font.href ? `<link href="${font.href}" rel="stylesheet">` : "",
-    htmlAttribute: options.accent === "custom" ? "<html>" : `<html data-nyx-theme="${options.accent}">`,
+    installCommands: documentedInstallCommands,
+    css,
+    hasOverrides: rows.length > 0,
+    emptyOverridesMessage: rows.length ? "" : "Your choices match the defaults, so no overrides are needed.",
+    fontLink: selectedFontLink,
+    htmlAttribute,
+    stylesheetEntry: documentedStylesheetEntry,
+    plainCssEntry: documentedPlainCssEntry,
+    behavior: documentedBehaviorSetup,
+    copyAll: combinedSetup(selectedFontLink, documentedStylesheetEntry, css, htmlAttribute),
   };
 }

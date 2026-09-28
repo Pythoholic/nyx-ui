@@ -36,6 +36,22 @@ test("the documentation shell remains bounded and functional type remains stable
   }
 });
 
+test("badges render icon and solid examples while page eyebrows stay filled", async ({ page }) => {
+  await expectPage(page, "/components/feedback/badges", "Badges");
+
+  const withIcon = page.locator('[data-badge-example="with-icon"]');
+  const solid = page.locator('[data-badge-example="solid"]');
+  await expect(withIcon.locator(".nyx-badge > svg")).toHaveCount(4);
+  await expect(solid.locator('.nyx-badge[data-appearance="solid"]')).toHaveCount(5);
+  await expect(solid.locator(".nyx-badge > svg")).toHaveCount(5);
+  expect(await withIcon.locator(".nyx-badge > svg").evaluateAll((icons) => icons.every((icon) => icon.getAttribute("aria-hidden") === "true"))).toBe(true);
+  await expect(page.locator(".docs-reference-table tbody th code")).toHaveText(["data-tone", "data-appearance"]);
+
+  const eyebrowBackground = await page.locator(".docs-page-header > .nyx-eyebrow").evaluate((element) => getComputedStyle(element).backgroundColor);
+  expect(eyebrowBackground).not.toBe("rgba(0, 0, 0, 0)");
+  expect(eyebrowBackground).not.toBe("transparent");
+});
+
 test("the focusable visually-hidden utility is bounded and returns to natural flow on focus", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await expectPage(page, "/components/primitives/visually-hidden", "Visually Hidden");

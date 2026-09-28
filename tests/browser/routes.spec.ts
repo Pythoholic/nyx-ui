@@ -48,6 +48,20 @@ test("every sidebar route renders cleanly and fits both review widths", async ({
       await page.setViewportSize(viewports[0]);
       await page.goto(path);
       await expect(page.locator("[data-docs-page]"), `${path} renders its docs page`).toHaveAttribute("data-docs-page", path);
+      const prefixedEyebrows = await page.locator(".nyx-eyebrow").evaluateAll((labels) =>
+        labels.filter((label) => label.textContent?.trim().startsWith("//")).map((label) => label.textContent?.trim()),
+      );
+      if (prefixedEyebrows.length > 0) {
+        routeDefects.push(`${path}:comment-prefixed-eyebrow`);
+        routeDefectDetails.push(`${path} rendered comment-prefixed eyebrows: ${prefixedEyebrows.join(", ")}`);
+      }
+      const missingEyebrowIcons = await page.locator(".nyx-eyebrow").evaluateAll((labels) =>
+        labels.filter((label) => !label.querySelector('svg[aria-hidden="true"]')).map((label) => label.textContent?.trim()),
+      );
+      if (missingEyebrowIcons.length > 0) {
+        routeDefects.push(`${path}:missing-eyebrow-icon`);
+        routeDefectDetails.push(`${path} rendered eyebrows without icons: ${missingEyebrowIcons.join(", ")}`);
+      }
       const h1Count = await page.getByRole("heading", { level: 1 }).count();
       if (h1Count !== 1) {
         routeDefects.push(`${path}:h1-count`);

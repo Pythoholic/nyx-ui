@@ -2,26 +2,22 @@ import registrySource from "../../../../registry/registry.json?raw";
 import { paths } from "../routes.js";
 import { codeBlock, page } from "./shared.js";
 import { adoptionPage } from "./adoption.js";
+import {
+  documentedBehaviorSetup,
+  documentedInstallCommands,
+  documentedStylesheetEntry,
+  generateTheme,
+  defaultCreateOptions,
+} from "../create/generate.js";
 
 function prose(title: string, body: string): string {
   return `<section class="docs-prose-section"><h2>${title}</h2>${body}</section>`;
 }
 
-const installCommand = `pnpm add @nyx-raul/core@beta @nyx-raul/plugins@beta`;
-const tailwindSetup = `@import "tailwindcss";
-@source "../src/**/*.{html,js,ts,jsx,tsx}";
-@source "../node_modules/@nyx-raul/core/src/**/*.css";
-@import "@nyx-raul/core";`;
-const fontSetup = `<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />`;
-const behaviorSetup = `import { initDialogs } from "@nyx-raul/plugins/dialog";
-
-const root = document.querySelector("#account-settings");
-const dialogs = initDialogs(root);
-
-// Before removing or replacing the rendered subtree:
-dialogs.forEach((dialog) => dialog.destroy());`;
+const installCommand = documentedInstallCommands.pnpm;
+const tailwindSetup = documentedStylesheetEntry;
+const fontSetup = generateTheme(defaultCreateOptions).fontLink;
+const behaviorSetup = documentedBehaviorSetup;
 const explicitSetup = `import { NyxDialog } from "@nyx-raul/plugins/dialog";
 
 const element = document.querySelector("dialog[data-nyx-dialog]");

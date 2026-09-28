@@ -1,7 +1,11 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  accentTokens,
   accentInk,
   contrastRatio,
+  createShareUrl,
   decodeCreateOptions,
   defaultCreateOptions,
   encodeCreateOptions,
@@ -11,6 +15,14 @@ import {
   type CreateOptions,
 } from "../../../apps/docs/src/create/generate.js";
 
+const coreTokens = readFileSync(resolve(process.cwd(), "../core/src/tokens.css"), "utf8");
+
+function coreToken(name: string): string {
+  const value = coreTokens.match(new RegExp(`^\\s*${name}:\\s*(#[0-9a-f]{6});`, "im"))?.[1];
+  if (!value) throw new Error(`Missing hex token ${name}`);
+  return value;
+}
+
 function options(change: Partial<CreateOptions> = {}): CreateOptions {
   return { ...defaultCreateOptions, ...change };
 }
@@ -18,8 +30,10 @@ function options(change: Partial<CreateOptions> = {}): CreateOptions {
 describe("create theme generator", () => {
   it("keeps the default override block minimal", () => {
     const generated = generateTheme(options());
-    expect(generated.css).toBe("/* Nyx theme overrides */\n:root {\n}");
-    expect(generated.fontLink).toBe("");
+    expect(generated.css).toBe("");
+    expect(generated.hasOverrides).toBe(false);
+    expect(generated.emptyOverridesMessage).toBe("Your choices match the defaults, so no overrides are needed.");
+    expect(generated.fontLink).toContain("JetBrains+Mono:wght@400;500;600;700");
     expect(generated.htmlAttribute).toContain('data-nyx-theme="signal"');
     expect(Object.keys(generated.installCommands)).toEqual(["pnpm", "npm", "yarn", "bun"]);
     expect(Object.values(generated.installCommands).every((command) => (
@@ -48,7 +62,23 @@ describe("create theme generator", () => {
 
   it("uses the HTML theme attribute for named accents", () => {
     expect(generateTheme(options({ accent: "plasma" })).htmlAttribute).toBe('<html data-nyx-theme="plasma">');
-    expect(generateTheme(options({ accent: "plasma" })).css).toBe("/* Nyx theme overrides */\n:root {\n}");
+    expect(generateTheme(options({ accent: "plasma" })).css).toBe("");
+  });
+
+  it("always supplies the selected font setup", () => {
+    expect(generateTheme(options()).fontLink).toContain("JetBrains+Mono");
+    expect(generateTheme(options({ font: "space" })).fontLink).toContain("Space+Mono");
+  });
+
+  it("builds every documented step and a complete combined setup", () => {
+    const generated = generateTheme(options({ radius: "round" }));
+    expect(generated.stylesheetEntry).toContain('@source "../node_modules/@nyx-raul/core/src/**/*.css"');
+    expect(generated.plainCssEntry).toBe('@import "@nyx-raul/core";');
+    expect(generated.behavior).toContain('import { initDialogs } from "@nyx-raul/plugins/dialog";');
+    expect(generated.copyAll).toContain(generated.fontLink);
+    expect(generated.copyAll).toContain(generated.stylesheetEntry);
+    expect(generated.copyAll).toContain(generated.css);
+    expect(generated.copyAll).toContain(generated.htmlAttribute);
   });
 
   it.each([
@@ -87,6 +117,25 @@ describe("create theme generator", () => {
     });
   });
 
+  it("keeps every solid badge tone AA against every base palette", () => {
+    const semanticPairs = [
+      [coreToken("--nyx-signal"), coreToken("--nyx-signal-ink")],
+      [coreToken("--nyx-warning"), coreToken("--nyx-warning-ink")],
+      [coreToken("--nyx-danger"), coreToken("--nyx-danger-ink")],
+    ] as const;
+
+    Object.entries(paletteTokens).forEach(([paletteName, palette]) => {
+      const tonePairs = [
+        [palette["--nyx-chip"]!, palette["--nyx-label"]!],
+        ...Object.values(accentTokens).map((accent) => [accent["--nyx-accent"]!, accent["--nyx-accent-ink"]!] as const),
+        ...semanticPairs,
+      ];
+      tonePairs.forEach(([fill, ink]) => {
+        expect(contrastRatio(fill, ink), `${paletteName}: ${ink} on ${fill}`).toBeGreaterThanOrEqual(4.5);
+      });
+    });
+  });
+
   it("round-trips every option through the query string exactly", () => {
     const selected = options({
       accent: "custom",
@@ -99,6 +148,10 @@ describe("create theme generator", () => {
       customColor: "#12abef",
     });
     expect(decodeCreateOptions(encodeCreateOptions(selected))).toEqual(selected);
+    const shareUrl = new URL(createShareUrl("https://example.test/create#picker", selected));
+    expect(shareUrl.pathname).toBe("/create");
+    expect(shareUrl.hash).toBe("");
+    expect(decodeCreateOptions(shareUrl.searchParams)).toEqual(selected);
   });
 
   it("sets every canvas token group explicitly", () => {

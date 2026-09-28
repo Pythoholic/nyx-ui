@@ -50,6 +50,20 @@ describe("release registry contract", () => {
     }
   });
 
+  it("keeps registry eyebrow labels icon-led and free of comment prefixes", () => {
+    const registry = JSON.parse(readFileSync(resolve(repositoryRoot, "registry/registry.json"), "utf8")) as { items: RegistryItem[] };
+    const files = new Set(registry.items.flatMap((item) => item.files));
+    for (const file of files) {
+      const source = readFileSync(resolve(repositoryRoot, "registry", file), "utf8");
+      const template = document.createElement("template");
+      template.innerHTML = source;
+      for (const label of template.content.querySelectorAll(".nyx-eyebrow")) {
+        expect(label.textContent?.trim(), file).not.toMatch(/^\/\//);
+        expect(label.querySelector('svg[aria-hidden="true"]'), file).not.toBeNull();
+      }
+    }
+  });
+
   it("provides a complete machine-readable pilot contract for tooltip", () => {
     const registry = JSON.parse(readFileSync(resolve(repositoryRoot, "registry/registry.json"), "utf8")) as { items: RegistryItem[] };
     const tooltip = registry.items.find((item) => item.name === "tooltip");

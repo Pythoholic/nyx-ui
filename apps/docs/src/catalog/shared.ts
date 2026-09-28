@@ -1,3 +1,5 @@
+import { eyebrow, icon, type IconName } from "../icons.js";
+
 export type PluginName =
   | "image-lightbox"
   | "media-carousel"
@@ -1635,7 +1637,11 @@ function componentReference(page: DocPage): string {
     template.innerHTML = page.body;
     const values = new Map<string, Set<string>>();
     template.content.querySelectorAll("[data-example-preview] *").forEach((element) => {
-      Array.from(element.attributes).filter((attribute) => attribute.name.startsWith("data-")).forEach((attribute) => {
+      Array.from(element.attributes).filter((attribute) => (
+        attribute.name.startsWith("data-")
+        && attribute.name !== "data-nyx-example"
+        && attribute.name !== "data-badge-example"
+      )).forEach((attribute) => {
         const current = values.get(attribute.name) ?? new Set<string>();
         current.add(attribute.value || "presence");
         values.set(attribute.name, current);
@@ -1661,7 +1667,64 @@ export function renderPage(page: DocPage): string {
     const guidance = Array.from(template.content.children).filter(element => element.matches(".docs-prose-section"));
     guidance.forEach(element => template.content.append(element));
   }
-  return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header"><span class="nyx-eyebrow">// ${page.categoryLabel}</span><h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${template.innerHTML}${reference}</section>`;
+  const contentIcons: Record<string, IconName> = {
+    "Active work": "activity",
+    "Adoption workflow": "checklist",
+    "Agent flow": "list",
+    "Agent setup guides": "book",
+    "Agent Skill": "sparkle",
+    Approach: "book",
+    Architecture: "layers",
+    Attention: "bell",
+    Availability: "activity",
+    "Client setup": "sliders",
+    "Compatibility boundary": "shield",
+    Disclosure: "list",
+    "Distribution model": "box",
+    Entrance: "sparkle",
+    "Example exchange": "message",
+    Examples: "layers",
+    Exit: "arrow",
+    "Integration preview": "sparkle",
+    Manifest: "list",
+    "MCP server": "cpu",
+    Ownership: "shield",
+    "Ownership boundary": "shield",
+    Principle: "checklist",
+    Principles: "shield",
+    Purpose: "layers",
+    "Reduced motion": "shield",
+    "Source of truth": "shield",
+    "Spatial transition": "layers",
+    "Start here": "book",
+    "Timing decisions": "calendar",
+    Verification: "checklist",
+  };
+  template.content.querySelectorAll<HTMLElement>(".nyx-eyebrow").forEach((label) => {
+    if (label.querySelector("svg")) return;
+    const labelText = label.textContent?.trim() ?? "";
+    const iconName = label.closest(".docs-ai-connect") ? "cpu" : contentIcons[labelText] ?? "box";
+    label.insertAdjacentHTML("afterbegin", icon(iconName));
+  });
+  const categoryIcons: Record<string, IconName> = {
+    Actions: "checklist",
+    "AI Patterns": "sparkle",
+    Create: "palette",
+    "Data Display": "table",
+    Feedback: "bell",
+    Forms: "form",
+    Foundations: "layers",
+    "Getting started": "book",
+    Integration: "sparkle",
+    Layouts: "box",
+    Media: "image",
+    Navigation: "list",
+    Overlays: "layers",
+    Overview: "layers",
+    Primitives: "box",
+    Visualization: "chart",
+  };
+  return `<section class="docs-section" data-docs-page="${page.path}"><header class="docs-page-header">${eyebrow(page.categoryLabel, categoryIcons[page.categoryLabel] ?? "box")}<h1 class="docs-title" tabindex="-1">${page.title}</h1><p class="docs-intro">${page.description}</p></header>${template.innerHTML}${reference}</section>`;
 }
 
 export function card(title: string, body: string, _badge = "Ready", source = body): string {
