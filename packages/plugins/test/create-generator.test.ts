@@ -1,5 +1,8 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  accentTokens,
   accentInk,
   contrastRatio,
   decodeCreateOptions,
@@ -10,6 +13,14 @@ import {
   tokensForOptions,
   type CreateOptions,
 } from "../../../apps/docs/src/create/generate.js";
+
+const coreTokens = readFileSync(resolve(process.cwd(), "../core/src/tokens.css"), "utf8");
+
+function coreToken(name: string): string {
+  const value = coreTokens.match(new RegExp(`^\\s*${name}:\\s*(#[0-9a-f]{6});`, "im"))?.[1];
+  if (!value) throw new Error(`Missing hex token ${name}`);
+  return value;
+}
 
 function options(change: Partial<CreateOptions> = {}): CreateOptions {
   return { ...defaultCreateOptions, ...change };
@@ -84,6 +95,25 @@ describe("create theme generator", () => {
     Object.values(paletteTokens).forEach((palette) => {
       expect(contrastRatio(palette["--nyx-panel"]!, palette["--nyx-ink"]!)).toBeGreaterThanOrEqual(4.5);
       expect(contrastRatio(palette["--nyx-panel"]!, palette["--nyx-muted"]!)).toBeGreaterThanOrEqual(4.5);
+    });
+  });
+
+  it("keeps every solid badge tone AA against every base palette", () => {
+    const semanticPairs = [
+      [coreToken("--nyx-signal"), coreToken("--nyx-signal-ink")],
+      [coreToken("--nyx-warning"), coreToken("--nyx-warning-ink")],
+      [coreToken("--nyx-danger"), coreToken("--nyx-danger-ink")],
+    ] as const;
+
+    Object.entries(paletteTokens).forEach(([paletteName, palette]) => {
+      const tonePairs = [
+        [palette["--nyx-chip"]!, palette["--nyx-label"]!],
+        ...Object.values(accentTokens).map((accent) => [accent["--nyx-accent"]!, accent["--nyx-accent-ink"]!] as const),
+        ...semanticPairs,
+      ];
+      tonePairs.forEach(([fill, ink]) => {
+        expect(contrastRatio(fill, ink), `${paletteName}: ${ink} on ${fill}`).toBeGreaterThanOrEqual(4.5);
+      });
     });
   });
 

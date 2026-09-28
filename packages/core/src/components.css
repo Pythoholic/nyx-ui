@@ -52,7 +52,7 @@
   .nyx-kbd, .nyx-kbd-chord { font-family: var(--font-nyx); }
   .nyx-kbd { display: inline-flex; min-inline-size: 1.75rem; min-block-size: 1.75rem; align-items: center; justify-content: center; padding: 0.1875rem 0.4375rem; border: var(--nyx-border-hairline) solid var(--nyx-line-strong); border-block-end-width: var(--nyx-border); border-radius: var(--nyx-radius-sm); background: var(--nyx-chip); color: var(--nyx-muted); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); line-height: 1; }
   .nyx-kbd-chord { display: inline-flex; align-items: center; gap: var(--nyx-space-1); color: var(--nyx-label); font-size: var(--nyx-type-label); }
-  .nyx-eyebrow { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--nyx-label); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-semibold); letter-spacing: 0.14em; line-height: 1.4; text-transform: uppercase; }
+  .nyx-eyebrow { display: inline-flex; inline-size: fit-content; max-inline-size: 100%; align-items: center; align-self: start; justify-self: start; gap: 0.35rem; padding: 0.1875rem 0.4375rem; border: var(--nyx-border) solid transparent; border-radius: var(--nyx-radius-xs); background: var(--nyx-chip); color: var(--nyx-label); font-size: var(--nyx-type-meta); font-weight: var(--nyx-weight-semibold); letter-spacing: 0.14em; line-height: 1.4; text-transform: uppercase; }
   .nyx-eyebrow > svg { inline-size: 0.875rem; block-size: 0.875rem; flex: none; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.75; vector-effect: non-scaling-stroke; }
   .nyx-label { color: var(--nyx-muted); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-regular); letter-spacing: 0.02em; line-height: 1.4; text-transform: none; }
 
@@ -162,9 +162,16 @@
   .nyx-icon-sample > code { color: var(--nyx-label); font: var(--nyx-weight-medium) var(--nyx-type-meta)/1.4 var(--font-nyx); }
 
   .nyx-badge { display: inline-flex; min-height: 1.75rem; align-items: center; gap: 0.4375rem; padding: 0.25rem 0.5625rem; border: var(--nyx-border) solid var(--nyx-accent-line); border-radius: var(--nyx-radius-sm); background: var(--nyx-accent-soft); color: var(--nyx-accent); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); letter-spacing: var(--nyx-track-meta); line-height: 1.5; text-transform: uppercase; }
+  .nyx-badge > svg { inline-size: 0.875rem; block-size: 0.875rem; flex: none; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.75; vector-effect: non-scaling-stroke; }
   .nyx-badge[data-tone="success"] { border-color: var(--nyx-signal-line); background: var(--nyx-signal-soft); color: var(--nyx-signal); }
   .nyx-badge[data-tone="warning"] { border-color: var(--nyx-warning-line); background: var(--nyx-warning-soft); color: var(--nyx-warning); }
   .nyx-badge[data-tone="danger"] { border-color: var(--nyx-danger-line); background: var(--nyx-danger-soft); color: var(--nyx-danger); }
+  .nyx-badge[data-tone="neutral"] { border-color: var(--nyx-line-strong); background: var(--nyx-chip); color: var(--nyx-label); }
+  .nyx-badge[data-appearance="solid"] { border-color: transparent; background: var(--nyx-accent); color: var(--nyx-accent-ink); }
+  .nyx-badge[data-appearance="solid"][data-tone="success"] { background: var(--nyx-signal); color: var(--nyx-signal-ink); }
+  .nyx-badge[data-appearance="solid"][data-tone="warning"] { background: var(--nyx-warning); color: var(--nyx-warning-ink); }
+  .nyx-badge[data-appearance="solid"][data-tone="danger"] { background: var(--nyx-danger); color: var(--nyx-danger-ink); }
+  .nyx-badge[data-appearance="solid"][data-tone="neutral"] { background: var(--nyx-chip); color: var(--nyx-label); }
   .nyx-status-list { display: flex; flex-wrap: wrap; gap: var(--nyx-space-3); margin: 0; padding: 0; list-style: none; }
   .nyx-status-indicator { display: inline-flex; min-block-size: 1.75rem; align-items: center; gap: var(--nyx-space-2); color: var(--nyx-muted); font-size: var(--nyx-type-label); font-weight: var(--nyx-weight-semibold); line-height: 1.4; }
   .nyx-status-indicator[data-tone="success"] { color: var(--nyx-signal); }

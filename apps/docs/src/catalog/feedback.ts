@@ -15,8 +15,8 @@ export const feedbackPages = [
     categoryLabel: "Feedback",
     title: "Badges",
     description,
-    searchTerms: "badge status active success warning danger failed",
-    body: `<section class="docs-prose-section"><h2>Use for compact, non-interactive metadata</h2><p>Badges label state or category beside primary content. Their text carries the meaning; tone must not be the only distinction. Use a button or link when the label performs an action, and use Status Indicator when the state needs a dot-and-label treatment.</p></section>${card("Badges", selectMarkup(feedbackMarkup, ["[data-nyx-example='badges']"]), "Registry source")}`,
+    searchTerms: "badge status active success warning danger failed solid outlined icon neutral section label",
+    body: `<section class="docs-prose-section"><h2>Use for compact, non-interactive metadata</h2><p>Badges label state or category beside primary content. Their text carries the meaning; tone must not be the only distinction. Use solid badges for high-emphasis status and section labels, and keep the default outlined appearance for dense tables and lists. Use a button or link when the label performs an action, and use Status Indicator when the state needs a dot-and-label treatment.</p></section>${card("Badges", selectMarkup(feedbackMarkup, ["[data-nyx-example='badges']"]), "Registry source")}`,
   }),
   page({
     path: paths.components.feedback.alerts,
