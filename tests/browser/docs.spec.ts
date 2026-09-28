@@ -45,6 +45,7 @@ test("badges render icon and solid examples while page eyebrows stay filled", as
   await expect(solid.locator('.nyx-badge[data-appearance="solid"]')).toHaveCount(5);
   await expect(solid.locator(".nyx-badge > svg")).toHaveCount(5);
   expect(await withIcon.locator(".nyx-badge > svg").evaluateAll((icons) => icons.every((icon) => icon.getAttribute("aria-hidden") === "true"))).toBe(true);
+  await expect(page.locator(".docs-reference-table tbody th code")).toHaveText(["data-tone", "data-appearance"]);
 
   const eyebrowBackground = await page.locator(".docs-page-header > .nyx-eyebrow").evaluate((element) => getComputedStyle(element).backgroundColor);
   expect(eyebrowBackground).not.toBe("rgba(0, 0, 0, 0)");

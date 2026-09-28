@@ -1637,7 +1637,11 @@ function componentReference(page: DocPage): string {
     template.innerHTML = page.body;
     const values = new Map<string, Set<string>>();
     template.content.querySelectorAll("[data-example-preview] *").forEach((element) => {
-      Array.from(element.attributes).filter((attribute) => attribute.name.startsWith("data-")).forEach((attribute) => {
+      Array.from(element.attributes).filter((attribute) => (
+        attribute.name.startsWith("data-")
+        && attribute.name !== "data-nyx-example"
+        && attribute.name !== "data-badge-example"
+      )).forEach((attribute) => {
         const current = values.get(attribute.name) ?? new Set<string>();
         current.add(attribute.value || "presence");
         values.set(attribute.name, current);

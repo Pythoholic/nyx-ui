@@ -105,6 +105,10 @@ test("create state round-trips through reload and generated code reflects it", a
   await expect(dialog.locator("[data-create-css]")).toContainText("--nyx-shadow-raised: none");
   await expect(dialog.locator("[data-create-font-link]")).toContainText("Source+Code+Pro");
   await expect(dialog.locator("[data-create-html]")).toContainText('data-nyx-theme="plasma"');
+  const dialogPrimary = dialog.getByRole("button", { name: "Done" });
+  const canvasPrimary = page.locator("[data-create-canvas]").getByRole("button", { name: "Primary" });
+  await expect.poll(() => dialogPrimary.evaluate((element) => getComputedStyle(element).backgroundColor))
+    .toBe(await canvasPrimary.evaluate((element) => getComputedStyle(element).backgroundColor));
   for (const manager of ["pnpm", "npm", "yarn", "bun"]) {
     await expect(dialog.locator(`[data-create-install="${manager}"]`)).toContainText("@nyx-raul/core@beta");
     await expect(dialog.locator(`[data-create-install="${manager}"]`)).toContainText("@nyx-raul/plugins@beta");
@@ -113,25 +117,34 @@ test("create state round-trips through reload and generated code reflects it", a
   await copyCss.click();
   await expect(copyCss).toHaveAttribute("data-state", "copied");
   await expect(copyCss).toHaveAccessibleName("Copied");
+  await dialog.getByRole("button", { name: "Close" }).click();
+  await expect(dialog).toHaveJSProperty("open", false);
+  await expect(trigger).toBeFocused();
+  await trigger.click();
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveJSProperty("open", false);
   await expect(trigger).toBeFocused();
 });
 
-test("default code needs no CSS overrides and puts the accent snippet after install", async ({ page }) => {
+test("default code omits empty overrides and package tabs stay inside step one", async ({ page }) => {
   await page.goto("/create");
   await page.getByRole("button", { name: "Get code" }).click();
   const dialog = page.locator("#create-code-dialog");
 
-  await expect(dialog.locator("[data-create-css-label]")).toHaveText("3 / No CSS overrides needed");
-  await expect(dialog.locator("[data-create-css]")).toHaveText("/* Nyx theme overrides */\n:root {\n}");
+  await expect(dialog.locator("[data-create-empty-overrides]")).toHaveText("Your choices match the defaults, so no overrides are needed.");
+  await expect(dialog.locator("[data-create-empty-overrides]")).toBeVisible();
+  await expect(dialog.locator("[data-create-overrides-block]")).toBeHidden();
+  await expect(dialog).not.toContainText(":root {");
   await expect(dialog.locator("[data-create-html]")).toHaveText('<html data-nyx-theme="signal">');
+  await expect(dialog.locator("[data-create-font-link]")).toContainText("JetBrains+Mono");
 
-  const installBox = await dialog.locator(".create-code-tabs").boundingBox();
-  const accentBox = await dialog.locator(".create-code-primary").boundingBox();
-  expect(installBox).not.toBeNull();
-  expect(accentBox).not.toBeNull();
-  expect(accentBox!.y).toBeGreaterThan(installBox!.y + installBox!.height - 1);
+  const fontBefore = await dialog.locator("[data-create-font-link]").textContent();
+  await dialog.getByRole("tab", { name: "npm", exact: true }).click();
+  await expect(dialog.locator("#create-npm-panel")).toBeVisible();
+  await expect(dialog.locator("#create-pnpm-panel")).toBeHidden();
+  await expect(dialog.locator("[data-create-font-link]")).toHaveText(fontBefore ?? "");
+  await expect(dialog.locator(".create-code-step").nth(1)).toBeVisible();
+  expect(await dialog.locator(".nyx-tab-panel").evaluateAll((panels) => panels.every((panel) => panel.closest(".create-code-step")?.querySelector(".create-code-step-number")?.textContent === "01"))).toBe(true);
 });
 
 test("canvas builds a gapless masonry wall without clipped ellipses", async ({ page }) => {
@@ -221,6 +234,23 @@ test("code dialog wraps the font link and scrolls its body on a short viewport",
   await expect(dialog.locator(".nyx-dialog-footer")).toBeVisible();
   expect(await body.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
   expect(await fontCode.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+});
+
+test("code dialog is a full-screen readable sheet on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/create");
+  await page.getByRole("button", { name: "Customize" }).click();
+  await page.getByRole("button", { name: "Get code" }).click();
+
+  const dialog = page.locator("#create-code-dialog");
+  await expect.poll(() => dialog.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    return { x: Math.round(box.x), y: Math.round(box.y), width: Math.round(box.width), height: Math.round(box.height) };
+  })).toEqual({ x: 0, y: 0, width: 390, height: 844 });
+  expect(await dialog.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  expect(await dialog.locator(".nyx-dialog-body").evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+  await expect(dialog.getByRole("button", { name: "Copy share link" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Done" })).toBeVisible();
 });
 
 test("canvas uses two tablet columns and one phone column", async ({ page }) => {

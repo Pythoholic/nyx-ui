@@ -1,11 +1,12 @@
 import { initToasts } from "@nyx-raul/plugins/toast";
 import { getOrCreateDropdownMenu } from "@nyx-raul/plugins/dropdown-menu";
-import { eyebrow as eyebrowLabel, type IconName } from "../icons.js";
+import { eyebrow as eyebrowLabel, icon, type IconName } from "../icons.js";
 import { page, type DocPage } from "../catalog/shared.js";
 import { paths } from "../routes.js";
 import {
   accentNames,
   borderNames,
+  createShareUrl,
   decodeCreateOptions,
   defaultCreateOptions,
   encodeCreateOptions,
@@ -121,19 +122,30 @@ const installTabs = `<div class="create-code-tabs" data-nyx-tabs>
   <div class="nyx-tabs-list" role="tablist" aria-label="Package manager">
     ${(["pnpm", "npm", "yarn", "bun"] as const).map((manager, index) => `<button class="nyx-tab" id="create-${manager}-tab" role="tab" aria-controls="create-${manager}-panel" aria-selected="${String(index === 0)}" type="button">${manager}</button>`).join("")}
   </div>
-  ${(["pnpm", "npm", "yarn", "bun"] as const).map((manager, index) => `<div class="nyx-tab-panel" id="create-${manager}-panel" role="tabpanel" aria-labelledby="create-${manager}-tab"${index === 0 ? "" : " hidden"}><div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">Install</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-install="${manager}" data-nyx-code-source></code></pre></div></div>`).join("")}
+  ${(["pnpm", "npm", "yarn", "bun"] as const).map((manager, index) => `<div class="nyx-tab-panel" id="create-${manager}-panel" role="tabpanel" aria-labelledby="create-${manager}-tab"${index === 0 ? "" : " hidden"}>${dialogCodeBlock(`data-create-install="${manager}"`, "Shell")}</div>`).join("")}
 </div>`;
 
+function dialogCodeBlock(sourceAttribute: string, label: string): string {
+  return `<div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">${label}</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code ${sourceAttribute} data-nyx-code-source></code></pre></div>`;
+}
+
+function codeStep(number: number, title: string, description: string, content: string, attributes = ""): string {
+  return `<section class="create-code-step" ${attributes}><span aria-hidden="true" class="create-code-step-number">${String(number).padStart(2, "0")}</span><div class="create-code-step-content"><h3>${title}</h3><p>${description}</p>${content}</div></section>`;
+}
+
+const summaryBadges = pickerDefinitions.map(({ name }) => `<span class="nyx-badge" data-appearance="solid" data-create-summary="${name}" data-tone="neutral">${optionLabel(name, defaultCreateOptions[name])}</span>`).join("");
+
 const codeDialog = `<dialog aria-labelledby="create-code-title" class="nyx-dialog create-code-dialog" data-nyx-dialog id="create-code-dialog">
-  <header class="nyx-dialog-header"><div><h2 class="nyx-dialog-title" id="create-code-title">Get code</h2><p class="nyx-dialog-description">Install the packages, then add the generated theme overrides.</p></div><button aria-label="Close code dialog" class="nyx-button" data-nyx-dialog-close data-size="small" data-variant="quiet" type="button">Close</button></header>
+  <header class="nyx-dialog-header"><div class="create-code-heading"><h2 class="nyx-dialog-title" id="create-code-title">Get code</h2><p class="nyx-dialog-description">Add this setup to your project, then copy only the optional behaviour you need.</p><div class="create-code-summary" aria-label="Selected theme choices">${summaryBadges}</div></div><button aria-label="Close" class="nyx-button nyx-icon-button" data-nyx-dialog-close data-variant="quiet" type="button">${icon("close")}</button></header>
   <div class="nyx-dialog-body">
-    <p class="create-code-step">1 / Install packages</p>
-    ${installTabs}
-    <div class="nyx-code-block create-code-primary" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">2 / Apply accent preset</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-html data-nyx-code-source></code></pre></div>
-    <div class="nyx-code-block" data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label" data-create-css-label>3 / Theme CSS</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-css data-nyx-code-source></code></pre></div>
-    <div class="nyx-code-block" data-create-font-block data-nyx-code-block><div class="nyx-code-block-toolbar"><span class="nyx-label">4 / Font link</span><span class="nyx-code-status" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-size="small" type="button"><span data-nyx-code-copy-label>Copy</span></button></div><pre class="nyx-code nyx-scrollable-overlay" tabindex="0"><code data-create-font-link data-nyx-code-source></code></pre></div>
+    ${codeStep(1, "Install packages", "Install the style foundation and optional component behaviour.", installTabs)}
+    ${codeStep(2, "Load the font", "Add the selected font weights to your document head; self-hosting the same weights works too.", dialogCodeBlock("data-create-font-link", "Document head"), "data-create-font-block")}
+    ${codeStep(3, "Import Nyx in your stylesheet", "Register your application and Nyx source locations, then import the stylesheet.", `${dialogCodeBlock("data-create-stylesheet", "CSS")}<p class="create-code-note">For a plain-CSS build, use <code data-create-plain-css></code>.</p>`)}
+    ${codeStep(4, "Set the theme", "Place the generated theme attribute on the document root.", dialogCodeBlock("data-create-html", "HTML"))}
+    ${codeStep(5, "Add your overrides", "Place generated token changes after the Nyx import in your stylesheet.", `<p class="create-code-empty" data-create-empty-overrides>Your choices match the defaults, so no overrides are needed.</p><div data-create-overrides-block hidden>${dialogCodeBlock("data-create-css", "CSS")}</div>`)}
+    ${codeStep(6, "Add behaviour (optional)", `Initialize only the interactive components you use, retain the controllers, and destroy them with their rendered subtree. <a class="nyx-link" data-docs-link data-docs-path="/guides/behavior" href="/guides/behavior">Behavior guide</a>`, dialogCodeBlock("data-create-behavior", "JavaScript"))}
   </div>
-  <footer class="nyx-dialog-footer"><a class="nyx-link" data-docs-link data-docs-path="/guides/installation" href="/guides/installation">Installation guide</a><button class="nyx-button" data-nyx-dialog-close data-variant="primary" type="button">Done</button></footer>
+  <footer class="nyx-dialog-footer"><div class="create-code-copy-actions"><span class="create-code-copy-action" data-nyx-code-block><code class="sr-only" data-create-share data-nyx-code-source></code><span class="sr-only" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-nyx-code-label="Copy share link" type="button"><span data-nyx-code-copy-label>Copy share link</span></button></span><span class="create-code-copy-action" data-nyx-code-block><code class="sr-only" data-create-copy-all data-nyx-code-source></code><span class="sr-only" data-nyx-code-status></span><button class="nyx-button" data-nyx-code-copy data-nyx-code-label="Copy all" type="button"><span data-nyx-code-copy-label>Copy all</span></button></span></div><div class="create-code-footer-end"><a class="nyx-link" data-docs-link data-docs-path="/guides/installation" href="/guides/installation">Installation guide</a><button class="nyx-button" data-nyx-dialog-close data-variant="primary" type="button">Done</button></div></footer>
 </dialog>`;
 
 const queueItems = `<ol class="create-job-list">
@@ -174,10 +186,10 @@ export const createPage: DocPage = page({
   searchTerms: "create theme builder custom accent palette radius font border shadow motion generator",
   plugins: ["tabs", "dialog", "code-block", "dropdown-menu"],
   body: `<div class="create-toolbar"><button class="nyx-button create-customize-toggle" data-create-panel-toggle aria-controls="create-control-panel" aria-expanded="false" type="button">Customize</button></div>
-  <div class="create-workspace" data-create-scope>
+  <div data-create-scope><div class="create-workspace">
     <aside class="create-control-panel" data-mobile-open="false" id="create-control-panel" aria-label="Customize theme">${controls}</aside>
     <section class="create-canvas" data-create-canvas aria-label="Live component canvas"><div class="create-canvas-grid">${cards}</div></section>
-  </div>${codeDialog}`,
+  </div>${codeDialog}</div>`,
 });
 
 function optionFromForm(form: HTMLFormElement): CreateOptions {
@@ -283,13 +295,28 @@ export function initializeCreatePage(root: HTMLElement): () => void {
     const css = root.querySelector<HTMLElement>("[data-create-css]");
     const font = root.querySelector<HTMLElement>("[data-create-font-link]");
     const html = root.querySelector<HTMLElement>("[data-create-html]");
-    const fontBlock = root.querySelector<HTMLElement>("[data-create-font-block]");
-    const cssLabel = root.querySelector<HTMLElement>("[data-create-css-label]");
+    const stylesheet = root.querySelector<HTMLElement>("[data-create-stylesheet]");
+    const plainCss = root.querySelector<HTMLElement>("[data-create-plain-css]");
+    const behavior = root.querySelector<HTMLElement>("[data-create-behavior]");
+    const copyAll = root.querySelector<HTMLElement>("[data-create-copy-all]");
+    const share = root.querySelector<HTMLElement>("[data-create-share]");
+    const overridesBlock = root.querySelector<HTMLElement>("[data-create-overrides-block]");
+    const emptyOverrides = root.querySelector<HTMLElement>("[data-create-empty-overrides]");
     if (css) css.textContent = generated.css;
     if (font) font.textContent = generated.fontLink;
     if (html) html.textContent = generated.htmlAttribute;
-    if (cssLabel) cssLabel.textContent = generated.css.endsWith(":root {\n}") ? "3 / No CSS overrides needed" : "3 / Theme CSS";
-    fontBlock?.toggleAttribute("hidden", !generated.fontLink);
+    if (stylesheet) stylesheet.textContent = generated.stylesheetEntry;
+    if (plainCss) plainCss.textContent = generated.plainCssEntry;
+    if (behavior) behavior.textContent = generated.behavior;
+    if (copyAll) copyAll.textContent = generated.copyAll;
+    if (share) share.textContent = createShareUrl(window.location.href, options);
+    if (emptyOverrides) emptyOverrides.textContent = generated.emptyOverridesMessage;
+    overridesBlock?.toggleAttribute("hidden", !generated.hasOverrides);
+    emptyOverrides?.toggleAttribute("hidden", generated.hasOverrides);
+    pickerDefinitions.forEach(({ name }) => {
+      const summary = root.querySelector<HTMLElement>(`[data-create-summary="${name}"]`);
+      if (summary) summary.textContent = optionLabel(name, options[name]);
+    });
   };
 
   const apply = (): void => {
