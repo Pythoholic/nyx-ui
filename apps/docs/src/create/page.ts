@@ -1,5 +1,6 @@
 import { initToasts } from "@nyx-raul/plugins/toast";
 import { getOrCreateDropdownMenu } from "@nyx-raul/plugins/dropdown-menu";
+import { eyebrow as eyebrowLabel, type IconName } from "../icons.js";
 import { page, type DocPage } from "../catalog/shared.js";
 import { paths } from "../routes.js";
 import {
@@ -83,8 +84,30 @@ function pickerControl(definition: (typeof pickerDefinitions)[number]): string {
 }
 
 function card(title: string, eyebrow: string, markup: string, className = ""): string {
+  const icons: Record<string, IconName> = {
+    "batch progress": "activity",
+    calendar: "calendar",
+    "chosen font": "type",
+    collaboration: "users",
+    "data table": "table",
+    "form card": "form",
+    "generation controls": "sliders",
+    "generation queue": "sparkle",
+    "interactive primitives": "sliders",
+    "live colour system": "palette",
+    "live statistics": "chart",
+    "model selector": "cpu",
+    "new message": "message",
+    "notification centre": "bell",
+    "quick actions": "list",
+    readiness: "checklist",
+    "recent renders": "image",
+    "service status": "shield",
+    "status messages": "bell",
+    "workspace feed": "activity",
+  };
   return `<article class="create-card ${className}" data-create-card data-create-card-title="${title}">
-    <header class="create-card-header"><span class="nyx-eyebrow">// ${eyebrow}</span><h2>${title}</h2></header>
+    <header class="create-card-header">${eyebrowLabel(eyebrow, icons[eyebrow] ?? "box")}<h2>${title}</h2></header>
     <div class="create-card-body">${markup}</div>
   </article>`;
 }
